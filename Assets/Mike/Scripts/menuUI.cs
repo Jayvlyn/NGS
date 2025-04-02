@@ -29,7 +29,13 @@ public class menuUI : MonoBehaviour
         if(quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
         if(saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if(backBtn != null) backBtn.onClick.AddListener(() => backClicked());
-        
+        foreach (Button btn in pause.GetComponentsInChildren<Button>())
+        {
+            if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
+            else if(btn.name == "QuitBtn") btn.onClick = quitBtn.onClick;
+            else btn.onClick = settingsBtn.onClick;
+        }
+
     }
 
     void Update()
