@@ -12,12 +12,12 @@ public class GameSettings : ScriptableObject
     public bool hasPostProcessing;
     public bool isFullScreen;
 
-    public char jumpKey;
-    public char castKey;
-    public char reelKey;
-    public char pauseKey;
-    public char releaseKey;
-    public char walkLeftKey;
-    public char interactKey;
-    public char walkRightKey;
+    public KeyCode jumpKey;
+    public KeyCode castKey;
+    public KeyCode reelKey;
+    public KeyCode pauseKey;
+    public KeyCode releaseKey;
+    public KeyCode walkLeftKey;
+    public KeyCode interactKey;
+    public KeyCode walkRightKey;
 }

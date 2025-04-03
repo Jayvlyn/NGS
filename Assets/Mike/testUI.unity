@@ -3087,7 +3087,7 @@ AudioSource:
   m_GameObject: {fileID: 517287374}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 7210871386916808558, guid: fd8426117eef26d47a4f6f63224f8509, type: 2}
   m_audioClip: {fileID: 8300000, guid: ec231e99e82965547bd62f665c9a0bff, type: 3}
   m_Resource: {fileID: 8300000, guid: ec231e99e82965547bd62f665c9a0bff, type: 3}
   m_PlayOnAwake: 1
@@ -3615,6 +3615,7 @@ GameObject:
   - component: {fileID: 603345141}
   - component: {fileID: 603345140}
   - component: {fileID: 603345144}
+  - component: {fileID: 603345145}
   m_Layer: 5
   m_Name: Game UI
   m_TagString: Untagged
@@ -3680,7 +3681,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -3732,6 +3733,21 @@ MonoBehaviour:
   keyBindBtn: {fileID: 18950872}
   saveBtn: {fileID: 18700942}
   backBtn: {fileID: 984613719}
+--- !u!114 &603345145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603345139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98e90af509a91446992a767063f714d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 060869daba6b154408b33a971e68c3c6, type: 2}
+  mixer: {fileID: 24100000, guid: fd8426117eef26d47a4f6f63224f8509, type: 2}
+  resolutionDropdown: {fileID: 852720412}
 --- !u!1 &616111417
 GameObject:
   m_ObjectHideFlags: 0
@@ -5229,9 +5245,6 @@ MonoBehaviour:
     - m_Text: Default (1920x1080)
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: 2560 x 1440
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: 1280 x 720
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5240,7 +5253,19 @@ MonoBehaviour:
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 603345145}
+        m_TargetAssemblyTypeName: ModifySettings, Assembly-CSharp
+        m_MethodName: SetResolution
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &852720413
 MonoBehaviour:
@@ -6040,7 +6065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &948845295
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6388,7 +6413,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 603345145}
+        m_TargetAssemblyTypeName: ModifySettings, Assembly-CSharp
+        m_MethodName: SetFullScreen
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1030774069
 GameObject:
@@ -6402,12 +6439,12 @@ GameObject:
   - component: {fileID: 1030774072}
   - component: {fileID: 1030774071}
   m_Layer: 5
-  m_Name: KeyBinds
+  m_Name: KeyBindsScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1030774070
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9135,7 +9172,7 @@ AudioSource:
   m_GameObject: {fileID: 1298948410}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -553662185759476613, guid: fd8426117eef26d47a4f6f63224f8509, type: 2}
   m_audioClip: {fileID: 8300000, guid: 7ac13464d49f77e47a93e1e620cc4c71, type: 3}
   m_Resource: {fileID: 8300000, guid: 7ac13464d49f77e47a93e1e620cc4c71, type: 3}
   m_PlayOnAwake: 1
@@ -9322,13 +9359,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 849154971}
   m_HandleRect: {fileID: 818023376}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 1
+  m_MinValue: -45
+  m_MaxValue: 0
+  m_WholeNumbers: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 603345145}
+        m_TargetAssemblyTypeName: ModifySettings, Assembly-CSharp
+        m_MethodName: SetSFXVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1362960119
 GameObject:
   m_ObjectHideFlags: 0
@@ -9413,13 +9462,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 1401322461}
   m_HandleRect: {fileID: 350829697}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 1
+  m_MinValue: -45
+  m_MaxValue: 0
+  m_WholeNumbers: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 603345145}
+        m_TargetAssemblyTypeName: ModifySettings, Assembly-CSharp
+        m_MethodName: SetMusicVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1375859318
 GameObject:
   m_ObjectHideFlags: 0
@@ -12880,20 +12941,20 @@ MonoBehaviour:
   m_FillRect: {fileID: 1829672012}
   m_HandleRect: {fileID: 830855064}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 1
+  m_MinValue: -45
+  m_MaxValue: 0
+  m_WholeNumbers: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 24cab558dd4cbf54cb2a48af50effca2, type: 3}
-        m_TargetAssemblyTypeName: UnityEditor.MonoScript, UnityEditor.CoreModule
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 603345145}
+        m_TargetAssemblyTypeName: ModifySettings, Assembly-CSharp
+        m_MethodName: SetMasterVolume
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
