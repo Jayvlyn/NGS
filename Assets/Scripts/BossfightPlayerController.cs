@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 [RequireComponent (typeof(Rigidbody2D))]
 [RequireComponent(typeof(DistanceJoint2D))]
@@ -14,9 +16,9 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private float movementSpeed = 5.0f;
     [SerializeField] private float reelSpeed = 1.0f;
     [SerializeField] private BossFishController boss;
-    private bool colliding = false;
     private Rigidbody2D body;
     private DistanceJoint2D joint;
+    private List<Collision2D> activeBlockers = new List<Collision2D>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -50,15 +52,12 @@ public class BossfightPlayerController : MonoBehaviour
         {
             movement = movement.normalized * movementSpeed * Time.deltaTime;
             body.MovePosition(transform.position + movement);
-            Vector3 relpos = joint.connectedBody.transform.position - transform.position;
-            float angle = Mathf.Abs(Vector3.Angle(relpos, movement));
-            joint.distance += movement.magnitude * ((90 - angle) / 90);
         }
         if(Input.GetKey(reelKey))
         {
-            joint.distance -= reelSpeed * Time.deltaTime;
+            joint.distance -= reelSpeed * Time.deltaTime * Mathf.Pow(joint.distance * 0.2f, 2);
         }
-        if(Input.GetKey(slackKey) || colliding)
+        if(Input.GetKey(slackKey) || activeBlockers.Count > 0)
         {
             joint.enabled = false;
             joint.distance = currentDistance;
@@ -67,5 +66,25 @@ public class BossfightPlayerController : MonoBehaviour
         {
             joint.enabled = true;
         }
+        body.linearVelocity = Vector3.zero;
+        body.angularVelocity = 0;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Vector3 relPos = joint.connectedBody.transform.position - transform.position;
+        float angle = Vector3.Angle(collision.GetContact(0).normal, relPos);
+        if (Mathf.Abs(angle) > 120)
+        {
+            activeBlockers.Add(collision);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        activeBlockers.Remove(collision);
+        joint.enabled = true;
+    }
+
+    public float DesiredDistance { get { return joint.distance; } }
 }
