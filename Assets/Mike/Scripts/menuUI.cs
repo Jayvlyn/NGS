@@ -2,10 +2,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class menuUI : MonoBehaviour
+public class MenuUI : MonoBehaviour
 {
     [Header("Panels")]
     [SerializeField] GameObject startMenu;
+    [SerializeField] GameObject loadMenu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
@@ -51,7 +52,8 @@ public class menuUI : MonoBehaviour
     void loadGameClicked()
     {
         print("loading Game");
-        startMenu.SetActive(false);
+        loadMenu.SetActive(!loadMenu.activeSelf);
+        //startMenu.SetActive(false);
     }
     void settingsClicked()
     {
