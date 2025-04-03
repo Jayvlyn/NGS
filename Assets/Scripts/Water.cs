@@ -6,7 +6,8 @@ public class Water : MonoBehaviour
     //list of fish the pond has 
     [SerializeField] List<Fish> ListOfFish = new List<Fish>();
 
-    //rarity values so 0 is legendary and 3 is uncommon, whatever is left from between the index 3 and the value 100 is common.
+    //rarity values so 0 is legendary and 3 is uncommon, whatever is left from between the index 3 and the value 100 is common. 
+    //good values to start with are 3, 7, 25, 55 
     [SerializeField] List<int> rarityValues = new List<int>();
 
     //fishing bool to check if the player is fishing or not.
