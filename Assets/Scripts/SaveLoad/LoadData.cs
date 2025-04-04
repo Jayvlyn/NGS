@@ -17,4 +17,6 @@ public class LoadData : MonoBehaviour
         gameObject.GetComponentInChildren<Image>().color = Color.red;
     }
 
+    public SaveData Data { get { return data; } }
+
 }

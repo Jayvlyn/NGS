@@ -8,19 +8,19 @@ public class SaveLoadManager : MonoBehaviour
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
     [SerializeField] private int columns = 3;
-    private List<GameObject> options = new List<GameObject>();
-    private List<SaveData> saveList = new List<SaveData>();
+    private readonly List<GameObject> options = new();
+    private readonly List<SaveData> saveList = new();
     private int selected = -1;
     public void Save()
     {
-        SaveData data = new SaveData();
+        SaveData data = new();
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
         Directory.CreateDirectory(path);
         path = Path.Combine(path, $"{data.id}.json");
         string dataString = JsonUtility.ToJson(data);
-        StreamWriter sw = new StreamWriter(path);
+        StreamWriter sw = new(path);
         sw.Write(dataString);
         sw.Close();
         UpdateDisplay();
@@ -69,7 +69,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             if (file.EndsWith(".json"))
             {
-                StreamReader sr = new StreamReader(Path.Combine(path, file));
+                StreamReader sr = new(Path.Combine(path, file));
                 saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
                 sr.Close();
             }
