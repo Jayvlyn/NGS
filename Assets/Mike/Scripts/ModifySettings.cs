@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class ModifySettings : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class ModifySettings : MonoBehaviour
 
     public TMP_Dropdown resolutionDropdown;
 
+    public Volume postProcessing;
+
     Resolution[] resolutions;
 
     void Start()
     {
-        //TODO: when switched to scriptible object load on start
+        //TODO: Switch to scriptible object later on
 
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -41,16 +44,19 @@ public class ModifySettings : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
+        if (volume == -45) volume = -80;
         mixer.SetFloat("MasterVol", volume);
     }
 
     public void SetMusicVolume(float volume)
     {
+        if (volume == -45) volume = -80;
         mixer.SetFloat("MusicVol", volume);
     }
 
     public void SetSFXVolume(float volume)
     {
+        if (volume == -45) volume = -80;
         mixer.SetFloat("SFXVol", volume);
     }
 
@@ -62,5 +68,10 @@ public class ModifySettings : MonoBehaviour
     public void SetFullScreen(bool isFullScreen)
     {
         Screen.fullScreen = isFullScreen;
+    }
+
+    public void SetPostProcessing(bool isPostProcessingOn)
+    {
+        postProcessing.enabled = isPostProcessingOn;
     }
 }
