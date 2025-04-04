@@ -18,7 +18,7 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private BossFishController boss;
     private Rigidbody2D body;
     private DistanceJoint2D joint;
-    private List<Collision2D> activeBlockers = new List<Collision2D>();
+    private readonly List<Collision2D> activeBlockers = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,7 +31,7 @@ public class BossfightPlayerController : MonoBehaviour
     void Update()
     {
         float currentDistance = Vector3.Distance(boss.transform.position, transform.position);
-        Vector3 movement = new Vector3(0, 0);
+        Vector3 movement = new(0, 0);
         if (Input.GetKey(rightKey))
         {
             movement.x++;
@@ -50,7 +50,7 @@ public class BossfightPlayerController : MonoBehaviour
         }
         if(movement.magnitude > 0)
         {
-            movement = movement.normalized * movementSpeed * Time.deltaTime;
+            movement = movementSpeed * Time.deltaTime * movement.normalized;
             body.MovePosition(transform.position + movement);
         }
         if(Input.GetKey(reelKey))

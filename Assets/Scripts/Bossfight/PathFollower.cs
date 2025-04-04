@@ -12,10 +12,10 @@ public class PathFollower : MonoBehaviour
     [SerializeField] GameObject guide;
 
     [SerializeField, Range(0, 1)]float distance = 0; //distance along spline, 0-1]
-    public float length { get { return splineContainer.CalculateLength(); } }
+    public float Length { get { return splineContainer.CalculateLength(); } }
 	public (Vector3, Quaternion) GetNewTransform(float distanceTravelled)
     {
-        distance += distanceTravelled / length;
+        distance += distanceTravelled / Length;
         Vector3 position = splineContainer.EvaluatePosition(distance);
         Vector3 up = splineContainer.EvaluateUpVector(distance);
         Vector3 forward = splineContainer.EvaluateTangent(distance);
