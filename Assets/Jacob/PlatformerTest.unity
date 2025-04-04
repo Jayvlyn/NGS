@@ -502,7 +502,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -600,12 +600,15 @@ MonoBehaviour:
   rb: {fileID: 880547200}
   moveSpeed: 100
   moveVelocityLimit: 10
-  jumpStrength: 50
+  jumpStrength: 20
   maxLineLength: 10
   castSpeed: 10
   reelSpeed: 10
-  changeXDirSharpness: 5
+  changeDirSpeedMult: 0.5
   groundFriction: 0.93
+  jumpBufferTime: 0.1
+  coyoteTime: 0.1
+  totalJumps: 1
   groundCheckPos: {fileID: 1841734716}
   groundCheckSize: {x: 1.01, y: 0.1}
   groundLayer:
