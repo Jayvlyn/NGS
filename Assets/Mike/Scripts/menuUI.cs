@@ -2,10 +2,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class menuUI : MonoBehaviour
+public class MenuUI : MonoBehaviour
 {
     [Header("Panels")]
     [SerializeField] GameObject startMenu;
+    [SerializeField] GameObject loadMenu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
@@ -29,7 +30,13 @@ public class menuUI : MonoBehaviour
         if(quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
         if(saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if(backBtn != null) backBtn.onClick.AddListener(() => backClicked());
-        
+        foreach (Button btn in pause.GetComponentsInChildren<Button>())
+        {
+            if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
+            else if(btn.name == "QuitBtn") btn.onClick = quitBtn.onClick;
+            else btn.onClick = settingsBtn.onClick;
+        }
+
     }
 
     void Update()
@@ -45,7 +52,8 @@ public class menuUI : MonoBehaviour
     void loadGameClicked()
     {
         print("loading Game");
-        startMenu.SetActive(false);
+        loadMenu.SetActive(!loadMenu.activeSelf);
+        //startMenu.SetActive(false);
     }
     void settingsClicked()
     {

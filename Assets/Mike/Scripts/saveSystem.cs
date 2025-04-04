@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class saveSystem
+public class SaveSystem
 {
     
 }
