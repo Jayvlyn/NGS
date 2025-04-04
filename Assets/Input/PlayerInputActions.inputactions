@@ -121,6 +121,98 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "BobberMinigame",
+            "id": "d5421efb-70d2-402b-a2a4-8928fcf0087a",
+            "actions": [
+                {
+                    "name": "BobberMove",
+                    "type": "Value",
+                    "id": "b1f1d452-41c0-4b84-be10-dde57b848832",
+                    "expectedControlType": "Axis",
+                    "processors": "AxisDeadzone(min=-0.925)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "BobberReelLine",
+                    "type": "Value",
+                    "id": "2e15d5bb-58d5-4c3a-8a54-9c1f67974d11",
+                    "expectedControlType": "Axis",
+                    "processors": "AxisDeadzone(min=-0.925)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "1D Axis",
+                    "id": "b9051f94-22c1-4156-9f91-fea71c5de8b2",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BobberReelLine",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "b7c167e8-ac99-472b-b8bc-4601412b5bae",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BobberReelLine",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d6bc8c0f-2179-433f-b670-68bfc6720085",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BobberReelLine",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "d1d26b86-508a-4c8e-98f1-2daaeaef5fd5",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BobberMove",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "df23ff1b-5fc8-4b78-a6cf-37f98deff5c8",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BobberMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "f6e7736b-c62c-438c-8c74-bcc2254704de",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BobberMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []
