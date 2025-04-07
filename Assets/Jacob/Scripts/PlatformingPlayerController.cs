@@ -103,7 +103,6 @@ public class PlatformingPlayerController : MonoBehaviour
 
     public bool isWallBlockingMoveDir()
     {
-        Debug.Log(moveInput);
         if(moveInput < 0) // trying to move left
         {
             return isTouchingLeftWall();
@@ -136,13 +135,18 @@ public class PlatformingPlayerController : MonoBehaviour
             jumpHeld = false;
             if(isJumpTimerActive()) // released during jump timer (released "early")
             {
-                if(rb.linearVelocityY > 0) // only reduce when going up
-                {
-                    rb.linearVelocityY *= 0.5f;
-                }
+                DampenUpVelocity();
             }
         }
     }
+
+    private void DampenUpVelocity()
+    {
+		if (rb.linearVelocityY > 0) // only reduce when going up
+		{
+			rb.linearVelocityY *= 0.5f;
+		}
+	}
 
     public void DoJump()
     {
@@ -230,7 +234,11 @@ public class PlatformingPlayerController : MonoBehaviour
 	private void OnLand()
     {
         currentJumps = totalJumps;
-        if (isJumpBufferActive()) DoJump();
+        if (isJumpBufferActive())
+        {
+            DoJump();
+            if (!jumpHeld) DampenUpVelocity();
+        }
     }
 
     private void OnEnable()
