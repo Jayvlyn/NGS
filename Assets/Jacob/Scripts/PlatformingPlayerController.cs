@@ -27,10 +27,17 @@ public class PlatformingPlayerController : MonoBehaviour
     private float fullJumpInputTime = 0.5f;
 
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheckPos;
-    [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheckT;
+    [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
     private bool onGround;
+
+    [Header("Wall Checks")]
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private Transform rightCheckT;
+    [SerializeField] private Vector2 rightCheckSize = new Vector2(0.1f, 0.5f);
+    [SerializeField] private Transform leftCheckT;
+    [SerializeField] private Vector2 leftCheckSize = new Vector2(0.1f, 0.5f);
 
     // Inputs
     private float moveInput; // left-right 1D axis
@@ -67,10 +74,8 @@ public class PlatformingPlayerController : MonoBehaviour
 			}
 
 			// move when not moving max speed
-			if ((moveInput > 0 && rb.linearVelocityX < moveVelocityLimit) || // trying to move right and under positive max
-				(moveInput < 0 && rb.linearVelocityX > moveVelocityLimit * -1)) // trying to move left and above negative max
-																				// able to move in either direction when not moving in max speed in that direction
-			{
+            if(isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
+            {
 				Vector2 dir = new Vector2(moveInput, 0);
 				rb.AddForce(dir * speed, ForceMode2D.Force);
 			}
@@ -88,6 +93,26 @@ public class PlatformingPlayerController : MonoBehaviour
         {
             moveHeld = false;
         }
+    }
+
+    public bool isUnderMaxMoveSpeed()
+    {
+        return ((moveInput > 0 && rb.linearVelocityX < moveVelocityLimit) ||    // trying to move right and under positive max
+               (moveInput < 0 && rb.linearVelocityX > moveVelocityLimit * -1)); // trying to move left and above negative max
+	}
+
+    public bool isWallBlockingMoveDir()
+    {
+        Debug.Log(moveInput);
+        if(moveInput < 0) // trying to move left
+        {
+            return isTouchingLeftWall();
+        }
+        else if (moveInput > 0) // trying to move right
+        {
+            return isTouchingRightWall();
+        }
+        return false; // not trying to move
     }
 
     public void OnJump(InputValue value)
@@ -166,7 +191,7 @@ public class PlatformingPlayerController : MonoBehaviour
 
     private bool isGrounded()
     {
-        if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
+        if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer))
         {
             if (!onGround) OnLand(); // first frame returning true, so just landed
             return true;
@@ -183,8 +208,26 @@ public class PlatformingPlayerController : MonoBehaviour
         }
         return false;
     }
-    
-    private void OnLand()
+
+    private bool isTouchingRightWall()
+    {
+		if (Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer))
+		{
+			return true;
+		}
+		return false;
+    }
+
+	private bool isTouchingLeftWall()
+	{
+		if (Physics2D.OverlapBox(leftCheckT.position, leftCheckSize, 0, wallLayer))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private void OnLand()
     {
         currentJumps = totalJumps;
         if (isJumpBufferActive()) DoJump();
@@ -220,7 +263,16 @@ public class PlatformingPlayerController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // Ground Check
         Gizmos.color = Color.white;
-        Gizmos.DrawCube(groundCheckPos.position, groundCheckSize);
-    }
+        Gizmos.DrawCube(groundCheckT.position, groundCheckSize);
+
+		// Left Check
+		Gizmos.color = Color.red;
+		Gizmos.DrawCube(leftCheckT.position, leftCheckSize);
+
+		// Right Check
+		Gizmos.color = Color.blue;
+		Gizmos.DrawCube(rightCheckT.position, rightCheckSize);
+	}
 }
