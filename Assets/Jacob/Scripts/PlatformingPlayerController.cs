@@ -261,18 +261,18 @@ public class PlatformingPlayerController : MonoBehaviour
         reelHeld = false;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         // Ground Check
-        Gizmos.color = Color.white;
+        Gizmos.color = new Color(1, 1, 1, 0.5f);
         Gizmos.DrawCube(groundCheckT.position, groundCheckSize);
 
 		// Left Check
-		Gizmos.color = Color.red;
+		Gizmos.color = new Color(1, 0, 0, 0.5f);
 		Gizmos.DrawCube(leftCheckT.position, leftCheckSize);
 
 		// Right Check
-		Gizmos.color = Color.blue;
+		Gizmos.color = new Color(0, 0, 1, 0.5f);
 		Gizmos.DrawCube(rightCheckT.position, rightCheckSize);
 	}
 }
