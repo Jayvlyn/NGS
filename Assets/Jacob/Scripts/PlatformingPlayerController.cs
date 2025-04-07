@@ -45,34 +45,37 @@ public class PlatformingPlayerController : MonoBehaviour
 	private void Update()
     {
         onGround = isGrounded();
-
-        if(onGround)
-        {
-            rb.linearVelocityX *= groundFriction;
-        }
-
-        if(moveHeld)
-        {
-            float speed = onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
-            // change dir
-            
-            if(onGround && ((rb.linearVelocityX > 0 && moveInput < 0) || (rb.linearVelocityX < 0 && moveInput > 0)))
-            { // changing dir on ground
-                speed *= changeDirSpeedMult;
-            }
-
-            // move when not moving max speed
-            if ((moveInput > 0 && rb.linearVelocityX < moveVelocityLimit) || // trying to move right and under positive max
-                (moveInput < 0 && rb.linearVelocityX > moveVelocityLimit * -1)) // trying to move left and above negative max
-                // able to move in either direction when not moving in max speed in that direction
-            {
-                Vector2 dir = new Vector2(moveInput, 0);
-                rb.AddForce(dir * speed, ForceMode2D.Force);                
-            }
-        }
     }
 
-    public void OnMove(InputValue value)
+	private void FixedUpdate()
+	{
+		if (onGround)
+		{
+			rb.linearVelocityX *= groundFriction;
+		}
+
+		if (moveHeld)
+		{
+			float speed = onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+																   // change dir
+
+			if (onGround && ((rb.linearVelocityX > 0 && moveInput < 0) || (rb.linearVelocityX < 0 && moveInput > 0)))
+			{ // changing dir on ground
+				speed *= rb.linearVelocityX * changeDirSpeedMult;
+			}
+
+			// move when not moving max speed
+			if ((moveInput > 0 && rb.linearVelocityX < moveVelocityLimit) || // trying to move right and under positive max
+				(moveInput < 0 && rb.linearVelocityX > moveVelocityLimit * -1)) // trying to move left and above negative max
+																				// able to move in either direction when not moving in max speed in that direction
+			{
+				Vector2 dir = new Vector2(moveInput, 0);
+				rb.AddForce(dir * speed, ForceMode2D.Force);
+			}
+		}
+	}
+
+	public void OnMove(InputValue value)
     {
         moveInput = value.Get<float>();
         if (moveInput != 0)
