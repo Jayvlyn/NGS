@@ -6,15 +6,6 @@
             "id": "25fad4ec-97a9-424e-afc3-bd4f7b90aa63",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "3f7b67dd-51ee-4f1a-b22e-c3c794895e07",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "76b2c68e-15b9-4dd8-ad4c-fe39d662088a",
@@ -22,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "3f7b67dd-51ee-4f1a-b22e-c3c794895e07",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "CastHook",
@@ -36,6 +36,33 @@
                     "name": "ReelHook",
                     "type": "Button",
                     "id": "e46214bc-074b-4aa6-8412-8ba86695e7cb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "24964d99-42c1-422a-80ed-d8f5d26667b5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Release",
+                    "type": "Button",
+                    "id": "1accf19f-d9a1-41c6-8890-012b408b5662",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "58c8e28c-a61e-4f54-b68a-7fc980e640e9",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -108,8 +135,47 @@
                     "action": "ReelHook",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8742167-ecb1-468a-96ae-6084a31c7e95",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27788071-428d-4bd4-9b05-5dac5f7ee5d2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ed5514d-d884-4a90-bdb3-29f1fe168eab",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "TestUI",
+            "id": "a7fab676-e7ac-4a6e-bb93-3e7b6f451c45",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

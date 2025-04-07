@@ -2494,7 +2494,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 353766339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530521}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &353766339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2616,7 +2628,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 421943943}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530525}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &421943943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2993,6 +3017,13 @@ GameObject:
   - component: {fileID: 516530517}
   - component: {fileID: 516530516}
   - component: {fileID: 516530518}
+  - component: {fileID: 516530523}
+  - component: {fileID: 516530525}
+  - component: {fileID: 516530522}
+  - component: {fileID: 516530521}
+  - component: {fileID: 516530520}
+  - component: {fileID: 516530519}
+  - component: {fileID: 516530526}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -3074,10 +3105,122 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpAction: {fileID: 8731190683154775467, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
-  startRebindObject: {fileID: 643842006}
-  waitingForInputObject: {fileID: 146213422}
-  jumpText: {fileID: 722726465}
+  keyAction: {fileID: 8731190683154775467, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 722726465}
+  isWalkLeft: 0
+--- !u!114 &516530519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: -2075739068208373805, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 601677423}
+  isWalkLeft: 0
+--- !u!114 &516530520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: -752770970407249330, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 137648820}
+  isWalkLeft: 0
+--- !u!114 &516530521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: 5263304469171460230, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 1071462213}
+  isWalkLeft: 0
+--- !u!114 &516530522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: 5885308965799209229, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 1921534726}
+  isWalkLeft: 0
+--- !u!114 &516530523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: -2187844518886442790, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 1424695971}
+  isWalkLeft: 0
+--- !u!114 &516530525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: 1921716650405360482, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 1259639517}
+  isWalkLeft: 1
+--- !u!114 &516530526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516530514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5995dceb35eb04fb1983d61ed4d687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyAction: {fileID: 1921716650405360482, guid: 6423e9a7318f3e643a1ece6d6fa2e63e, type: 3}
+  playerController: {fileID: 2045963000}
+  keyText: {fileID: 887935374}
+  isWalkLeft: 0
 --- !u!1 &517287374
 GameObject:
   m_ObjectHideFlags: 0
@@ -3849,7 +3992,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 616111420}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530522}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &616111420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5903,7 +6058,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 924654435}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530519}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &924654435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10944,7 +11111,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1686864726}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530523}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1686864726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11276,7 +11455,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1742308136}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530520}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1742308136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12117,7 +12308,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1896238797}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 516530526}
+        m_TargetAssemblyTypeName: KeyRebinder, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1896238797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12710,6 +12913,7 @@ GameObject:
   - component: {fileID: 2045963002}
   - component: {fileID: 2045963001}
   - component: {fileID: 2045963000}
+  - component: {fileID: 2045963003}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -12833,6 +13037,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &2045963003
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045962999}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 0.99999994
+  m_Radius: 0.49999997
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!224 &2078828895 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6627049944313121565, guid: ed87b7af42beaeb47aba92f12f523531, type: 3}

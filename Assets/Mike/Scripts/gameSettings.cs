@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Scriptable Objects/GameSettings")]
 public class GameSettings : ScriptableObject
@@ -12,12 +13,12 @@ public class GameSettings : ScriptableObject
     public bool hasPostProcessing;
     public bool isFullScreen;
 
-    public KeyCode jumpKey;
-    public KeyCode castKey;
-    public KeyCode reelKey;
-    public KeyCode pauseKey;
-    public KeyCode releaseKey;
-    public KeyCode walkLeftKey;
-    public KeyCode interactKey;
-    public KeyCode walkRightKey;
+    public InputActionReference jumpKey;
+    public InputActionReference castKey;
+    public InputActionReference reelKey;
+    public InputActionReference pauseKey;
+    public InputActionReference releaseKey;
+    public InputActionReference walkLeftKey;
+    public InputActionReference interactKey;
+    public InputActionReference walkRightKey;
 }
