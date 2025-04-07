@@ -17,7 +17,7 @@ public class KeyRebinder : MonoBehaviour
     {
         keyText.text = ".....";
 
-        playerController.SwitchCurrentActionMap("TestUI");
+        playerController.SwitchCurrentActionMap("RebindKeys");
 
         if (keyAction.action.type == InputActionType.Value)
         {
@@ -52,6 +52,6 @@ public class KeyRebinder : MonoBehaviour
 
         rebindingOperation.Dispose();
 
-        playerController.SwitchCurrentActionMap("Test");
+        playerController.SwitchCurrentActionMap("Platformer");
     }
 }
