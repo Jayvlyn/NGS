@@ -58,10 +58,10 @@ public class PlatformingPlayerController : MonoBehaviour
 
 		if (moveHeld)
 		{
-			float speed = onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
 																   // change dir
 
-			if (onGround && ((rb.linearVelocityX > 0 && moveInput < 0) || (rb.linearVelocityX < 0 && moveInput > 0)))
+			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
 			{ // changing dir on ground
 				speed *= changeDirSpeedMult;
 			}
@@ -186,8 +186,8 @@ public class PlatformingPlayerController : MonoBehaviour
     
     private void OnLand()
     {
-        if (isJumpBufferActive()) DoJump();
         currentJumps = totalJumps;
+        if (isJumpBufferActive()) DoJump();
     }
 
     private void OnEnable()
