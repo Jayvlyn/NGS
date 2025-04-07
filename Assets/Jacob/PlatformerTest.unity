@@ -832,6 +832,7 @@ MonoBehaviour:
   moveSpeed: 100
   moveVelocityLimit: 10
   jumpForce: 20
+  bhopForce: 10
   maxLineLength: 10
   castSpeed: 10
   reelSpeed: 10
@@ -841,6 +842,7 @@ MonoBehaviour:
   coyoteTime: 0.1
   totalJumps: 1
   fullJumpInputTime: 0.5
+  bunnyHopWindow: 0.05
   groundLayer:
     serializedVersion: 2
     m_Bits: 512

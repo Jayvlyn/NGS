@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,22 +10,39 @@ public class PlatformingPlayerController : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 5f;
+
     [SerializeField] private float moveVelocityLimit = 10f;
+    [SerializeField] private float bhopVelocityLimit = 20f;
+
     [SerializeField] private float jumpForce = 20f;
+
+    [SerializeField] private float bhopForce = 20f;
+
     [SerializeField] private float maxLineLength = 10f;
+
     [SerializeField] private float castSpeed = 10f;
+
     [SerializeField] private float reelSpeed = 10f;
+
     [SerializeField,Tooltip("When changing direction, the players curent speed is used for counteraction, this variable multiplies against the current player speed")] 
     private float changeDirSpeedMult = 0.5f;
+
     [SerializeField,Tooltip("Linear X Velocity of player will get multiplied by this value while on ground (1 = no friction)"),Range(0.8f, 1)] 
     private float groundFriction = 0.98f;
+
     [SerializeField,Tooltip("Time jump input will be stored so the player will jump again once then hit the ground")] 
     private float jumpBufferTime = 0.1f;
+
     [SerializeField] private float coyoteTime = 0.1f;
+
     [SerializeField] private int totalJumps = 1;
     private int currentJumps;
+
     [SerializeField,Tooltip("Time player must hold jump input for full jump height")] 
     private float fullJumpInputTime = 0.5f;
+
+    [SerializeField,Tooltip("Time before and after landing where player will successfully bunny hop")] 
+    private float bunnyHopWindow = 0.05f;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
@@ -54,15 +72,27 @@ public class PlatformingPlayerController : MonoBehaviour
 	private void Update()
     {
         onGround = isGrounded();
+
+        // Timers
+        if(jumpBuffer >= 0)
+        {
+            jumpBuffer -= Time.deltaTime;
+        }
+        if(landTimer <= bunnyHopWindow)
+        {
+            landTimer += Time.deltaTime;
+        }
     }
 
 	private void FixedUpdate()
-	{
+    {
+        // Ground friction
 		if (onGround)
 		{
 			rb.linearVelocityX *= groundFriction;
 		}
 
+        // Movement
 		if (moveHeld)
 		{
 			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
@@ -122,12 +152,11 @@ public class PlatformingPlayerController : MonoBehaviour
 
 			if (currentJumps > 0 || isCoyoteTimerActive())
 			{ // Do jump
-				DoJump();
+				DoJump(inBunnyHopWindow());
 			}
 			else
 			{
-				if (jumpBuffer != null) StopCoroutine(jumpBuffer);
-				jumpBuffer = StartCoroutine(JumpBuffer(jumpBufferTime));
+                jumpBuffer = jumpBufferTime;
 			}
 		}
         else
@@ -148,24 +177,32 @@ public class PlatformingPlayerController : MonoBehaviour
 		}
 	}
 
-    public void DoJump()
+    public void DoJump(bool bHop)
     {
         jumpTimer = StartCoroutine(JumpTimer(0.5f));
         currentJumps--;
         if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        Vector2 force = Vector2.up * jumpForce;
+
+		if (bHop && rb.linearVelocityX < bhopVelocityLimit)
+        {
+            Vector2 dir = new Vector2(moveInput, 0);
+			force += dir * bhopForce;
+        }
+
+        rb.AddForce(force, ForceMode2D.Impulse);
     }
 
-    public Coroutine jumpBuffer;
-    public IEnumerator JumpBuffer(float bufferTime)
+    private bool inBunnyHopWindow()
     {
-        yield return new WaitForSeconds(bufferTime);
-        jumpBuffer = null;
-    }
+        return (isJumpBufferActive() && jumpBuffer < bunnyHopWindow) || // jump buffer is within bhop window before landing
+               (landTimer < bunnyHopWindow); // land timer is within bhop window after landing
+	}    
 
+    private float jumpBuffer;
     public bool isJumpBufferActive()
     {
-        return jumpBuffer != null;
+        return jumpBuffer > 0;
     }
 
 
@@ -231,12 +268,14 @@ public class PlatformingPlayerController : MonoBehaviour
 		return false;
 	}
 
+    private float landTimer = Mathf.Infinity;
 	private void OnLand()
     {
+        landTimer = 0; // will count up until bunny hop window is passed
         currentJumps = totalJumps;
         if (isJumpBufferActive())
         {
-            DoJump();
+            DoJump(inBunnyHopWindow());
             if (!jumpHeld) DampenUpVelocity();
         }
     }
