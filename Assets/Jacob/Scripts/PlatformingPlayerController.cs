@@ -10,7 +10,7 @@ public class PlatformingPlayerController : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float moveVelocityLimit = 10f;
-    [SerializeField] private float jumpStrength = 50f;
+    [SerializeField] private float jumpForce = 20f;
     [SerializeField] private float maxLineLength = 10f;
     [SerializeField] private float castSpeed = 10f;
     [SerializeField] private float reelSpeed = 10f;
@@ -23,6 +23,8 @@ public class PlatformingPlayerController : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private int totalJumps = 1;
     private int currentJumps;
+    [SerializeField,Tooltip("Time player must hold jump input for full jump height")] 
+    private float fullJumpInputTime = 0.5f;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckPos;
@@ -61,7 +63,7 @@ public class PlatformingPlayerController : MonoBehaviour
 
 			if (onGround && ((rb.linearVelocityX > 0 && moveInput < 0) || (rb.linearVelocityX < 0 && moveInput > 0)))
 			{ // changing dir on ground
-				speed *= rb.linearVelocityX * changeDirSpeedMult;
+				speed *= changeDirSpeedMult;
 			}
 
 			// move when not moving max speed
@@ -90,22 +92,39 @@ public class PlatformingPlayerController : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        if(currentJumps > 0 || isCoyoteTimerActive())
-        { // Do jump
-            DoJump();
-        }
+        if(value.isPressed)
+        {
+            jumpHeld = true;
+
+			if (currentJumps > 0 || isCoyoteTimerActive())
+			{ // Do jump
+				DoJump();
+			}
+			else
+			{
+				if (jumpBuffer != null) StopCoroutine(jumpBuffer);
+				jumpBuffer = StartCoroutine(JumpBuffer(jumpBufferTime));
+			}
+		}
         else
         {
-            if (jumpBuffer != null) StopCoroutine(jumpBuffer);
-            jumpBuffer = StartCoroutine(JumpBuffer(jumpBufferTime));
+            jumpHeld = false;
+            if(isJumpTimerActive()) // released during jump timer (released "early")
+            {
+                if(rb.linearVelocityY > 0) // only reduce when going up
+                {
+                    rb.linearVelocityY *= 0.5f;
+                }
+            }
         }
     }
 
     public void DoJump()
     {
+        jumpTimer = StartCoroutine(JumpTimer(0.5f));
         currentJumps--;
         if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
-        rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     public Coroutine jumpBuffer;
@@ -133,6 +152,17 @@ public class PlatformingPlayerController : MonoBehaviour
         return coyoteTimer != null;
     }
 
+    public Coroutine jumpTimer;
+    public IEnumerator JumpTimer(float jumpTime)
+    {
+        yield return new WaitForSeconds(jumpTime);
+        jumpTimer = null;
+    }
+
+    public bool isJumpTimerActive()
+    {
+        return jumpTimer != null;
+    }
 
     private bool isGrounded()
     {

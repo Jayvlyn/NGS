@@ -600,7 +600,7 @@ MonoBehaviour:
   rb: {fileID: 880547200}
   moveSpeed: 100
   moveVelocityLimit: 10
-  jumpStrength: 20
+  jumpForce: 20
   maxLineLength: 10
   castSpeed: 10
   reelSpeed: 10
@@ -609,6 +609,7 @@ MonoBehaviour:
   jumpBufferTime: 0.1
   coyoteTime: 0.1
   totalJumps: 1
+  fullJumpInputTime: 0.5
   groundCheckPos: {fileID: 1841734716}
   groundCheckSize: {x: 1.01, y: 0.1}
   groundLayer:
