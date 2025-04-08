@@ -1,6 +1,7 @@
 using GameEvents;
 using Unity.Hierarchy;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -57,27 +58,17 @@ public class FishMinigame : MonoBehaviour
         // Checks
 
         // Keep the fish within bounds of the minigame
-        if  (transform.localPosition.x > 500 || transform.localPosition.x < -500)
+        if  ((transform.localPosition.x >= 500 || transform.localPosition.x <= -500))
         {
             FlipFish();
+            return;
         }
 
-        if (transform.localPosition.y > 300 || transform.localPosition.y < -450)
+        if ((transform.localPosition.y >= 300 || transform.localPosition.y <= -450))
         {
-            BottomBounce();
+            BottomTopBounce();
+            return;
         }
-
-        // Use bias to ensure fish doesn't swim off top or bottom of screen -- no
-        //if (transform.localPosition.y > 50)
-        //{
-        //    currentYBias = -YBias - Random.Range(0.0f, 0.25f);
-        //    Debug.Log("Negative Bias, try go down");
-        //}
-        //else if (transform.localPosition.y < -50)
-        //{
-        //    currentYBias = YBias + Random.Range(0.0f, 0.25f);
-        //    Debug.Log("Positve Bias, try go up");
-        //}
 
         // Flip the current Wading speed if it reaches one of the bounds
         if(swimAngle > (0.5f + currentYBias) || swimAngle < (-0.5f + currentYBias))
@@ -103,8 +94,6 @@ public class FishMinigame : MonoBehaviour
 
     void FlipFish()
     {
-        // -- Issue: There is some jittering on the Flip and Bounce Functions, I do not know what causes it right now
-
         // Flip Sprite
         Vector3 scale = transform.localScale;
         scale.x *= -1;
@@ -113,7 +102,11 @@ public class FishMinigame : MonoBehaviour
         // Random Y Bias
         currentYBias = Random.Range(-0.05f, 0.05f);
 
-        // May need to flip collision, but should be fine
+        // Ensure fish goes back into bounds
+        Vector2 tempPos = transform.localPosition;
+        if (tempPos.x > 0) tempPos.x = 499;
+        else tempPos.x = -499;
+        transform.localPosition = tempPos;
 
         // Switch Direction
         currentSpeed *= -1;
@@ -121,12 +114,20 @@ public class FishMinigame : MonoBehaviour
         Debug.Log("Flip Fish");
     }
 
-    void BottomBounce()
+    void BottomTopBounce()
     {
+        // Reflect Angle for bounce
         Vector3 newAngle = transform.localEulerAngles;
         newAngle.z *= -1;
-
         transform.localEulerAngles = newAngle;
+
+        // Ensure fish goes back into bounds
+        Vector2 tempPos = transform.localPosition;
+        if (tempPos.y > 0) tempPos.y = 299;
+        else tempPos.y = -449;
+        transform.localPosition = tempPos;
+
+        Debug.Log("Bottom Top Bounce");
     }
 
     void UpdateCatchProg()
