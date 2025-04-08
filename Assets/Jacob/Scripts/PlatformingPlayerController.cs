@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +6,9 @@ public class PlatformingPlayerController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Camera cam;
+    [SerializeField] private DistanceJoint2D distanceJoint;
+    [SerializeField] private LineRenderer lineRenderer;
 
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 5f;
@@ -67,6 +69,8 @@ public class PlatformingPlayerController : MonoBehaviour
 	private void Start()
 	{
         currentJumps = totalJumps;
+
+        distanceJoint.enabled = false;
 	}
 
 	private void Update()
@@ -112,6 +116,8 @@ public class PlatformingPlayerController : MonoBehaviour
 		}
 	}
 
+	#region INPUTS
+
 	public void OnMove(InputValue value)
     {
         moveInput = value.Get<float>();
@@ -125,30 +131,11 @@ public class PlatformingPlayerController : MonoBehaviour
         }
     }
 
-    public bool isUnderMaxMoveSpeed()
-    {
-        return ((moveInput > 0 && rb.linearVelocityX < moveVelocityLimit) ||    // trying to move right and under positive max
-               (moveInput < 0 && rb.linearVelocityX > moveVelocityLimit * -1)); // trying to move left and above negative max
-	}
-
-    public bool isWallBlockingMoveDir()
-    {
-        if(moveInput < 0) // trying to move left
-        {
-            return isTouchingLeftWall();
-        }
-        else if (moveInput > 0) // trying to move right
-        {
-            return isTouchingRightWall();
-        }
-        return false; // not trying to move
-    }
-
-    public void OnJump(InputValue value)
-    {
-        if(value.isPressed)
-        {
-            jumpHeld = true;
+	public void OnJump(InputValue value)
+	{
+		if (value.isPressed)
+		{
+			jumpHeld = true;
 
 			if (currentJumps > 0 || isCoyoteTimerActive())
 			{ // Do jump
@@ -156,18 +143,20 @@ public class PlatformingPlayerController : MonoBehaviour
 			}
 			else
 			{
-                jumpBuffer = jumpBufferTime;
+				jumpBuffer = jumpBufferTime;
 			}
 		}
-        else
-        {
-            jumpHeld = false;
-            if(isJumpTimerActive()) // released during jump timer (released "early")
-            {
-                DampenUpVelocity();
-            }
-        }
-    }
+		else
+		{
+			jumpHeld = false;
+			if (isJumpTimerActive()) // released during jump timer (released "early")
+			{
+				DampenUpVelocity();
+			}
+		}
+	}
+
+	#endregion
 
     private void DampenUpVelocity()
     {
@@ -193,20 +182,22 @@ public class PlatformingPlayerController : MonoBehaviour
         rb.AddForce(force, ForceMode2D.Impulse);
     }
 
-    private bool inBunnyHopWindow()
+	private float landTimer = Mathf.Infinity;
+	private void OnLand()
     {
-        return (isJumpBufferActive() && jumpBuffer < bunnyHopWindow) || // jump buffer is within bhop window before landing
-               (landTimer < bunnyHopWindow); // land timer is within bhop window after landing
-	}    
-
-    private float jumpBuffer;
-    public bool isJumpBufferActive()
-    {
-        return jumpBuffer > 0;
+        landTimer = 0; // will count up until bunny hop window is passed
+        currentJumps = totalJumps;
+        if (isJumpBufferActive())
+        {
+            DoJump(inBunnyHopWindow());
+            if (!jumpHeld) DampenUpVelocity();
+        }
     }
 
 
-    public Coroutine coyoteTimer;
+	#region COROUTINE TIMERS
+
+	public Coroutine coyoteTimer;
     public IEnumerator CoyoteTimer(float coyoteTime)
     {
         yield return new WaitForSeconds(coyoteTime);
@@ -225,12 +216,23 @@ public class PlatformingPlayerController : MonoBehaviour
         jumpTimer = null;
     }
 
-    public bool isJumpTimerActive()
+    // Jump buffer counts in update
+    private float jumpBuffer;
+    public bool isJumpBufferActive()
+    {
+        return jumpBuffer > 0;
+    }
+
+	public bool isJumpTimerActive()
     {
         return jumpTimer != null;
     }
 
-    private bool isGrounded()
+	#endregion
+
+	#region CHECKS
+
+	private bool isGrounded()
     {
         if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer))
         {
@@ -268,19 +270,36 @@ public class PlatformingPlayerController : MonoBehaviour
 		return false;
 	}
 
-    private float landTimer = Mathf.Infinity;
-	private void OnLand()
-    {
-        landTimer = 0; // will count up until bunny hop window is passed
-        currentJumps = totalJumps;
-        if (isJumpBufferActive())
-        {
-            DoJump(inBunnyHopWindow());
-            if (!jumpHeld) DampenUpVelocity();
-        }
-    }
+	public bool isUnderMaxMoveSpeed()
+	{
+		return ((moveInput > 0 && rb.linearVelocityX < moveVelocityLimit) ||    // trying to move right and under positive max
+			   (moveInput < 0 && rb.linearVelocityX > moveVelocityLimit * -1)); // trying to move left and above negative max
+	}
 
-    private void OnEnable()
+	public bool isWallBlockingMoveDir()
+	{
+		if (moveInput < 0) // trying to move left
+		{
+			return isTouchingLeftWall();
+		}
+		else if (moveInput > 0) // trying to move right
+		{
+			return isTouchingRightWall();
+		}
+		return false; // not trying to move
+	}
+
+	private bool inBunnyHopWindow()
+	{
+		return (isJumpBufferActive() && jumpBuffer < bunnyHopWindow) || // jump buffer is within bhop window before landing
+			   (landTimer < bunnyHopWindow); // land timer is within bhop window after landing
+	}
+
+	#endregion
+
+	#region INPUT HOLDING HANDLING
+
+	private void OnEnable()
     {
         Application.focusChanged += OnFocusChanged;
     }
@@ -308,7 +327,9 @@ public class PlatformingPlayerController : MonoBehaviour
         reelHeld = false;
     }
 
-    private void OnDrawGizmos()
+	#endregion
+
+	private void OnDrawGizmos()
     {
         // Ground Check
         Gizmos.color = new Color(1, 1, 1, 0.5f);
