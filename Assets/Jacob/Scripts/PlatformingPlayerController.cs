@@ -16,6 +16,7 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private float moveVelocityLimit = 10f;
 	[SerializeField] private float bhopVelocityLimit = 20f;
+	[SerializeField] private float reelVelocityLimit = 40f;
 
 	[SerializeField] private float jumpForce = 20f;
 
@@ -77,6 +78,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void Start()
 	{
+		base.Start();
 		currentJumps = totalJumps;
 
 		ChangeRodState(RodState.INACTIVE);
@@ -84,6 +86,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void Update()
 	{
+		base.Update();
 		onGround = isGrounded();
 
 		// Process Rod State
@@ -92,7 +95,7 @@ public class PlatformingPlayerController : Interactor
 			case RodState.CASTING:
 				UpdateLineRendererEnds();
 
-				if(Vector2.Distance(hookRb.gameObject.transform.position, transform.position) >= maxLineLength)
+				if(Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
 				{ // Reached max distance before hitting something
 					ChangeRodState(RodState.RETURNING);
 				}
@@ -126,7 +129,15 @@ public class PlatformingPlayerController : Interactor
 					}
 					else // Reel In
 					{
-						distanceJoint.distance -= Time.deltaTime * reelSpeed;
+						//old
+						//distanceJoint.distance -= Time.deltaTime * reelSpeed;
+
+						//new
+						dir = (hookRb.transform.position - transform.position).normalized;
+						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
+
+						float dist = Vector2.Distance(transform.position, hookRb.transform.position);
+						if (distanceJoint.distance > dist) distanceJoint.distance = dist;
 					}
 				}
 

@@ -831,6 +831,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce624492a387cc54190d9e2ed6ecc95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionKey: 32
+  enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
+  exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
+  interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
   rb: {fileID: 880547200}
   cam: {fileID: 99351403}
   distanceJoint: {fileID: 880547205}
@@ -839,6 +843,7 @@ MonoBehaviour:
   moveSpeed: 100
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
+  reelVelocityLimit: 40
   jumpForce: 20
   bhopForce: 10
   maxLineLength: 10
