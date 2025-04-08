@@ -32,8 +32,8 @@ public abstract class EventChannel<T> : ScriptableObject
 }
 public readonly struct None { };
 
-[CreateAssetMenu(menuName = "Events/Event")]
-public abstract class Event : EventChannel<None>
+[CreateAssetMenu(menuName = "Events/EmptyEvent")]
+public class EmptyEvent : EventChannel<None>
 {
     private readonly Dictionary<UnityAction, UnityAction<None>> wrappedActions = new();
     public override void Trigger(None doNotUse = new None())
