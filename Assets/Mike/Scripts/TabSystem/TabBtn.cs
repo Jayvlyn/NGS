@@ -34,11 +34,8 @@ public class TabBtn : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
         tabGroup.TrackBtn(this);
 
         //Start with a selected tab - logic
-        if(tabGroup.selectedTab != null)
-        {
-            tabGroup.selectedTab.background.sprite = tabGroup.tabActive;
-            tabGroup.ResetTabs();
-        }
+        background.sprite = tabGroup.tabActive;
+        tabGroup.ResetTabs();
     }
 
     public void Select()
