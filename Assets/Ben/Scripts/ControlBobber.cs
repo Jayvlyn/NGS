@@ -28,12 +28,12 @@ public class ControlBobber : MonoBehaviour
     {
         // Temp inputs because input manager is weird
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && transform.localPosition.x >= -500)
         {
             rb.MovePosition(new Vector2(rb.position.x - moveSpeed, rb.position.y));
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) && transform.localPosition.x <= 500)
         {
             rb.MovePosition(new Vector2(rb.position.x + moveSpeed, rb.position.y));
         }
@@ -43,14 +43,9 @@ public class ControlBobber : MonoBehaviour
             lineLength += reelSpeed;
             hookObject.GetComponent<Rigidbody2D>().MovePosition(new Vector2(hookObject.transform.position.x, hookObject.transform.position.y - reelSpeed));
 
-            //Vector2 direction = transform.position - hookObject.transform.position;
-            //direction.Normalize();
-            //direction.Scale(new Vector2(-reelSpeed, -reelSpeed));
-            //hookObject.GetComponent<Rigidbody2D>().MovePosition(direction + new Vector2(hookObject.transform.position.x, hookObject.transform.position.y));
         }
         if (Input.GetKey(KeyCode.W) && hookObject.transform.position.y < transform.position.y)
         {
-            //Make it pull directly on the line, or look like it does... Direction vector to the bobber
             lineLength -= reelSpeed;
             Vector2 direction = transform.position - hookObject.transform.position;
             direction.Normalize();
@@ -61,9 +56,7 @@ public class ControlBobber : MonoBehaviour
 
     //public void BobberMove(InputAction.CallbackContext value)
     //{
-    //    Debug.Log("Bobber Moving");
-    //    float direction = (float)value.ReadValue<Axis>();
-    //    rb.MovePosition(new Vector2(rb.position.x + (direction * moveSpeed), rb.position.y));
+
     //}
 
     //public void BobberReelLine(InputValue value)

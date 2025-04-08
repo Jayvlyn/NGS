@@ -847,8 +847,8 @@ MonoBehaviour:
   panicMulti: 1.5
   catchMulti: 1.5
   wadeSpeed: 0.0075
-  YBias: 0.05
   minigameEvent: {fileID: 0}
+  currentYBias: 0
   isCaught: 0
 --- !u!61 &1692481619
 BoxCollider2D:
@@ -1213,28 +1213,24 @@ MonoBehaviour:
     m_ActionId: e5bdc0ea-67f7-499e-a77a-4d544bca188c
     m_ActionName: 'Platformer/ReelHook[/Mouse/rightButton]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1849791665}
-        m_TargetAssemblyTypeName: ControlBobber, Assembly-CSharp
-        m_MethodName: BobberMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: b1f1d452-41c0-4b84-be10-dde57b848832
-    m_ActionName: BobberMinigame/BobberMove
+      m_Calls: []
+    m_ActionId: 74bfd448-5cb4-4b9c-985b-e37d0625e155
+    m_ActionName: 'Platformer/Interact[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2e15d5bb-58d5-4c3a-8a54-9c1f67974d11
-    m_ActionName: BobberMinigame/BobberReelLine
+    m_ActionId: a7c1e91e-4c3f-4d6f-97fb-769ff28134c4
+    m_ActionName: 'Platformer/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 788ba12f-2af5-4fb9-b02a-1eb89cb5a4d6
+    m_ActionName: 'Minigame/MoveBobber[/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ecc21cf5-185f-4a14-90f3-b53997ea54ef
+    m_ActionName: 'Minigame/MoveHook[/Keyboard/s,/Keyboard/w]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: BobberMinigame
+  m_DefaultActionMap: Minigame
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 477281465}
 --- !u!222 &1849791664

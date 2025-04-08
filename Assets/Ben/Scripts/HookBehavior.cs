@@ -7,6 +7,7 @@ public class HookBehavior : MonoBehaviour
 
     [SerializeField] public Transform hookParent;
     [SerializeField] public GameObject catchTarget;
+    [SerializeField] float hookFollowSpeed = 75.0f;
 
     Rigidbody2D rb;
 
@@ -36,7 +37,7 @@ public class HookBehavior : MonoBehaviour
 
     void KeepHookUnderBobber(int directionToMove, float distanceToBobber)
     {
-        float moveDistance = distanceToBobber / 100;
+        float moveDistance = distanceToBobber / hookFollowSpeed;
         float moveFinal = moveDistance * directionToMove;
 
         rb.MovePosition(new Vector2(transform.position.x + moveFinal, transform.position.y));

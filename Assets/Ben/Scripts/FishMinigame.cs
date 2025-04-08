@@ -40,7 +40,7 @@ public class FishMinigame : MonoBehaviour
 
         catchProgBar.value = 25.0f;
 
-        minigameEvent = new BoolEvent();
+        minigameEvent = ScriptableObject.CreateInstance<BoolEvent>();
 
         gameObject.GetComponent<Image>().sprite = fishSprite;
     }
