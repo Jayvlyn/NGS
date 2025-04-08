@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlatformingPlayerController : MonoBehaviour
+public class PlatformingPlayerController : Interactor
 {
 	[Header("References")]
 	[SerializeField] private Rigidbody2D rb;
@@ -84,8 +84,6 @@ public class PlatformingPlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		Debug.Log(currentRodState);
-
 		onGround = isGrounded();
 
 		// Process Rod State
