@@ -71,6 +71,7 @@ public class PlatformingPlayerController : MonoBehaviour
         currentJumps = totalJumps;
 
         distanceJoint.enabled = false;
+        lineRenderer.enabled = false;
 	}
 
 	private void Update()
@@ -86,7 +87,14 @@ public class PlatformingPlayerController : MonoBehaviour
         {
             landTimer += Time.deltaTime;
         }
-    }
+
+        // Graphic Update
+		if (distanceJoint.enabled) // grapple active
+		{
+			// Update line start position (where player is)
+			lineRenderer.SetPosition(1, transform.position);
+		}
+	}
 
 	private void FixedUpdate()
     {
@@ -146,7 +154,7 @@ public class PlatformingPlayerController : MonoBehaviour
 				jumpBuffer = jumpBufferTime;
 			}
 		}
-		else
+		else // released
 		{
 			jumpHeld = false;
 			if (isJumpTimerActive()) // released during jump timer (released "early")
@@ -155,6 +163,25 @@ public class PlatformingPlayerController : MonoBehaviour
 			}
 		}
 	}
+
+    public void OnCastHook(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            lineRenderer.SetPosition(1, transform.position); // start point
+            lineRenderer.SetPosition(0, mousePos); // end point
+
+            distanceJoint.connectedAnchor = mousePos;
+            distanceJoint.enabled = true;
+            lineRenderer.enabled = true;
+        }
+        else // released
+        {
+            distanceJoint.enabled = false;
+            lineRenderer.enabled = false;
+        }
+    }
 
 	#endregion
 
