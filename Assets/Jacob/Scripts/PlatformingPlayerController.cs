@@ -65,6 +65,7 @@ public class PlatformingPlayerController : MonoBehaviour
     private bool moveHeld = false;
     private bool jumpHeld = false;
     private bool reelHeld = false;
+    private bool slackHeld = false;
 
 	private void Start()
 	{
@@ -77,6 +78,19 @@ public class PlatformingPlayerController : MonoBehaviour
 	private void Update()
     {
         onGround = isGrounded();
+
+        // Reeling
+        if(reelHeld)
+        {
+            if (slackHeld) // Give Slack
+            {
+                distanceJoint.distance += Time.deltaTime * reelSpeed;
+            }
+            else // Reel In
+            {
+                distanceJoint.distance -= Time.deltaTime * reelSpeed;
+            }
+        }
 
         // Timers
         if(jumpBuffer >= 0)
@@ -182,6 +196,30 @@ public class PlatformingPlayerController : MonoBehaviour
             lineRenderer.enabled = false;
         }
     }
+
+    public void OnSlack(InputValue value)
+    {
+		if (value.isPressed)
+		{
+            slackHeld = true;
+		}
+		else // released
+		{
+            slackHeld = false;
+		}
+	}
+
+    public void OnReelHook(InputValue value)
+    {
+		if (value.isPressed)
+		{
+            reelHeld = true;
+		}
+		else // released
+		{
+            reelHeld = false;
+		}
+	}
 
 	#endregion
 
@@ -352,6 +390,7 @@ public class PlatformingPlayerController : MonoBehaviour
         moveHeld = false;
         jumpHeld = false;
         reelHeld = false;
+        slackHeld = false;
     }
 
 	#endregion
