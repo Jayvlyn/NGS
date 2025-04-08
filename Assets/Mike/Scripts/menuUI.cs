@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
@@ -19,6 +20,9 @@ public class MenuUI : MonoBehaviour
     [SerializeField] Button keyBindBtn;
     [SerializeField] Button saveBtn;
     [SerializeField] Button backBtn;
+
+    [Header("Player")]
+    [SerializeField] InputActionReference pauseAction;
 
 
     void Start()
@@ -41,7 +45,7 @@ public class MenuUI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) pauseClicked();
+        if (pauseAction.action.triggered) pauseClicked();
     }
 
     void newGameClicked()
@@ -57,26 +61,21 @@ public class MenuUI : MonoBehaviour
     }
     void settingsClicked()
     {
-        print("settings clicked");
         settings.SetActive(true);
     }
 
     void pauseClicked()
     {
         pause.SetActive(!pause.activeSelf);
-        print("GamePaused");
     }
 
     void keyBindsClicked()
     {
-        print("Back");
         keyBinds.SetActive(true);
     }
 
     void quitClicked()
     {
-        print("quiting application");
-
         #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
         #else
