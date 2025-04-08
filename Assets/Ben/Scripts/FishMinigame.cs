@@ -1,24 +1,23 @@
+using GameEvents;
 using Unity.Hierarchy;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
-public class FishMinigameMovement : MonoBehaviour
+public class FishMinigame : MonoBehaviour
 {
     [SerializeField] Sprite fishSprite;
     [SerializeField] Slider catchProgBar;
-    
-    //[SerializeField] ProgressBar catchProgBar;
 
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
-    [SerializeField] float catchMulti = 1.0f; // Multiplied Directly to 
+    [SerializeField] float catchMulti = 1.0f; // Multiplied Directly to catchProgress increment per update
     [SerializeField] float wadeSpeed = 0.005f;
 
-    [SerializeField] float YBias = 0.05f;
+    public BoolEvent minigameEvent;
 
-    private float currentYBias;
+    public float currentYBias;
     private float currentWadeSpeed;
     private float swimAngle;
 
@@ -40,6 +39,8 @@ public class FishMinigameMovement : MonoBehaviour
 
         catchProgBar.value = 25.0f;
 
+        minigameEvent = new BoolEvent();
+
         gameObject.GetComponent<Image>().sprite = fishSprite;
     }
 
@@ -49,7 +50,6 @@ public class FishMinigameMovement : MonoBehaviour
         MoveFish();
         UpdateCatchProg();
         CheckIfComplete();
-
     }
 
     void MoveFish()
@@ -67,7 +67,7 @@ public class FishMinigameMovement : MonoBehaviour
             BottomBounce();
         }
 
-        // Use bias to ensure fish doesn't swim off top or bottom of screen
+        // Use bias to ensure fish doesn't swim off top or bottom of screen -- no
         //if (transform.localPosition.y > 50)
         //{
         //    currentYBias = -YBias - Random.Range(0.0f, 0.25f);
@@ -86,7 +86,7 @@ public class FishMinigameMovement : MonoBehaviour
         }
         swimAngle += (currentWadeSpeed);
 
-        // Rotate
+        // Rotate Sprite
         Vector3 newEuler = new Vector3(0, 0, swimAngle);
         transform.Rotate(newEuler);
 
@@ -103,10 +103,15 @@ public class FishMinigameMovement : MonoBehaviour
 
     void FlipFish()
     {
+        // -- Issue: There is some jittering on the Flip and Bounce Functions, I do not know what causes it right now
+
         // Flip Sprite
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+
+        // Random Y Bias
+        currentYBias = Random.Range(-0.05f, 0.05f);
 
         // May need to flip collision, but should be fine
 
@@ -122,11 +127,7 @@ public class FishMinigameMovement : MonoBehaviour
         newAngle.z *= -1;
 
         transform.localEulerAngles = newAngle;
-
-
     }
-
-
 
     void UpdateCatchProg()
     {
@@ -143,9 +144,17 @@ public class FishMinigameMovement : MonoBehaviour
     }
     void CheckIfComplete()
     {
-        if (catchProgress >= 100.0f) isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
+        if (catchProgress >= 100.0f)
+        {
+            isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
+            minigameEvent.Raise(isCaught);
+        }
 
-        if (catchProgress <= 0.0f) isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
+        if (catchProgress <= 0.0f)
+        {
+            isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
+            minigameEvent.Raise(isCaught);
+        }
     }
 
 
