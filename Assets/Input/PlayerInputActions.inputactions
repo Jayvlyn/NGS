@@ -176,6 +176,98 @@
             "id": "1e199a0a-8edd-4afa-b035-c843e9ceff3d",
             "actions": [],
             "bindings": []
+        },
+        {
+            "name": "Minigame",
+            "id": "2c0b0e51-4ac8-4a5b-b3a6-ab4f955239ad",
+            "actions": [
+                {
+                    "name": "MoveBobber",
+                    "type": "Button",
+                    "id": "788ba12f-2af5-4fb9-b02a-1eb89cb5a4d6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveHook",
+                    "type": "Button",
+                    "id": "ecc21cf5-185f-4a14-90f3-b53997ea54ef",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "1D Axis",
+                    "id": "aad3b5bf-bd12-4f69-9d34-58569a73514c",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveBobber",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "7b7ebd32-84b5-478c-8140-896154649f83",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveBobber",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ea6f3454-c015-4aaf-8829-3542e2d317d4",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveBobber",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "c25f8a57-6877-4cf7-992b-43c9aec644b7",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHook",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "3c5606d0-98b0-40c6-bd4f-cfbee2827a3c",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHook",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "9c24d3cb-89da-42dd-893b-1f9920c9d472",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHook",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []
