@@ -46,7 +46,7 @@ public class FishMinigame : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         MoveFish();
         UpdateCatchProg();
