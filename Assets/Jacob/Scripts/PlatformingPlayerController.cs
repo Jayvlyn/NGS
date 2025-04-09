@@ -89,13 +89,52 @@ public class PlatformingPlayerController : Interactor
 		base.Update();
 		onGround = isGrounded();
 
+
+		// Timers
+		if (jumpBuffer >= 0)
+		{
+			jumpBuffer -= Time.deltaTime;
+		}
+		if (landTimer <= bunnyHopWindow)
+		{
+			landTimer += Time.deltaTime;
+		}
+	}
+
+	private void FixedUpdate()
+	{
+		// Ground friction
+		if (onGround && currentRodState != RodState.HOOKED)
+		{
+			rb.linearVelocityX *= groundFriction;
+		}
+
+		// Movement
+		if (moveHeld)
+		{
+			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+																	// change dir
+
+			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
+			{ // changing dir on ground
+				speed *= changeDirSpeedMult;
+			}
+
+			// move when not moving max speed
+			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
+			{
+				Vector2 dir = new Vector2(moveInput, 0);
+				rb.AddForce(dir * speed, ForceMode2D.Force);
+			}
+		}
+
 		// Process Rod State
 		switch (currentRodState)
 		{
 			case RodState.CASTING:
 				UpdateLineRendererEnds();
 
-				if(Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
+				if (Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
 				{ // Reached max distance before hitting something
 					ChangeRodState(RodState.RETURNING);
 				}
@@ -144,44 +183,6 @@ public class PlatformingPlayerController : Interactor
 				break;
 			default:
 				break;
-		}
-
-		// Timers
-		if (jumpBuffer >= 0)
-		{
-			jumpBuffer -= Time.deltaTime;
-		}
-		if (landTimer <= bunnyHopWindow)
-		{
-			landTimer += Time.deltaTime;
-		}
-	}
-
-	private void FixedUpdate()
-	{
-		// Ground friction
-		if (onGround)
-		{
-			rb.linearVelocityX *= groundFriction;
-		}
-
-		// Movement
-		if (moveHeld)
-		{
-			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
-																	// change dir
-
-			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
-			{ // changing dir on ground
-				speed *= changeDirSpeedMult;
-			}
-
-			// move when not moving max speed
-			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
-			{
-				Vector2 dir = new Vector2(moveInput, 0);
-				rb.AddForce(dir * speed, ForceMode2D.Force);
-			}
 		}
 	}
 
