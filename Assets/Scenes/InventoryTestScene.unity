@@ -207,8 +207,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 0
-  caughtFishEvent: {fileID: 0}
-  removeFishEvent: {fileID: 0}
+  currentFish:
+    m_Keys: []
+    m_Values: []
+  testFish: {fileID: 11400000, guid: 09d610ced5cd1974892abb73365e9964, type: 2}
 --- !u!4 &671493742
 Transform:
   m_ObjectHideFlags: 0
