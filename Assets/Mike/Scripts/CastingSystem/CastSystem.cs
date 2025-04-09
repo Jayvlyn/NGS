@@ -18,12 +18,14 @@ public class CastSystem : MonoBehaviour
     private float increase = 0;
     private float speed = 0;
 
+    [SerializeField] AnimationCurve speedCurve;
+
     void Start()
     {
         increment = 0.01f;
         increase = 0;
-        speed = 50;
-    }
+		SpeedVariance(castBar.value);
+	}
 
     void Update()
     {
@@ -39,11 +41,11 @@ public class CastSystem : MonoBehaviour
 
     private void CheckCast(float value)
     {
-        ResetCast();
-
         if (value >= 0.48f && value <= 0.52f) bestOutcome.Invoke();
         else if (value >= 0.31f && value <= 0.69f) normalOutcome.Invoke();
         else worstOutcome.Invoke();
+
+        ResetCast();
     }
 
     private void Rebound(float value)
@@ -62,8 +64,10 @@ public class CastSystem : MonoBehaviour
 
     private void SpeedVariance(float value)
     {
-        if (value >= 0.25f && value <= 0.75f) speed = 100;
-        else speed = 50;
+        //if (value >= 0.25f && value <= 0.75f) speed = 100;
+        //else speed = 50;
+
+        speed = speedCurve.Evaluate(value);
     }
 
     private void ResetCast()
