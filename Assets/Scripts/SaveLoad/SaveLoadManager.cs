@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class SaveLoadManager : MonoBehaviour
@@ -14,7 +15,9 @@ public class SaveLoadManager : MonoBehaviour
     public void Save()
     {
         SaveData data = new();
-        data.inventoryData = Inventory.Instance.GetData();
+        (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
+        data.inventory = inventoryData.Item1;
+        data.money = inventoryData.Item2;
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
