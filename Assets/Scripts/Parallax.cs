@@ -18,23 +18,20 @@ public class Parallax : MonoBehaviour
         lengthy = GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
-    // Update is called once per frame
-    void LateUpdate()
+    void LateUpdate() // Late update removes jitter
     {
         float distancex = (cam.transform.position.x * parallaxEffectx);
         float distancey = (cam.transform.position.y * parallaxEffecty);
         float movementx = (cam.transform.position.x * (1 - parallaxEffectx));
         float movementy = (cam.transform.position.y * (1 - parallaxEffecty));
+
         float newY = startposy + distancey;
-        if (newY < 0 || parallaxEffecty == -1)
-        { 
-            newY = 0;
-        }
+        if (newY < 0 || parallaxEffecty == -1) newY = 0;
+        
         transform.position = new Vector3(startposx + distancex, newY, transform.position.z);
 
         if (movementx > startposx + lengthx) startposx += lengthx;
         else if (movementx < startposx - lengthx) startposx -= lengthx;
-
 
         if (movementy > startposy + lengthy) startposy += lengthy;
         else if (movementy < startposy - lengthy) startposy -= lengthy;
