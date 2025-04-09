@@ -3,24 +3,41 @@ using UnityEngine;
 public class Parallax : MonoBehaviour
 {
     [SerializeField] float startposx;
-    [SerializeField] float length;
+    [SerializeField] float startposy;
+    [SerializeField] float lengthx;
+    [SerializeField] float lengthy;
     [SerializeField] GameObject cam;
-    [SerializeField] float parallaxEffect; // The effect of the parallax, 0.1f is a good value 0 will move with the camera 1 will not 
+    [SerializeField] float parallaxEffectx; // The effect of the parallax, 0.1f is a good value 0 will move with the camera 1 will not 
+    [SerializeField] float parallaxEffecty; // The effect of the parallax, 0.1f is a good value 0 will move with the camera 1 will not 
 
     void Start()
     {
         startposx = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        startposy = transform.position.y;
+        lengthx = GetComponent<SpriteRenderer>().bounds.size.x;
+        lengthy = GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float distance = (cam.transform.position.x * parallaxEffect);
-        float movement = (cam.transform.position.x * (1 - parallaxEffect));
-        transform.position = new Vector3(startposx + distance, transform.position.y, transform.position.z);
+        float distancex = (cam.transform.position.x * parallaxEffectx);
+        float distancey = (cam.transform.position.y * parallaxEffecty);
+        float movementx = (cam.transform.position.x * (1 - parallaxEffectx));
+        float movementy = (cam.transform.position.y * (1 - parallaxEffecty));
+        float newY = startposy + distancey;
+        if (newY < 0 || parallaxEffecty == -1)
+        { 
+            newY = 0;
+        }
+        transform.position = new Vector3(startposx + distancex, newY, transform.position.z);
 
-        if (movement > startposx + length) startposx += length;
-        else if (movement < startposx - length) startposx -= length;
+        if (movementx > startposx + lengthx) startposx += lengthx;
+        else if (movementx < startposx - lengthx) startposx -= lengthx;
+
+
+        if (movementy > startposy + lengthy) startposy += lengthy;
+        else if (movementy < startposy - lengthy) startposy -= lengthy;
+        
     }
 }
