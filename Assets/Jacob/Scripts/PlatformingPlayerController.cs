@@ -164,6 +164,11 @@ public class PlatformingPlayerController : Interactor
 						if (distanceJoint.distance < maxLineLength)
 						{
 							distanceJoint.distance += Time.deltaTime * reelSpeed;
+							if (Vector2.Distance(transform.position, hookRb.transform.position) < 0.5)
+							{
+								dir = (transform.position - hookRb.transform.position).normalized;
+								rb.AddForce(dir * 50, ForceMode2D.Force);
+							}
 						}
 					}
 					else // Reel In
