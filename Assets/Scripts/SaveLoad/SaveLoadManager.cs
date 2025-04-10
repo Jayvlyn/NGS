@@ -14,6 +14,7 @@ public class SaveLoadManager : MonoBehaviour
     public void Save()
     {
         SaveData data = new();
+        data.inventoryData = Inventory.Instance.GetData();
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
