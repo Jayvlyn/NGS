@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlatformingPlayerController : Interactor
 {
+	#region VARIABLES
 	[Header("References")]
 	[SerializeField] private Rigidbody2D rb;
 	[SerializeField] private Camera cam;
@@ -43,6 +44,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private int totalJumps = 1;
 	private int currentJumps;
 
+	[SerializeField] private int totalWallJumps = 3;
+	private int currentWallJumps;
+
 	[SerializeField, Tooltip("Time before and after landing where player will successfully bunny hop")]
 	private float bunnyHopWindow = 0.05f;
 
@@ -75,6 +79,9 @@ public class PlatformingPlayerController : Interactor
 	private bool jumpHeld = false;
 	private bool reelHeld = false;
 	private bool slackHeld = false;
+	#endregion
+
+	#region START & UPDATES
 
 	private void Start()
 	{
@@ -86,6 +93,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void Update()
 	{
+		Debug.Log(currentWallJumps);
 		base.Update();
 		onGround = isGrounded();
 
@@ -191,6 +199,8 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	#endregion
+
 	#region INPUTS
 
 	public void OnMove(InputValue value)
@@ -212,13 +222,13 @@ public class PlatformingPlayerController : Interactor
 		{
 			jumpHeld = true;
 
-			if (currentJumps > 0 || isCoyoteTimerActive())
-			{ // Do jump
-				DoJump(inBunnyHopWindow());
-			}
-			else
+			if((isTouchingLeftWall() ^ isTouchingRightWall()) && !onGround)
 			{
-				jumpBuffer = jumpBufferTime;
+				TryWallJump();
+			}
+			else 
+			{
+				TryJump();
 			}
 		}
 		else // released
@@ -315,6 +325,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.HOOKED:
+				currentWallJumps = totalWallJumps;
 				distanceJoint.connectedAnchor = hookRb.gameObject.transform.position;
 				distanceJoint.enabled = true;
 
@@ -336,6 +347,9 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
+	#region JUMPING & LANDING
+
+	// HANDLE EARLY RELEASE FOR JUMP
 	private void DampenUpVelocity()
 	{
 		if (rb.linearVelocityY > 0) // only reduce when going up
@@ -344,10 +358,24 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+
+	// REGULAR JUMP
+	public void TryJump()
+	{
+		if (currentJumps > 0 || isCoyoteTimerActive())
+		{ // Do jump
+			DoJump(inBunnyHopWindow());
+		}
+		else
+		{ // Start jump buffer
+			jumpBuffer = jumpBufferTime;
+		}
+	}
+
 	public void DoJump(bool bHop)
 	{
-		jumpTimer = StartCoroutine(JumpTimer(0.5f));
 		currentJumps--;
+		jumpTimer = StartCoroutine(JumpTimer(0.5f));
 		if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
 		Vector2 force = Vector2.up * jumpForce;
 
@@ -359,12 +387,45 @@ public class PlatformingPlayerController : Interactor
 
 		rb.AddForce(force, ForceMode2D.Impulse);
 	}
+	//-----------
 
+
+	// WALL JUMPING
+	public void TryWallJump()
+	{
+		if (currentWallJumps > 0)
+		{
+			DoWallJump();
+		}
+	}
+
+	public void DoWallJump()
+	{
+		currentWallJumps--;
+
+		Vector2 dir = Vector2.up;
+
+		if(isTouchingLeftWall())
+		{ // DO JUMP UP AND RIGHT
+			dir += Vector2.right;
+		}
+		else // touching right wall
+		{ // DO JUMP UP AND LEFT
+			dir += Vector2.left;
+		}
+
+		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
+	}
+	//--------------
+
+
+	// LANDING
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
 		landTimer = 0; // will count up until bunny hop window is passed
 		currentJumps = totalJumps;
+		currentWallJumps = totalWallJumps;
 		if (isJumpBufferActive())
 		{
 			DoJump(inBunnyHopWindow());
@@ -372,6 +433,7 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	#endregion
 
 	#region COROUTINE TIMERS
 
@@ -408,7 +470,7 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
-	#region CHECKS
+	#region CONDITION CHECKS
 
 	private bool isGrounded()
 	{
