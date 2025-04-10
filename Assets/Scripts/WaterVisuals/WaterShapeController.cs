@@ -29,13 +29,18 @@ public class WaterShapeController : MonoBehaviour
 
 	void Start()
 	{
-
-	}
-	void OnValidate()
-	{
 		// Clean waterpoints 
 		StartCoroutine(CreateWaves());
 	}
+	//void OnValidate()
+	//{
+	//	try
+	//	{
+	//		// Clean waterpoints 
+	//		StartCoroutine(CreateWaves());
+	//	}
+	//	catch { }
+	//}
 	IEnumerator CreateWaves()
 	{
 		foreach (Transform child in wavePoints.transform)
