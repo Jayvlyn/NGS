@@ -30,7 +30,7 @@ public class BossFishController : MonoBehaviour
         body.MovePositionAndRotation(newTransform.Item1, newTransform.Item2);
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, cameraStartingZ);
         float distanceDifference = baseDistance - player.DesiredDistance;
-        if(distanceDifference > 0)
+        if (distanceDifference > 0)
         {
             speedMultiplier = Mathf.Max(speedMultiplier, Mathf.Pow(distanceDifference, 2));
         }
