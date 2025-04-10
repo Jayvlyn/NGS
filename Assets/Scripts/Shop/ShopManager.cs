@@ -46,6 +46,10 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private Toggle sellAllOfTypeExcludeLargest;
     private bool overrideSellAllOfType = false;
 
+
+    //Testing only, remove later
+    [SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
+
     public void SelectSell()
     {
         mainMenuWindow.enabled = false;
@@ -59,9 +63,9 @@ public class ShopManager : Singleton<ShopManager>
                 int row = current / expectedSelectFishColumns;
                 int column = current % expectedSelectFishColumns;
                 go.transform.position = 
-                    new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column, 
-                    selectFishUIPrefabMarginData.y * (row + 1) + selectFishUIPrefabSizeData.y * row);
-                go.GetComponentInChildren<Image>().sprite = data.Item2;
+                    new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f, 
+                    selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);
+                go.GetComponentsInChildren<Image>()[1].sprite = data.Item2;
                 go.GetComponentInChildren<TMP_Text>().text = data.Item1;
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SelectFish(data.Item1); });
                 pastSelectTiles.Add(go);
@@ -151,13 +155,13 @@ public class ShopManager : Singleton<ShopManager>
                 int column = current % expectedSellFishColumns;
                 int row = current / expectedSellFishColumns;
                 go.transform.position =
-                    new Vector3(sellFishUIPrefabMarginData.x * (column + 1) + column * sellFishUIPrefabSizeData.x,
-                    sellFishUIPrefabMarginData.y * (row + 1) + row * sellFishUIPrefabSizeData.y);
+                    new Vector3(sellFishUIPrefabMarginData.x * (column + 1) + column * sellFishUIPrefabSizeData.x - 7.5f,
+                    sellFishUIPrefabMarginData.y * -(row + 1) + -row * sellFishUIPrefabSizeData.y);
                 go.GetComponentInChildren<TMP_Text>().text = 
                     $"{currentFish[current].length:2F} cm long " +
                     $"{currentFish[current].name}: " +
                     $"{currentShop.GetFishPrice(currentFish[current]):2F} Gold";
-                go.GetComponentInChildren<SpriteRenderer>().sprite = currentFish[current].sprite;
+                go.GetComponentsInChildren<Image>()[1].sprite = currentFish[current].sprite;
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(currentFish[current]); });
                 pastFishTiles.Add(go);
             }
@@ -166,25 +170,32 @@ public class ShopManager : Singleton<ShopManager>
 
     public void Open(ShopData shopData)
     {
-        if(currentShop.Id != shopData.Id)
+        if (currentShop != null)
+        {
+            if (currentShop.Id != shopData.Id)
+            {
+                currentShop = shopData;
+                while (pastSelectTiles.Count > 0)
+                {
+                    Destroy(pastSelectTiles[0]);
+                    pastSelectTiles.RemoveAt(0);
+                }
+                while (pastFishTiles.Count > 0)
+                {
+                    Destroy(pastFishTiles[0]);
+                    pastFishTiles.RemoveAt(0);
+                }
+                previousFishType = string.Empty;
+                while (pastUpgradeTiles.Count > 0)
+                {
+                    Destroy(pastUpgradeTiles[0]);
+                    pastUpgradeTiles.RemoveAt(0);
+                }
+            }
+        }
+        else
         {
             currentShop = shopData;
-            while (pastSelectTiles.Count > 0)
-            {
-                Destroy(pastSelectTiles[0]);
-                pastSelectTiles.RemoveAt(0);
-            }
-            while (pastFishTiles.Count > 0)
-            {
-                Destroy(pastFishTiles[0]);
-                pastFishTiles.RemoveAt(0);
-            }
-            previousFishType = string.Empty;
-            while (pastUpgradeTiles.Count > 0)
-            {
-                Destroy(pastUpgradeTiles[0]);
-                pastUpgradeTiles.RemoveAt(0);
-            }
         }
         mainMenuWindow.enabled = true;
         state = ShopState.MainMenu;
@@ -231,11 +242,11 @@ public class ShopManager : Singleton<ShopManager>
                 int row = current / expectedBuyUpgradeColumns;
                 GameObject go = Instantiate(buyUpgradeUIPrefab, buyUpgradeDisplayArea);
                 go.transform.position =
-                    new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x *
-                    column, buyUpgradeUIPrefabMarginData.y * (row + 1) + buyUpgradeUIPrefabSizeData.y * row);
-                go.GetComponent<SpriteRenderer>().sprite = data.sprite;
-                go.GetComponent<TMP_Text>().text = $"{data.name}: {data.currentCost:2F} Gold";
-                go.GetComponent<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
+                    new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f, 
+                    buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
+                go.GetComponentInChildren<Image>().sprite = data.sprite;
+                go.GetComponentsInChildren<TMP_Text>()[1].text = $"{data.name}: {data.currentCost:2F} Gold";
+                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
                 pastUpgradeTiles.Add(go);
             }
         }
@@ -293,5 +304,11 @@ public class ShopManager : Singleton<ShopManager>
             default:
                 break;
         }
+    }
+
+    private void Start()
+    {
+        //testing only, remove later
+        Open(testingShopData);
     }
 }
