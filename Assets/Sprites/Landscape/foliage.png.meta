@@ -3,20 +3,32 @@ guid: 07913b33ae205b64789a4ec932092f12
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1275340051298706326
-    second: foliage 1_0
+      213: -1602651575082509251
+    second: foliage_0
   - first:
-      213: 2409918290699993492
-    second: foliage 1_1
+      213: 6547803826736325096
+    second: foliage_1
   - first:
-      213: 4333332699555098844
-    second: foliage 1_2
+      213: -6021793210149809870
+    second: foliage_2
   - first:
-      213: 5186701848350671501
-    second: foliage 1_3
+      213: -7274893308923686972
+    second: foliage_3
   - first:
-      213: -8475362156398605202
-    second: foliage 1_4
+      213: 4388943240265040670
+    second: foliage_4
+  - first:
+      213: 359298300766334315
+    second: foliage_5
+  - first:
+      213: 5467039035758458483
+    second: foliage_6
+  - first:
+      213: 1096791550069586263
+    second: foliage_7
+  - first:
+      213: 7955538454528900416
+    second: foliage_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -84,7 +96,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
@@ -138,10 +150,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: foliage 1_0
+      name: foliage_0
       rect:
         serializedVersion: 2
-        x: 96
+        x: 288
         y: 64
         width: 32
         height: 32
@@ -153,17 +165,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 693ec75050be2b110800000000000000
-      internalID: 1275340051298706326
+      spriteID: d3c9c7832ec32c9e0800000000000000
+      internalID: -1602651575082509251
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_1
+      name: foliage_1
       rect:
         serializedVersion: 2
-        x: 128
+        x: 320
         y: 64
         width: 32
         height: 32
@@ -175,17 +187,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 491c3e6caefb17120800000000000000
-      internalID: 2409918290699993492
+      spriteID: 8e1ef8f73e87eda50800000000000000
+      internalID: 6547803826736325096
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_2
+      name: foliage_2
       rect:
         serializedVersion: 2
-        x: 160
+        x: 352
         y: 64
         width: 32
         height: 32
@@ -197,17 +209,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cd0f09a9127132c30800000000000000
-      internalID: 4333332699555098844
+      spriteID: 231592eeafa4e6ca0800000000000000
+      internalID: -6021793210149809870
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_3
+      name: foliage_3
       rect:
         serializedVersion: 2
-        x: 32
+        x: 224
         y: 32
         width: 32
         height: 32
@@ -219,17 +231,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d82cdcac9dddaf740800000000000000
-      internalID: 5186701848350671501
+      spriteID: 4cfccbe54136a0b90800000000000000
+      internalID: -7274893308923686972
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_4
+      name: foliage_4
       rect:
         serializedVersion: 2
-        x: 64
+        x: 256
         y: 32
         width: 32
         height: 32
@@ -241,17 +253,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e6c821de507716a80800000000000000
-      internalID: -8475362156398605202
+      spriteID: e1389579f98a8ec30800000000000000
+      internalID: 4388943240265040670
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_5
+      name: foliage_5
       rect:
         serializedVersion: 2
-        x: 96
+        x: 288
         y: 32
         width: 32
         height: 32
@@ -261,19 +273,19 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 2cde4da0183dbfc4eb04059cb6d21041
-      internalID: -884861498
+      spriteID: b6d2491a6eb7cf400800000000000000
+      internalID: 359298300766334315
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_6
+      name: foliage_6
       rect:
         serializedVersion: 2
-        x: 128
+        x: 320
         y: 32
         width: 32
         height: 32
@@ -283,19 +295,19 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 79312ff23eb50c543aa54fba6860adf4
-      internalID: -7952631
+      spriteID: 376b3939903dedb40800000000000000
+      internalID: 5467039035758458483
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_7
+      name: foliage_7
       rect:
         serializedVersion: 2
-        x: 160
+        x: 352
         y: 32
         width: 32
         height: 32
@@ -305,38 +317,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ca05c6a8718bc2647aa5cc8cb0832d3c
-      internalID: 1978052579
+      spriteID: 7593c8e8a16983f00800000000000000
+      internalID: 1096791550069586263
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_8
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e5d286659b977064abdef051140677b3
-      internalID: -2124710028
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: foliage 1_9
+      name: foliage_8
       rect:
         serializedVersion: 2
         x: 32
@@ -349,16 +339,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 84e589e0a71be024b84e838632ecac39
-      internalID: 1712906766
+      spriteID: 04db72bf210c76e60800000000000000
+      internalID: 7955538454528900416
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_10
+      name: foliage_9
       rect:
         serializedVersion: 2
         x: 64
@@ -373,14 +363,36 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d733118cc001bed4ba68fe1c00739b71
-      internalID: 1781387442
+      spriteID: bf42ed72880abff4a84479d590809595
+      internalID: 1786745028
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: foliage 1_11
+      name: foliage_10
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3df012716ad30d47bec1b08c0b4c8cb
+      internalID: 1960690352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_11
       rect:
         serializedVersion: 2
         x: 128
@@ -395,8 +407,140 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b18fe25c70efa2942b6ed58bebf07ea9
-      internalID: 2144838268
+      spriteID: 044dd3b285db0df408721830c55d426e
+      internalID: 1565292548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_12
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2606c31c711e2c14ea48e74ba1bdcfb9
+      internalID: -1427412383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_13
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf3b3ac4fb727cd4993fa51eb2c1e237
+      internalID: -218662674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_14
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecc271239177ee34aacd7b41261eb7d8
+      internalID: -716719849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_15
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1a5b6105e1e96c499c2bc7fda1d5494
+      internalID: -1684160213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_16
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbca5603e2f35ce4b9ae08ebda2738de
+      internalID: -797307587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_17
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e2a52f5081dca945a5e5ab9645df716
+      internalID: -132783366
       vertices: []
       indices: 
       edges: []
@@ -405,7 +549,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 82d6a55ba8720414097253c43d23280c
+    spriteID: 5ddde963dbfdefa4bbd7fcea802b0334
     internalID: 0
     vertices: []
     indices: 
@@ -415,18 +559,24 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      foliage 1_0: 1275340051298706326
-      foliage 1_1: 2409918290699993492
-      foliage 1_10: 1781387442
-      foliage 1_11: 2144838268
-      foliage 1_2: 4333332699555098844
-      foliage 1_3: 5186701848350671501
-      foliage 1_4: -8475362156398605202
-      foliage 1_5: -884861498
-      foliage 1_6: -7952631
-      foliage 1_7: 1978052579
-      foliage 1_8: -2124710028
-      foliage 1_9: 1712906766
+      foliage_0: -1602651575082509251
+      foliage_1: 6547803826736325096
+      foliage_10: 1960690352
+      foliage_11: 1565292548
+      foliage_12: -1427412383
+      foliage_13: -218662674
+      foliage_14: -716719849
+      foliage_15: -1684160213
+      foliage_16: -797307587
+      foliage_17: -132783366
+      foliage_2: -6021793210149809870
+      foliage_3: -7274893308923686972
+      foliage_4: 4388943240265040670
+      foliage_5: 359298300766334315
+      foliage_6: 5467039035758458483
+      foliage_7: 1096791550069586263
+      foliage_8: 7955538454528900416
+      foliage_9: 1786745028
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
