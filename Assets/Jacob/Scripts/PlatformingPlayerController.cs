@@ -17,7 +17,7 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private float moveVelocityLimit = 10f;
 	[SerializeField] private float bhopVelocityLimit = 20f;
-	[SerializeField] private float reelVelocityLimit = 40f;
+	//[SerializeField] private float reelVelocityLimit = 40f;
 
 	[SerializeField] private float jumpForce = 20f;
 
@@ -83,7 +83,7 @@ public class PlatformingPlayerController : Interactor
 
 	#region START & UPDATES
 
-	private void Start()
+	public override void Start()
 	{
 		base.Start();
 		currentJumps = totalJumps;
@@ -91,9 +91,8 @@ public class PlatformingPlayerController : Interactor
 		ChangeRodState(RodState.INACTIVE);
 	}
 
-	private void Update()
+	public override void Update()
 	{
-		Debug.Log(currentWallJumps);
 		base.Update();
 		onGround = isGrounded();
 

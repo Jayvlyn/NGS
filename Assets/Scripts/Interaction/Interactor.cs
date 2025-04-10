@@ -15,7 +15,7 @@ public class Interactor : MonoBehaviour
     {
         if (pair.actor.Id == Id)
         {
-            Debug.Log($"{pair.actor.Id} entered range of {pair.obj.Id}");
+            //Debug.Log($"{pair.actor.Id} entered range of {pair.obj.Id}");
             objectStack.Push(pair.obj);
         }
     }
@@ -37,7 +37,7 @@ public class Interactor : MonoBehaviour
             {
                 objectStack.Push(holder.Pop());
             }
-            Debug.Log($"{pair.actor.Id} exited range of {pair.obj.Id}");
+            //Debug.Log($"{pair.actor.Id} exited range of {pair.obj.Id}");
         }
     }
 
