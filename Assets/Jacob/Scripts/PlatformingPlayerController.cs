@@ -106,6 +106,22 @@ public class PlatformingPlayerController : Interactor
 		{
 			landTimer += Time.deltaTime;
 		}
+
+		// Process Rod State (Visuals)
+		switch (currentRodState)
+		{
+			case RodState.CASTING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.RETURNING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.HOOKED:
+				UpdateLineRendererEnds(true, false);
+				break;
+			default:
+				break;
+		}
 	}
 
 	private void FixedUpdate()
@@ -139,8 +155,6 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState)
 		{
 			case RodState.CASTING:
-				UpdateLineRendererEnds();
-
 				if (Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
 				{ // Reached max distance before hitting something
 					ChangeRodState(RodState.RETURNING);
@@ -148,8 +162,6 @@ public class PlatformingPlayerController : Interactor
 
 				break;
 			case RodState.RETURNING:
-				UpdateLineRendererEnds();
-
 				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
 				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
 				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
@@ -161,8 +173,6 @@ public class PlatformingPlayerController : Interactor
 
 				break;
 			case RodState.HOOKED:
-				UpdateLineRendererEnds(true, false);
-
 				// Reeling
 				if (reelHeld)
 				{
