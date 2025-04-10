@@ -26,6 +26,9 @@ public class ModifySettings : MonoBehaviour
         int currentResIndex = 0;
         for(int i = 0; i < resolutions.Length; i++)
         {
+            float aspect = (float)resolutions[i].width / resolutions[i].height;
+            if (Mathf.Abs(aspect - (16f / 9f)) > 0.01f) continue;
+
             string option = resolutions[i].width + "x" + resolutions[i].height;
 
             options.Add(option);
