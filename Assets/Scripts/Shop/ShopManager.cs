@@ -245,4 +245,53 @@ public class ShopManager : Singleton<ShopManager>
     {
         currentShop.PurchaseUpgrade(id);
     }
+
+    public void Update()
+    {
+        switch(state)
+        {
+            case ShopState.MainMenu:
+                {
+                    if(Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        Close();
+                    }
+                    break;
+                }
+            case ShopState.SelectFish:
+                {
+                    if(Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        CloseSelect();
+                    }
+                    else if(Input.GetKeyDown(KeyCode.Return))
+                    {
+                        SellAll();
+                    }
+                    break;
+                }
+            case ShopState.SellFish:
+                {
+                    if(Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        CloseFish();
+                    }
+                    else if(Input.GetKeyDown(KeyCode.Return))
+                    {
+                        SellAllOfType(string.Empty);
+                    }
+                    break;
+                }
+            case ShopState.BuyUpgrade:
+                {
+                    if(Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        CloseUpgrade();
+                    }
+                    break;
+                }
+            default:
+                break;
+        }
+    }
 }
