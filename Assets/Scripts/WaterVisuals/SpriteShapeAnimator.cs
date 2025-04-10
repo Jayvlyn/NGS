@@ -30,7 +30,6 @@ public class SpriteShapeAnimator : MonoBehaviour
 			{
 				index = 0;
 			}
-			Debug.Log(index);
 
 			profile.fillTexture = textures[index];
 		}
