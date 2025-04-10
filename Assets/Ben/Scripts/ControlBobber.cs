@@ -1,8 +1,5 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
+
 
 public class ControlBobber : MonoBehaviour
 {
@@ -13,7 +10,8 @@ public class ControlBobber : MonoBehaviour
     [SerializeField] public float lineLength = 500.0f;
     [SerializeField] public float maxLength = 850.0f;
 
-
+    public float sideLength;
+    public float depthLength;
 
     private HookBehavior hookBehavior;
     private Rigidbody2D rb;
@@ -31,29 +29,28 @@ public class ControlBobber : MonoBehaviour
     {
         // Temp inputs because input manager is weird
 
-        if (Input.GetKey(KeyCode.A) && transform.localPosition.x >= -500)
+        if (Input.GetKey(KeyCode.A) && transform.localPosition.x >= -sideLength)
         {
             rb.MovePosition(new Vector2(rb.position.x - moveSpeed, rb.position.y));
         }
 
-        if (Input.GetKey(KeyCode.D) && transform.localPosition.x <= 500)
+        if (Input.GetKey(KeyCode.D) && transform.localPosition.x <= sideLength)
         {
             rb.MovePosition(new Vector2(rb.position.x + moveSpeed, rb.position.y));
         }
 
-        if (Input.GetKey(KeyCode.S) && hookObject.transform.localPosition.y > -850.0f)
+        if (Input.GetKey(KeyCode.S) && hookObject.transform.localPosition.y > -depthLength)
         {
             lineLength += reelSpeed;
 
-
-            float moveDistance = Vector2.Distance(hookObject.transform.position, new Vector2(transform.position.x, hookObject.transform.position.y)) / hookBehavior.hookFollowSpeed;
+            float moveDistance = Vector2.Distance(hookObject.transform.position, new Vector2(transform.position.x, hookObject.transform.position.y)) / hookBehavior.hookResistanceVal;
             float moveFinal = moveDistance * hookBehavior.hookDirection;
 
             Vector2 movement = new Vector2(hookObject.transform.position.x + moveFinal, hookObject.transform.position.y - reelSpeed);
 
             hookObject.GetComponent<Rigidbody2D>().MovePosition(movement);
         }
-        if (Input.GetKey(KeyCode.W) && hookObject.transform.localPosition.y < -60)
+        if (Input.GetKey(KeyCode.W) && hookObject.transform.localPosition.y < depthLength)
         {
             lineLength -= reelSpeed;
             Vector2 direction = transform.position - hookObject.transform.position;
