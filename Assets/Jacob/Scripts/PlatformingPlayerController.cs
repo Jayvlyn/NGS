@@ -7,10 +7,10 @@ public class PlatformingPlayerController : Interactor
 	#region VARIABLES
 	[Header("References")]
 	[SerializeField] private Rigidbody2D rb;
-	[SerializeField] private Camera cam;
 	[SerializeField] private DistanceJoint2D distanceJoint;
 	[SerializeField] private LineRenderer lineRenderer;
 	[SerializeField] private Rigidbody2D hookRb;
+	private Camera cam;
 
 	[Header("Stats")]
 	[SerializeField] private float moveSpeed = 5f;
@@ -86,7 +86,11 @@ public class PlatformingPlayerController : Interactor
 	public override void Start()
 	{
 		base.Start();
+
+		cam = Camera.main;
+
 		currentJumps = totalJumps;
+		currentWallJumps = totalWallJumps;
 
 		ChangeRodState(RodState.INACTIVE);
 	}
