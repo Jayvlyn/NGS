@@ -1,12 +1,17 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ShopData : MonoBehaviour
+public class ShopData : InteractableObject
 {
     [SerializeField] private List<FishSellData> fishData;
     [SerializeField] private List<UpgradeData> upgradeData;
 
+    protected override void Interact(InteractionPair pair)
+    {
+        ShopManager.Instance.Open(this);
+    }
     public void SellFish(Fish fish)
     {
         foreach(FishSellData fishPrice in fishData)
@@ -34,18 +39,22 @@ public class ShopData : MonoBehaviour
         return price;
     }
 
+    public List<UpgradeData> GetUpgrades()
+    {
+        return upgradeData;
+    }
 
     public void PurchaseUpgrade(int upgradeId)
     {
         foreach(UpgradeData upgrade in upgradeData)
         {
-            if (upgrade.upgradeID == upgradeId)
+            if (upgrade.Id == upgradeId)
             {
                 if (Inventory.Instance.CanAfford(upgrade.currentCost))
                 {
                     Inventory.Instance.AddMoney(-upgrade.currentCost);
                     upgrade.currentCost = upgrade.isMultiplicativeIncrease ? upgrade.currentCost * upgrade.costIncrease : upgrade.currentCost + upgrade.costIncrease;
-                    //Requires implementation of player upgradeabiliyt, will go here later
+                    //Requires implementation of player upgradeability, will go here later
                 }
                 break;
             }
@@ -59,5 +68,19 @@ public class ShopData : MonoBehaviour
             results.Add((data.name, data.sprite));
         }
         return results;
+    }
+
+    public bool BuysFish(string fishName)
+    {
+        bool result = false;
+        foreach(FishSellData data in fishData)
+        {
+            if(data.name == fishName)
+            {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 }
