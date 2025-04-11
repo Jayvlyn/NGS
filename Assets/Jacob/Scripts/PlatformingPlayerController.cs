@@ -403,6 +403,7 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(force, ForceMode2D.Impulse);
+		onGround = false;
 	}
 	//-----------
 
