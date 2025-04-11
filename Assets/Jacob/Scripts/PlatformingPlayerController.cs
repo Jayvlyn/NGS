@@ -95,9 +95,8 @@ public class PlatformingPlayerController : Interactor
 		ChangeRodState(RodState.INACTIVE);
 	}
 
-	public override void Update()
+	public void Update()
 	{
-		base.Update();
 		onGround = isGrounded();
 
 
@@ -296,6 +295,11 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	public void OnInteract()
+	{
+		TryInteract();
+	}
+
 	#endregion
 
 	#region FISHING ROD GRAPPLING HOOK
@@ -399,6 +403,7 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(force, ForceMode2D.Impulse);
+		onGround = false;
 	}
 	//-----------
 

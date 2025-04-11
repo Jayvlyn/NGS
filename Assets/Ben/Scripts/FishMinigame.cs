@@ -1,10 +1,6 @@
 using GameEvents;
-using Unity.Hierarchy;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class FishMinigame : MonoBehaviour
 {
@@ -45,18 +41,16 @@ public class FishMinigame : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = fishSprite;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         MoveFish();
+        KeepUpright();
         UpdateCatchProg();
         CheckIfComplete();
     }
 
     void MoveFish()
     {
-        // Checks
-
         // Keep the fish within bounds of the minigame
         if  ((transform.localPosition.x >= 500 || transform.localPosition.x <= -500))
         {
@@ -71,7 +65,7 @@ public class FishMinigame : MonoBehaviour
         }
 
         // Flip the current Wading speed if it reaches one of the bounds
-        if(swimAngle > (0.5f + currentYBias) || swimAngle < (-0.5f + currentYBias))
+        if(swimAngle > (0.75f + currentYBias) || swimAngle < (-0.75f + currentYBias))
         {
             currentWadeSpeed *= -1;
         }
@@ -99,8 +93,7 @@ public class FishMinigame : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
 
-        // Random Y Bias
-        currentYBias = Random.Range(-0.05f, 0.05f);
+        RandomizeDirectionBias();
 
         // Ensure fish goes back into bounds
         Vector2 tempPos = transform.localPosition;
@@ -111,7 +104,32 @@ public class FishMinigame : MonoBehaviour
         // Switch Direction
         currentSpeed *= -1;
 
-        Debug.Log("Flip Fish");
+    }
+
+    void RandomizeDirectionBias()
+    {
+        // Random Y Bias
+        currentYBias = Random.Range(-0.25f, 0.25f);
+    }
+
+    void KeepUpright()
+    {
+        // Decides based on the scale, when to flip the Y scale, to keep the sprite upright
+        if ((transform.localEulerAngles.z > 90 && transform.localEulerAngles.z < 270) && transform.localScale.y == 1)
+        {
+            FlipYScale();
+        }
+        else if ((transform.localEulerAngles.z < 90 || transform.localEulerAngles.z > 270) && transform.localScale.y == -1)
+        {
+            FlipYScale();
+        }
+    }
+
+    void FlipYScale()
+    {
+        Vector3 tempScale = transform.localScale;
+        tempScale.y *= -1;
+        transform.localScale = tempScale;
     }
 
     void BottomTopBounce()
@@ -126,8 +144,6 @@ public class FishMinigame : MonoBehaviour
         if (tempPos.y > 0) tempPos.y = 299;
         else tempPos.y = -449;
         transform.localPosition = tempPos;
-
-        Debug.Log("Bottom Top Bounce");
     }
 
     void UpdateCatchProg()
@@ -167,6 +183,7 @@ public class FishMinigame : MonoBehaviour
             hooked = true;
             currentSpeed = (currentSpeed > 0) ? swimSpeed * panicMulti : -swimSpeed * panicMulti;
             currentWadeSpeed = wadeSpeed * panicMulti;
+            RandomizeDirectionBias();
         }
     }
 
