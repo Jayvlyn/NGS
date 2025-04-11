@@ -62,7 +62,7 @@ public class ShopManager : Singleton<ShopManager>
                 GameObject go = Instantiate(selectFishUIPrefab, selectFishDisplayArea);
                 int row = current / expectedSelectFishColumns;
                 int column = current % expectedSelectFishColumns;
-                go.transform.position = 
+                go.transform.localPosition = 
                     new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f, 
                     selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);
                 go.GetComponentsInChildren<Image>()[1].sprite = data.Item2;
@@ -154,7 +154,7 @@ public class ShopManager : Singleton<ShopManager>
                 GameObject go = Instantiate(sellFishUIPrefab, sellFishDisplayArea);
                 int column = current % expectedSellFishColumns;
                 int row = current / expectedSellFishColumns;
-                go.transform.position =
+                go.transform.localPosition =
                     new Vector3(sellFishUIPrefabMarginData.x * (column + 1) + column * sellFishUIPrefabSizeData.x - 7.5f,
                     sellFishUIPrefabMarginData.y * -(row + 1) + -row * sellFishUIPrefabSizeData.y);
                 go.GetComponentInChildren<TMP_Text>().text = 
@@ -233,6 +233,8 @@ public class ShopManager : Singleton<ShopManager>
     public void OpenUpgrade()
     {
         state = ShopState.BuyUpgrade;
+        buyUpgradeWindow.enabled = true;
+        mainMenuWindow.enabled = false;
         if (pastUpgradeTiles.Count == 0)
         {
             for (int current = 0; current < currentShop.GetUpgrades().Count; current++)
@@ -241,11 +243,11 @@ public class ShopManager : Singleton<ShopManager>
                 int column = current % expectedBuyUpgradeColumns;
                 int row = current / expectedBuyUpgradeColumns;
                 GameObject go = Instantiate(buyUpgradeUIPrefab, buyUpgradeDisplayArea);
-                go.transform.position =
+                go.transform.localPosition =
                     new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f, 
                     buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
-                go.GetComponentInChildren<Image>().sprite = data.sprite;
-                go.GetComponentsInChildren<TMP_Text>()[1].text = $"{data.name}: {data.currentCost:2F} Gold";
+                go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
+                go.GetComponentInChildren<TMP_Text>().text = $"{data.name}: {(data.currentCost):2F} Gold";
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
                 pastUpgradeTiles.Add(go);
             }
