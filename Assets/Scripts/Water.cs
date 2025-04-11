@@ -36,7 +36,7 @@ public class Water : InteractableObject
         if (FishingWaitTimer <= 0)
         {
             Fish fish = generateFish();
-            Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
+            //Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
             FishingWaitTimer = 1f;
             fishing = false;
         }
