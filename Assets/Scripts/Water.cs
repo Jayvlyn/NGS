@@ -8,7 +8,7 @@ public class Water : InteractableObject
 
     //rarity values so 0 is legendary and 3 is uncommon, whatever is left from between the index 3 and the value 100 is common. 
     //good values to start with are 3, 7, 25, 55 
-    [SerializeField] List<int> rarityValues = new List<int>();
+    [SerializeField] List<int> rarityValues = new List<int>() { 3,7,25,55 };
 
     //fishing bool to check if the player is fishing or not.
     private bool fishing = false;
@@ -36,7 +36,7 @@ public class Water : InteractableObject
         if (FishingWaitTimer <= 0)
         {
             Fish fish = generateFish();
-            Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
+            //Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
             FishingWaitTimer = 1f;
             fishing = false;
         }
