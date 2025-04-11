@@ -21,7 +21,7 @@ public class ControlBobber : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        pi.SwitchCurrentActionMap("Minigame");
+        //pi.SwitchCurrentActionMap("Minigame");
         hookBehavior = hookRb.gameObject.GetComponent<HookBehavior>();
         //hookRb.transform.position = new Vector2(transform.position.x, transform.position.y - lineLength);
     }
@@ -47,16 +47,20 @@ public class ControlBobber : MonoBehaviour
 
             Vector2 movement = new Vector2(hookRb.transform.position.x + moveFinal, hookRb.transform.position.y - reelSpeed);
 
-            hookRb.MovePosition(movement);
-        }
+			//hookRb.MovePosition(movement); // doesnt work in diff scene :(
+			hookRb.transform.position = movement;
+		}
         if (hookInput > 0 && hookRb.transform.localPosition.y < depthLength)
         {
             lineLength -= reelSpeed;
             Vector2 direction = bobberRb.transform.position - hookRb.transform.position;
             direction.Normalize();
             direction.Scale(new Vector2(reelSpeed, reelSpeed));
-            hookRb.MovePosition(direction + hookRb.position);
-        }
+
+
+            //hookRb.MovePosition(direction + hookRb.position); // doesnt work in diff scene for some reason
+			hookRb.transform.position += (Vector3)direction;
+		}
 
     }
 
