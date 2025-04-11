@@ -12,7 +12,7 @@ public class InteractableObject : MonoBehaviour
     {
         Id = count;
         count++;
-        interactEvent.Subscribe(Interact);
+        interactEvent?.Subscribe(Interact);
     }
 
     protected virtual void Interact(InteractionPair pair)
