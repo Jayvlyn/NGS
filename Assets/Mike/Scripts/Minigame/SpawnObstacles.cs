@@ -16,7 +16,7 @@ public class SpawnObstacles : MonoBehaviour
 
     private void Spawn()
     {
-        if (spawnPoints.Count == 0 || obstaclesToSpawn == null) return;
+        if (spawnPoints.Count == 0 || obstaclesToSpawn.Count == 0) return;
 
         int sIndex = Random.Range(0, spawnPoints.Count);
         int oIndex = Random.Range(0, obstaclesToSpawn.Count);

@@ -9,6 +9,9 @@ public class HookBehavior : MonoBehaviour
     [SerializeField] public GameObject catchTarget;
     [SerializeField] float hookFollowSpeed = 75.0f;
 
+    private bool hitObstacle = false;
+    private float timer = 0;
+
     Rigidbody2D rb;
 
     void Start()
@@ -20,6 +23,13 @@ public class HookBehavior : MonoBehaviour
     void Update()
     {
         HookOutOfBoundsCheck();
+
+        if (hitObstacle && timer > 4)
+        {
+            hookFollowSpeed = 75;
+        }
+
+        timer += Time.deltaTime;
     }
 
     public void HookOutOfBoundsCheck()
@@ -42,5 +52,12 @@ public class HookBehavior : MonoBehaviour
 
         rb.MovePosition(new Vector2(transform.position.x + moveFinal, transform.position.y));
 
+    }
+
+    public void ReduceSpeed(float multiplier)
+    {
+        hookFollowSpeed *= multiplier;
+        hitObstacle = true;
+        timer = 0;
     }
 }
