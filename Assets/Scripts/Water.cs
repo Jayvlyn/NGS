@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Water : MonoBehaviour
+public class Water : InteractableObject
 {
     //list of fish the pond has 
     [SerializeField] List<Fish> ListOfFish = new List<Fish>();

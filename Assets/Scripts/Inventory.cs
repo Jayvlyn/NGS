@@ -8,7 +8,7 @@ public class Inventory : Singleton<Inventory>
 {
     [SerializeField] protected SerializedDictionary<string, FishData> currentFish = new();
     [SerializeField] private Fish testFish;
-    [SerializeField] protected double money;
+    [SerializeField] protected double money;\
 
     private void Start()
     {
@@ -43,6 +43,7 @@ public class Inventory : Singleton<Inventory>
             currentFish[fish.name].currentFish.Remove(fish);
         }
     }
+    
     public FishData GetFishData(string name)
     {
         return currentFish.ContainsKey(name) ? currentFish[name] : new();
@@ -62,6 +63,11 @@ public class Inventory : Singleton<Inventory>
         }
         money = cash;
     }
+    
+    public FishData GetFishData(string name)
+    {
+        return currentFish.ContainsKey(name) ? currentFish[name] : new();
+    }
 
     public void AddMoney(double amount)
     {
@@ -71,5 +77,19 @@ public class Inventory : Singleton<Inventory>
     public bool CanAfford(double amount)
     {
         return money >= amount;
+    }
+    
+    public SerializedDictionary<string, FishData> GetData()
+    {
+        return currentFish;
+    }
+
+    public void ApplyData(SerializedDictionary<string, FishData> data)
+    {
+        currentFish.Clear();
+        foreach(string key in data.Keys)
+        {
+            currentFish.Add(key, data[key]);
+        }
     }
 }
