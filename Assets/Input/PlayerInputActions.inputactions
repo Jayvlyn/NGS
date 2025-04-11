@@ -183,21 +183,21 @@
             "actions": [
                 {
                     "name": "MoveBobber",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "788ba12f-2af5-4fb9-b02a-1eb89cb5a4d6",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "MoveHook",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "ecc21cf5-185f-4a14-90f3-b53997ea54ef",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
