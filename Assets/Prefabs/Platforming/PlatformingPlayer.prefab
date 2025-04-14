@@ -350,7 +350,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6207578353081954013}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -385,7 +385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce624492a387cc54190d9e2ed6ecc95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionKey: 32
   enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
@@ -393,13 +392,13 @@ MonoBehaviour:
   distanceJoint: {fileID: 1896222745735434132}
   lineRenderer: {fileID: 1781532249685237151}
   hookRb: {fileID: 2836803051751671902}
-  moveSpeed: 100
+  moveSpeed: 33
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
-  jumpForce: 20
-  bhopForce: 10
-  maxLineLength: 10
-  castForce: 100
+  jumpForce: 12
+  bhopForce: 5
+  maxLineLength: 3.3
+  castForce: 75
   reelSpeed: 100
   changeDirSpeedMult: 0.5
   groundFriction: 0.93
@@ -494,7 +493,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.02
     widthCurve:
       serializedVersion: 2
       m_Curve:

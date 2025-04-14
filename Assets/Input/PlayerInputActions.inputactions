@@ -172,32 +172,26 @@
             ]
         },
         {
-            "name": "RebindKeys",
-            "id": "1e199a0a-8edd-4afa-b035-c843e9ceff3d",
-            "actions": [],
-            "bindings": []
-        },
-        {
             "name": "Minigame",
             "id": "2c0b0e51-4ac8-4a5b-b3a6-ab4f955239ad",
             "actions": [
                 {
                     "name": "MoveBobber",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "788ba12f-2af5-4fb9-b02a-1eb89cb5a4d6",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "MoveHook",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "ecc21cf5-185f-4a14-90f3-b53997ea54ef",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -266,6 +260,124 @@
                     "action": "MoveHook",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "RebindKeys",
+            "id": "1e199a0a-8edd-4afa-b035-c843e9ceff3d",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "BossMinigame",
+            "id": "c3afaad7-1bb4-44f0-a0be-053f11a51ee3",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "9e30a528-315b-4cdc-b08a-dc0e1f8f1af9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Reel",
+                    "type": "Button",
+                    "id": "849c9f1f-e685-4882-b7b5-76d129c1c1e5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Slack",
+                    "type": "Button",
+                    "id": "60f86ae7-8053-4f5b-8be2-46f9cb97cc4e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "eb776a6c-b872-4e8b-a06f-a3a70aeb8d9c",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "52dcdd06-4026-4368-9d4e-898c7b0ef727",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "fc60b194-ae32-4ee8-83db-5b9013b52398",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "9c1bfca3-1bc0-4f25-af91-96befa641325",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "21e3a465-97eb-4616-99b3-2e7c32362596",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b9f161bb-7dbd-48f3-961f-b4c27a5610e3",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e2538741-6e7a-4368-b9d4-e30eaa5227ff",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Slack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

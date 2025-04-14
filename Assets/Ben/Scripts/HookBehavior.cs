@@ -1,13 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HookBehavior : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     [SerializeField] public Transform hookParent;
-    [SerializeField] public GameObject catchTarget;
-    [SerializeField] float hookFollowSpeed = 75.0f;
+    [SerializeField] public float hookResistanceVal = 25.0f; // The higher, the slower
+    public int hookDirection = 0;
 
     private bool hitObstacle = false;
     private float timer = 0;
@@ -20,7 +17,7 @@ public class HookBehavior : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         HookOutOfBoundsCheck();
 
@@ -28,29 +25,50 @@ public class HookBehavior : MonoBehaviour
         {
             hookFollowSpeed = 75;
         }
-
         timer += Time.deltaTime;
+        RotateHookToBobber();
     }
 
     public void HookOutOfBoundsCheck()
     {
         if (hookParent.position.x <= transform.position.x - 10)
         {
-            KeepHookUnderBobber(-1, Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
+            //Debug.Log("Hook should move left");
+            hookDirection = -1;
+            KeepHookUnderBobber(Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
+            return;
         }
 
         if (hookParent.position.x >= transform.position.x + 10)
         {
-            KeepHookUnderBobber(1, Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
+            //Debug.Log("Hook should move right");
+            hookDirection = 1;
+            KeepHookUnderBobber(Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
+            return;
         }
+
+        hookDirection = 0;
     }
 
-    void KeepHookUnderBobber(int directionToMove, float distanceToBobber)
+    void KeepHookUnderBobber(float distanceToBobber)
     {
-        float moveDistance = distanceToBobber / hookFollowSpeed;
-        float moveFinal = moveDistance * directionToMove;
+        //Debug.Log("Move Hook");
+        float moveDistance = distanceToBobber / hookResistanceVal;
+        float moveFinal = moveDistance * hookDirection;
 
         rb.MovePosition(new Vector2(transform.position.x + moveFinal, transform.position.y));
+    }
+
+    void RotateHookToBobber()
+    {
+        Vector2 dir = hookParent.transform.position - transform.position;
+        Vector3 rotation = transform.localEulerAngles;
+
+        float angle = -dir.x / 10;
+
+        rotation.z = angle;
+
+        transform.localEulerAngles = rotation;
 
     }
 

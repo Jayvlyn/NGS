@@ -1,3 +1,4 @@
+using GameEvents;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -64,6 +65,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Transform groundCheckT;
 	[SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
 	private bool onGround;
+	private bool inWater;
 
 	[Header("Wall Checks")]
 	[SerializeField] private LayerMask wallLayer;
@@ -95,9 +97,8 @@ public class PlatformingPlayerController : Interactor
 		ChangeRodState(RodState.INACTIVE);
 	}
 
-	public override void Update()
+	public void Update()
 	{
-		base.Update();
 		onGround = isGrounded();
 
 
@@ -235,7 +236,7 @@ public class PlatformingPlayerController : Interactor
 		{
 			jumpHeld = true;
 
-			if((isTouchingLeftWall() ^ isTouchingRightWall()) && !onGround)
+			if((isTouchingLeftWall() ^ isTouchingRightWall()) && !onGround && !inWater)
 			{
 				TryWallJump();
 			}
@@ -294,6 +295,11 @@ public class PlatformingPlayerController : Interactor
 		{
 			reelHeld = false;
 		}
+	}
+
+	public void OnInteract()
+	{
+		TryInteract();
 	}
 
 	#endregion
@@ -390,7 +396,7 @@ public class PlatformingPlayerController : Interactor
 		currentJumps--;
 		jumpTimer = StartCoroutine(JumpTimer(0.5f));
 		if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
-		Vector2 force = Vector2.up * jumpForce;
+		Vector2 force = Vector2.up * jumpForce * (inWater ? 0.5f : 1);
 
 		if (bHop && rb.linearVelocityX < bhopVelocityLimit)
 		{
@@ -399,6 +405,7 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(force, ForceMode2D.Impulse);
+		onGround = false;
 	}
 	//-----------
 
@@ -484,10 +491,13 @@ public class PlatformingPlayerController : Interactor
 	#endregion
 
 	#region CONDITION CHECKS
-
+	public void UpdateWater(bool newState)
+	{
+		inWater = newState;
+	}
 	private bool isGrounded()
 	{
-		if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer))
+		if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 		{
 			if (!onGround) OnLand(); // first frame returning true, so just landed
 			return true;
