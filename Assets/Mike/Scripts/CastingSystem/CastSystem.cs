@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class CastSystem : MonoBehaviour
 {
-    [Header("Pop-up & cast bar")]
+	[SerializeField] MenuUI menu;
+
+	[Header("Pop-up & cast bar")]
     [SerializeField] GameObject castScreen;
     [SerializeField] Scrollbar castBar;
 
@@ -20,17 +22,25 @@ public class CastSystem : MonoBehaviour
 
     [SerializeField] AnimationCurve speedCurve;
 
-    void Start()
-    {
-        increment = 0.01f;
-        increase = 0;
+	private void OnEnable()
+	{
+		menu.pi.SwitchCurrentActionMap("Minigame");
+		increment = 0.01f;
+		increase = 0;
 		SpeedVariance(castBar.value);
 	}
 
-    void Update()
+	void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) ResetCast();
-        else if (Input.anyKeyDown) CheckCast(castBar.value);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+			menu.pi.SwitchCurrentActionMap("Platformer");
+            ResetCast();
+		}
+        else if (Input.anyKeyDown)
+        {
+            CheckCast(castBar.value);
+		}
 
         SpeedVariance(castBar.value);
 
@@ -77,7 +87,7 @@ public class CastSystem : MonoBehaviour
         speed = 50;
 
         castBar.value = 0;
-        castScreen.SetActive(false);
+		castScreen.SetActive(false);
     }
 
 }

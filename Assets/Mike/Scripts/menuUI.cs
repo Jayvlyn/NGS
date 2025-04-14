@@ -23,6 +23,7 @@ public class MenuUI : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
+    public PlayerInput pi;
 
 
     void Start()
