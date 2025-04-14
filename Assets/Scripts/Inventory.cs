@@ -16,7 +16,7 @@ public class Inventory : Singleton<Inventory>
         {
             AddFish(testFish);
         }
-        Debug.Log(JsonUtility.ToJson(GetData()));
+        //Debug.Log(JsonUtility.ToJson(GetData()));
     }
 
     public void AddFish(Fish fish)
@@ -81,5 +81,18 @@ public class Inventory : Singleton<Inventory>
         {
             currentFish.Add(key, data[key]);
         }
+    }
+
+    public override string ToString()
+    {
+        string str = string.Empty;
+
+        str += "All fish";
+        foreach(string key in currentFish.Keys)
+        {
+            str += "\n" + key + ": " + currentFish[key].amountCaught;
+        }
+
+        return str;
     }
 }
