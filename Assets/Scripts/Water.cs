@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Water : InteractableObject
 {
+    
     [SerializeField] FishEvent onBite;
 
     //list of fish the pond has 
@@ -16,10 +17,14 @@ public class Water : InteractableObject
     //fishing bool to check if the player is fishing or not.
     private bool fishing = false;
 
-    private float FishingWaitTimer = 1f;
+    private float fishingWaitTimer = 1f;
     private float randomWaitAddon = 0f;
     //max time to wait for a fish to bite.
     [SerializeField] float maxFishingTime = 15f;
+    [SerializeField] float maxDistFromStart = 2f;
+    private Vector2 startPos;
+
+    private Transform player;
 
 	private void Update()
 	{
@@ -31,25 +36,32 @@ public class Water : InteractableObject
 
 	public void doFishing()
     {
-        if (FishingWaitTimer <= 0)
+        if (fishingWaitTimer <= 0)
         {
             Fish fish = generateFish();
-            FishingWaitTimer = 1f;
+            fishingWaitTimer = 1f;
             fishing = false;
             onBite.Raise(fish);
             //Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
         }
         else
         {
-            FishingWaitTimer -= Time.deltaTime;
-            Debug.Log("Fishing... " + FishingWaitTimer);
+            fishingWaitTimer -= Time.deltaTime;
+            if (player != null)
+            {
+                if(Vector2.Distance(player.position, startPos) > maxDistFromStart)
+                {
+                    fishing = false;
+                }
+            }
+            Debug.Log("Fishing... " + fishingWaitTimer);
         }
     }
 
     //generates a fish from the list with a random rarity.
     Fish generateFish()
     {
-        Fish fish = ListOfFish[Random.Range(0, ListOfFish.Count)];
+        Fish fish = Instantiate(ListOfFish[Random.Range(0, ListOfFish.Count)]);
         fish.rarity = generateRarity();
         fish.length = generateLength(fish);
         return fish;
@@ -101,8 +113,10 @@ public class Water : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
+        player = pair.actor.transform;
+        startPos = player.position;
 		fishing = true;
 		randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
-		FishingWaitTimer = 1f + randomWaitAddon;
+		fishingWaitTimer = 1f + randomWaitAddon;
     }
 }
