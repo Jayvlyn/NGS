@@ -23,7 +23,7 @@ public class HookBehavior : MonoBehaviour
 
         if (hitObstacle && timer > 4)
         {
-            hookFollowSpeed = 75;
+            hookResistanceVal = 25;
         }
         timer += Time.deltaTime;
         RotateHookToBobber();
@@ -74,7 +74,7 @@ public class HookBehavior : MonoBehaviour
 
     public void ReduceSpeed(float multiplier)
     {
-        hookFollowSpeed *= multiplier;
+        hookResistanceVal *= multiplier;
         hitObstacle = true;
         timer = 0;
     }
