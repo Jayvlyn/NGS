@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 189020837219235779}
   - component: {fileID: 1896222745735434132}
   - component: {fileID: 1781532249685237151}
+  - component: {fileID: 1504072084019602566}
   m_Layer: 10
   m_Name: PlatformingPlayer
   m_TagString: Untagged
@@ -550,6 +551,27 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1504072084019602566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95fcb846a7f2a9e4780b5216755d8985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pi: {fileID: 5430223865702074187}
+  moveSpeed: 10
+  reelSpeed: 6
+  hookRb: {fileID: 0}
+  bobberRb: {fileID: 0}
+  lineLength: 0
+  maxLength: 1000
+  sideLength: 500
+  depthLength: 340
 --- !u!1 &6343699967925498643
 GameObject:
   m_ObjectHideFlags: 0
