@@ -24,7 +24,7 @@ public class HookBehavior : MonoBehaviour
     {
         if (hookParent.position.x <= transform.position.x - 10)
         {
-            Debug.Log("Hook should move left");
+            //Debug.Log("Hook should move left");
             hookDirection = -1;
             KeepHookUnderBobber(Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
             return;
@@ -32,7 +32,7 @@ public class HookBehavior : MonoBehaviour
 
         if (hookParent.position.x >= transform.position.x + 10)
         {
-            Debug.Log("Hook should move right");
+            //Debug.Log("Hook should move right");
             hookDirection = 1;
             KeepHookUnderBobber(Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
             return;
@@ -43,7 +43,7 @@ public class HookBehavior : MonoBehaviour
 
     void KeepHookUnderBobber(float distanceToBobber)
     {
-        Debug.Log("Move Hook");
+        //Debug.Log("Move Hook");
         float moveDistance = distanceToBobber / hookResistanceVal;
         float moveFinal = moveDistance * hookDirection;
 

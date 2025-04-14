@@ -4,15 +4,18 @@ using UnityEngine.UI;
 
 public class FishMinigame : MonoBehaviour
 {
-    [SerializeField] Sprite fishSprite;
+    [SerializeField] MenuUI menu;
+    private Fish hookedFish;
     [SerializeField] Slider catchProgBar;
+    [SerializeField] Image fishImage;
+    [SerializeField] GameObject minigameUI;
 
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
     [SerializeField] float catchMulti = 1.0f; // Multiplied Directly to catchProgress increment per update
     [SerializeField] float wadeSpeed = 0.005f;
 
-    public BoolEvent minigameEvent;
+	[SerializeField] BoolEvent minigameEvent;
 
     public float currentYBias;
     private float currentWadeSpeed;
@@ -20,7 +23,7 @@ public class FishMinigame : MonoBehaviour
 
     public bool isCaught = false;
 
-    private float catchProgress = 0.0f; // 100 is win-condition.
+    private float catchProgress = 20f; // 100 is win-condition.
     private float currentSpeed = 0.0f;
     private bool hooked;
 
@@ -36,9 +39,7 @@ public class FishMinigame : MonoBehaviour
 
         catchProgBar.value = 25.0f;
 
-        minigameEvent = ScriptableObject.CreateInstance<BoolEvent>();
-
-        gameObject.GetComponent<Image>().sprite = fishSprite;
+        fishImage.sprite = hookedFish.sprite;
     }
 
     void FixedUpdate()
@@ -165,12 +166,22 @@ public class FishMinigame : MonoBehaviour
         {
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
             minigameEvent.Raise(isCaught);
+            Inventory.Instance.AddFish(hookedFish);
+            Debug.Log(Inventory.Instance.ToString());
+            menu.pi.SwitchCurrentActionMap("Platformer");
+            catchProgress = 20f;
+
+            minigameUI.SetActive(false);
         }
 
         if (catchProgress <= 0.0f)
         {
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
             minigameEvent.Raise(isCaught);
+            menu.pi.SwitchCurrentActionMap("Platformer");
+            catchProgress = 20f;
+
+            minigameUI.SetActive(false);
         }
     }
 
@@ -195,5 +206,10 @@ public class FishMinigame : MonoBehaviour
             currentSpeed = (currentSpeed > 0) ? swimSpeed : -swimSpeed;
             currentWadeSpeed = wadeSpeed;
         }
+    }
+
+    public void SetHookedFish(Fish fish)
+    {
+        hookedFish = fish;
     }
 }
