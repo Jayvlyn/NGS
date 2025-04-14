@@ -1279,7 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 097c45eb17bad3640a9c78e2eec485f5, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1323,6 +1323,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ecc21cf5-185f-4a14-90f3-b53997ea54ef
     m_ActionName: 'Minigame/MoveHook[/Keyboard/s,/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 96dcb599-2905-4f65-ba66-09d20b1124b6
+    m_ActionName: 'Platformer/Slack[/Keyboard/alt]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Minigame
@@ -1348,9 +1352,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fcb846a7f2a9e4780b5216755d8985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pi: {fileID: 1849791663}
   moveSpeed: 10
   reelSpeed: 6
-  hookObject: {fileID: 1469880049}
+  hookRb: {fileID: 1469880053}
+  bobberRb: {fileID: 1849791666}
   lineLength: 0
   maxLength: 1000
   sideLength: 500

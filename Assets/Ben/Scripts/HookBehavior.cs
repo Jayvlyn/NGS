@@ -1,11 +1,8 @@
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class HookBehavior : MonoBehaviour
 {
     [SerializeField] public Transform hookParent;
-    [SerializeField] public GameObject catchTarget;
     [SerializeField] public float hookResistanceVal = 25.0f; // The higher, the slower
     public int hookDirection = 0;
 

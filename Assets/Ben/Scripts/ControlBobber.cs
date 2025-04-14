@@ -1,12 +1,15 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class ControlBobber : MonoBehaviour
 {
+    [SerializeField] PlayerInput pi;
     [SerializeField] public float moveSpeed = 5.0f;
     [SerializeField] public float reelSpeed = 0.5f;
 
-    [SerializeField] public GameObject hookObject;
+    [SerializeField] public Rigidbody2D hookRb;
+	[SerializeField] private Rigidbody2D bobberRb;
     [SerializeField] public float lineLength = 500.0f;
     [SerializeField] public float maxLength = 850.0f;
 
@@ -14,59 +17,93 @@ public class ControlBobber : MonoBehaviour
     public float depthLength;
 
     private HookBehavior hookBehavior;
-    private Rigidbody2D rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        hookBehavior = hookObject.GetComponent<HookBehavior>();
-        //hookObject.transform.position = new Vector2(transform.position.x, transform.position.y - lineLength);
+        //pi.SwitchCurrentActionMap("Minigame");
+        hookBehavior = hookRb.gameObject.GetComponent<HookBehavior>();
+        //hookRb.transform.position = new Vector2(transform.position.x, transform.position.y - lineLength);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        // Temp inputs because input manager is weird
-
-        if (Input.GetKey(KeyCode.A) && transform.localPosition.x >= -sideLength)
+        if (bobberInput < 0 && bobberRb.transform.localPosition.x >= -sideLength)
         {
-            rb.MovePosition(new Vector2(rb.position.x - moveSpeed, rb.position.y));
+            bobberRb.MovePosition(new Vector2(bobberRb.position.x - moveSpeed, bobberRb.position.y));
         }
 
-        if (Input.GetKey(KeyCode.D) && transform.localPosition.x <= sideLength)
+        if (bobberInput > 0 && bobberRb.transform.localPosition.x <= sideLength)
         {
-            rb.MovePosition(new Vector2(rb.position.x + moveSpeed, rb.position.y));
+            bobberRb.MovePosition(new Vector2(bobberRb.position.x + moveSpeed, bobberRb.position.y));
         }
-
-        if (Input.GetKey(KeyCode.S) && hookObject.transform.localPosition.y > -depthLength)
+        if (hookInput < 0 && hookRb.transform.localPosition.y > -depthLength)
         {
             lineLength += reelSpeed;
 
-            float moveDistance = Vector2.Distance(hookObject.transform.position, new Vector2(transform.position.x, hookObject.transform.position.y)) / hookBehavior.hookResistanceVal;
+            float moveDistance = Vector2.Distance(hookRb.transform.position, new Vector2(bobberRb.transform.position.x, hookRb.transform.position.y)) / hookBehavior.hookResistanceVal;
             float moveFinal = moveDistance * hookBehavior.hookDirection;
 
-            Vector2 movement = new Vector2(hookObject.transform.position.x + moveFinal, hookObject.transform.position.y - reelSpeed);
+            Vector2 movement = new Vector2(hookRb.transform.position.x + moveFinal, hookRb.transform.position.y - reelSpeed);
 
-            hookObject.GetComponent<Rigidbody2D>().MovePosition(movement);
-        }
-        if (Input.GetKey(KeyCode.W) && hookObject.transform.localPosition.y < depthLength)
+			//hookRb.MovePosition(movement); // doesnt work in diff scene :(
+			hookRb.transform.position = movement;
+		}
+        if (hookInput > 0 && hookRb.transform.localPosition.y < depthLength)
         {
             lineLength -= reelSpeed;
-            Vector2 direction = transform.position - hookObject.transform.position;
+            Vector2 direction = bobberRb.transform.position - hookRb.transform.position;
             direction.Normalize();
             direction.Scale(new Vector2(reelSpeed, reelSpeed));
-            hookObject.GetComponent<Rigidbody2D>().MovePosition(direction + new Vector2(hookObject.transform.position.x, hookObject.transform.position.y));
-        }
+
+
+            //hookRb.MovePosition(direction + hookRb.position); // doesnt work in diff scene for some reason
+			hookRb.transform.position += (Vector3)direction;
+		}
+
     }
 
-    //public void BobberMove(InputAction.CallbackContext value)
-    //{
+    float bobberInput;
+    public void OnMoveBobber(InputValue value)
+    {
+		bobberInput = value.Get<float>();
+	}
 
-    //}
+    float hookInput;
+    public void OnMoveHook(InputValue value)
+    {
+		hookInput = value.Get<float>();
+	}
 
-    //public void BobberReelLine(InputValue value)
-    //{
+    #region INPUT HOLDING HANDLING
 
-    //}
+	private void OnEnable()
+	{
+		Application.focusChanged += OnFocusChanged;
+	}
+
+	private void OnDisable()
+	{
+		Application.focusChanged -= OnFocusChanged;
+	}
+
+	private void OnFocusChanged(bool hasFocus)
+	{
+		if (hasFocus)
+		{
+		}
+		else
+		{ // game lost focus aka player tabbed out
+			UnholdAllInputs(); // player is no longer holding input if tabbed out
+		}
+	}
+
+	private void UnholdAllInputs()
+	{
+        hookInput = 0;
+        bobberInput = 0;
+	}
+
+	#endregion
 }
