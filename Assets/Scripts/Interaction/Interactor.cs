@@ -6,7 +6,7 @@ public class Interactor : MonoBehaviour
     private static int current;
     public int Id { get; private set; }
     protected Stack<InteractableObject> objectStack = new();
-    [SerializeField] protected KeyCode interactionKey = KeyCode.Space;
+    //[SerializeField] protected KeyCode interactionKey = KeyCode.Space;
     [SerializeField] protected InteractionEvent enterInteractionRangeEvent;
     [SerializeField] protected InteractionEvent exitInteractionRangeEvent;
     [SerializeField] protected InteractionEvent interactEvent;
@@ -15,7 +15,7 @@ public class Interactor : MonoBehaviour
     {
         if (pair.actor.Id == Id)
         {
-            Debug.Log($"{pair.actor.Id} entered range of {pair.obj.Id}");
+            //Debug.Log($"{pair.actor.Id} entered range of {pair.obj.Id}");
             objectStack.Push(pair.obj);
         }
     }
@@ -37,17 +37,25 @@ public class Interactor : MonoBehaviour
             {
                 objectStack.Push(holder.Pop());
             }
-            Debug.Log($"{pair.actor.Id} exited range of {pair.obj.Id}");
+            //Debug.Log($"{pair.actor.Id} exited range of {pair.obj.Id}");
         }
     }
 
-    public virtual void Update()
+    //public virtual void Update()
+    //{
+    //    if (Input.GetKeyDown(interactionKey))
+    //    {
+    //        TryInteract();
+    //    }
+    //}
+
+    protected void TryInteract()
     {
-        if (objectStack.Count > 0 && Input.GetKeyDown(interactionKey))
-        {
-            interactEvent.Trigger(new InteractionPair(objectStack.Peek(), this));
-        }
-    }
+		if (objectStack.Count > 0)
+		{
+			interactEvent.Trigger(new InteractionPair(objectStack.Peek(), this));
+		}
+	}
 
     public virtual void Start()
     {

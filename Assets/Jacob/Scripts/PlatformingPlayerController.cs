@@ -1,22 +1,24 @@
+using GameEvents;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlatformingPlayerController : Interactor
 {
+	#region VARIABLES
 	[Header("References")]
 	[SerializeField] private Rigidbody2D rb;
-	[SerializeField] private Camera cam;
 	[SerializeField] private DistanceJoint2D distanceJoint;
 	[SerializeField] private LineRenderer lineRenderer;
 	[SerializeField] private Rigidbody2D hookRb;
+	private Camera cam;
 
 	[Header("Stats")]
 	[SerializeField] private float moveSpeed = 5f;
 
 	[SerializeField] private float moveVelocityLimit = 10f;
 	[SerializeField] private float bhopVelocityLimit = 20f;
-	[SerializeField] private float reelVelocityLimit = 40f;
+	//[SerializeField] private float reelVelocityLimit = 40f;
 
 	[SerializeField] private float jumpForce = 20f;
 
@@ -43,6 +45,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private int totalJumps = 1;
 	private int currentJumps;
 
+	[SerializeField] private int totalWallJumps = 3;
+	private int currentWallJumps;
+
 	[SerializeField, Tooltip("Time before and after landing where player will successfully bunny hop")]
 	private float bunnyHopWindow = 0.05f;
 
@@ -60,6 +65,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Transform groundCheckT;
 	[SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
 	private bool onGround;
+	private bool inWater;
 
 	[Header("Wall Checks")]
 	[SerializeField] private LayerMask wallLayer;
@@ -75,18 +81,24 @@ public class PlatformingPlayerController : Interactor
 	private bool jumpHeld = false;
 	private bool reelHeld = false;
 	private bool slackHeld = false;
+	#endregion
 
-	private void Start()
+	#region START & UPDATES
+
+	public override void Start()
 	{
 		base.Start();
+
+		cam = Camera.main;
+
 		currentJumps = totalJumps;
+		currentWallJumps = totalWallJumps;
 
 		ChangeRodState(RodState.INACTIVE);
 	}
 
-	private void Update()
+	public void Update()
 	{
-		base.Update();
 		onGround = isGrounded();
 
 
@@ -98,6 +110,22 @@ public class PlatformingPlayerController : Interactor
 		if (landTimer <= bunnyHopWindow)
 		{
 			landTimer += Time.deltaTime;
+		}
+
+		// Process Rod State (Visuals)
+		switch (currentRodState)
+		{
+			case RodState.CASTING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.RETURNING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.HOOKED:
+				UpdateLineRendererEnds(true, false);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -132,8 +160,6 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState)
 		{
 			case RodState.CASTING:
-				UpdateLineRendererEnds();
-
 				if (Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
 				{ // Reached max distance before hitting something
 					ChangeRodState(RodState.RETURNING);
@@ -141,8 +167,6 @@ public class PlatformingPlayerController : Interactor
 
 				break;
 			case RodState.RETURNING:
-				UpdateLineRendererEnds();
-
 				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
 				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
 				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
@@ -154,8 +178,6 @@ public class PlatformingPlayerController : Interactor
 
 				break;
 			case RodState.HOOKED:
-				UpdateLineRendererEnds(true, false);
-
 				// Reeling
 				if (reelHeld)
 				{
@@ -164,6 +186,11 @@ public class PlatformingPlayerController : Interactor
 						if (distanceJoint.distance < maxLineLength)
 						{
 							distanceJoint.distance += Time.deltaTime * reelSpeed;
+							if (Vector2.Distance(transform.position, hookRb.transform.position) < 0.5)
+							{
+								dir = (transform.position - hookRb.transform.position).normalized;
+								rb.AddForce(dir * 50, ForceMode2D.Force);
+							}
 						}
 					}
 					else // Reel In
@@ -186,6 +213,8 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	#endregion
+
 	#region INPUTS
 
 	public void OnMove(InputValue value)
@@ -207,13 +236,13 @@ public class PlatformingPlayerController : Interactor
 		{
 			jumpHeld = true;
 
-			if (currentJumps > 0 || isCoyoteTimerActive())
-			{ // Do jump
-				DoJump(inBunnyHopWindow());
-			}
-			else
+			if((isTouchingLeftWall() ^ isTouchingRightWall()) && !onGround && !inWater)
 			{
-				jumpBuffer = jumpBufferTime;
+				TryWallJump();
+			}
+			else 
+			{
+				TryJump();
 			}
 		}
 		else // released
@@ -268,6 +297,11 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	public void OnInteract()
+	{
+		TryInteract();
+	}
+
 	#endregion
 
 	#region FISHING ROD GRAPPLING HOOK
@@ -310,6 +344,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.HOOKED:
+				currentWallJumps = totalWallJumps;
 				distanceJoint.connectedAnchor = hookRb.gameObject.transform.position;
 				distanceJoint.enabled = true;
 
@@ -331,6 +366,9 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
+	#region JUMPING & LANDING
+
+	// HANDLE EARLY RELEASE FOR JUMP
 	private void DampenUpVelocity()
 	{
 		if (rb.linearVelocityY > 0) // only reduce when going up
@@ -339,12 +377,26 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+
+	// REGULAR JUMP
+	public void TryJump()
+	{
+		if (currentJumps > 0 || isCoyoteTimerActive())
+		{ // Do jump
+			DoJump(inBunnyHopWindow());
+		}
+		else
+		{ // Start jump buffer
+			jumpBuffer = jumpBufferTime;
+		}
+	}
+
 	public void DoJump(bool bHop)
 	{
-		jumpTimer = StartCoroutine(JumpTimer(0.5f));
 		currentJumps--;
+		jumpTimer = StartCoroutine(JumpTimer(0.5f));
 		if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
-		Vector2 force = Vector2.up * jumpForce;
+		Vector2 force = Vector2.up * jumpForce * (inWater ? 0.5f : 1);
 
 		if (bHop && rb.linearVelocityX < bhopVelocityLimit)
 		{
@@ -353,13 +405,47 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(force, ForceMode2D.Impulse);
+		onGround = false;
+	}
+	//-----------
+
+
+	// WALL JUMPING
+	public void TryWallJump()
+	{
+		if (currentWallJumps > 0)
+		{
+			DoWallJump();
+		}
 	}
 
+	public void DoWallJump()
+	{
+		currentWallJumps--;
+
+		Vector2 dir = Vector2.up;
+
+		if(isTouchingLeftWall())
+		{ // DO JUMP UP AND RIGHT
+			dir += Vector2.right;
+		}
+		else // touching right wall
+		{ // DO JUMP UP AND LEFT
+			dir += Vector2.left;
+		}
+
+		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
+	}
+	//--------------
+
+
+	// LANDING
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
 		landTimer = 0; // will count up until bunny hop window is passed
 		currentJumps = totalJumps;
+		currentWallJumps = totalWallJumps;
 		if (isJumpBufferActive())
 		{
 			DoJump(inBunnyHopWindow());
@@ -367,6 +453,7 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	#endregion
 
 	#region COROUTINE TIMERS
 
@@ -403,11 +490,14 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
-	#region CHECKS
-
+	#region CONDITION CHECKS
+	public void UpdateWater(bool newState)
+	{
+		inWater = newState;
+	}
 	private bool isGrounded()
 	{
-		if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer))
+		if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 		{
 			if (!onGround) OnLand(); // first frame returning true, so just landed
 			return true;

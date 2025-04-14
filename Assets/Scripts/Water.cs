@@ -1,14 +1,17 @@
+using GameEvents;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Water : MonoBehaviour
+public class Water : InteractableObject
 {
+    [SerializeField] FishEvent onBite;
+
     //list of fish the pond has 
     [SerializeField] List<Fish> ListOfFish = new List<Fish>();
 
     //rarity values so 0 is legendary and 3 is uncommon, whatever is left from between the index 3 and the value 100 is common. 
     //good values to start with are 3, 7, 25, 55 
-    [SerializeField] List<int> rarityValues = new List<int>();
+    [SerializeField] List<int> rarityValues = new List<int>() { 3,7,25,55 };
 
     //fishing bool to check if the player is fishing or not.
     private bool fishing = false;
@@ -18,31 +21,28 @@ public class Water : MonoBehaviour
     //max time to wait for a fish to bite.
     [SerializeField] float maxFishingTime = 15f;
 
-    private void Update()
-    {
-        if (fishing)
+	private void Update()
+	{
+		if (fishing)
         {
-            startFishing();
+            doFishing();
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            fishing = true;
-            randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
-            FishingWaitTimer = 1f + randomWaitAddon;
-        }
-    }
-    public void startFishing()
+	}
+
+	public void doFishing()
     {
         if (FishingWaitTimer <= 0)
         {
             Fish fish = generateFish();
-            Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
             FishingWaitTimer = 1f;
             fishing = false;
+            onBite.Raise(fish);
+            //Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
         }
         else
         {
             FishingWaitTimer -= Time.deltaTime;
+            Debug.Log("Fishing... " + FishingWaitTimer);
         }
     }
 
@@ -97,5 +97,12 @@ public class Water : MonoBehaviour
                 return Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .8f), fish.maxLength);
         }
         return fish.minLength;
+    }
+
+    protected override void Interact(InteractionPair pair)
+    {
+		fishing = true;
+		randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
+		FishingWaitTimer = 1f + randomWaitAddon;
     }
 }

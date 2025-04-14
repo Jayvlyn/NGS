@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Drawing.Text;
-using System.Xml.Serialization;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class BossfightLevelGenerator : MonoBehaviour
 {
