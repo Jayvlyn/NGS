@@ -29,7 +29,7 @@ public class WaterShapeController : MonoBehaviour
 
 	void OnValidate()
 	{
-		StartCoroutine(CreateWaves());
+		if (this.isActiveAndEnabled) StartCoroutine(CreateWaves());
 	}
 
 	IEnumerator CreateWaves()
