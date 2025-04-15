@@ -78,7 +78,7 @@ public class Water : InteractableObject
     private Rarity GenerateRarity()
     {
         int n = Random.Range(0, 100);
-        Debug.Log("Rarity: " + n);
+        //Debug.Log("Rarity: " + n);
         if (n >= 0 && n < rarityValues[0] + randomWaitAddon/3f)
         {
             return Rarity.Legendary;

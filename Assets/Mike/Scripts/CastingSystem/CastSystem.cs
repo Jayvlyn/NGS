@@ -101,7 +101,6 @@ public class CastSystem : MonoBehaviour
 
     private void ResetCast()
     {
-        Debug.Log("resetting cast");
         increment = 0.01f;
         increase = 0;
         speed = 50;
