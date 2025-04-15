@@ -182,6 +182,12 @@ public class FishMinigame : MonoBehaviour
         }
     }
 
+    public void ReduceProgress(float amount)
+    {
+        catchProgBar.value -= amount;
+        catchProgress -= amount;
+    }
+
 
 
     private void OnTriggerEnter2D(Collider2D collision)
