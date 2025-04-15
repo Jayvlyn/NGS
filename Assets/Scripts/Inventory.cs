@@ -21,26 +21,26 @@ public class Inventory : Singleton<Inventory>
 
     public void AddFish(Fish fish)
     {
-        if(!currentFish.ContainsKey(fish.name))
+        if(!currentFish.ContainsKey(fish.fishName))
         {
             FishData fishData = new()
             {
                 currentFish = new()
             };
-            currentFish.Add(fish.name, fishData);
+            currentFish.Add(fish.fishName, fishData);
         }
-        FishData data = currentFish[fish.name];
+        FishData data = currentFish[fish.fishName];
         data.amountCaught++;
         data.largestCaught = Mathf.Max(fish.length, data.largestCaught);
         data.currentFish.Add(fish);
-        currentFish[fish.name] = data;
+        currentFish[fish.fishName] = data;
     }
 
     public void RemoveFish(Fish fish)
     {
-        if(currentFish.ContainsKey(fish.name))
+        if(currentFish.ContainsKey(fish.fishName))
         {
-            currentFish[fish.name].currentFish.Remove(fish);
+            currentFish[fish.fishName].currentFish.Remove(fish);
         }
     }
     

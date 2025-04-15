@@ -27,22 +27,19 @@ public class FishMinigame : MonoBehaviour
     private float currentSpeed = 0.0f;
     private bool hooked;
 
+	private void OnEnable()
+	{
+		currentYBias = 0.0f;
+		currentSpeed = swimSpeed;
+		currentWadeSpeed = wadeSpeed;
+		hooked = false;
 
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        currentYBias = 0.0f;
-        currentSpeed = swimSpeed;
-        currentWadeSpeed = wadeSpeed;
-        hooked = false;
+		catchProgBar.value = 25.0f;
 
-        catchProgBar.value = 25.0f;
+		fishImage.sprite = hookedFish.sprite;
+	}
 
-        fishImage.sprite = hookedFish.sprite;
-    }
-
-    void FixedUpdate()
+	void FixedUpdate()
     {
         MoveFish();
         KeepUpright();

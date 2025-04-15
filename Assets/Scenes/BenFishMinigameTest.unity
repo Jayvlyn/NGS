@@ -782,7 +782,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookParent: {fileID: 1849791661}
-  catchTarget: {fileID: 0}
   hookResistanceVal: 25
   hookDirection: 0
 --- !u!61 &1469880055
@@ -936,8 +935,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0b5b3a70043f14299da6c04b537769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishSprite: {fileID: 21300000, guid: f3ade43a41fcbd04e8bbf36473305ac0, type: 3}
+  menu: {fileID: 0}
   catchProgBar: {fileID: 1311122132}
+  fishImage: {fileID: 0}
+  minigameUI: {fileID: 0}
   swimSpeed: 3
   panicMulti: 1.5
   catchMulti: 10
@@ -1279,7 +1280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 097c45eb17bad3640a9c78e2eec485f5, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1323,10 +1324,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ecc21cf5-185f-4a14-90f3-b53997ea54ef
     m_ActionName: 'Minigame/MoveHook[/Keyboard/s,/Keyboard/w]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 96dcb599-2905-4f65-ba66-09d20b1124b6
-    m_ActionName: 'Platformer/Slack[/Keyboard/alt]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Minigame
@@ -1352,11 +1349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fcb846a7f2a9e4780b5216755d8985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pi: {fileID: 1849791663}
+  pi: {fileID: 0}
   moveSpeed: 10
   reelSpeed: 6
-  hookRb: {fileID: 1469880053}
-  bobberRb: {fileID: 1849791666}
+  hookRb: {fileID: 0}
+  bobberRb: {fileID: 0}
   lineLength: 0
   maxLength: 1000
   sideLength: 500
