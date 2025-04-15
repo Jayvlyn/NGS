@@ -29,6 +29,7 @@ public class FishMinigame : MonoBehaviour
 
 	private void OnEnable()
 	{
+		menu.pi.SwitchCurrentActionMap("Minigame");
 		currentYBias = 0.0f;
 		currentSpeed = swimSpeed;
 		currentWadeSpeed = wadeSpeed;
@@ -162,25 +163,27 @@ public class FishMinigame : MonoBehaviour
         if (catchProgress >= 100.0f)
         {
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
-            minigameEvent.Raise(isCaught);
             Inventory.Instance.AddFish(hookedFish);
             Debug.Log(Inventory.Instance.ToString());
-            menu.pi.SwitchCurrentActionMap("Platformer");
-            catchProgress = 20f;
 
-            minigameUI.SetActive(false);
+            OnFinish();
         }
 
         if (catchProgress <= 0.0f)
         {
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
-            minigameEvent.Raise(isCaught);
-            menu.pi.SwitchCurrentActionMap("Platformer");
-            catchProgress = 20f;
 
-            minigameUI.SetActive(false);
+            OnFinish();
         }
     }
+
+    private void OnFinish()
+    {
+		minigameEvent.Raise(isCaught);
+		menu.pi.SwitchCurrentActionMap("Platformer");
+		catchProgress = 20f;
+        minigameUI.SetActive(false);
+	}
 
 
 

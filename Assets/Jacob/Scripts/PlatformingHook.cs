@@ -6,7 +6,7 @@ public class PlatformingHook : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(ppc.currentRodState == PlatformingPlayerController.RodState.CASTING)
+		if(ppc.currentRodState == PlatformingPlayerController.RodState.CASTING && !collision.CompareTag("Water"))
 		{
 			ppc.ChangeRodState(PlatformingPlayerController.RodState.HOOKED);
 			transform.parent = collision.transform;

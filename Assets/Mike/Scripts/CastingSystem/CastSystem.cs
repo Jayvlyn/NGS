@@ -1,11 +1,12 @@
+using GameEvents;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class CastSystem : MonoBehaviour
 {
 	[SerializeField] MenuUI menu;
+    [SerializeField] VoidEvent onCastFinished;
 
 	[Header("Pop-up & cast bar")]
     [SerializeField] GameObject castScreen;
@@ -19,6 +20,7 @@ public class CastSystem : MonoBehaviour
     private float increment = 0;
     private float increase = 0;
     private float speed = 0;
+    private float startDelay;
 
     [SerializeField] AnimationCurve speedCurve;
 
@@ -27,20 +29,33 @@ public class CastSystem : MonoBehaviour
 		menu.pi.SwitchCurrentActionMap("Minigame");
 		increment = 0.01f;
 		increase = 0;
+        startDelay = 0.2f;
+        
 		SpeedVariance(castBar.value);
+	}
+
+	private void OnDisable()
+	{
+		menu.pi.SwitchCurrentActionMap("Platformer");
 	}
 
 	void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if(startDelay > 0)
         {
-			menu.pi.SwitchCurrentActionMap("Platformer");
-            ResetCast();
-		}
-        else if (Input.anyKeyDown)
+            startDelay -= Time.deltaTime;
+        }
+        else
         {
-            CheckCast(castBar.value);
-		}
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ResetCast();
+		    }
+            else if (Input.anyKeyDown)
+            {
+                CheckCast(castBar.value);
+		    }
+        }
 
         SpeedVariance(castBar.value);
 
@@ -54,6 +69,8 @@ public class CastSystem : MonoBehaviour
         if (value >= 0.48f && value <= 0.52f) bestOutcome.Invoke();
         else if (value >= 0.31f && value <= 0.69f) normalOutcome.Invoke();
         else worstOutcome.Invoke();
+
+        onCastFinished.Raise();
 
         ResetCast();
     }
@@ -82,12 +99,14 @@ public class CastSystem : MonoBehaviour
 
     private void ResetCast()
     {
+        Debug.Log("resetting cast");
         increment = 0.01f;
         increase = 0;
         speed = 50;
 
         castBar.value = 0;
 		castScreen.SetActive(false);
+        Debug.Log(castScreen.activeSelf);
     }
 
 }

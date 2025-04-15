@@ -6,6 +6,8 @@ public class Water : InteractableObject
 {
     
     [SerializeField] FishEvent onBite;
+    [SerializeField] VoidEvent onCast;
+    [SerializeField] VoidEvent onQuitFishing;
 
     //list of fish the pond has 
     [SerializeField] List<Fish> ListOfFish = new List<Fish>();
@@ -30,19 +32,18 @@ public class Water : InteractableObject
 	{
 		if (fishing)
         {
-            doFishing();
+            DoFishing();
         }
 	}
 
-	public void doFishing()
+	public void DoFishing()
     {
         if (fishingWaitTimer <= 0)
         {
-            Fish fish = generateFish();
+            Fish fish = GenerateFish();
             fishingWaitTimer = 1f;
-            fishing = false;
             onBite.Raise(fish);
-            //Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
+            QuitFishing();
         }
         else
         {
@@ -51,23 +52,30 @@ public class Water : InteractableObject
             {
                 if(Vector2.Distance(player.position, startPos) > maxDistFromStart)
                 {
-                    fishing = false;
+                    QuitFishing();
+                    onQuitFishing.Raise(); // will pull in hook
                 }
             }
             Debug.Log("Fishing... " + fishingWaitTimer);
         }
     }
 
+    public void QuitFishing()
+    {
+		fishing = false;
+		player = null; // only reference player during cast/waiting time
+	}
+
     //generates a fish from the list with a random rarity.
-    Fish generateFish()
+    Fish GenerateFish()
     {
         Fish fish = Instantiate(ListOfFish[Random.Range(0, ListOfFish.Count)]);
-        fish.rarity = generateRarity();
-        fish.length = generateLength(fish);
+        fish.rarity = GenerateRarity();
+        fish.length = GenerateLength(fish);
         return fish;
     }
     //returns a random rarity based on the rarity values set in the inspector. 
-    private Rarity generateRarity()
+    private Rarity GenerateRarity()
     {
         int n = Random.Range(0, 100);
         Debug.Log("Rarity: " + n);
@@ -93,7 +101,7 @@ public class Water : InteractableObject
         }
     }
 
-    private float generateLength(Fish fish)
+    private float GenerateLength(Fish fish)
     {
         switch (fish.rarity)
         {
@@ -115,8 +123,16 @@ public class Water : InteractableObject
     {
         player = pair.actor.transform;
         startPos = player.position;
-		fishing = true;
-		randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
-		fishingWaitTimer = 1f + randomWaitAddon;
+        onCast.Raise();
     }
+
+    public void OnCastComplete()
+    {
+        if (player != null)
+        {
+            fishing = true;
+            randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
+            fishingWaitTimer = 1f + randomWaitAddon;
+        }
+	}
 }
