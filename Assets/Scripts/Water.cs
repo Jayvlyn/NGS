@@ -121,9 +121,12 @@ public class Water : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-        player = pair.actor.transform;
-        startPos = player.position;
-        onCast.Raise();
+        if (!fishing)
+        {
+            player = pair.actor.transform;
+            startPos = player.position;
+            onCast.Raise();            
+        }
     }
 
     public void OnCastComplete()

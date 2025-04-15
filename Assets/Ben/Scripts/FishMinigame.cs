@@ -49,10 +49,14 @@ public class FishMinigame : MonoBehaviour
         MoveFish();
         KeepUpright();
         UpdateCatchProg();
-        CheckIfComplete();
     }
 
-    void MoveFish()
+	private void Update()
+	{
+        CheckIfComplete();
+	}
+
+	void MoveFish()
     {
         // Keep the fish within bounds of the minigame
         if  ((transform.localPosition.x >= boundsx || transform.localPosition.x <= -boundsx))
@@ -172,8 +176,7 @@ public class FishMinigame : MonoBehaviour
             Debug.Log(Inventory.Instance.ToString());
             OnFinish();
         }
-
-        if (catchProgress <= 0.0f)
+        else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))
         {
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
 
