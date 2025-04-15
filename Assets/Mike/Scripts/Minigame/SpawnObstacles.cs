@@ -6,7 +6,7 @@ public class SpawnObstacles : MonoBehaviour
 {
     [SerializeField] List<GameObject> obstaclesToSpawn;
     [SerializeField] List<Transform> spawnPoints;
-    private int spawnAmount = 0;
+    [SerializeField] private int spawnAmount = 0;
 
     private void OnEnable()
     {
@@ -28,6 +28,14 @@ public class SpawnObstacles : MonoBehaviour
         int sIndex = Random.Range(0, spawnPoints.Count);
         int oIndex = Random.Range(0, obstaclesToSpawn.Count);
 
-        Instantiate(obstaclesToSpawn[oIndex], spawnPoints[sIndex].position, spawnPoints[sIndex].rotation);
+        Vector3 randomOffset = Random.insideUnitCircle * 150;
+        Vector3 spawnPosition = spawnPoints[sIndex].position + randomOffset;
+
+        GameObject spawnedObject = Instantiate(obstaclesToSpawn[oIndex], spawnPosition, spawnPoints[sIndex].rotation, transform);
+
+        spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = GetComponentInChildren<FishMinigame>();
+        spawnedObject.SetActive(true);
+
+        
     }
 }

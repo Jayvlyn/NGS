@@ -9,8 +9,9 @@ public class MinigameObstacle : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] Sprite image;
     [SerializeField] GameObject imageObject;
-    [SerializeField] GameObject fishMinigame;
     private float currentSpeed = 0.0f;
+
+    [SerializeField] public FishMinigame fishMinigame { set; get; }
 
     [Header("Minigame effects")]
     [SerializeField] float speedPenalty;
@@ -96,7 +97,7 @@ public class MinigameObstacle : MonoBehaviour
     {
         if (collision.tag == "Hook")
         {
-            fishMinigame.GetComponent<FishMinigame>().ReduceProgress(reduceAmount);
+            fishMinigame.ReduceProgress(reduceAmount);
             collision.GetComponent<HookBehavior>().ReduceSpeed(speedPenalty);
             OnDisable();
         }
