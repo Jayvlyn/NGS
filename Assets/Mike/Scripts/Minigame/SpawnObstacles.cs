@@ -1,3 +1,4 @@
+using GameEvents;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,13 +6,19 @@ public class SpawnObstacles : MonoBehaviour
 {
     [SerializeField] List<GameObject> obstaclesToSpawn;
     [SerializeField] List<Transform> spawnPoints;
+    private int spawnAmount = 0;
 
-    public void Create(int amount)
+    private void OnEnable()
     {
-        for(int i = 0; i < amount; i++)
+        for (int i = 0; i < spawnAmount; i++)
         {
             Spawn();
         }
+    }
+
+    public void SetAmount(int amt)
+    {
+        spawnAmount = amt;
     }
 
     private void Spawn()
