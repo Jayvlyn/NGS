@@ -17,6 +17,10 @@ public class FishMinigame : MonoBehaviour
 
 	[SerializeField] BoolEvent minigameEvent;
 
+    [SerializeField] float boundsx = 500.0f; // X Bounds
+    [SerializeField] float boundsy = 300.0f; // Y Bounds
+    [SerializeField] float boundsyoffset = 150.0f; // Y Bounds offset
+
     public float currentYBias;
     private float currentWadeSpeed;
     private float swimAngle;
@@ -29,7 +33,6 @@ public class FishMinigame : MonoBehaviour
 
 	private void OnEnable()
 	{
-		menu.pi.SwitchCurrentActionMap("Minigame");
 		currentYBias = 0.0f;
 		currentSpeed = swimSpeed;
 		currentWadeSpeed = wadeSpeed;
@@ -51,13 +54,13 @@ public class FishMinigame : MonoBehaviour
     void MoveFish()
     {
         // Keep the fish within bounds of the minigame
-        if  ((transform.localPosition.x >= 500 || transform.localPosition.x <= -500))
+        if  ((transform.localPosition.x >= boundsx || transform.localPosition.x <= -boundsx))
         {
             FlipFish();
             return;
         }
 
-        if ((transform.localPosition.y >= 300 || transform.localPosition.y <= -450))
+        if ((transform.localPosition.y >= boundsy || transform.localPosition.y <= -boundsy-boundsyoffset))
         {
             BottomTopBounce();
             return;
@@ -96,8 +99,8 @@ public class FishMinigame : MonoBehaviour
 
         // Ensure fish goes back into bounds
         Vector2 tempPos = transform.localPosition;
-        if (tempPos.x > 0) tempPos.x = 499;
-        else tempPos.x = -499;
+        if (tempPos.x > 0) tempPos.x = boundsx-1;
+        else tempPos.x = -boundsx+1;
         transform.localPosition = tempPos;
 
         // Switch Direction
@@ -140,8 +143,8 @@ public class FishMinigame : MonoBehaviour
 
         // Ensure fish goes back into bounds
         Vector2 tempPos = transform.localPosition;
-        if (tempPos.y > 0) tempPos.y = 299;
-        else tempPos.y = -449;
+        if (tempPos.y > 0) tempPos.y = boundsy-1;
+        else tempPos.y = -boundsy-boundsyoffset+1;
         transform.localPosition = tempPos;
     }
 
@@ -163,27 +166,31 @@ public class FishMinigame : MonoBehaviour
         if (catchProgress >= 100.0f)
         {
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
+            minigameEvent.Raise(isCaught);
             Inventory.Instance.AddFish(hookedFish);
             Debug.Log(Inventory.Instance.ToString());
+            menu.pi.SwitchCurrentActionMap("Platformer");
+            catchProgress = 20f;
 
-            OnFinish();
+            minigameUI.SetActive(false);
         }
 
         if (catchProgress <= 0.0f)
         {
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
+            minigameEvent.Raise(isCaught);
+            menu.pi.SwitchCurrentActionMap("Platformer");
+            catchProgress = 20f;
 
-            OnFinish();
+            minigameUI.SetActive(false);
         }
     }
 
-    private void OnFinish()
+    public void ReduceProgress(float amount)
     {
-		minigameEvent.Raise(isCaught);
-		menu.pi.SwitchCurrentActionMap("Platformer");
-		catchProgress = 20f;
-        minigameUI.SetActive(false);
-	}
+        catchProgBar.value -= amount;
+        catchProgress -= amount;
+    }
 
 
 

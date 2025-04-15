@@ -6,6 +6,9 @@ public class HookBehavior : MonoBehaviour
     [SerializeField] public float hookResistanceVal = 25.0f; // The higher, the slower
     public int hookDirection = 0;
 
+    private bool hitObstacle = false;
+    private float timer = 0;
+
     Rigidbody2D rb;
 
     void Start()
@@ -17,6 +20,12 @@ public class HookBehavior : MonoBehaviour
     void FixedUpdate()
     {
         HookOutOfBoundsCheck();
+
+        if (hitObstacle && timer > 4)
+        {
+            hookResistanceVal = 25;
+        }
+        timer += Time.deltaTime;
         RotateHookToBobber();
     }
 
@@ -61,5 +70,12 @@ public class HookBehavior : MonoBehaviour
 
         transform.localEulerAngles = rotation;
 
+    }
+
+    public void ReduceSpeed(float multiplier)
+    {
+        hookResistanceVal *= multiplier;
+        hitObstacle = true;
+        timer = 0;
     }
 }
