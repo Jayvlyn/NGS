@@ -186,7 +186,15 @@ public class FishMinigame : MonoBehaviour
         }
     }
 
-    public void ReduceProgress(float amount)
+	private void OnFinish()
+	{
+		minigameEvent.Raise(isCaught);
+		menu.pi.SwitchCurrentActionMap("Platformer");
+		catchProgress = 20f;
+		minigameUI.SetActive(false);
+	}
+
+	public void ReduceProgress(float amount)
     {
         catchProgBar.value -= amount;
         catchProgress -= amount;
