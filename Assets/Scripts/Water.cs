@@ -6,7 +6,7 @@ public class Water : InteractableObject
 {
     
     [SerializeField] FishEvent onBite;
-    [SerializeField] VoidEvent onCast;
+    [SerializeField] TransformEvent onCast;
     [SerializeField] VoidEvent onQuitFishing;
 
     //list of fish the pond has 
@@ -56,7 +56,7 @@ public class Water : InteractableObject
                     onQuitFishing.Raise(); // will pull in hook
                 }
             }
-            Debug.Log("Fishing... " + fishingWaitTimer);
+            //Debug.Log("Fishing... " + fishingWaitTimer);
         }
     }
 
@@ -125,7 +125,7 @@ public class Water : InteractableObject
         {
             player = pair.actor.transform;
             startPos = player.position;
-            onCast.Raise();            
+            onCast.Raise(transform);            
         }
     }
 

@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 8449219365447026839}
   - component: {fileID: 2696870604186796076}
   - component: {fileID: 7441920984362871099}
-  - component: {fileID: 5403227049616108954}
+  - component: {fileID: 1695723014384484969}
   m_Layer: 0
   m_Name: InteractableWater
   m_TagString: Untagged
@@ -371,8 +371,8 @@ MonoBehaviour:
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
   onBite: {fileID: 11400000, guid: 2e987257edfec4d4a8d53521efbe2dfc, type: 2}
-  onCast: {fileID: 11400000, guid: 76178583d4424eb4e90e6fb24f836de9, type: 2}
-  onQuitFishing: {fileID: 0}
+  onCast: {fileID: 11400000, guid: 6334f1fb75aed4649ba69128dfa5d70b, type: 2}
+  onQuitFishing: {fileID: 11400000, guid: 1f6f2e6a67a97a644bad1cd9accc4d14, type: 2}
   ListOfFish:
   - {fileID: 11400000, guid: 09d610ced5cd1974892abb73365e9964, type: 2}
   - {fileID: 11400000, guid: 4ef99a2f08a23e14897d22878251ac28, type: 2}
@@ -394,7 +394,7 @@ MonoBehaviour:
   rarityValues: 03000000070000001900000037000000
   maxFishingTime: 7
   maxDistFromStart: 2
---- !u!114 &5403227049616108954
+--- !u!114 &1695723014384484969
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -403,10 +403,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4410240720999344414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b663e92038a8fc847b65ab6d544e0e21, type: 3}
+  m_Script: {fileID: 11500000, guid: cb56c99a5c42175478e7b555a67e0106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: bc4295d46cc35c94baaafc3130af6a13, type: 2}
+  gameEvent: {fileID: 11400000, guid: 43a0113537bcec04e8cadf952de9826f, type: 2}
   unityEventResponse:
     m_PersistentCalls:
       m_Calls:
