@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CastSystem : MonoBehaviour
 {
 	[SerializeField] MenuUI menu;
-    [SerializeField] VoidEvent onCastFinished;
+    [SerializeField] TransformEvent onCastFinished;
 
 	[Header("Pop-up & cast bar")]
     [SerializeField] GameObject castScreen;
@@ -21,6 +21,8 @@ public class CastSystem : MonoBehaviour
     private float increase = 0;
     private float speed = 0;
     private float startDelay;
+
+    private Transform waterT;
 
     [SerializeField] AnimationCurve speedCurve;
 
@@ -70,7 +72,7 @@ public class CastSystem : MonoBehaviour
         else if (value >= 0.31f && value <= 0.69f) normalOutcome.Invoke();
         else worstOutcome.Invoke();
 
-        onCastFinished.Raise();
+        onCastFinished.Raise(waterT);
 
         ResetCast();
     }
@@ -99,14 +101,17 @@ public class CastSystem : MonoBehaviour
 
     private void ResetCast()
     {
-        Debug.Log("resetting cast");
         increment = 0.01f;
         increase = 0;
         speed = 50;
 
         castBar.value = 0;
 		castScreen.SetActive(false);
-        Debug.Log(castScreen.activeSelf);
+    }
+
+    public void SetWaterT(Transform waterT)
+    {
+        this.waterT = waterT;
     }
 
 }

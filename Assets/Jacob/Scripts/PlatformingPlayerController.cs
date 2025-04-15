@@ -13,6 +13,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Rigidbody2D hookRb;
 	[SerializeField] private Collider2D hookCol;
 	[SerializeField] private Transform spriteT;
+	[HideInInspector] public Transform interactedWaterT;
 	private Camera cam;
 
 	[Header("Stats")]
@@ -312,8 +313,9 @@ public class PlatformingPlayerController : Interactor
 		TryInteract();
 	}
 
-	public void OnFishCast()
+	public void OnFishCast(Transform waterT)
 	{
+		interactedWaterT = waterT;
 		ChangeRodState(RodState.FISHCASTING);
 	}
 
@@ -388,7 +390,9 @@ public class PlatformingPlayerController : Interactor
 				dir = spriteT.localScale.x * Vector2.right + Vector2.up;
 				dir.Normalize();
 
-				hookRb.AddForce(dir * 30);
+				float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+
+				hookRb.AddForce(dir * 40 * dist);
 
 
 				break;

@@ -6,7 +6,7 @@ public class Water : InteractableObject
 {
     
     [SerializeField] FishEvent onBite;
-    [SerializeField] VoidEvent onCast;
+    [SerializeField] TransformEvent onCast;
     [SerializeField] VoidEvent onQuitFishing;
 
     //list of fish the pond has 
@@ -56,7 +56,7 @@ public class Water : InteractableObject
                     onQuitFishing.Raise(); // will pull in hook
                 }
             }
-            Debug.Log("Fishing... " + fishingWaitTimer);
+            //Debug.Log("Fishing... " + fishingWaitTimer);
         }
     }
 
@@ -78,7 +78,7 @@ public class Water : InteractableObject
     private Rarity GenerateRarity()
     {
         int n = Random.Range(0, 100);
-        Debug.Log("Rarity: " + n);
+        //Debug.Log("Rarity: " + n);
         if (n >= 0 && n < rarityValues[0] + randomWaitAddon/3f)
         {
             return Rarity.Legendary;
@@ -121,9 +121,12 @@ public class Water : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-        player = pair.actor.transform;
-        startPos = player.position;
-        onCast.Raise();
+        if (!fishing)
+        {
+            player = pair.actor.transform;
+            startPos = player.position;
+            onCast.Raise(transform);            
+        }
     }
 
     public void OnCastComplete()

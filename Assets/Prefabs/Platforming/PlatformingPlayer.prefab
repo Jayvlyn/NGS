@@ -244,9 +244,9 @@ GameObject:
   - component: {fileID: 1896222745735434132}
   - component: {fileID: 1781532249685237151}
   - component: {fileID: 1504072084019602566}
-  - component: {fileID: 8323862531969743821}
   - component: {fileID: 1876301516158393029}
   - component: {fileID: 6697260024632076331}
+  - component: {fileID: 3667505915911299188}
   m_Layer: 10
   m_Name: PlatformingPlayer
   m_TagString: Untagged
@@ -398,6 +398,7 @@ MonoBehaviour:
   hookRb: {fileID: 2836803051751671902}
   hookCol: {fileID: 446745433903773732}
   spriteT: {fileID: 3381539768182715777}
+  interactedWaterT: {fileID: 0}
   moveSpeed: 33
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
@@ -577,34 +578,6 @@ MonoBehaviour:
   maxLength: 1000
   sideLength: 500
   depthLength: 340
---- !u!114 &8323862531969743821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6207578353081954013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b663e92038a8fc847b65ab6d544e0e21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: bc4295d46cc35c94baaafc3130af6a13, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 189020837219235779}
-        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
-        m_MethodName: OnFishCast
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1876301516158393029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,6 +626,34 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
         m_MethodName: OnDoneFishing
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3667505915911299188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb56c99a5c42175478e7b555a67e0106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 43a0113537bcec04e8cadf952de9826f, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 189020837219235779}
+        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
+        m_MethodName: OnFishCast
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
