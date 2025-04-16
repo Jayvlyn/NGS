@@ -7,6 +7,7 @@ public class KeyRebinder : MonoBehaviour
     [SerializeField] InputActionReference keyAction = null;
     [SerializeField] PlayerInput playerController = null;
     [SerializeField] TMP_Text keyText = null;
+    public string compositPartName = "";
 
     public bool isNegitive = false;
 
@@ -16,7 +17,6 @@ public class KeyRebinder : MonoBehaviour
     public void StartRebinding()
     {
         keyText.text = ".....";
-        //keyAction.action.bindings (.isPartcomposit or .name)
 
         playerController.SwitchCurrentActionMap("RebindKeys");
 
@@ -35,7 +35,7 @@ public class KeyRebinder : MonoBehaviour
         }
         else
         {
-            rebindingOperation = keyAction.action.PerformInteractiveRebinding().OnMatchWaitForAnother(0.1f)
+            rebindingOperation = keyAction.action.PerformInteractiveRebinding(GetBindingIndexByName(compositPartName)).OnMatchWaitForAnother(0.1f)
                 .OnComplete(operation => RebindComplete()).Start();
         }
     }
@@ -46,6 +46,8 @@ public class KeyRebinder : MonoBehaviour
                 ? keyAction.action.GetBindingIndexForControl(keyAction.action.controls[(isNegitive) ? 0 : 1])
                 : keyAction.action.GetBindingIndexForControl(keyAction.action.controls[0]);
 
+        if(compositPartName != null) bindingIndex = GetBindingIndexByName(compositPartName);
+
         keyText.text = InputControlPath.ToHumanReadableString(keyAction.action.bindings[bindingIndex].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice);
 
@@ -54,23 +56,16 @@ public class KeyRebinder : MonoBehaviour
         playerController.SwitchCurrentActionMap("Platformer");
     }
 
-    //private int GetBindingIndexByName(string name)
-    //{
-    //    if()
-    //    {
+    private int GetBindingIndexByName(string name)
+    {        
+        for (int i = 0; i < keyAction.action.bindings.Count; i++)
+        {
+            if (keyAction.action.bindings[i].isPartOfComposite && keyAction.action.bindings[i].name == name)
+            {
+                return i;
+            }
+        }
 
-    //    }
-    //    else if()
-    //    {
-
-    //    }
-    //    else if()
-    //    {
-
-    //    }
-    //    else
-    //    {
-
-    //    }
-    //}
+        return -1;
+    }
 }
