@@ -1,11 +1,14 @@
+using GameEvents;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class CastSystem : MonoBehaviour
 {
-    [Header("Pop-up & cast bar")]
+	[SerializeField] MenuUI menu;
+    [SerializeField] TransformEvent onCastFinished;
+
+	[Header("Pop-up & cast bar")]
     [SerializeField] GameObject castScreen;
     [SerializeField] Scrollbar castBar;
 
@@ -17,20 +20,44 @@ public class CastSystem : MonoBehaviour
     private float increment = 0;
     private float increase = 0;
     private float speed = 0;
+    private float startDelay;
+
+    private Transform waterT;
 
     [SerializeField] AnimationCurve speedCurve;
 
-    void Start()
-    {
-        increment = 0.01f;
-        increase = 0;
+	private void OnEnable()
+	{
+		menu.pi.SwitchCurrentActionMap("Minigame");
+		increment = 0.01f;
+		increase = 0;
+        startDelay = 0.2f;
+        
 		SpeedVariance(castBar.value);
 	}
 
-    void Update()
+	private void OnDisable()
+	{
+		menu.pi.SwitchCurrentActionMap("Platformer");
+	}
+
+	void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) ResetCast();
-        else if (Input.anyKeyDown) CheckCast(castBar.value);
+        if(startDelay > 0)
+        {
+            startDelay -= Time.deltaTime;
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ResetCast();
+		    }
+            else if (Input.anyKeyDown)
+            {
+                CheckCast(castBar.value);
+		    }
+        }
 
         SpeedVariance(castBar.value);
 
@@ -44,6 +71,8 @@ public class CastSystem : MonoBehaviour
         if (value >= 0.48f && value <= 0.52f) bestOutcome.Invoke();
         else if (value >= 0.31f && value <= 0.69f) normalOutcome.Invoke();
         else worstOutcome.Invoke();
+
+        onCastFinished.Raise(waterT);
 
         ResetCast();
     }
@@ -77,7 +106,12 @@ public class CastSystem : MonoBehaviour
         speed = 50;
 
         castBar.value = 0;
-        castScreen.SetActive(false);
+		castScreen.SetActive(false);
+    }
+
+    public void SetWaterT(Transform waterT)
+    {
+        this.waterT = waterT;
     }
 
 }

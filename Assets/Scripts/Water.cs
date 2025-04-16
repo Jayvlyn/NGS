@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Water : InteractableObject
 {
+    
     [SerializeField] FishEvent onBite;
+    [SerializeField] TransformEvent onCast;
+    [SerializeField] VoidEvent onQuitFishing;
 
     //list of fish the pond has 
     [SerializeField] List<Fish> ListOfFish = new List<Fish>();
@@ -16,49 +19,66 @@ public class Water : InteractableObject
     //fishing bool to check if the player is fishing or not.
     private bool fishing = false;
 
-    private float FishingWaitTimer = 1f;
+    private float fishingWaitTimer = 1f;
     private float randomWaitAddon = 0f;
     //max time to wait for a fish to bite.
     [SerializeField] float maxFishingTime = 15f;
+    [SerializeField] float maxDistFromStart = 2f;
+    private Vector2 startPos;
+
+    private Transform player;
 
 	private void Update()
 	{
 		if (fishing)
         {
-            doFishing();
+            DoFishing();
         }
 	}
 
-	public void doFishing()
+	public void DoFishing()
     {
-        if (FishingWaitTimer <= 0)
+        if (fishingWaitTimer <= 0)
         {
-            Fish fish = generateFish();
-            FishingWaitTimer = 1f;
-            fishing = false;
+            Fish fish = GenerateFish();
+            fishingWaitTimer = 1f;
             onBite.Raise(fish);
-            //Debug.Log("You caught a " + fish.rarity + " " + fish.fishName + " of length " + fish.length);
+            QuitFishing();
         }
         else
         {
-            FishingWaitTimer -= Time.deltaTime;
-            Debug.Log("Fishing... " + FishingWaitTimer);
+            fishingWaitTimer -= Time.deltaTime;
+            if (player != null)
+            {
+                if(Vector2.Distance(player.position, startPos) > maxDistFromStart)
+                {
+                    QuitFishing();
+                    onQuitFishing.Raise(); // will pull in hook
+                }
+            }
+            //Debug.Log("Fishing... " + fishingWaitTimer);
         }
     }
 
-    //generates a fish from the list with a random rarity.
-    Fish generateFish()
+    public void QuitFishing()
     {
-        Fish fish = ListOfFish[Random.Range(0, ListOfFish.Count)];
-        fish.rarity = generateRarity();
-        fish.length = generateLength(fish);
+		fishing = false;
+		player = null; // only reference player during cast/waiting time
+	}
+
+    //generates a fish from the list with a random rarity.
+    Fish GenerateFish()
+    {
+        Fish fish = Instantiate(ListOfFish[Random.Range(0, ListOfFish.Count)]);
+        fish.rarity = GenerateRarity();
+        fish.length = GenerateLength(fish);
         return fish;
     }
     //returns a random rarity based on the rarity values set in the inspector. 
-    private Rarity generateRarity()
+    private Rarity GenerateRarity()
     {
         int n = Random.Range(0, 100);
-        Debug.Log("Rarity: " + n);
+        //Debug.Log("Rarity: " + n);
         if (n >= 0 && n < rarityValues[0] + randomWaitAddon/3f)
         {
             return Rarity.Legendary;
@@ -81,7 +101,7 @@ public class Water : InteractableObject
         }
     }
 
-    private float generateLength(Fish fish)
+    private float GenerateLength(Fish fish)
     {
         switch (fish.rarity)
         {
@@ -101,8 +121,21 @@ public class Water : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-		fishing = true;
-		randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
-		FishingWaitTimer = 1f + randomWaitAddon;
+        if (!fishing)
+        {
+            player = pair.actor.transform;
+            startPos = player.position;
+            onCast.Raise(transform);            
+        }
     }
+
+    public void OnCastComplete()
+    {
+        if (player != null)
+        {
+            fishing = true;
+            randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
+            fishingWaitTimer = 1f + randomWaitAddon;
+        }
+	}
 }

@@ -782,7 +782,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookParent: {fileID: 1849791661}
-  catchTarget: {fileID: 0}
   hookResistanceVal: 25
   hookDirection: 0
 --- !u!61 &1469880055
@@ -936,8 +935,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0b5b3a70043f14299da6c04b537769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishSprite: {fileID: 21300000, guid: f3ade43a41fcbd04e8bbf36473305ac0, type: 3}
+  menu: {fileID: 0}
   catchProgBar: {fileID: 1311122132}
+  fishImage: {fileID: 0}
+  minigameUI: {fileID: 0}
   swimSpeed: 3
   panicMulti: 1.5
   catchMulti: 10
@@ -1348,9 +1349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fcb846a7f2a9e4780b5216755d8985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pi: {fileID: 0}
   moveSpeed: 10
   reelSpeed: 6
-  hookObject: {fileID: 1469880049}
+  hookRb: {fileID: 0}
+  bobberRb: {fileID: 0}
   lineLength: 0
   maxLength: 1000
   sideLength: 500

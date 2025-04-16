@@ -4,15 +4,22 @@ using UnityEngine.UI;
 
 public class FishMinigame : MonoBehaviour
 {
-    [SerializeField] Sprite fishSprite;
+    [SerializeField] MenuUI menu;
+    private Fish hookedFish;
     [SerializeField] Slider catchProgBar;
+    [SerializeField] Image fishImage;
+    [SerializeField] GameObject minigameUI;
 
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
     [SerializeField] float catchMulti = 1.0f; // Multiplied Directly to catchProgress increment per update
     [SerializeField] float wadeSpeed = 0.005f;
 
-    public BoolEvent minigameEvent;
+	[SerializeField] BoolEvent minigameEvent;
+
+    [SerializeField] float boundsx = 500.0f; // X Bounds
+    [SerializeField] float boundsy = 300.0f; // Y Bounds
+    [SerializeField] float boundsyoffset = 150.0f; // Y Bounds offset
 
     public float currentYBias;
     private float currentWadeSpeed;
@@ -20,45 +27,45 @@ public class FishMinigame : MonoBehaviour
 
     public bool isCaught = false;
 
-    private float catchProgress = 0.0f; // 100 is win-condition.
+    private float catchProgress = 20f; // 100 is win-condition.
     private float currentSpeed = 0.0f;
     private bool hooked;
 
+	private void OnEnable()
+	{
+		menu.pi.SwitchCurrentActionMap("Minigame");
+		currentYBias = 0.0f;
+		currentSpeed = swimSpeed;
+		currentWadeSpeed = wadeSpeed;
+		hooked = false;
 
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        currentYBias = 0.0f;
-        currentSpeed = swimSpeed;
-        currentWadeSpeed = wadeSpeed;
-        hooked = false;
+		catchProgBar.value = 25.0f;
 
-        catchProgBar.value = 25.0f;
+		fishImage.sprite = hookedFish.sprite;
+	}
 
-        minigameEvent = ScriptableObject.CreateInstance<BoolEvent>();
-
-        gameObject.GetComponent<Image>().sprite = fishSprite;
-    }
-
-    void FixedUpdate()
+	void FixedUpdate()
     {
         MoveFish();
         KeepUpright();
         UpdateCatchProg();
-        CheckIfComplete();
     }
 
-    void MoveFish()
+	private void Update()
+	{
+        CheckIfComplete();
+	}
+
+	void MoveFish()
     {
         // Keep the fish within bounds of the minigame
-        if  ((transform.localPosition.x >= 500 || transform.localPosition.x <= -500))
+        if  ((transform.localPosition.x >= boundsx || transform.localPosition.x <= -boundsx))
         {
             FlipFish();
             return;
         }
 
-        if ((transform.localPosition.y >= 300 || transform.localPosition.y <= -450))
+        if ((transform.localPosition.y >= boundsy || transform.localPosition.y <= -boundsy-boundsyoffset))
         {
             BottomTopBounce();
             return;
@@ -97,8 +104,8 @@ public class FishMinigame : MonoBehaviour
 
         // Ensure fish goes back into bounds
         Vector2 tempPos = transform.localPosition;
-        if (tempPos.x > 0) tempPos.x = 499;
-        else tempPos.x = -499;
+        if (tempPos.x > 0) tempPos.x = boundsx-1;
+        else tempPos.x = -boundsx+1;
         transform.localPosition = tempPos;
 
         // Switch Direction
@@ -141,8 +148,8 @@ public class FishMinigame : MonoBehaviour
 
         // Ensure fish goes back into bounds
         Vector2 tempPos = transform.localPosition;
-        if (tempPos.y > 0) tempPos.y = 299;
-        else tempPos.y = -449;
+        if (tempPos.y > 0) tempPos.y = boundsy-1;
+        else tempPos.y = -boundsy-boundsyoffset+1;
         transform.localPosition = tempPos;
     }
 
@@ -164,14 +171,31 @@ public class FishMinigame : MonoBehaviour
         if (catchProgress >= 100.0f)
         {
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
-            minigameEvent.Raise(isCaught);
-        }
 
-        if (catchProgress <= 0.0f)
+            Inventory.Instance.AddFish(hookedFish);
+            Debug.Log(Inventory.Instance.ToString());
+            OnFinish();
+        }
+        else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))
         {
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
-            minigameEvent.Raise(isCaught);
+
+            OnFinish();
         }
+    }
+
+	private void OnFinish()
+	{
+		minigameEvent.Raise(isCaught);
+		menu.pi.SwitchCurrentActionMap("Platformer");
+		catchProgress = 20f;
+		minigameUI.SetActive(false);
+	}
+
+	public void ReduceProgress(float amount)
+    {
+        catchProgBar.value -= amount;
+        catchProgress -= amount;
     }
 
 
@@ -195,5 +219,10 @@ public class FishMinigame : MonoBehaviour
             currentSpeed = (currentSpeed > 0) ? swimSpeed : -swimSpeed;
             currentWadeSpeed = wadeSpeed;
         }
+    }
+
+    public void SetHookedFish(Fish fish)
+    {
+        hookedFish = fish;
     }
 }

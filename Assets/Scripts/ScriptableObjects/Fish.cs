@@ -7,8 +7,8 @@ public class Fish : ScriptableObject
 {
     public string fishName;
     public Sprite sprite;
-    public Rarity rarity;
-    public float length;
+	[HideInInspector] public Rarity rarity;
+    [HideInInspector] public float length;
     public float minLength;
     public float maxLength;
 }

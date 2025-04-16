@@ -11,6 +11,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private DistanceJoint2D distanceJoint;
 	[SerializeField] private LineRenderer lineRenderer;
 	[SerializeField] private Rigidbody2D hookRb;
+	[SerializeField] private Collider2D hookCol;
+	[SerializeField] private Transform spriteT;
+	[HideInInspector] public Transform interactedWaterT;
 	private Camera cam;
 
 	[Header("Stats")]
@@ -124,6 +127,9 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				UpdateLineRendererEnds(true, false);
 				break;
+			case RodState.FISHCASTING:
+				UpdateLineRendererEnds();
+				break;
 			default:
 				break;
 		}
@@ -223,6 +229,11 @@ public class PlatformingPlayerController : Interactor
 		if (moveInput != 0)
 		{
 			moveHeld = true;
+			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
+			{
+				spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+			}
+
 		}
 		else
 		{
@@ -302,12 +313,23 @@ public class PlatformingPlayerController : Interactor
 		TryInteract();
 	}
 
+	public void OnFishCast(Transform waterT)
+	{
+		interactedWaterT = waterT;
+		ChangeRodState(RodState.FISHCASTING);
+	}
+
+	public void OnDoneFishing()
+	{
+		ChangeRodState(RodState.RETURNING);
+	}
+
 	#endregion
 
 	#region FISHING ROD GRAPPLING HOOK
 	public enum RodState
 	{
-		INACTIVE, CASTING, RETURNING, HOOKED
+		INACTIVE, CASTING, RETURNING, HOOKED, FISHCASTING
 	}
 	public RodState currentRodState = RodState.INACTIVE;
 
@@ -320,6 +342,7 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState) // new rod state
 		{
 			case RodState.INACTIVE:
+				hookCol.isTrigger = true;
 				hookRb.transform.position = transform.position;
 				hookRb.gameObject.SetActive(false);
 				distanceJoint.enabled = false;
@@ -327,6 +350,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.CASTING:
+				hookCol.isTrigger = true;
 				hookRb.bodyType = RigidbodyType2D.Dynamic;
 				hookRb.gameObject.SetActive(true);
 				
@@ -338,6 +362,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.RETURNING:
+				hookCol.isTrigger = true;
 				distanceJoint.enabled = false;
 				hookRb.transform.parent = transform;
 				hookRb.bodyType = RigidbodyType2D.Dynamic;
@@ -352,6 +377,23 @@ public class PlatformingPlayerController : Interactor
 				hookRb.linearVelocity = Vector2.zero;
 
 				UpdateLineRendererEnds();
+
+				break;
+
+			case RodState.FISHCASTING:
+				hookRb.bodyType = RigidbodyType2D.Dynamic;
+				hookCol.isTrigger = false;
+				hookRb.gameObject.SetActive(true);
+
+				lineRenderer.enabled = true;
+
+				dir = spriteT.localScale.x * Vector2.right + Vector2.up;
+				dir.Normalize();
+
+				float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+
+				hookRb.AddForce(dir * 40 * dist);
+
 
 				break;
 		}

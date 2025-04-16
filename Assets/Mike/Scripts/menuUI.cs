@@ -23,6 +23,7 @@ public class MenuUI : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
+    public PlayerInput pi;
 
 
     void Start()
@@ -50,12 +51,12 @@ public class MenuUI : MonoBehaviour
 
     void newGameClicked()
     {
-        print("New Game Created");
+        //print("New Game Created");
         startMenu.SetActive(false);
     }
     void loadGameClicked()
     {
-        print("loading Game");
+        //print("loading Game");
         loadMenu.SetActive(!loadMenu.activeSelf);
         //startMenu.SetActive(false);
     }

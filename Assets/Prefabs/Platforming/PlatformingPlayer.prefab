@@ -243,6 +243,10 @@ GameObject:
   - component: {fileID: 189020837219235779}
   - component: {fileID: 1896222745735434132}
   - component: {fileID: 1781532249685237151}
+  - component: {fileID: 1504072084019602566}
+  - component: {fileID: 1876301516158393029}
+  - component: {fileID: 6697260024632076331}
+  - component: {fileID: 3667505915911299188}
   m_Layer: 10
   m_Name: PlatformingPlayer
   m_TagString: Untagged
@@ -385,7 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce624492a387cc54190d9e2ed6ecc95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionKey: 101
   enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
@@ -393,6 +396,9 @@ MonoBehaviour:
   distanceJoint: {fileID: 1896222745735434132}
   lineRenderer: {fileID: 1781532249685237151}
   hookRb: {fileID: 2836803051751671902}
+  hookCol: {fileID: 446745433903773732}
+  spriteT: {fileID: 3381539768182715777}
+  interactedWaterT: {fileID: 0}
   moveSpeed: 33
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
@@ -551,6 +557,111 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1504072084019602566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95fcb846a7f2a9e4780b5216755d8985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pi: {fileID: 5430223865702074187}
+  moveSpeed: 10
+  reelSpeed: 6
+  hookRb: {fileID: 0}
+  bobberRb: {fileID: 0}
+  lineLength: 0
+  maxLength: 1000
+  sideLength: 500
+  depthLength: 340
+--- !u!114 &1876301516158393029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b663e92038a8fc847b65ab6d544e0e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 1f6f2e6a67a97a644bad1cd9accc4d14, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 189020837219235779}
+        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
+        m_MethodName: OnDoneFishing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6697260024632076331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ef4bea3fca42e459c1e937437274c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 3d6aa5cb50e93c34ea5a7a59cadb158b, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 189020837219235779}
+        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
+        m_MethodName: OnDoneFishing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3667505915911299188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb56c99a5c42175478e7b555a67e0106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 43a0113537bcec04e8cadf952de9826f, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 189020837219235779}
+        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
+        m_MethodName: OnFishCast
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6343699967925498643
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,7 +737,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7db28de54b2f4284eb218927dd51944f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
