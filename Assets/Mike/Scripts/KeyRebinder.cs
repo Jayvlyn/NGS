@@ -46,7 +46,7 @@ public class KeyRebinder : MonoBehaviour
                 ? keyAction.action.GetBindingIndexForControl(keyAction.action.controls[(isNegitive) ? 0 : 1])
                 : keyAction.action.GetBindingIndexForControl(keyAction.action.controls[0]);
 
-        if(compositPartName != "") bindingIndex = keyAction.action.GetBindingIndexForControl(keyAction.action.controls[GetBindingIndexByName(compositPartName)]);
+        if(compositPartName != "") bindingIndex = GetBindingIndexByName(compositPartName);
 
         keyText.text = InputControlPath.ToHumanReadableString(keyAction.action.bindings[bindingIndex].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice);
