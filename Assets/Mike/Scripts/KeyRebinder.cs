@@ -16,23 +16,11 @@ public class KeyRebinder : MonoBehaviour
     public void StartRebinding()
     {
         keyText.text = ".....";
+        //keyAction.action.bindings (.isPartcomposit or .name)
 
         playerController.SwitchCurrentActionMap("RebindKeys");
 
         if (keyAction.action.type == InputActionType.Value && keyAction.action.expectedControlType == "Axis")
-        {
-            if (isNegitive)
-            {
-                rebindingOperation = keyAction.action.PerformInteractiveRebinding(1).OnMatchWaitForAnother(0.1f)
-                .OnComplete(operation => RebindComplete()).Start();
-            }
-            else
-            {
-                rebindingOperation = keyAction.action.PerformInteractiveRebinding(2).OnMatchWaitForAnother(0.1f)
-                .OnComplete(operation => RebindComplete()).Start();
-            }
-        }
-        else if(keyAction.action.expectedControlType == "Vector2")
         {
             if (isNegitive)
             {
@@ -65,4 +53,24 @@ public class KeyRebinder : MonoBehaviour
 
         playerController.SwitchCurrentActionMap("Platformer");
     }
+
+    //private int GetBindingIndexByName(string name)
+    //{
+    //    if()
+    //    {
+
+    //    }
+    //    else if()
+    //    {
+
+    //    }
+    //    else if()
+    //    {
+
+    //    }
+    //    else
+    //    {
+
+    //    }
+    //}
 }
