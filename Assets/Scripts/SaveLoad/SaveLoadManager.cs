@@ -47,7 +47,18 @@ public class SaveLoadManager : MonoBehaviour
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
             int j = i;
-            go.GetComponent<Button>().onClick.AddListener(() => Select(j));
+            foreach(var comp in go.GetComponentsInChildren<Button>())
+            {
+                comp.onClick.AddListener(() => Select(j));
+                if(comp.name == "LoadBtn")
+                {
+                    comp.onClick.AddListener(() => Load());
+                }
+                else
+                {
+                    comp.onClick.AddListener(() => Delete());
+                }
+            }
             options.Add(go);
         }
     }
@@ -64,6 +75,11 @@ public class SaveLoadManager : MonoBehaviour
     public void Load()
     {
         Debug.Log($"Loaded Save {selected}");
+    }
+
+    public void Delete()
+    {
+        print("This got deleted");
     }
 
     private void Start()
