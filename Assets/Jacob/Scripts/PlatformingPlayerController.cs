@@ -51,6 +51,8 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private int totalWallJumps = 3;
 	private int currentWallJumps;
+	[SerializeField] private float wallJumpUpwardsInfluence = 1;
+	[SerializeField] private float wallJumpSidewaysInfluence = 1;
 
 	[SerializeField, Tooltip("Time before and after landing where player will successfully bunny hop")]
 	private float bunnyHopWindow = 0.05f;
@@ -232,7 +234,7 @@ public class PlatformingPlayerController : Interactor
 			moveHeld = true;
 			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
 			{
-				spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+				flipX();
 			}
 
 		}
@@ -466,18 +468,19 @@ public class PlatformingPlayerController : Interactor
 	{
 		currentWallJumps--;
 
-		Vector2 dir = Vector2.up;
+		Vector2 dir = Vector2.up * wallJumpUpwardsInfluence;
 
 		if(isTouchingLeftWall())
 		{ // DO JUMP UP AND RIGHT
-			dir += Vector2.right;
+			dir += Vector2.right * wallJumpSidewaysInfluence;
 		}
 		else // touching right wall
 		{ // DO JUMP UP AND LEFT
-			dir += Vector2.left;
+			dir += Vector2.left * wallJumpSidewaysInfluence;
 		}
 
 		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
+		flipX();
 	}
 	//--------------
 
@@ -635,6 +638,11 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	#endregion
+
+	private void flipX()
+	{
+		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+	}
 
 	private void OnDrawGizmos()
 	{
