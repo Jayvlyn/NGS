@@ -50,14 +50,8 @@ public class SaveLoadManager : MonoBehaviour
             foreach(var comp in go.GetComponentsInChildren<Button>())
             {
                 comp.onClick.AddListener(() => Select(j));
-                if(comp.name == "LoadBtn")
-                {
-                    comp.onClick.AddListener(() => Load());
-                }
-                else
-                {
-                    comp.onClick.AddListener(() => Delete());
-                }
+                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => Load());
+                else comp.onClick.AddListener(() => Delete());
             }
             options.Add(go);
         }
@@ -67,7 +61,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (selected != -1)
         {
-            options[selected].GetComponent<Image>().color = Color.white;
+            //options[selected].GetComponent<Image>().color = Color.white;
         }
         selected = save;
     }
