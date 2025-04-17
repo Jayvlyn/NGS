@@ -28,6 +28,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private float bhopForce = 20f;
 
 	[SerializeField] private float maxLineLength = 10f;
+	public float MaxLineLength { get { return maxLineLength; } }
 
 	[SerializeField, Tooltip("Force at which the hook gets launched from player when casting")] 
 	private float castForce = 10f;
