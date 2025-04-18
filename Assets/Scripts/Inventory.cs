@@ -21,7 +21,8 @@ public class Inventory : Singleton<Inventory>
 
     public void AddFish(Fish fish)
     {
-        if(!currentFish.ContainsKey(fish.fishName))
+        InventoryUIFiller.Instance.addFishToUI(fish);
+        if (!currentFish.ContainsKey(fish.fishName))
         {
             FishData fishData = new()
             {
