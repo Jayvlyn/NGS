@@ -73,19 +73,30 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Delete()
     {
-        print("This got deleted");
+        string path = Path.Combine(Application.dataPath, "Saves");
+        path = Path.Combine(path, $"{selected}.json");
+
+        if(File.Exists(path))
+        {
+            saveList.RemoveAt(selected);
+            options.RemoveAt(selected);
+            File.Delete(path);
+        }
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        string path = Path.Combine(Application.dataPath, "Saves");
-        foreach (string file in Directory.GetFiles(path))
+        if (saveList.Count == 0)
         {
-            if (file.EndsWith(".json"))
+            string path = Path.Combine(Application.dataPath, "Saves");
+            foreach (string file in Directory.GetFiles(path))
             {
-                StreamReader sr = new(Path.Combine(path, file));
-                saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
-                sr.Close();
+                if (file.EndsWith(".json"))
+                {
+                    StreamReader sr = new(Path.Combine(path, file));
+                    saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
+                    sr.Close();
+                }
             }
         }
         UpdateDisplay();
