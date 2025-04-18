@@ -4,19 +4,11 @@ using UnityEngine.Rendering;
 [System.Serializable]
 public class SaveData
 {
-    //Temporary tracker to verify functionality
-    private static int tempTracker = -1;
     public SerializedDictionary<string, FishData> inventory;
     public double money;
-    public int id;
+    public string id;
 
-    public SaveData()
-    {
-        id = tempTracker;
-        tempTracker++;
-    }
-
-    public SaveData(int id)
+    public SaveData(string id)
     {
         this.id = id;
     }

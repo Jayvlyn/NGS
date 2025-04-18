@@ -12,9 +12,12 @@ public class SaveLoadManager : MonoBehaviour
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
-    public void Save()
+    public bool Save(string name)
     {
-        SaveData data = new();
+
+        foreach (var save in saveList) if (save.id == name) return false;
+
+        SaveData data = new(name);
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
@@ -28,6 +31,8 @@ public class SaveLoadManager : MonoBehaviour
         sw.Write(dataString);
         sw.Close();
         UpdateDisplay();
+
+        return true;
     }
 
     private void UpdateDisplay()
@@ -59,10 +64,6 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Select(int save)
     {
-        if (selected != -1)
-        {
-            //options[selected].GetComponent<Image>().color = Color.white;
-        }
         selected = save;
     }
 
@@ -74,12 +75,12 @@ public class SaveLoadManager : MonoBehaviour
     public void Delete()
     {
         string path = Path.Combine(Application.dataPath, "Saves");
-        path = Path.Combine(path, $"{selected}.json");
+        path = Path.Combine(path, $"{saveList[selected].id}.json");
 
         if(File.Exists(path))
         {
-            saveList.RemoveAt(selected);
-            options.RemoveAt(selected);
+            saveList.Remove(saveList[selected]);
+            options.Remove(options[selected]);
             File.Delete(path);
         }
     }
