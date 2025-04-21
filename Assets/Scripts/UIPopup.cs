@@ -67,7 +67,7 @@ public class UIPopup : MonoBehaviour
     public void DisplayInfo(Fish fish)
     {
         StringBuilder builder = new StringBuilder();
-        builder.Append("<size="+TitleSize+">").Append(fish.name).Append("</size>").AppendLine();
+        builder.Append("<size="+TitleSize+">").Append(fish.fishName).Append("</size>").AppendLine();
         builder.Append("<size="+subTextSize+">").Append("Length: "+fish.length.ToString("0.00")+"cm").Append("</size>");
 
         infoText.text = builder.ToString();     
