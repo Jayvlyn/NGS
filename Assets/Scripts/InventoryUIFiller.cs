@@ -28,7 +28,7 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
         fishInventoryUI.SetActive(false);
     }
     //add fish to the list of fish to be added to the UI
-    public void AddFishtoInventoryUI(Fish fish)
+    public void AddFishToInventoryUI(Fish fish)
     {
         fishList.Add(fish);
     }  
