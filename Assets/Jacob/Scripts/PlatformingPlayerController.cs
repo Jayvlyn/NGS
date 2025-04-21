@@ -14,6 +14,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Collider2D hookCol;
 	[SerializeField] private Transform spriteT;
 	[HideInInspector] public Transform interactedWaterT;
+	[SerializeField] VoidEvent onInventory;
 	private Camera cam;
 
 	[Header("Stats")]
@@ -311,6 +312,14 @@ public class PlatformingPlayerController : Interactor
 		else // released
 		{
 			reelHeld = false;
+		}
+	}
+
+	public void OnInventory(InputValue value)
+	{
+		if (value.isPressed)
+		{
+			onInventory.Raise();
 		}
 	}
 
