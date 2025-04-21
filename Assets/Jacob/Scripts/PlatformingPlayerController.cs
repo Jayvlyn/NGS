@@ -319,6 +319,11 @@ public class PlatformingPlayerController : Interactor
 	public void OnFishCast(Transform waterT)
 	{
 		interactedWaterT = waterT;
+		Vector3 waterDir = (interactedWaterT.transform.position - transform.position).normalized;
+		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
+		{
+			flipX();
+		}
 		ChangeRodState(RodState.FISHCASTING);
 	}
 
@@ -395,7 +400,7 @@ public class PlatformingPlayerController : Interactor
 
 				float dist = Vector2.Distance(transform.position, interactedWaterT.position);
 
-				hookRb.AddForce(dir * 40 * dist);
+				hookRb.AddForce(dir * 30 * dist);
 
 
 				break;
