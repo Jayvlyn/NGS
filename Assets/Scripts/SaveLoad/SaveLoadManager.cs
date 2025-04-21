@@ -47,7 +47,12 @@ public class SaveLoadManager : MonoBehaviour
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
             int j = i;
-            go.GetComponent<Button>().onClick.AddListener(() => Select(j));
+            foreach(var comp in go.GetComponentsInChildren<Button>())
+            {
+                comp.onClick.AddListener(() => Select(j));
+                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => Load());
+                else comp.onClick.AddListener(() => Delete());
+            }
             options.Add(go);
         }
     }
@@ -56,7 +61,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (selected != -1)
         {
-            options[selected].GetComponent<Image>().color = Color.white;
+            //options[selected].GetComponent<Image>().color = Color.white;
         }
         selected = save;
     }
@@ -66,16 +71,32 @@ public class SaveLoadManager : MonoBehaviour
         Debug.Log($"Loaded Save {selected}");
     }
 
-    private void Start()
+    public void Delete()
     {
         string path = Path.Combine(Application.dataPath, "Saves");
-        foreach (string file in Directory.GetFiles(path))
+        path = Path.Combine(path, $"{selected}.json");
+
+        if(File.Exists(path))
         {
-            if (file.EndsWith(".json"))
+            saveList.RemoveAt(selected);
+            options.RemoveAt(selected);
+            File.Delete(path);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (saveList.Count == 0)
+        {
+            string path = Path.Combine(Application.dataPath, "Saves");
+            foreach (string file in Directory.GetFiles(path))
             {
-                StreamReader sr = new(Path.Combine(path, file));
-                saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
-                sr.Close();
+                if (file.EndsWith(".json"))
+                {
+                    StreamReader sr = new(Path.Combine(path, file));
+                    saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
+                    sr.Close();
+                }
             }
         }
         UpdateDisplay();

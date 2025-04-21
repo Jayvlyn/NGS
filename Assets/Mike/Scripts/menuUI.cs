@@ -51,14 +51,14 @@ public class MenuUI : MonoBehaviour
 
     void newGameClicked()
     {
-        //print("New Game Created");
+        if (!loadMenu.activeSelf) loadMenu.SetActive(true);
+        GetComponentInChildren<SaveLoadManager>().Save();
+        loadMenu.SetActive(false);
         startMenu.SetActive(false);
     }
     void loadGameClicked()
     {
-        //print("loading Game");
         loadMenu.SetActive(!loadMenu.activeSelf);
-        //startMenu.SetActive(false);
     }
     void settingsClicked()
     {
