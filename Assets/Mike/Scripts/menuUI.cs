@@ -13,6 +13,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
+    [SerializeField] GameObject inventoryMenu;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button newGameBtn;
@@ -120,6 +121,18 @@ public class MenuUI : MonoBehaviour
         else
         {
             characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
+        }
+    }
+
+    public void OnInventory()
+    { 
+        if (inventoryMenu.activeSelf)
+        {
+            inventoryMenu.SetActive(false);
+        }
+        else
+        {
+            inventoryMenu.SetActive(true);
         }
     }
 }
