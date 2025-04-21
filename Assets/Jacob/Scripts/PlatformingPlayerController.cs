@@ -51,6 +51,8 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private int totalWallJumps = 3;
 	private int currentWallJumps;
+	[SerializeField] private float wallJumpUpwardsInfluence = 1;
+	[SerializeField] private float wallJumpSidewaysInfluence = 1;
 
 	[SerializeField, Tooltip("Time before and after landing where player will successfully bunny hop")]
 	private float bunnyHopWindow = 0.05f;
@@ -77,6 +79,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Vector2 rightCheckSize = new Vector2(0.1f, 0.5f);
 	[SerializeField] private Transform leftCheckT;
 	[SerializeField] private Vector2 leftCheckSize = new Vector2(0.1f, 0.5f);
+
+	[Header("Fishing Cast Visuals")]
+	[SerializeField] private AnimationCurve fishCastCurve;
 
 	// Inputs
 	private float moveInput; // left-right 1D axis
@@ -232,7 +237,7 @@ public class PlatformingPlayerController : Interactor
 			moveHeld = true;
 			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
 			{
-				spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+				flipX();
 			}
 
 		}
@@ -317,7 +322,31 @@ public class PlatformingPlayerController : Interactor
 	public void OnFishCast(Transform waterT)
 	{
 		interactedWaterT = waterT;
+		Vector3 waterDir = (interactedWaterT.transform.position - transform.position).normalized;
+		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
+		{
+			flipX();
+		}
 		ChangeRodState(RodState.FISHCASTING);
+	}
+
+	public IEnumerator VisualFishCast(float speed = 1)
+	{
+		hookRb.bodyType = RigidbodyType2D.Kinematic;
+		float t = 0;
+		while (t < 1)
+		{
+			Vector2 pos;
+			pos.x = t / 1;
+			pos.y = fishCastCurve.Evaluate(t);
+			Debug.Log(pos.y);
+			hookRb.transform.position = (Vector2)this.transform.position + pos;
+
+			t += Time.deltaTime * speed;
+			yield return null;
+		}
+
+		hookRb.bodyType = RigidbodyType2D.Dynamic;
 	}
 
 	public void OnDoneFishing()
@@ -382,18 +411,20 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.FISHCASTING:
-				hookRb.bodyType = RigidbodyType2D.Dynamic;
+				//hookRb.bodyType = RigidbodyType2D.Dynamic;
 				hookCol.isTrigger = false;
 				hookRb.gameObject.SetActive(true);
 
 				lineRenderer.enabled = true;
 
-				dir = spriteT.localScale.x * Vector2.right + Vector2.up;
-				dir.Normalize();
+				StartCoroutine(VisualFishCast(1));
 
-				float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+				//dir = spriteT.localScale.x * Vector2.right + Vector2.up;
+				//dir.Normalize();
 
-				hookRb.AddForce(dir * 40 * dist);
+				//float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+
+				//hookRb.AddForce(dir * 30 * dist);
 
 
 				break;
@@ -466,18 +497,19 @@ public class PlatformingPlayerController : Interactor
 	{
 		currentWallJumps--;
 
-		Vector2 dir = Vector2.up;
+		Vector2 dir = Vector2.up * wallJumpUpwardsInfluence;
 
 		if(isTouchingLeftWall())
 		{ // DO JUMP UP AND RIGHT
-			dir += Vector2.right;
+			dir += Vector2.right * wallJumpSidewaysInfluence;
 		}
 		else // touching right wall
 		{ // DO JUMP UP AND LEFT
-			dir += Vector2.left;
+			dir += Vector2.left * wallJumpSidewaysInfluence;
 		}
 
 		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
+		flipX();
 	}
 	//--------------
 
@@ -635,6 +667,11 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	#endregion
+
+	private void flipX()
+	{
+		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+	}
 
 	private void OnDrawGizmos()
 	{
