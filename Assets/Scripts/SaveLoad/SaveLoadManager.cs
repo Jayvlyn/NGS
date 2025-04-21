@@ -8,13 +8,17 @@ public class SaveLoadManager : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
+    [SerializeField] private GameObject gameSettings;
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
-    public void Save()
+    public bool Save(string name)
     {
-        SaveData data = new();
+
+        foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
+
+        SaveData data = new(name);
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
@@ -28,6 +32,8 @@ public class SaveLoadManager : MonoBehaviour
         sw.Write(dataString);
         sw.Close();
         UpdateDisplay();
+
+        return true;
     }
 
     private void UpdateDisplay()
@@ -59,28 +65,30 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Select(int save)
     {
-        if (selected != -1)
-        {
-            //options[selected].GetComponent<Image>().color = Color.white;
-        }
         selected = save;
     }
 
     public void Load()
     {
-        Debug.Log($"Loaded Save {selected}");
+        string path = Path.Combine(Application.dataPath, "Saves");
+        path = Path.Combine(path, $"{saveList[selected].id}.json");
+        if (File.Exists(path))
+        {
+            //use this saveList[selected] to fill out & load settings
+            Debug.Log($"Loaded Save from {path}");
+        }
     }
 
     public void Delete()
     {
         string path = Path.Combine(Application.dataPath, "Saves");
-        path = Path.Combine(path, $"{selected}.json");
+        path = Path.Combine(path, $"{saveList[selected].id}.json");
 
         if(File.Exists(path))
         {
-            saveList.RemoveAt(selected);
-            options.RemoveAt(selected);
+            saveList.Remove(saveList[selected]);
             File.Delete(path);
+            UpdateDisplay();
         }
     }
 

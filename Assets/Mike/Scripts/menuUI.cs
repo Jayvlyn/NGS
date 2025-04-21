@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,13 +7,14 @@ using UnityEngine.UI;
 public class MenuUI : MonoBehaviour
 {
     [Header("Panels")]
+    [SerializeField] GameObject characterCreation;
     [SerializeField] GameObject startMenu;
     [SerializeField] GameObject loadMenu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
 
-    [Header("Buttons")]
+    [Header("Buttons&Inputs")]
     [SerializeField] Button newGameBtn;
     [SerializeField] Button loadGameBtn;
     [SerializeField] Button settingsBtn;
@@ -20,6 +22,8 @@ public class MenuUI : MonoBehaviour
     [SerializeField] Button keyBindBtn;
     [SerializeField] Button saveBtn;
     [SerializeField] Button backBtn;
+    [SerializeField] Button createBtn;
+    [SerializeField] TMP_InputField characterName;
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
@@ -35,6 +39,7 @@ public class MenuUI : MonoBehaviour
         if(quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
         if(saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if(backBtn != null) backBtn.onClick.AddListener(() => backClicked());
+        if(createBtn != null) createBtn.onClick.AddListener(() => createClicked());
         foreach (Button btn in pause.GetComponentsInChildren<Button>())
         {
             if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
@@ -52,8 +57,7 @@ public class MenuUI : MonoBehaviour
     void newGameClicked()
     {
         if (!loadMenu.activeSelf) loadMenu.SetActive(true);
-        GetComponentInChildren<SaveLoadManager>().Save();
-        loadMenu.SetActive(false);
+        characterCreation.SetActive(true);
         startMenu.SetActive(false);
     }
     void loadGameClicked()
@@ -86,16 +90,36 @@ public class MenuUI : MonoBehaviour
 
     void backClicked()
     {
-        print("Back");
         if (keyBinds.activeSelf) keyBinds.SetActive(false);
         else settings.SetActive(false);
     }
 
     void saveClicked()
     {
-        print("Save");
-        //add save functions later on
-        if (keyBinds.activeSelf) keyBinds.SetActive(false);
-        else settings.SetActive(false);
+        if (keyBinds.activeSelf)
+        {
+            keyBinds.SetActive(false);
+        }
+        else
+        {
+            settings.SetActive(false);
+        }
+    }
+
+    void createClicked()
+    {
+        bool created = false;
+
+        created = GetComponentInChildren<SaveLoadManager>().Save(characterName.text);
+
+        if (created)
+        {
+            loadMenu.SetActive(false);
+            characterCreation.SetActive(false);
+        }
+        else
+        {
+            characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
+        }
     }
 }
