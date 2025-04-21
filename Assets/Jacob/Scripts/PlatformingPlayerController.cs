@@ -80,6 +80,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Transform leftCheckT;
 	[SerializeField] private Vector2 leftCheckSize = new Vector2(0.1f, 0.5f);
 
+	[Header("Fishing Cast Visuals")]
+	[SerializeField] private AnimationCurve fishCastCurve;
+
 	// Inputs
 	private float moveInput; // left-right 1D axis
 							 // Handle Held Inputs
@@ -327,6 +330,25 @@ public class PlatformingPlayerController : Interactor
 		ChangeRodState(RodState.FISHCASTING);
 	}
 
+	public IEnumerator VisualFishCast(float speed = 1)
+	{
+		hookRb.bodyType = RigidbodyType2D.Kinematic;
+		float t = 0;
+		while (t < 1)
+		{
+			Vector2 pos;
+			pos.x = t / 1;
+			pos.y = fishCastCurve.Evaluate(t);
+			Debug.Log(pos.y);
+			hookRb.transform.position = (Vector2)this.transform.position + pos;
+
+			t += Time.deltaTime * speed;
+			yield return null;
+		}
+
+		hookRb.bodyType = RigidbodyType2D.Dynamic;
+	}
+
 	public void OnDoneFishing()
 	{
 		ChangeRodState(RodState.RETURNING);
@@ -389,18 +411,20 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.FISHCASTING:
-				hookRb.bodyType = RigidbodyType2D.Dynamic;
+				//hookRb.bodyType = RigidbodyType2D.Dynamic;
 				hookCol.isTrigger = false;
 				hookRb.gameObject.SetActive(true);
 
 				lineRenderer.enabled = true;
 
-				dir = spriteT.localScale.x * Vector2.right + Vector2.up;
-				dir.Normalize();
+				StartCoroutine(VisualFishCast(1));
 
-				float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+				//dir = spriteT.localScale.x * Vector2.right + Vector2.up;
+				//dir.Normalize();
 
-				hookRb.AddForce(dir * 30 * dist);
+				//float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+
+				//hookRb.AddForce(dir * 30 * dist);
 
 
 				break;
