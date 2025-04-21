@@ -15,6 +15,8 @@ public class ModifySettings : MonoBehaviour
 
     Resolution[] resolutions;
 
+    public GameSettings gSettings;
+
     void Start()
     {
         //TODO: Switch to scriptible object later on
@@ -76,5 +78,15 @@ public class ModifySettings : MonoBehaviour
     public void SetPostProcessing(bool isPostProcessingOn)
     {
         postProcessing.enabled = isPostProcessingOn;
+    }
+
+    public void SaveSettings()
+    {
+        mixer.GetFloat("MasterVol", out gSettings.masterVolume);
+        mixer.GetFloat("MusicVol", out gSettings.musicVolume);
+        mixer.GetFloat("SFXVol", out gSettings.sfxVolume);
+        gSettings.isFullScreen = Screen.fullScreen;
+        gSettings.hasPostProcessing = postProcessing.enabled;
+        gSettings.screenResolution = resolutionDropdown.value;
     }
 }

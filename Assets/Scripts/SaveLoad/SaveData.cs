@@ -5,7 +5,11 @@ using UnityEngine.Rendering;
 public class SaveData
 {
     public SerializedDictionary<string, FishData> inventory;
-    public List<GameObject> k;
+    public List<string> platformerKeybinds;
+    public List<string> minigameKeybinds;
+    public List<string> bossGameKeybinds;
+    public bool hasPostProcessing;
+    public bool isFullScreen;
     public double money;
     public string id;
 

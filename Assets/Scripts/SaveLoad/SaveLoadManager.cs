@@ -13,15 +13,23 @@ public class SaveLoadManager : MonoBehaviour
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
-    public bool Save(string name)
+    public bool Save(string name, bool autoSave = false)
     {
 
-        foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
+        if(!autoSave) foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
 
-        SaveData data = new(name);
+        SaveData data = (!autoSave) ? new(name) : saveList[selected];
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
+        if(!autoSave)
+        {
+            data.platformerKeybinds = new List<string> { "space", "" };
+        }
+        else
+        {
+
+        }
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists

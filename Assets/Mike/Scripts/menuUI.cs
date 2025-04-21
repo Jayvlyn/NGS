@@ -103,6 +103,7 @@ public class MenuUI : MonoBehaviour
         }
         else
         {
+            GetComponent<ModifySettings>().SaveSettings();
             settings.SetActive(false);
         }
     }
