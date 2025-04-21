@@ -337,9 +337,8 @@ public class PlatformingPlayerController : Interactor
 		while (t < 1)
 		{
 			Vector2 pos;
-			pos.x = t / 1;
+			pos.x = (t / 1) * Mathf.Sign(spriteT.localScale.x);
 			pos.y = fishCastCurve.Evaluate(t);
-			Debug.Log(pos.y);
 			hookRb.transform.position = (Vector2)this.transform.position + pos;
 
 			t += Time.deltaTime * speed;
@@ -417,7 +416,7 @@ public class PlatformingPlayerController : Interactor
 
 				lineRenderer.enabled = true;
 
-				StartCoroutine(VisualFishCast(1));
+				StartCoroutine(VisualFishCast(2));
 
 				//dir = spriteT.localScale.x * Vector2.right + Vector2.up;
 				//dir.Normalize();
