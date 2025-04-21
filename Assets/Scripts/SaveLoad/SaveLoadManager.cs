@@ -8,6 +8,7 @@ public class SaveLoadManager : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
+    [SerializeField] private GameObject gameSettings;
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
@@ -15,7 +16,7 @@ public class SaveLoadManager : MonoBehaviour
     public bool Save(string name)
     {
 
-        foreach (var save in saveList) if (save.id == name) return false;
+        foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
 
         SaveData data = new(name);
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
@@ -69,7 +70,13 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Load()
     {
-        Debug.Log($"Loaded Save {selected}");
+        string path = Path.Combine(Application.dataPath, "Saves");
+        path = Path.Combine(path, $"{saveList[selected].id}.json");
+        if (File.Exists(path))
+        {
+            //use this saveList[selected] to fill out & load settings
+            Debug.Log($"Loaded Save from {path}");
+        }
     }
 
     public void Delete()
@@ -80,8 +87,8 @@ public class SaveLoadManager : MonoBehaviour
         if(File.Exists(path))
         {
             saveList.Remove(saveList[selected]);
-            options.Remove(options[selected]);
             File.Delete(path);
+            UpdateDisplay();
         }
     }
 

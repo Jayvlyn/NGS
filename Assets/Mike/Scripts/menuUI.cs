@@ -39,7 +39,7 @@ public class MenuUI : MonoBehaviour
         if(quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
         if(saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if(backBtn != null) backBtn.onClick.AddListener(() => backClicked());
-        if(createBtn != null) backBtn.onClick.AddListener(() => createClicked());
+        if(createBtn != null) createBtn.onClick.AddListener(() => createClicked());
         foreach (Button btn in pause.GetComponentsInChildren<Button>())
         {
             if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
@@ -90,17 +90,20 @@ public class MenuUI : MonoBehaviour
 
     void backClicked()
     {
-        print("Back");
         if (keyBinds.activeSelf) keyBinds.SetActive(false);
         else settings.SetActive(false);
     }
 
     void saveClicked()
     {
-        print("Save");
-        //add save functions later on
-        if (keyBinds.activeSelf) keyBinds.SetActive(false);
-        else settings.SetActive(false);
+        if (keyBinds.activeSelf)
+        {
+            keyBinds.SetActive(false);
+        }
+        else
+        {
+            settings.SetActive(false);
+        }
     }
 
     void createClicked()
@@ -113,6 +116,10 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterCreation.SetActive(false);
+        }
+        else
+        {
+            characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
         }
     }
 }

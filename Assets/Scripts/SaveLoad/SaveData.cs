@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 public class SaveData
 {
     public SerializedDictionary<string, FishData> inventory;
+    public List<GameObject> k;
     public double money;
     public string id;
 
