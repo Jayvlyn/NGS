@@ -37,7 +37,7 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
     {
         //create prefab and get the components 
         GameObject newPrefab = Instantiate<GameObject>(fishInventoryUIPrefab, this.transform);
-        newPrefab.GetComponentsInChildren<TMPro.TMP_Text>()[0].text = fish.fishName;
+        newPrefab.GetComponent<FishInventoryItem>().fish = fish;
         Image fishImg = newPrefab.GetComponentsInChildren<Image>()[0];
         Image rarityImg = newPrefab.GetComponentsInChildren<Image>()[2];
         fishImg.sprite = fish.sprite;
