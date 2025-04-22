@@ -71,6 +71,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField, Tooltip("How big a radius will be created around the mouse when looking for a valid grapple point")]
 	private float aimAssistRadius = 2;
 
+	[SerializeField, Tooltip("Then the player gets this close to the hook while in hooked state, it will detach")]
+	private float detachDistance = 0.5f;
+
 	[Header("Ground Check")]
 	[SerializeField] private LayerMask groundLayer;
 	[SerializeField] private Transform groundCheckT;
@@ -197,7 +200,7 @@ public class PlatformingPlayerController : Interactor
 					distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
 				}
 
-                if (dist < 0.1f)
+                if (dist < detachDistance)
                 {
 					ChangeRodState(RodState.RETURNING);
                 }
