@@ -178,13 +178,6 @@ public class PlatformingPlayerController : Interactor
 		// Process Rod State
 		switch (currentRodState)
 		{
-			case RodState.CASTING:
-				//if (Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
-				//{ // Reached max distance before hitting something
-				//	ChangeRodState(RodState.RETURNING);
-				//}
-
-				break;
 			case RodState.RETURNING:
 				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
 				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
@@ -199,8 +192,13 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				float dist = Vector2.Distance(transform.position, hookRb.transform.position);
 				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
-				// Reeling
-				if (reelHeld)
+
+                if (dist < 0.1f)
+                {
+					ChangeRodState(RodState.RETURNING);
+                }
+                // Reeling
+                if (reelHeld)
 				{
 					if (slackHeld) // Give Slack
 					{
@@ -245,7 +243,6 @@ public class PlatformingPlayerController : Interactor
 			{
 				flipX();
 			}
-
 		}
 		else
 		{
@@ -438,8 +435,8 @@ public class PlatformingPlayerController : Interactor
 
 			float modifier = 1;
 
-			if(t < 0.5)modifier -= t;
-			else modifier += t;
+			if(t/castTime < 0.5)modifier -= t / castTime;
+			else modifier += t / castTime;
 			
 			t += Time.deltaTime * modifier;
 			yield return null;
@@ -479,6 +476,8 @@ public class PlatformingPlayerController : Interactor
 			float yDiff = hookPos.y - transform.position.y;
 			//float xDiff = Mathf.Abs(hookPos.x - transform.position.x);
 			float distance = Vector2.Distance(hookPos, transform.position);
+
+			castTime = distance * 0.2f;
 
 			grappleCastCurve = new AnimationCurve();
 			grappleCastCurve.CopyFrom(grappleCastCurveBase);
