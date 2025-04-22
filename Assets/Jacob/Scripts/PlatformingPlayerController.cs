@@ -192,6 +192,10 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				float dist = Vector2.Distance(transform.position, hookRb.transform.position);
 				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
+                if (distanceJoint.distance > maxLineLength)
+                {
+					distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+				}
 
                 if (dist < 0.1f)
                 {
@@ -214,10 +218,7 @@ public class PlatformingPlayerController : Interactor
 					}
 					else // Reel In
 					{
-						//old
 						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
-
-						//new
 						dir = (hookRb.transform.position - transform.position).normalized;
 						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
 					}
@@ -488,8 +489,8 @@ public class PlatformingPlayerController : Interactor
 			keys[2].value = yDiff; // end point
 			grappleCastCurve.keys = keys;
 
-			Debug.Log($"Diff: {yDiff}");
-			Debug.Log(grappleCastCurve.keys[^1].value);
+			//Debug.Log($"Diff: {yDiff}");
+			//Debug.Log(grappleCastCurve.keys[^1].value);
 
 			if(castHookToPoint != null) StopCoroutine(castHookToPoint);
 			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
