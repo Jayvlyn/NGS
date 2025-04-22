@@ -437,27 +437,18 @@ public class PlatformingPlayerController : Interactor
 			hookRb.transform.position = currentPos;
 
 			float modifier = 1;
-			if(t < 0.5)
-			{
-				modifier -= t;
-			}
-			else
-			{
-				modifier += t;
-			}
 
+			if(t < 0.5)modifier -= t;
+			else modifier += t;
+			
 			t += Time.deltaTime * modifier;
 			yield return null;
 		}
 		hookRb.transform.position = point;
-		if(willHook)
-		{
-			ChangeRodState(RodState.HOOKED);
-		}
-		else
-		{
-			ChangeRodState(RodState.RETURNING);
-		}
+
+		if(willHook)ChangeRodState(RodState.HOOKED);
+		else ChangeRodState(RodState.RETURNING);
+		
 	}
 	private Coroutine castHookToPoint;
 
@@ -486,13 +477,15 @@ public class PlatformingPlayerController : Interactor
 			hookRb.transform.parent = null;
 			
 			float yDiff = hookPos.y - transform.position.y;
+			float xDiff = Mathf.Abs(hookPos.x - transform.position.x);
 
 			grappleCastCurve = new AnimationCurve();
 			grappleCastCurve.CopyFrom(grappleCastCurveBase);
 
 			// if grapple point is higher than player, hook will end higher than it started
 			Keyframe[] keys = grappleCastCurve.keys;
-			keys[^1].value = yDiff;
+			keys[1].value = xDiff; // mid point
+			keys[2].value = yDiff; // end point
 			grappleCastCurve.keys = keys;
 
 			Debug.Log($"Diff: {yDiff}");
