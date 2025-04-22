@@ -477,14 +477,15 @@ public class PlatformingPlayerController : Interactor
 			hookRb.transform.parent = null;
 			
 			float yDiff = hookPos.y - transform.position.y;
-			float xDiff = Mathf.Abs(hookPos.x - transform.position.x);
+			//float xDiff = Mathf.Abs(hookPos.x - transform.position.x);
+			float distance = Vector2.Distance(hookPos, transform.position);
 
 			grappleCastCurve = new AnimationCurve();
 			grappleCastCurve.CopyFrom(grappleCastCurveBase);
 
 			// if grapple point is higher than player, hook will end higher than it started
 			Keyframe[] keys = grappleCastCurve.keys;
-			keys[1].value = xDiff; // mid point
+			keys[1].value = distance; // mid point
 			keys[2].value = yDiff; // end point
 			grappleCastCurve.keys = keys;
 
