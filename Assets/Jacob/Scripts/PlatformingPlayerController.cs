@@ -1,6 +1,5 @@
 using GameEvents;
 using System.Collections;
-using UnityEditor.Rendering.Analytics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -182,6 +181,7 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState)
 		{
 			case RodState.RETURNING:
+				Debug.Log(hookRb.transform.position);
 				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
 				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
 				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
@@ -485,24 +485,8 @@ public class PlatformingPlayerController : Interactor
 			hookPos = hit.ClosestPoint(overlapPos);
 			hookRb.transform.position = hookPos;
 			hookRb.transform.parent = null;
-			
-			float yDiff = hookPos.y - transform.position.y;
-			//float xDiff = Mathf.Abs(hookPos.x - transform.position.x);
-			float distance = Vector2.Distance(hookPos, transform.position);
 
-			castTime = distance * 0.2f;
-
-			grappleCastCurve = new AnimationCurve();
-			grappleCastCurve.CopyFrom(grappleCastCurveBase);
-
-			// if grapple point is higher than player, hook will end higher than it started
-			Keyframe[] keys = grappleCastCurve.keys;
-			keys[1].value = distance; // mid point
-			keys[2].value = yDiff; // end point
-			grappleCastCurve.keys = keys;
-
-			//Debug.Log($"Diff: {yDiff}");
-			//Debug.Log(grappleCastCurve.keys[^1].value);
+			DefineCurveKeys(hookPos);
 
 			if(castHookToPoint != null) StopCoroutine(castHookToPoint);
 			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
@@ -511,10 +495,30 @@ public class PlatformingPlayerController : Interactor
 		{
 			hookPos = (Vector2)transform.position + dir * MaxLineLength;
 			hookRb.transform.position = hookPos;
+
+			DefineCurveKeys(hookPos);
+
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
 			StartCoroutine(CastHookToPoint(hookPos, false));
 		}
 		//hookRb.AddForce(dir * castTime);
+	}
+
+	private void DefineCurveKeys(Vector2 hookPos)
+	{
+		float yDiff = hookPos.y - transform.position.y;
+		float distance = Vector2.Distance(hookPos, transform.position);
+
+		castTime = distance * 0.2f;
+
+		grappleCastCurve = new AnimationCurve();
+		grappleCastCurve.CopyFrom(grappleCastCurveBase);
+
+		// if grapple point is higher than player, hook will end higher than it started
+		Keyframe[] keys = grappleCastCurve.keys;
+		keys[1].value = distance; // mid point
+		keys[2].value = yDiff; // end point
+		grappleCastCurve.keys = keys;
 	}
 
 	private void OnEnterHookedState()
@@ -533,8 +537,8 @@ public class PlatformingPlayerController : Interactor
 	{
 		hookCol.isTrigger = true;
 		distanceJoint.enabled = false;
-		hookRb.transform.parent = transform;
 		hookRb.bodyType = RigidbodyType2D.Dynamic;
+		hookRb.transform.parent = transform;
 	}
 
 	private void OnEnterInactiveState()
