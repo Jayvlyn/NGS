@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.InputManagerEntry;
 
 public class MenuUI : MonoBehaviour
 {
@@ -47,12 +48,11 @@ public class MenuUI : MonoBehaviour
             else if(btn.name == "QuitBtn") btn.onClick = quitBtn.onClick;
             else btn.onClick = settingsBtn.onClick;
         }
-
     }
 
     void Update()
     {
-        if (pauseAction.action.triggered) pauseClicked();
+        if (pauseAction.action.triggered) pauseClicked(); 
     }
 
     void newGameClicked()
@@ -73,6 +73,7 @@ public class MenuUI : MonoBehaviour
     void pauseClicked()
     {
         pause.SetActive(!pause.activeSelf);
+        Time.timeScale = (pause.activeSelf) ? 0 : 1;
     }
 
     void keyBindsClicked()
@@ -100,6 +101,7 @@ public class MenuUI : MonoBehaviour
         if (keyBinds.activeSelf)
         {
             keyBinds.SetActive(false);
+            SaveKeyBinds();
         }
         else
         {
@@ -134,6 +136,40 @@ public class MenuUI : MonoBehaviour
         else
         {
             inventoryMenu.SetActive(true);
+        }
+    }
+
+    private void SaveKeyBinds()
+    {
+        var settings = GetComponent<ModifySettings>().settings;
+
+        switch (keyBinds.GetComponentInChildren<KeyRebinder>().data.actionMap)
+        {
+            case 0:
+                settings.platformerKeys.Clear();
+                break;
+            case 1:
+                settings.minigameKeys.Clear();
+                break;
+            case 2:
+                settings.bossGameKeys.Clear();
+                break;
+        }
+
+        foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>())
+        {
+            switch (bind.data.actionMap)
+            {
+                case 0:
+                    settings.platformerKeys.Add(bind.data);
+                    break;
+                case 1:
+                    settings.minigameKeys.Add(bind.data);
+                    break;
+                case 2:
+                    settings.bossGameKeys.Add(bind.data);
+                    break;
+            }
         }
     }
 }

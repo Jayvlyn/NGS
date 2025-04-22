@@ -5,9 +5,9 @@ using UnityEngine.Rendering;
 public class SaveData
 {
     public SerializedDictionary<string, FishData> inventory;
-    public List<string> platformerKeybinds;
-    public List<string> minigameKeybinds;
-    public List<string> bossGameKeybinds;
+    public List<KeyBindingSaveData> platformerKeybinds;
+    public List<KeyBindingSaveData> minigameKeybinds;
+    public List<KeyBindingSaveData> bossGameKeybinds;
     public bool hasPostProcessing;
     public bool isFullScreen;
     public double money;
@@ -17,4 +17,13 @@ public class SaveData
     {
         this.id = id;
     }
+}
+
+[System.Serializable]
+public struct KeyBindingSaveData
+{
+    public int actionMap;
+    public string actionName;
+    public string bindingId; // To uniquely identify the binding within the action
+    public string bindingPath;
 }

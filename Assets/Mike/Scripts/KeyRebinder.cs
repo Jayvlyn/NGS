@@ -7,12 +7,34 @@ public class KeyRebinder : MonoBehaviour
     [SerializeField] InputActionReference keyAction = null;
     [SerializeField] PlayerInput playerController = null;
     [SerializeField] TMP_Text keyText = null;
+    [SerializeField] int actionMap = 0;
     public string compositPartName = "";
 
     public bool isNegitive = false;
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
+    public KeyBindingSaveData data { get; set; }
+
+    private void Start()
+    {
+        int ind = keyAction.action.GetBindingIndexForControl(keyAction.action.controls[0]);
+        if(keyAction.action.type == InputActionType.Value && keyAction.action.expectedControlType == "Axis")
+        {
+            if(!isNegitive)
+            {
+                ind = keyAction.action.GetBindingIndexForControl(keyAction.action.controls[1]);
+            }
+            else
+            {
+                ind = keyAction.action.GetBindingIndexForControl(keyAction.action.controls[0]);
+            }
+        }
+
+        if (compositPartName != "") ind = GetBindingIndexByName(compositPartName);
+
+        Save(keyAction.action.name, ind.ToString(), keyAction.action.bindings[ind].effectivePath);
+    }
 
     public void StartRebinding()
     {
@@ -53,6 +75,8 @@ public class KeyRebinder : MonoBehaviour
 
         rebindingOperation.Dispose();
 
+        Save(keyAction.action.name, bindingIndex.ToString(), keyAction.action.bindings[bindingIndex].effectivePath);
+
         playerController.SwitchCurrentActionMap("Platformer");
     }
 
@@ -67,5 +91,15 @@ public class KeyRebinder : MonoBehaviour
         }
 
         return -1;
+    }
+
+    private void Save(string act, string id, string path)
+    {
+        var save = new KeyBindingSaveData();
+        save.actionMap = actionMap;
+        save.actionName = act;
+        save.bindingId = id;
+        save.bindingPath = path;
+        data = save;
     }
 }

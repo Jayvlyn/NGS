@@ -13,22 +13,26 @@ public class SaveLoadManager : MonoBehaviour
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
-    public bool Save(string name, bool autoSave = false)
+    public bool Save(string name, bool newGame = true)
     {
 
-        if(!autoSave) foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
+        if(newGame) foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
 
-        SaveData data = (!autoSave) ? new(name) : saveList[selected];
+        SaveData data = (newGame) ? new(name) : saveList[selected];
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
-        if(!autoSave)
+        if(selected != -1)
         {
-            data.platformerKeybinds = new List<string> { "space", "" };
+            data.platformerKeybinds = new List<KeyBindingSaveData>();
+            data.minigameKeybinds = new List<KeyBindingSaveData>();
+            data.bossGameKeybinds = new List<KeyBindingSaveData>();
         }
         else
         {
-
+            data.platformerKeybinds = saveList[selected].platformerKeybinds;
+            data.minigameKeybinds = saveList[selected].minigameKeybinds;
+            data.bossGameKeybinds = saveList[selected].bossGameKeybinds;
         }
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");

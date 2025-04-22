@@ -15,8 +15,6 @@ public class ModifySettings : MonoBehaviour
 
     Resolution[] resolutions;
 
-    public GameSettings gSettings;
-
     void Start()
     {
         //TODO: Switch to scriptible object later on
@@ -82,11 +80,11 @@ public class ModifySettings : MonoBehaviour
 
     public void SaveSettings()
     {
-        mixer.GetFloat("MasterVol", out gSettings.masterVolume);
-        mixer.GetFloat("MusicVol", out gSettings.musicVolume);
-        mixer.GetFloat("SFXVol", out gSettings.sfxVolume);
-        gSettings.isFullScreen = Screen.fullScreen;
-        gSettings.hasPostProcessing = postProcessing.enabled;
-        gSettings.screenResolution = resolutionDropdown.value;
+        mixer.GetFloat("MasterVol", out settings.masterVolume);
+        mixer.GetFloat("MusicVol", out settings.musicVolume);
+        mixer.GetFloat("SFXVol", out settings.sfxVolume);
+        settings.isFullScreen = Screen.fullScreen;
+        settings.hasPostProcessing = postProcessing.enabled;
+        settings.screenResolution = resolutionDropdown.value;
     }
 }
