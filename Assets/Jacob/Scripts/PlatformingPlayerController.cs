@@ -468,12 +468,21 @@ public class PlatformingPlayerController : Interactor
 			flipX(); // flip to look in casting direction
 		}
 
-		Collider2D hit = Physics2D.OverlapCircle(mousePos, aimAssistRadius, wallLayer);
+
+		Vector2 overlapPos = mousePos;
+		float distanceToMouse = Vector2.Distance(transform.position, mousePos);
+		if(distanceToMouse > maxLineLength)
+		{
+			overlapPos = (Vector2)transform.position + dir * maxLineLength;
+		}
+
+		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, wallLayer);
+		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
 
 		Vector2 hookPos = Vector2.zero;
 		if (hit != null)
 		{
-			hookPos = hit.ClosestPoint(mousePos);
+			hookPos = hit.ClosestPoint(overlapPos);
 			hookRb.transform.position = hookPos;
 			hookRb.transform.parent = null;
 			
@@ -803,6 +812,21 @@ public class PlatformingPlayerController : Interactor
 		// Right Check
 		Gizmos.color = new Color(0, 0, 1, 0.5f);
 		Gizmos.DrawCube(rightCheckT.position, rightCheckSize);
+	}
+
+	private void DebugDrawCircle(Vector2 center, float radius, Color color, float duration = 0f, int segments = 32)
+	{
+		float angleStep = 360f / segments;
+		for (int i = 0; i < segments; i++)
+		{
+			float angleA = Mathf.Deg2Rad * angleStep * i;
+			float angleB = Mathf.Deg2Rad * angleStep * (i + 1);
+
+			Vector3 pointA = center + new Vector2(Mathf.Cos(angleA), Mathf.Sin(angleA)) * radius;
+			Vector3 pointB = center + new Vector2(Mathf.Cos(angleB), Mathf.Sin(angleB)) * radius;
+
+			Debug.DrawLine(pointA, pointB, color, duration);
+		}
 	}
 
 }

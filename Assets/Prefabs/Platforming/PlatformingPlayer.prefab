@@ -466,7 +466,8 @@ MonoBehaviour:
   completeReturnDistance: 1
   hookReturnFriction: 0.92
   hookReturnSpeedMod: 1
-  aimAssistRadius: 2
+  aimAssistRadius: 0.8
+  detachDistance: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -518,15 +519,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 6
-      outSlope: 6
+      inSlope: 4
+      outSlope: 4
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.5
-      value: 3
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 34
@@ -536,8 +537,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -6
-      outSlope: -6
+      inSlope: -4
+      outSlope: -4
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
