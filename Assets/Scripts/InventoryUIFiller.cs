@@ -48,6 +48,7 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
         fishImg.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0,0,randomRotation);
         newPrefab.GetComponentsInChildren<Image>()[1].GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, 0, randomRotation);
     }
+
     private void FixedUpdate()
     {
         //when inventory is set active then add the UI elements 

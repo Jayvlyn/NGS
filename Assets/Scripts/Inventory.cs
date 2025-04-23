@@ -29,11 +29,14 @@ public class Inventory : Singleton<Inventory>
                 currentFish = new()
             };
             currentFish.Add(fish.fishName, fishData);
+            
         }
         FishData data = currentFish[fish.fishName];
         data.amountCaught++;
+        data.highestRarity = fish.rarity > data.highestRarity ? fish.rarity : data.highestRarity;
         data.largestCaught = Mathf.Max(fish.length, data.largestCaught);
         data.currentFish.Add(fish);
+        Collection.Instance.AddFishToCollection(fish, data);
         currentFish[fish.fishName] = data;
     }
 
