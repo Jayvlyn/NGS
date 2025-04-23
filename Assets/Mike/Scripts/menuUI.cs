@@ -3,7 +3,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEngine.InputManagerEntry;
 
 public class MenuUI : MonoBehaviour
 {
@@ -45,7 +44,11 @@ public class MenuUI : MonoBehaviour
         foreach (Button btn in pause.GetComponentsInChildren<Button>())
         {
             if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
-            else if(btn.name == "QuitBtn") btn.onClick = quitBtn.onClick;
+            else if(btn.name == "QuitBtn")
+            {
+                btn.onClick.AddListener(() => SaveOnQuit());
+                btn.onClick.AddListener(() => quitClicked());
+            }
             else btn.onClick = settingsBtn.onClick;
         }
     }
@@ -183,7 +186,13 @@ public class MenuUI : MonoBehaviour
     {
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
+        Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
+        pi.transform.localPosition = oldPosition;
+    }
 
-        pi.transform.localPosition.Set(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y,0);
+    public void SaveOnQuit()
+    {
+        loadMenu.SetActive(true);
+        GetComponentInChildren<SaveLoadManager>().autoSave();
     }
 }

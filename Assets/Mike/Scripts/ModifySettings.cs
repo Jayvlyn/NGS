@@ -17,8 +17,6 @@ public class ModifySettings : MonoBehaviour
 
     void Start()
     {
-        //TODO: Switch to scriptible object later on
-
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();

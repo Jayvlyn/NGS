@@ -13,6 +13,7 @@ public class SaveLoadManager : MonoBehaviour
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
+    private string id = "";
     public bool Save(string name, bool newGame = true)
     {
         if(newGame) foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
@@ -21,6 +22,7 @@ public class SaveLoadManager : MonoBehaviour
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
+        id = data.id;
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
@@ -37,7 +39,8 @@ public class SaveLoadManager : MonoBehaviour
 
     public void autoSave()
     {
-        SaveData data = saveList[selected];
+        SaveData data = saveList[0];
+        foreach (var save in saveList) if (save.id.ToLower() == id.ToLower()) data = save;
         (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
@@ -49,7 +52,7 @@ public class SaveLoadManager : MonoBehaviour
         data.screenResolution = gameSettings.screenResolution;
         data.position = gameSettings.position;
 
-        string path = Path.Combine(Application.dataPath, "Saves", $"{saveList[selected].id}.json");
+        string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
         {
             string dataString = JsonUtility.ToJson(data);
@@ -117,6 +120,7 @@ public class SaveLoadManager : MonoBehaviour
 
             //load player
             gameSettings.position = saveList[selected].position;
+            id = saveList[selected].id;
         }
 
         //Apply loaded data
