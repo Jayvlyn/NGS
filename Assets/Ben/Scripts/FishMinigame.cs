@@ -174,7 +174,7 @@ public class FishMinigame : MonoBehaviour
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
 
             Inventory.Instance.AddFish(hookedFish);
-            Debug.Log(Inventory.Instance.ToString());
+            //Debug.Log(Inventory.Instance.ToString());
             OnFinish();
         }
         else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))
