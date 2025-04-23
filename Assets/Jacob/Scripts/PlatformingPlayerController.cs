@@ -182,7 +182,7 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState)
 		{
 			case RodState.RETURNING:
-				Debug.Log(hookRb.transform.position);
+				//Debug.Log(hookRb.transform.position);
 				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
 				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
 				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
@@ -637,6 +637,11 @@ public class PlatformingPlayerController : Interactor
 	public void DoWallJump()
 	{
 		currentWallJumps--;
+		if (jumpTimer != null)
+		{
+			StopCoroutine(jumpTimer);
+			jumpTimer = null;
+		}
 
 		Vector2 dir = Vector2.up * wallJumpUpwardsInfluence;
 
