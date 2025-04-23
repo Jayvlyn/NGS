@@ -28,6 +28,12 @@ public class Water : InteractableObject
 
     private Transform player;
 
+	protected override void Start()
+	{
+        base.Start();
+        player = null;
+	}
+
 	private void Update()
 	{
 		if (fishing)
@@ -121,11 +127,14 @@ public class Water : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-        if (!fishing)
+        if (pair.obj.Id == Id)
         {
-            player = pair.actor.transform;
-            startPos = player.position;
-            onCast.Raise(transform);            
+			if (!fishing)
+            {
+                player = pair.actor.transform;
+                startPos = player.position;
+                onCast.Raise(transform);            
+            }
         }
     }
 
@@ -133,6 +142,7 @@ public class Water : InteractableObject
     {
         if (player != null)
         {
+            //Debug.Log("cast complete");
             fishing = true;
             randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
             fishingWaitTimer = 1f + randomWaitAddon;
