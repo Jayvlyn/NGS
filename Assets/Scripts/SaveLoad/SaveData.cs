@@ -8,7 +8,9 @@ public class SaveData
     public List<KeyBindingSaveData> platformerKeybinds;
     public List<KeyBindingSaveData> minigameKeybinds;
     public List<KeyBindingSaveData> bossGameKeybinds;
+    public positionData position;
     public bool hasPostProcessing;
+    public int screenResolution;
     public bool isFullScreen;
     public double money;
     public string id;
@@ -26,4 +28,11 @@ public struct KeyBindingSaveData
     public string actionName;
     public string bindingId; // To uniquely identify the binding within the action
     public string bindingPath;
+}
+
+[System.Serializable]
+public struct positionData
+{
+    public float x;
+    public float y;
 }

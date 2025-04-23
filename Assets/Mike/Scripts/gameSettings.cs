@@ -13,6 +13,8 @@ public class GameSettings : ScriptableObject
     public bool hasPostProcessing;
     public bool isFullScreen;
 
+    public positionData position;
+
     [Header("Platformer input binds")]
     public List<KeyBindingSaveData> platformerKeys;//9
 

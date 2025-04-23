@@ -52,7 +52,13 @@ public class MenuUI : MonoBehaviour
 
     void Update()
     {
-        if (pauseAction.action.triggered) pauseClicked(); 
+        if (pauseAction.action.triggered) pauseClicked();
+    }
+
+    private void FixedUpdate()
+    {
+        GetComponent<ModifySettings>().settings.position.x = pi.transform.localPosition.x;
+        GetComponent<ModifySettings>().settings.position.y = pi.transform.localPosition.y;
     }
 
     void newGameClicked()
@@ -171,5 +177,13 @@ public class MenuUI : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void LoadSaveGame()
+    {
+        loadMenu.SetActive(false);
+        startMenu.SetActive(false);
+
+        pi.transform.localPosition.Set(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y,0);
     }
 }

@@ -130,6 +130,7 @@ MonoBehaviour:
   settings: {fileID: 3082545194496712927}
   keyBinds: {fileID: 7590457216437857061}
   pause: {fileID: 3592515580254396421}
+  inventoryMenu: {fileID: 0}
   newGameBtn: {fileID: 5420170170345665854}
   loadGameBtn: {fileID: 997905853176762877}
   settingsBtn: {fileID: 2247022532565919722}
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98e90af509a91446992a767063f714d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 060869daba6b154408b33a971e68c3c6, type: 2}
+  settings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
   mixer: {fileID: 24100000, guid: fd8426117eef26d47a4f6f63224f8509, type: 2}
   resolutionDropdown: {fileID: 5840224402029049995}
   postProcessing: {fileID: 0}
