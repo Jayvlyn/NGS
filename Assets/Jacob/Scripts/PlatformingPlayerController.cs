@@ -338,7 +338,11 @@ public class PlatformingPlayerController : Interactor
 	public void OnFishCast(Transform waterT)
 	{
 		interactedWaterT = waterT;
-		Vector3 waterDir = (interactedWaterT.transform.position - transform.position).normalized;
+
+		Collider2D waterCol = interactedWaterT.parent.GetComponent<Collider2D>();
+		waterMidpoint = waterCol.bounds.center;
+
+		Vector3 waterDir = (waterMidpoint - (Vector2)transform.position).normalized;
 		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
 		{
 			flipX();
@@ -346,15 +350,17 @@ public class PlatformingPlayerController : Interactor
 		ChangeRodState(RodState.FISHCASTING);
 	}
 
+	private Vector2 waterMidpoint;
 	public IEnumerator VisualFishCast(float speed = 1)
 	{
+		float dist = waterMidpoint.x - transform.position.x;
 		hookRb.bodyType = RigidbodyType2D.Kinematic;
 		float t = 0;
-		while (t < 1)
+		while (t < dist)
 		{
 			Vector2 pos;
-			pos.x = (t / 1) * Mathf.Sign(spriteT.localScale.x);
-			pos.y = fishCastCurve.Evaluate(t);
+			pos.x = (t / dist) * Mathf.Sign(spriteT.localScale.x);
+			pos.y = fishCastCurve.Evaluate(t / dist);
 			hookRb.transform.position = (Vector2)this.transform.position + pos;
 
 			t += Time.deltaTime * speed;
