@@ -159,12 +159,12 @@ public class FishMinigame : MonoBehaviour
         if (hooked)
         {
             catchProgress += 0.01f * catchMulti;
-            catchProgBar.value = catchProgress;
+            catchProgBar.value = catchProgress / maxCatchProgress;
         }
         else if(catchProgBar.value > 0)
         {
             catchProgress -= 0.01f * catchMulti;
-            catchProgBar.value = catchProgress;
+            catchProgBar.value = catchProgress / maxCatchProgress;
         }
     }
     void CheckIfComplete()

@@ -187,7 +187,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064130541851390973}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -958,9 +958,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 2
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 50
+  m_Value: 0.2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1207,6 +1207,7 @@ MonoBehaviour:
   swimSpeed: 3
   panicMulti: 1.5
   catchMulti: 10
+  maxCatchProgress: 20
   wadeSpeed: 0.05
   minigameEvent: {fileID: 11400000, guid: 3d6aa5cb50e93c34ea5a7a59cadb158b, type: 2}
   boundsx: 450
