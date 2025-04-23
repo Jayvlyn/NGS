@@ -1,5 +1,6 @@
 using GameEvents;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -437,12 +438,12 @@ public class PlatformingPlayerController : Interactor
 			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / castTime);
 			hookRb.transform.position = currentPos;
 
-			float modifier = 1;
+			//float modifier = 1;
 
-			if(t/castTime < 0.5)modifier -= t / castTime;
-			else modifier += t / castTime;
-			
-			t += Time.deltaTime * modifier;
+			//if(t/castTime < 0.5) modifier -= t / castTime;
+			//else modifier += t / castTime;
+
+			t += Time.deltaTime;//* modifier;
 			yield return null;
 		}
 		hookRb.transform.position = point;
@@ -516,9 +517,19 @@ public class PlatformingPlayerController : Interactor
 
 		// if grapple point is higher than player, hook will end higher than it started
 		Keyframe[] keys = grappleCastCurve.keys;
-		keys[1].value = distance; // mid point
+		keys[1].value = distance * 0.5f; // mid point
 		keys[2].value = yDiff; // end point
-		grappleCastCurve.keys = keys;
+
+		if (keys[1].value <= yDiff)
+		{
+			// Rebuild curve without the midpoint
+			List<Keyframe> filteredKeys = new List<Keyframe> { keys[0], keys[2] };
+			grappleCastCurve.keys = filteredKeys.ToArray();
+		}
+		else
+		{
+			grappleCastCurve.keys = keys;
+		}
 	}
 
 	private void OnEnterHookedState()
