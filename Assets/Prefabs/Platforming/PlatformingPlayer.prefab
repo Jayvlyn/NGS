@@ -452,7 +452,7 @@ MonoBehaviour:
   jumpForce: 12
   bhopForce: 5
   maxLineLength: 3.3
-  castForce: 75
+  castTime: 0.2
   reelSpeed: 100
   changeDirSpeedMult: 0.5
   groundFriction: 0.93
@@ -466,6 +466,8 @@ MonoBehaviour:
   completeReturnDistance: 1
   hookReturnFriction: 0.92
   hookReturnSpeedMod: 1
+  aimAssistRadius: 0.8
+  detachDistance: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -504,6 +506,39 @@ MonoBehaviour:
       value: 0
       inSlope: -2
       outSlope: -2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  grappleCastCurveBase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4
+      outSlope: 4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -4
+      outSlope: -4
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
