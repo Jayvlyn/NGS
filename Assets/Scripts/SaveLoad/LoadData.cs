@@ -12,11 +12,6 @@ public class LoadData : MonoBehaviour
         text.text = data.id.ToString();
     }
 
-    public void Select()
-    {
-        gameObject.GetComponentInChildren<Image>().color = Color.red;
-    }
-
     public SaveData Data { get { return data; } }
 
 }
