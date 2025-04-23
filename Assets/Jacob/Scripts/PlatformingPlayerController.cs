@@ -500,7 +500,7 @@ public class PlatformingPlayerController : Interactor
 			DefineCurveKeys(hookPos);
 
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
-			StartCoroutine(CastHookToPoint(hookPos, false));
+			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
 		}
 		//hookRb.AddForce(dir * castTime);
 	}
