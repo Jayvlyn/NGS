@@ -459,9 +459,9 @@ MonoBehaviour:
   jumpBufferTime: 0.1
   coyoteTime: 0.1
   totalJumps: 1
-  totalWallJumps: 3
-  wallJumpUpwardsInfluence: 1.5
-  wallJumpSidewaysInfluence: 1
+  totalWallJumps: 5
+  wallJumpUpwardsInfluence: 1
+  wallJumpSidewaysInfluence: 0.5
   bunnyHopWindow: 0.05
   completeReturnDistance: 1
   hookReturnFriction: 0.92
