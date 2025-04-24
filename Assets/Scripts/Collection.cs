@@ -70,6 +70,8 @@ public class Collection : Singleton<Collection>
             rarityImg.sprite = starSpriteEmpty;
             rarityImg.color = Color.clear;
             polaroid.color = Color.clear;
+
+            //question mark text
             string questionmarks = string.Empty;
             foreach (char a in fish.fishName)
             { 
