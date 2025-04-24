@@ -44,15 +44,24 @@ public class MenuUI : MonoBehaviour
         foreach (Button btn in pause.GetComponentsInChildren<Button>())
         {
             if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
-            else if(btn.name == "QuitBtn") btn.onClick = quitBtn.onClick;
+            else if(btn.name == "QuitBtn")
+            {
+                btn.onClick.AddListener(() => SaveOnQuit());
+                btn.onClick.AddListener(() => quitClicked());
+            }
             else btn.onClick = settingsBtn.onClick;
         }
-
     }
 
     void Update()
     {
         if (pauseAction.action.triggered) pauseClicked();
+    }
+
+    private void FixedUpdate()
+    {
+        GetComponent<ModifySettings>().settings.position.x = pi.transform.localPosition.x;
+        GetComponent<ModifySettings>().settings.position.y = pi.transform.localPosition.y;
     }
 
     void newGameClicked()
@@ -73,6 +82,7 @@ public class MenuUI : MonoBehaviour
     void pauseClicked()
     {
         pause.SetActive(!pause.activeSelf);
+        Time.timeScale = (pause.activeSelf) ? 0 : 1;
     }
 
     void keyBindsClicked()
@@ -100,9 +110,11 @@ public class MenuUI : MonoBehaviour
         if (keyBinds.activeSelf)
         {
             keyBinds.SetActive(false);
+            SaveKeyBinds();
         }
         else
         {
+            GetComponent<ModifySettings>().SaveSettings();
             settings.SetActive(false);
         }
     }
@@ -134,5 +146,53 @@ public class MenuUI : MonoBehaviour
         {
             inventoryMenu.SetActive(true);
         }
+    }
+
+    private void SaveKeyBinds()
+    {
+        var settings = GetComponent<ModifySettings>().settings;
+
+        switch (keyBinds.GetComponentInChildren<KeyRebinder>().data.actionMap)
+        {
+            case 0:
+                settings.platformerKeys.Clear();
+                break;
+            case 1:
+                settings.minigameKeys.Clear();
+                break;
+            case 2:
+                settings.bossGameKeys.Clear();
+                break;
+        }
+
+        foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>())
+        {
+            switch (bind.data.actionMap)
+            {
+                case 0:
+                    settings.platformerKeys.Add(bind.data);
+                    break;
+                case 1:
+                    settings.minigameKeys.Add(bind.data);
+                    break;
+                case 2:
+                    settings.bossGameKeys.Add(bind.data);
+                    break;
+            }
+        }
+    }
+
+    public void LoadSaveGame()
+    {
+        loadMenu.SetActive(false);
+        startMenu.SetActive(false);
+        Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
+        pi.transform.localPosition = oldPosition;
+    }
+
+    public void SaveOnQuit()
+    {
+        loadMenu.SetActive(true);
+        GetComponentInChildren<SaveLoadManager>().autoSave();
     }
 }

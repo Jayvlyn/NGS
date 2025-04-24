@@ -18,22 +18,82 @@ MonoBehaviour:
   screenResolution: 0
   hasPostProcessing: 0
   isFullScreen: 0
-  jumpKey: {fileID: 0}
-  castKey: {fileID: 0}
-  reelKey: {fileID: 0}
-  slackKey: {fileID: 0}
-  pauseKey: {fileID: 0}
-  walkLeftKey: {fileID: 0}
-  interactKey: {fileID: 0}
-  inventoryKey: {fileID: 0}
-  walkRightKey: {fileID: 0}
-  boberLeftKey: {fileID: 0}
-  boberRightKey: {fileID: 0}
-  hookUpKey: {fileID: 0}
-  hookDownKey: {fileID: 0}
-  swimUpKey: {fileID: 0}
-  swimDownKey: {fileID: 0}
-  swimLeftKey: {fileID: 0}
-  swimRightKey: {fileID: 0}
-  reelInKey: {fileID: 0}
-  slackOutKey: {fileID: 0}
+  platformerKeys:
+  - actionMap: 0
+    actionName: Jump
+    bindingId: 0
+    bindingPath: <Keyboard>/g
+  - actionMap: 0
+    actionName: Interact
+    bindingId: 0
+    bindingPath: <Keyboard>/e
+  - actionMap: 0
+    actionName: Move
+    bindingId: 1
+    bindingPath: <Keyboard>/a
+  - actionMap: 0
+    actionName: Move
+    bindingId: 2
+    bindingPath: <Keyboard>/d
+  - actionMap: 0
+    actionName: CastHook
+    bindingId: 0
+    bindingPath: <Mouse>/leftButton
+  - actionMap: 0
+    actionName: ReelHook
+    bindingId: 0
+    bindingPath: <Mouse>/rightButton
+  - actionMap: 0
+    actionName: Pause
+    bindingId: 0
+    bindingPath: <Keyboard>/escape
+  - actionMap: 0
+    actionName: Inventory
+    bindingId: 0
+    bindingPath: <Keyboard>/tab
+  - actionMap: 0
+    actionName: Slack
+    bindingId: 0
+    bindingPath: <Keyboard>/alt
+  minigameKeys:
+  - actionMap: 1
+    actionName: MoveBobber
+    bindingId: 1
+    bindingPath: <Keyboard>/a
+  - actionMap: 1
+    actionName: MoveBobber
+    bindingId: 2
+    bindingPath: <Keyboard>/d
+  - actionMap: 1
+    actionName: MoveHook
+    bindingId: 2
+    bindingPath: <Keyboard>/upArrow
+  - actionMap: 1
+    actionName: MoveHook
+    bindingId: 1
+    bindingPath: <Keyboard>/downArrow
+  bossGameKeys:
+  - actionMap: 2
+    actionName: Move
+    bindingId: 1
+    bindingPath: <Keyboard>/w
+  - actionMap: 2
+    actionName: Move
+    bindingId: 2
+    bindingPath: <Keyboard>/s
+  - actionMap: 2
+    actionName: Move
+    bindingId: 3
+    bindingPath: <Keyboard>/a
+  - actionMap: 2
+    actionName: Move
+    bindingId: 4
+    bindingPath: <Keyboard>/d
+  - actionMap: 2
+    actionName: Reel
+    bindingId: 0
+    bindingPath: <Keyboard>/r
+  - actionMap: 2
+    actionName: Slack
+    bindingId: 0
+    bindingPath: <Keyboard>/q

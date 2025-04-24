@@ -8,20 +8,21 @@ public class SaveLoadManager : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
-    [SerializeField] private GameObject gameSettings;
+    [SerializeField] private GameSettings gameSettings;
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
-    public bool Save(string name)
+    private string id = "";
+    public bool Save(string name, bool newGame = true)
     {
-
-        foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
+        if(newGame) foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
 
         SaveData data = new(name);
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
+        id = data.id;
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
@@ -34,6 +35,42 @@ public class SaveLoadManager : MonoBehaviour
         UpdateDisplay();
 
         return true;
+    }
+
+    public void autoSave()
+    {
+        SaveData data = saveList[0];
+        foreach (var save in saveList) if (save.id.ToLower() == id.ToLower()) data = save;
+        (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
+        //save player data
+        data.inventory = inventoryData.Item1;
+        data.money = inventoryData.Item2;
+        data.position = gameSettings.position;
+
+        //save keybinds
+        data.platformerKeybinds = gameSettings.platformerKeys;
+        data.minigameKeybinds = gameSettings.minigameKeys;
+        data.bossGameKeybinds = gameSettings.bossGameKeys;
+
+        //save settings
+        data.hasPostProcessing = gameSettings.hasPostProcessing;
+        data.isFullScreen = gameSettings.isFullScreen;
+        data.screenResolution = gameSettings.screenResolution;
+
+        //Save Volume
+        data.volumeData.master = gameSettings.masterVolume;
+        data.volumeData.music = gameSettings.musicVolume;
+        data.volumeData.sfx = gameSettings.sfxVolume;
+
+        string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
+        if (File.Exists(path))
+        {
+            string dataString = JsonUtility.ToJson(data);
+            StreamWriter sw = new(path);
+            sw.Write(dataString);
+            sw.Close();
+            UpdateDisplay();
+        }
     }
 
     private void UpdateDisplay()
@@ -72,11 +109,33 @@ public class SaveLoadManager : MonoBehaviour
     {
         string path = Path.Combine(Application.dataPath, "Saves");
         path = Path.Combine(path, $"{saveList[selected].id}.json");
+
+        //load data
         if (File.Exists(path))
         {
-            //use this saveList[selected] to fill out & load settings
-            Debug.Log($"Loaded Save from {path}");
+            //load inventory & money
+            (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
+            inventoryData.Item1 = saveList[selected].inventory;
+            inventoryData.Item2 = saveList[selected].money;
+
+            //load key binds
+            gameSettings.platformerKeys = saveList[selected].platformerKeybinds;
+            gameSettings.minigameKeys = saveList[selected].minigameKeybinds;
+            gameSettings.bossGameKeys = saveList[selected].bossGameKeybinds;
+
+            //load settings
+            gameSettings.hasPostProcessing = saveList[selected].hasPostProcessing;
+            gameSettings.screenResolution = saveList[selected].screenResolution;
+            gameSettings.isFullScreen = saveList[selected].isFullScreen;
+
+            //load player
+            gameSettings.position = saveList[selected].position;
+            id = saveList[selected].id;
         }
+
+        //Apply loaded data
+        print("Apply the loaded data");
+        GetComponentInParent<MenuUI>().LoadSaveGame();
     }
 
     public void Delete()

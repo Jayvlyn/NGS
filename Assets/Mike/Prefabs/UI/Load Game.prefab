@@ -94,7 +94,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8060946370715760098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 9201295681989656753}
   savePrefab: {fileID: 2836770249044991959, guid: a99985b5a63784048b967901a9475dbf, type: 3}
-  gameSettings: {fileID: 0}
+  gameSettings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
   columns: 1
 --- !u!1 &6515596978479274546
 GameObject:
