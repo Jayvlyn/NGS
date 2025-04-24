@@ -6,6 +6,7 @@ public class Water : InteractableObject
 {
     
     [SerializeField] FishEvent onBite;
+    [SerializeField] FishEvent onBossBite;
     [SerializeField] TransformEvent onCast;
     [SerializeField] VoidEvent onQuitFishing;
 
@@ -48,7 +49,16 @@ public class Water : InteractableObject
         {
             Fish fish = GenerateFish();
             fishingWaitTimer = 1f;
-            onBite.Raise(fish);
+
+            if(fish.isBoss)
+            {
+                onBossBite.Raise(fish);
+            }
+            else
+            {
+                onBite.Raise(fish);
+            }
+
             QuitFishing();
         }
         else
