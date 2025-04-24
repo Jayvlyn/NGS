@@ -9,6 +9,12 @@ public class TabGroup : MonoBehaviour
     public Sprite tabIdle;
     public Sprite tabHover;
     public Sprite tabActive;
+    public Sprite sprite1;
+    public Sprite sprite2;
+    public bool twoTabs = false;
+    public Image twotabSprite;
+    bool tab1Selected = false;
+
 
     public TabBtn selectedTab;
     public List<GameObject> objectsToSwap;
@@ -28,7 +34,7 @@ public class TabGroup : MonoBehaviour
         ResetTabs();
         if(selectedTab == null || btn != selectedTab)
         {
-            btn.background.sprite = tabHover;
+            if (!twoTabs) btn.background.sprite = tabHover;
         }
     }
 
@@ -39,6 +45,12 @@ public class TabGroup : MonoBehaviour
 
     public void OnTabSelected(TabBtn btn)
     {
+        if (twoTabs && btn != selectedTab)
+        {
+            twotabSprite.sprite = (tab1Selected) ? sprite1 : sprite2;
+            tab1Selected = !tab1Selected;
+        }
+
         if(selectedTab != null)
         {
             selectedTab.Deselect();
@@ -48,7 +60,7 @@ public class TabGroup : MonoBehaviour
         selectedTab.Select();
 
         ResetTabs();
-        btn.background.sprite = tabActive;
+        if (!twoTabs)  btn.background.sprite = tabActive;
 
         int index = btn.transform.GetSiblingIndex();
         for(int i = 0; i < objectsToSwap.Count; i++)
@@ -69,7 +81,8 @@ public class TabGroup : MonoBehaviour
         foreach(TabBtn btn in tabButtons)
         {
             if (selectedTab != null && selectedTab == btn) continue;
-            btn.background.sprite = tabIdle;
+            if (!twoTabs) btn.background.sprite = tabIdle;
         }
     }
+
 }

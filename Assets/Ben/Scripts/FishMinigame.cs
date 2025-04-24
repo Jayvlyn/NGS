@@ -13,6 +13,7 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
     [SerializeField] float catchMulti = 1.0f; // Multiplied Directly to catchProgress increment per update
+    [SerializeField] float maxCatchProgress = 100f; // Max catch progress.
     [SerializeField] float wadeSpeed = 0.005f;
 
 	[SerializeField] BoolEvent minigameEvent;
@@ -158,22 +159,22 @@ public class FishMinigame : MonoBehaviour
         if (hooked)
         {
             catchProgress += 0.01f * catchMulti;
-            catchProgBar.value = catchProgress;
+            catchProgBar.value = catchProgress / maxCatchProgress;
         }
         else if(catchProgBar.value > 0)
         {
             catchProgress -= 0.01f * catchMulti;
-            catchProgBar.value = catchProgress;
+            catchProgBar.value = catchProgress / maxCatchProgress;
         }
     }
     void CheckIfComplete()
     {
-        if (catchProgress >= 100.0f)
+        if (catchProgress >= maxCatchProgress)
         {
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
 
             Inventory.Instance.AddFish(hookedFish);
-            Debug.Log(Inventory.Instance.ToString());
+            //Debug.Log(Inventory.Instance.ToString());
             OnFinish();
         }
         else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))

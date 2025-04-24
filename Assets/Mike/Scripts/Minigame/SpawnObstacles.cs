@@ -27,7 +27,7 @@ public class SpawnObstacles : MonoBehaviour
         Vector3 randomOffset = Random.insideUnitCircle * 150;
         Vector3 spawnPosition = spawnPoints[sIndex].position + randomOffset;
 
-        GameObject spawnedObject = Instantiate(obstaclesToSpawn[oIndex], spawnPosition, spawnPoints[sIndex].rotation, transform);
+        GameObject spawnedObject = Instantiate(obstaclesToSpawn[oIndex], spawnPosition, spawnPoints[sIndex].rotation, transform.Find("Background").transform);
 
         spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = GetComponentInChildren<FishMinigame>();
         spawnedObject.SetActive(true);

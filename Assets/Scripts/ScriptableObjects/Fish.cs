@@ -11,4 +11,6 @@ public class Fish : ScriptableObject
     [HideInInspector] public float length;
     public float minLength;
     public float maxLength;
+    public string description;
+    public bool isBoss;
 }

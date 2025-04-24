@@ -1,5 +1,6 @@
 using GameEvents;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,8 +32,8 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private float maxLineLength = 10f;
 	public float MaxLineLength { get { return maxLineLength; } }
 
-	[SerializeField, Tooltip("Force at which the hook gets launched from player when casting")] 
-	private float castForce = 10f;
+	[SerializeField, Tooltip("How long it takes for hook to reach point it was casted to for grappling")] 
+	private float castTime = 0.5f;
 
 	[SerializeField] private float reelSpeed = 10f;
 
@@ -44,6 +45,9 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField, Tooltip("Time jump input will be stored so the player will jump again once then hit the ground")]
 	private float jumpBufferTime = 0.1f;
+
+	[SerializeField]
+	private float jumpTime = 0.5f;
 
 	[SerializeField] private float coyoteTime = 0.1f;
 
@@ -67,6 +71,12 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField, Tooltip("Multiplies reel speed by this value to get force used when hook is returning")]
 	private float hookReturnSpeedMod = 2f;
 
+	[SerializeField, Tooltip("How big a radius will be created around the mouse when looking for a valid grapple point")]
+	private float aimAssistRadius = 2;
+
+	[SerializeField, Tooltip("Then the player gets this close to the hook while in hooked state, it will detach")]
+	private float detachDistance = 0.5f;
+
 	[Header("Ground Check")]
 	[SerializeField] private LayerMask groundLayer;
 	[SerializeField] private Transform groundCheckT;
@@ -81,12 +91,16 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Transform leftCheckT;
 	[SerializeField] private Vector2 leftCheckSize = new Vector2(0.1f, 0.5f);
 
-	[Header("Fishing Cast Visuals")]
+	[Header("Cast Visuals")]
 	[SerializeField] private AnimationCurve fishCastCurve;
+	public AnimationCurve grappleCastCurveBase;
+	private AnimationCurve grappleCastCurve;
+	private Vector2 waterMidpoint;
 
 	// Inputs
 	private float moveInput; // left-right 1D axis
-							 // Handle Held Inputs
+
+	// Handle Held Inputs
 	private bool moveHeld = false;
 	private bool jumpHeld = false;
 	private bool reelHeld = false;
@@ -105,125 +119,30 @@ public class PlatformingPlayerController : Interactor
 		currentWallJumps = totalWallJumps;
 
 		ChangeRodState(RodState.INACTIVE);
+		ChangeMoveState(MoveState.IDLE);
 	}
 
 	public void Update()
 	{
+		//Debug.Log(currentMoveState);
+
 		onGround = isGrounded();
 
+		ProcessUpdateTimers();
 
-		// Timers
-		if (jumpBuffer >= 0)
-		{
-			jumpBuffer -= Time.deltaTime;
-		}
-		if (landTimer <= bunnyHopWindow)
-		{
-			landTimer += Time.deltaTime;
-		}
+		ProcessRodStateUpdate();
 
-		// Process Rod State (Visuals)
-		switch (currentRodState)
-		{
-			case RodState.CASTING:
-				UpdateLineRendererEnds();
-				break;
-			case RodState.RETURNING:
-				UpdateLineRendererEnds();
-				break;
-			case RodState.HOOKED:
-				UpdateLineRendererEnds(true, false);
-				break;
-			case RodState.FISHCASTING:
-				UpdateLineRendererEnds();
-				break;
-			default:
-				break;
-		}
+		ProcessMoveStateUpdate();
 	}
+
 
 	private void FixedUpdate()
 	{
-		// Ground friction
-		if (onGround && currentRodState != RodState.HOOKED)
-		{
-			rb.linearVelocityX *= groundFriction;
-		}
+		DoGroundFriction();
 
-		// Movement
-		if (moveHeld)
-		{
-			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
-																	// change dir
+		ProcessMoveInput();
 
-			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
-			{ // changing dir on ground
-				speed *= changeDirSpeedMult;
-			}
-
-			// move when not moving max speed
-			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
-			{
-				Vector2 dir = new Vector2(moveInput, 0);
-				rb.AddForce(dir * speed, ForceMode2D.Force);
-			}
-		}
-
-		// Process Rod State
-		switch (currentRodState)
-		{
-			case RodState.CASTING:
-				if (Vector2.Distance(hookRb.transform.position, transform.position) >= maxLineLength)
-				{ // Reached max distance before hitting something
-					ChangeRodState(RodState.RETURNING);
-				}
-
-				break;
-			case RodState.RETURNING:
-				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
-				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
-				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
-
-				if (Vector2.Distance(hookRb.gameObject.transform.position, transform.position) <= completeReturnDistance)
-				{
-					ChangeRodState(RodState.INACTIVE);
-				}
-
-				break;
-			case RodState.HOOKED:
-				// Reeling
-				if (reelHeld)
-				{
-					if (slackHeld) // Give Slack
-					{
-						if (distanceJoint.distance < maxLineLength)
-						{
-							distanceJoint.distance += Time.deltaTime * reelSpeed;
-							if (Vector2.Distance(transform.position, hookRb.transform.position) < 0.5)
-							{
-								dir = (transform.position - hookRb.transform.position).normalized;
-								rb.AddForce(dir * 50, ForceMode2D.Force);
-							}
-						}
-					}
-					else // Reel In
-					{
-						//old
-						//distanceJoint.distance -= Time.deltaTime * reelSpeed;
-
-						//new
-						dir = (hookRb.transform.position - transform.position).normalized;
-						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
-
-						float dist = Vector2.Distance(transform.position, hookRb.transform.position);
-						if (distanceJoint.distance > dist) distanceJoint.distance = dist;
-					}
-				}
-
-				break;
-			default:
-				break;
-		}
+		ProcessRodStateFixedUpdate();
 	}
 
 	#endregion
@@ -236,14 +155,18 @@ public class PlatformingPlayerController : Interactor
 		if (moveInput != 0)
 		{
 			moveHeld = true;
-			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
-			{
-				flipX();
-			}
 
+			if(currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING); 
+
+			if(moveInput * spriteT.localScale.x < 0)
+			{
+				FlipX();
+			}
 		}
 		else
 		{
+			if(currentMoveState == MoveState.RUNNING) ChangeMoveState(MoveState.IDLE);
+
 			moveHeld = false;
 		}
 	}
@@ -331,23 +254,439 @@ public class PlatformingPlayerController : Interactor
 	public void OnFishCast(Transform waterT)
 	{
 		interactedWaterT = waterT;
-		Vector3 waterDir = (interactedWaterT.transform.position - transform.position).normalized;
+
+		Collider2D waterCol = interactedWaterT.parent.GetComponent<Collider2D>();
+		waterMidpoint = waterCol.bounds.center;
+
+		Vector3 waterDir = (waterMidpoint - (Vector2)transform.position).normalized;
 		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
 		{
-			flipX();
+			FlipX();
 		}
 		ChangeRodState(RodState.FISHCASTING);
 	}
 
+	/// <summary>
+	/// Call in fixed update
+	/// </summary>
+	private void ProcessMoveInput()
+	{
+		// Movement
+		if (moveHeld)
+		{
+			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+																	// change dir
+
+			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
+			{ // changing dir on ground
+				speed *= changeDirSpeedMult;
+			}
+
+			// move when not moving max speed
+			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
+			{
+				Vector2 dir = new Vector2(moveInput, 0);
+				rb.AddForce(dir * speed, ForceMode2D.Force);
+			}
+		}
+	}
+
+	#endregion
+
+	#region INPUT HOLDING HANDLING
+
+	private void OnEnable()
+	{
+		Application.focusChanged += OnFocusChanged;
+	}
+
+	private void OnDisable()
+	{
+		Application.focusChanged -= OnFocusChanged;
+	}
+
+	private void OnFocusChanged(bool hasFocus)
+	{
+		if (hasFocus)
+		{
+		}
+		else
+		{ // game lost focus aka player tabbed out
+			UnholdAllInputs(); // player is no longer holding input if tabbed out
+		}
+	}
+
+	private void UnholdAllInputs()
+	{
+		moveHeld = false;
+		jumpHeld = false;
+		reelHeld = false;
+		slackHeld = false;
+	}
+
+	#endregion
+
+	#region MOVE STATE
+	public enum MoveState
+	{
+		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING
+	}
+	public MoveState currentMoveState = MoveState.IDLE;
+
+	private void ChangeMoveState(MoveState state)
+	{
+		//Debug.Log($"Changing from {currentMoveState} to {state}");
+		currentMoveState = state;
+	}
+
+	private void ProcessMoveStateUpdate()
+	{
+		switch (currentMoveState)
+		{
+			case MoveState.IDLE:
+				break;
+			case MoveState.RUNNING:
+				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.JUMPING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.FALLING:
+				break;
+			case MoveState.WALLJUMPING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.SWIMMING:
+				break;
+			case MoveState.AIR_CASTING:
+				break;
+			case MoveState.GROUND_CASTING:
+				break;
+			case MoveState.AIR_REELING:
+				break;
+			case MoveState.GROUND_REELING:
+				break;
+			case MoveState.GROUND_HOOKED:
+				break;
+			case MoveState.AIR_HOOKED:
+				//LookAtHook();
+				// RECOMPOILE;
+				break;
+			case MoveState.GROUND_HOOKED_WALKING:
+				break;
+		}
+	}
+
+	private void DoGroundFriction()
+	{
+		// Ground friction
+		if (onGround && currentRodState != RodState.HOOKED)
+		{
+			rb.linearVelocityX *= groundFriction;
+		}
+	}
+
+	private void FlipX()
+	{
+		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+	}
+
+	private void LookAtHook()
+	{
+		Vector2 direction = ((Vector2)hookRb.transform.position - (Vector2)transform.position).normalized;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0f, 0f, angle);
+	}
+	#endregion
+
+	#region FISHING ROD
+	public enum RodState
+	{
+		INACTIVE, CASTING, RETURNING, HOOKED, FISHCASTING
+	}
+	public RodState currentRodState = RodState.INACTIVE;
+
+	public void ChangeRodState(RodState state)
+	{
+		if(currentRodState == RodState.CASTING)
+		{
+			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
+		}
+
+		// SET NEW ROD STATE
+		currentRodState = state;
+
+		// ON ENTER
+		switch (currentRodState) // new rod state
+		{
+			case RodState.INACTIVE:
+				OnEnterInactiveState();
+				break;
+
+			case RodState.CASTING:
+				OnEnterCastingState();
+				break;
+
+			case RodState.RETURNING:
+				OnEnterReturningState();
+				break;
+
+			case RodState.HOOKED:
+				OnEnterHookedState();
+
+				break;
+
+			case RodState.FISHCASTING:
+				OnEnterFishCastingState();
+
+				break;
+		}
+	}
+
+	private void UpdateLineRendererEnds(bool playerEnd = true, bool hookEnd = true)
+	{
+		if (playerEnd) lineRenderer.SetPosition(1, transform.position);
+		if (hookEnd) lineRenderer.SetPosition(0, hookRb.position);
+	}
+
+	private void ProcessRodStateUpdate()
+	{
+		switch (currentRodState)
+		{
+			case RodState.CASTING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.RETURNING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.HOOKED:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.FISHCASTING:
+				UpdateLineRendererEnds();
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void ProcessRodStateFixedUpdate()
+	{
+		// Process Rod State
+		switch (currentRodState)
+		{
+			case RodState.RETURNING:
+				//Debug.Log(hookRb.transform.position);
+				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
+				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
+				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
+
+				if (Vector2.Distance(hookRb.gameObject.transform.position, transform.position) <= completeReturnDistance)
+				{
+					ChangeRodState(RodState.INACTIVE);
+				}
+
+				break;
+			case RodState.HOOKED:
+				float dist = Vector2.Distance(transform.position, hookRb.transform.position);
+				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
+				if (distanceJoint.distance > maxLineLength)
+				{
+					distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+				}
+
+				if (dist < detachDistance)
+				{
+					ChangeRodState(RodState.RETURNING);
+				}
+				// Reeling
+				if (reelHeld)
+				{
+					if (slackHeld) // Give Slack
+					{
+						if (distanceJoint.distance < maxLineLength)
+						{
+							distanceJoint.distance += Time.deltaTime * reelSpeed;
+							if (Vector2.Distance(transform.position, hookRb.transform.position) < 0.5)
+							{
+								dir = (transform.position - hookRb.transform.position).normalized;
+								rb.AddForce(dir * 50, ForceMode2D.Force);
+							}
+						}
+					}
+					else // Reel In
+					{
+						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+						dir = (hookRb.transform.position - transform.position).normalized;
+						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
+					}
+				}
+
+				break;
+			default:
+				break;
+		}
+	}
+
+	/// <summary>
+	/// Method responsible for starting coroutine to do visual casting for grappling hook
+	/// </summary>
+	/// <param name="point">Point to cast to</param>
+	/// <param name="willHook">Pass as true if it should change to hooked state at the end</param>
+	private IEnumerator CastHookToPoint(Vector2 point, bool willHook)
+	{
+		float t = 0;
+		hookRb.transform.position = transform.position;
+		Vector2 initialPosition = transform.position;
+		while (t < castTime)
+		{
+			Vector2 currentPos;
+			currentPos.x = Mathf.Lerp(initialPosition.x, point.x, t / castTime);
+			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / castTime);
+			hookRb.transform.position = currentPos;
+
+			//float modifier = 1;
+
+			//if(t/castTime < 0.5) modifier -= t / castTime;
+			//else modifier += t / castTime;
+
+			t += Time.deltaTime;//* modifier;
+			yield return null;
+		}
+		hookRb.transform.position = point;
+
+		if(willHook)ChangeRodState(RodState.HOOKED);
+		else ChangeRodState(RodState.RETURNING);
+		
+	}
+	private Coroutine castHookToPoint;
+
+	private void OnEnterCastingState()
+	{
+		hookCol.isTrigger = true;
+		hookRb.bodyType = RigidbodyType2D.Kinematic;
+		hookRb.gameObject.SetActive(true);
+
+		lineRenderer.enabled = true;
+
+		Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+		Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
+		if (dir.x * spriteT.localScale.x < 0f)
+		{
+			FlipX(); // flip to look in casting direction
+		}
+
+		Vector2 overlapPos = mousePos;
+		float distanceToMouse = Vector2.Distance(transform.position, mousePos);
+		if(distanceToMouse > maxLineLength)
+		{
+			overlapPos = (Vector2)transform.position + dir * maxLineLength;
+		}
+
+		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, wallLayer);
+		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
+
+		Vector2 hookPos = Vector2.zero;
+		if (hit != null)
+		{
+			hookPos = hit.ClosestPoint(overlapPos);
+			hookRb.transform.position = hookPos;
+			hookRb.transform.parent = null;
+
+			DefineCurveKeys(hookPos);
+
+			if(castHookToPoint != null) StopCoroutine(castHookToPoint);
+			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
+		}
+		else
+		{
+			hookPos = (Vector2)transform.position + dir * MaxLineLength;
+			hookRb.transform.position = hookPos;
+
+			DefineCurveKeys(hookPos);
+
+			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
+			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
+		}
+		//hookRb.AddForce(dir * castTime);
+	}
+
+	private void DefineCurveKeys(Vector2 hookPos)
+	{
+		float yDiff = hookPos.y - transform.position.y;
+		float distance = Vector2.Distance(hookPos, transform.position);
+
+		castTime = distance * 0.2f;
+
+		grappleCastCurve = new AnimationCurve();
+		grappleCastCurve.CopyFrom(grappleCastCurveBase);
+
+		// if grapple point is higher than player, hook will end higher than it started
+		Keyframe[] keys = grappleCastCurve.keys;
+		keys[1].value = distance * 0.5f; // mid point
+		keys[2].value = yDiff; // end point
+
+		if (keys[1].value <= yDiff)
+		{
+			// Rebuild curve without the midpoint
+			List<Keyframe> filteredKeys = new List<Keyframe> { keys[0], keys[2] };
+			grappleCastCurve.keys = filteredKeys.ToArray();
+		}
+		else
+		{
+			grappleCastCurve.keys = keys;
+		}
+	}
+
+	private void OnEnterHookedState()
+	{
+		currentWallJumps = totalWallJumps;
+		distanceJoint.connectedAnchor = hookRb.gameObject.transform.position;
+		distanceJoint.enabled = true;
+
+		hookRb.bodyType = RigidbodyType2D.Kinematic;
+		hookRb.linearVelocity = Vector2.zero;
+
+		UpdateLineRendererEnds();
+	}
+
+	private void OnEnterReturningState()
+	{
+		hookCol.isTrigger = true;
+		distanceJoint.enabled = false;
+		hookRb.bodyType = RigidbodyType2D.Dynamic;
+		hookRb.transform.parent = transform;
+	}
+
+	private void OnEnterInactiveState()
+	{
+		hookCol.isTrigger = true;
+		hookRb.transform.position = transform.position;
+		hookRb.gameObject.SetActive(false);
+		distanceJoint.enabled = false;
+		lineRenderer.enabled = false;
+	}
+
+	private void OnEnterFishCastingState()
+	{
+		hookCol.isTrigger = false;
+		hookRb.gameObject.SetActive(true);
+
+		lineRenderer.enabled = true;
+
+		StartCoroutine(VisualFishCast(2));
+	}
+
 	public IEnumerator VisualFishCast(float speed = 1)
 	{
+		float dist = waterMidpoint.x - transform.position.x;
 		hookRb.bodyType = RigidbodyType2D.Kinematic;
 		float t = 0;
-		while (t < 1)
+		while (t < dist)
 		{
 			Vector2 pos;
-			pos.x = (t / 1) * Mathf.Sign(spriteT.localScale.x);
-			pos.y = fishCastCurve.Evaluate(t);
+			pos.x = (t / dist) * Mathf.Sign(spriteT.localScale.x);
+			pos.y = fishCastCurve.Evaluate(t / dist);
 			hookRb.transform.position = (Vector2)this.transform.position + pos;
 
 			t += Time.deltaTime * speed;
@@ -361,90 +700,6 @@ public class PlatformingPlayerController : Interactor
 	{
 		ChangeRodState(RodState.RETURNING);
 	}
-
-	#endregion
-
-	#region FISHING ROD GRAPPLING HOOK
-	public enum RodState
-	{
-		INACTIVE, CASTING, RETURNING, HOOKED, FISHCASTING
-	}
-	public RodState currentRodState = RodState.INACTIVE;
-
-	public void ChangeRodState(RodState state)
-	{
-		// SET NEW ROD STATE
-		currentRodState = state;
-
-		// ON ENTER
-		switch (currentRodState) // new rod state
-		{
-			case RodState.INACTIVE:
-				hookCol.isTrigger = true;
-				hookRb.transform.position = transform.position;
-				hookRb.gameObject.SetActive(false);
-				distanceJoint.enabled = false;
-				lineRenderer.enabled = false;
-				break;
-
-			case RodState.CASTING:
-				hookCol.isTrigger = true;
-				hookRb.bodyType = RigidbodyType2D.Dynamic;
-				hookRb.gameObject.SetActive(true);
-				
-				lineRenderer.enabled = true;
-
-				Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-				Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
-				hookRb.AddForce(dir * castForce);
-				break;
-
-			case RodState.RETURNING:
-				hookCol.isTrigger = true;
-				distanceJoint.enabled = false;
-				hookRb.transform.parent = transform;
-				hookRb.bodyType = RigidbodyType2D.Dynamic;
-				break;
-
-			case RodState.HOOKED:
-				currentWallJumps = totalWallJumps;
-				distanceJoint.connectedAnchor = hookRb.gameObject.transform.position;
-				distanceJoint.enabled = true;
-
-				hookRb.bodyType = RigidbodyType2D.Kinematic;
-				hookRb.linearVelocity = Vector2.zero;
-
-				UpdateLineRendererEnds();
-
-				break;
-
-			case RodState.FISHCASTING:
-				//hookRb.bodyType = RigidbodyType2D.Dynamic;
-				hookCol.isTrigger = false;
-				hookRb.gameObject.SetActive(true);
-
-				lineRenderer.enabled = true;
-
-				StartCoroutine(VisualFishCast(2));
-
-				//dir = spriteT.localScale.x * Vector2.right + Vector2.up;
-				//dir.Normalize();
-
-				//float dist = Vector2.Distance(transform.position, interactedWaterT.position);
-
-				//hookRb.AddForce(dir * 30 * dist);
-
-
-				break;
-		}
-	}
-
-	private void UpdateLineRendererEnds(bool playerEnd = true, bool hookEnd = true)
-	{
-		if (playerEnd) lineRenderer.SetPosition(1, transform.position);
-		if (hookEnd) lineRenderer.SetPosition(0, hookRb.position);
-	}
-
 
 	#endregion
 
@@ -475,8 +730,10 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
+		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
+		ChangeMoveState(MoveState.JUMPING);
 		currentJumps--;
-		jumpTimer = StartCoroutine(JumpTimer(0.5f));
+		jumpTimer = jumpTime;
 		if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
 		Vector2 force = Vector2.up * jumpForce * (inWater ? 0.5f : 1);
 
@@ -503,7 +760,11 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoWallJump()
 	{
+		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
+		ChangeMoveState(MoveState.WALLJUMPING);
 		currentWallJumps--;
+		if (jumpTimer > 0) jumpTimer = 0;
+		
 
 		Vector2 dir = Vector2.up * wallJumpUpwardsInfluence;
 
@@ -517,7 +778,7 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
-		flipX();
+		FlipX();
 	}
 	//--------------
 
@@ -526,6 +787,12 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
+		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING)
+		{
+			if(moveHeld) ChangeMoveState(MoveState.RUNNING);
+			else		 ChangeMoveState(MoveState.IDLE);
+		}
+
 		landTimer = 0; // will count up until bunny hop window is passed
 		currentJumps = totalJumps;
 		currentWallJumps = totalWallJumps;
@@ -538,7 +805,7 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
-	#region COROUTINE TIMERS
+	#region TIMERS
 
 	public Coroutine coyoteTimer;
 	public IEnumerator CoyoteTimer(float coyoteTime)
@@ -552,13 +819,6 @@ public class PlatformingPlayerController : Interactor
 		return coyoteTimer != null;
 	}
 
-	public Coroutine jumpTimer;
-	public IEnumerator JumpTimer(float jumpTime)
-	{
-		yield return new WaitForSeconds(jumpTime);
-		jumpTimer = null;
-	}
-
 	// Jump buffer counts in update
 	private float jumpBuffer;
 	public bool isJumpBufferActive()
@@ -566,9 +826,27 @@ public class PlatformingPlayerController : Interactor
 		return jumpBuffer > 0;
 	}
 
+	float jumpTimer = 0;
 	public bool isJumpTimerActive()
 	{
-		return jumpTimer != null;
+		return jumpTimer > 0;
+	}
+
+	private void ProcessUpdateTimers()
+	{
+		// Timers
+		if (jumpBuffer >= 0)
+		{
+			jumpBuffer -= Time.deltaTime;
+		}
+		if (jumpTimer >= 0)
+		{
+			jumpTimer -= Time.deltaTime;
+		}
+		if (landTimer <= bunnyHopWindow)
+		{
+			landTimer += Time.deltaTime;
+		}
 	}
 
 	#endregion
@@ -578,21 +856,25 @@ public class PlatformingPlayerController : Interactor
 	{
 		inWater = newState;
 	}
+
 	private bool isGrounded()
 	{
-		if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
+		if(jumpTime - jumpTimer > 0.1f) // dont check if left the ground 0.1 seconds ago (or less)
 		{
-			if (!onGround) OnLand(); // first frame returning true, so just landed
-			return true;
-		}
-		// not on currently ground:
-		if (onGround) // was grounded last frame
-		{
-			if (currentJumps == totalJumps) // left ground without jumping off ground
+			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
-				currentJumps--;
-				if (coyoteTimer != null) StopCoroutine(coyoteTimer);
-				coyoteTimer = StartCoroutine(CoyoteTimer(coyoteTime));
+				if (!onGround) OnLand(); // first frame returning true, so just landed
+				return true; // set onGround to true;
+			}
+			// not on currently ground:
+			if (onGround) // was grounded last frame
+			{
+				if (currentJumps == totalJumps) // left ground without jumping off ground
+				{
+					currentJumps--;
+					if (coyoteTimer != null) StopCoroutine(coyoteTimer);
+					coyoteTimer = StartCoroutine(CoyoteTimer(coyoteTime));
+				}
 			}
 		}
 		return false;
@@ -641,45 +923,14 @@ public class PlatformingPlayerController : Interactor
 			   (landTimer < bunnyHopWindow); // land timer is within bhop window after landing
 	}
 
-	#endregion
-
-	#region INPUT HOLDING HANDLING
-
-	private void OnEnable()
+	private bool isFalling()
 	{
-		Application.focusChanged += OnFocusChanged;
-	}
-
-	private void OnDisable()
-	{
-		Application.focusChanged -= OnFocusChanged;
-	}
-
-	private void OnFocusChanged(bool hasFocus)
-	{
-		if (hasFocus)
-		{
-		}
-		else
-		{ // game lost focus aka player tabbed out
-			UnholdAllInputs(); // player is no longer holding input if tabbed out
-		}
-	}
-
-	private void UnholdAllInputs()
-	{
-		moveHeld = false;
-		jumpHeld = false;
-		reelHeld = false;
-		slackHeld = false;
+		return (rb.linearVelocityY < 0 && currentRodState == RodState.INACTIVE);
 	}
 
 	#endregion
 
-	private void flipX()
-	{
-		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
-	}
+	#region DEBUG DRAWING
 
 	private void OnDrawGizmos()
 	{
@@ -695,4 +946,21 @@ public class PlatformingPlayerController : Interactor
 		Gizmos.color = new Color(0, 0, 1, 0.5f);
 		Gizmos.DrawCube(rightCheckT.position, rightCheckSize);
 	}
+
+	private void DebugDrawCircle(Vector2 center, float radius, Color color, float duration = 0f, int segments = 32)
+	{
+		float angleStep = 360f / segments;
+		for (int i = 0; i < segments; i++)
+		{
+			float angleA = Mathf.Deg2Rad * angleStep * i;
+			float angleB = Mathf.Deg2Rad * angleStep * (i + 1);
+
+			Vector3 pointA = center + new Vector2(Mathf.Cos(angleA), Mathf.Sin(angleA)) * radius;
+			Vector3 pointB = center + new Vector2(Mathf.Cos(angleB), Mathf.Sin(angleB)) * radius;
+
+			Debug.DrawLine(pointA, pointB, color, duration);
+		}
+	}
+
+	#endregion
 }
