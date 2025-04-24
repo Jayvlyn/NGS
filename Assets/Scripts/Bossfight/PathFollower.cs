@@ -37,6 +37,7 @@ public class PathFollower : MonoBehaviour
             }
             Vector3 position = splineContainer.EvaluatePosition(distance);
             Vector3 up = splineContainer.EvaluateUpVector(distance);
+            Debug.Log(up);
             result = (position, Quaternion.LookRotation(Vector3.forward, up) * Quaternion.Euler(rotatedBy));
         }
         return result;
