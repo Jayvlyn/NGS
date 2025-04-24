@@ -122,10 +122,11 @@ public class PlatformingPlayerController : Interactor
 	{
 		onGround = isGrounded();
 
-
 		ProcessUpdateTimers();
 
 		ProcessRodStateUpdate();
+
+		ProcessMoveStateUpdate();
 	}
 
 
@@ -148,7 +149,7 @@ public class PlatformingPlayerController : Interactor
 		if (moveInput != 0)
 		{
 			moveHeld = true;
-			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
+			if(moveInput * spriteT.transform.localScale.x < 0)
 			{
 				FlipX();
 			}
@@ -321,9 +322,45 @@ public class PlatformingPlayerController : Interactor
 	}
 	public MoveState currentMoveState = MoveState.IDLE;
 
-	public void ChangeMoveState(MoveState state)
+	private void ChangeMoveState(MoveState state)
 	{
 		currentMoveState = state;
+	}
+
+	private void ProcessMoveStateUpdate()
+	{
+		switch (currentMoveState)
+		{
+			case MoveState.IDLE:
+				break;
+			case MoveState.RUNNING:
+				break;
+			case MoveState.JUMPING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.FALLING:
+				break;
+			case MoveState.WALLJUMPING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.SWIMMING:
+				break;
+			case MoveState.AIR_CASTING:
+				break;
+			case MoveState.GROUND_CASTING:
+				break;
+			case MoveState.AIR_REELING:
+				break;
+			case MoveState.GROUND_REELING:
+				break;
+			case MoveState.GROUND_HOOKED:
+				break;
+			case MoveState.AIR_HOOKED:
+				//LookAtHook();
+				break;
+			case MoveState.GROUND_HOOKED_WALKING:
+				break;
+		}
 	}
 
 	private void DoGroundFriction()
@@ -338,6 +375,13 @@ public class PlatformingPlayerController : Interactor
 	private void FlipX()
 	{
 		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+	}
+
+	private void LookAtHook()
+	{
+		Vector2 direction = ((Vector2)hookRb.transform.position - (Vector2)transform.position).normalized;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0f, 0f, angle);
 	}
 	#endregion
 
@@ -729,6 +773,8 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
+		if(currentMoveState == MoveState.FALLING) ChangeMoveState(MoveState.IDLE);
+
 		landTimer = 0; // will count up until bunny hop window is passed
 		currentJumps = totalJumps;
 		currentWallJumps = totalWallJumps;
@@ -855,6 +901,11 @@ public class PlatformingPlayerController : Interactor
 	{
 		return (isJumpBufferActive() && jumpBuffer < bunnyHopWindow) || // jump buffer is within bhop window before landing
 			   (landTimer < bunnyHopWindow); // land timer is within bhop window after landing
+	}
+
+	private bool isFalling()
+	{
+		return (rb.linearVelocityY < 0 && currentRodState == RodState.INACTIVE);
 	}
 
 	#endregion
