@@ -9,6 +9,7 @@ public class SaveData
     public List<KeyBindingSaveData> minigameKeybinds;
     public List<KeyBindingSaveData> bossGameKeybinds;
     public positionData position;
+    public VolumeData volumeData;
     public bool hasPostProcessing;
     public int screenResolution;
     public bool isFullScreen;
@@ -35,4 +36,12 @@ public struct positionData
 {
     public float x;
     public float y;
+}
+
+[System.Serializable]
+public struct VolumeData
+{
+    public float master;
+    public float music;
+    public float sfx;
 }

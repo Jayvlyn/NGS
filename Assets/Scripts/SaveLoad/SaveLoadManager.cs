@@ -42,15 +42,25 @@ public class SaveLoadManager : MonoBehaviour
         SaveData data = saveList[0];
         foreach (var save in saveList) if (save.id.ToLower() == id.ToLower()) data = save;
         (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
+        //save player data
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
+        data.position = gameSettings.position;
+
+        //save keybinds
         data.platformerKeybinds = gameSettings.platformerKeys;
         data.minigameKeybinds = gameSettings.minigameKeys;
         data.bossGameKeybinds = gameSettings.bossGameKeys;
+
+        //save settings
         data.hasPostProcessing = gameSettings.hasPostProcessing;
         data.isFullScreen = gameSettings.isFullScreen;
         data.screenResolution = gameSettings.screenResolution;
-        data.position = gameSettings.position;
+
+        //Save Volume
+        data.volumeData.master = gameSettings.masterVolume;
+        data.volumeData.music = gameSettings.musicVolume;
+        data.volumeData.sfx = gameSettings.sfxVolume;
 
         string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
@@ -110,8 +120,8 @@ public class SaveLoadManager : MonoBehaviour
 
             //load key binds
             gameSettings.platformerKeys = saveList[selected].platformerKeybinds;
-            gameSettings.minigameKeys = saveList[selected].minigameKeybinds = null;
-            gameSettings.bossGameKeys = saveList[selected].bossGameKeybinds = null;
+            gameSettings.minigameKeys = saveList[selected].minigameKeybinds;
+            gameSettings.bossGameKeys = saveList[selected].bossGameKeybinds;
 
             //load settings
             gameSettings.hasPostProcessing = saveList[selected].hasPostProcessing;
