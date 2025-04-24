@@ -197,6 +197,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 336382778679360374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3161573317724034509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4676565903972509479}
+  - component: {fileID: 2911537630168355312}
+  m_Layer: 0
+  m_Name: MouseTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4676565903972509479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3161573317724034509}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.375493, y: 2.0534887, z: -31.08311}
+  m_LocalScale: {x: 3.125, y: 3.125, z: 3.125}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 336382778679360374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2911537630168355312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3161573317724034509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc03a739c818cc42b575cfc7ae3e6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4161718424164305519
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +317,7 @@ Transform:
   - {fileID: 6428020383112335711}
   - {fileID: 829284198666577619}
   - {fileID: 3381539768182715777}
+  - {fileID: 4676565903972509479}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6339232893670215032
@@ -400,24 +445,29 @@ MonoBehaviour:
   hookCol: {fileID: 446745433903773732}
   spriteT: {fileID: 3381539768182715777}
   interactedWaterT: {fileID: 0}
+  onInventory: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
   moveSpeed: 33
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
   jumpForce: 12
   bhopForce: 5
   maxLineLength: 3.3
-  castForce: 75
-  reelSpeed: 100
+  castTime: 0.2
+  reelSpeed: 70
   changeDirSpeedMult: 0.5
   groundFriction: 0.93
   jumpBufferTime: 0.1
   coyoteTime: 0.1
   totalJumps: 1
-  totalWallJumps: 3
+  totalWallJumps: 5
+  wallJumpUpwardsInfluence: 1
+  wallJumpSidewaysInfluence: 0.5
   bunnyHopWindow: 0.05
   completeReturnDistance: 1
   hookReturnFriction: 0.92
   hookReturnSpeedMod: 1
+  aimAssistRadius: 0.8
+  detachDistance: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -430,6 +480,72 @@ MonoBehaviour:
   rightCheckSize: {x: 0.06, y: 0.3}
   leftCheckT: {fileID: 6428020383112335711}
   leftCheckSize: {x: 0.06, y: 0.3}
+  fishCastCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  grappleCastCurveBase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4
+      outSlope: 4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -4
+      outSlope: -4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   currentRodState: 0
 --- !u!232 &1896222745735434132
 DistanceJoint2D:

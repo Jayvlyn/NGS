@@ -3,7 +3,8 @@ using UnityEngine;
 public class HookBehavior : MonoBehaviour
 {
     [SerializeField] public Transform hookParent;
-    [SerializeField] public float hookResistanceVal = 25.0f; // The higher, the slower
+    public float hookResistanceVal = 25.0f; // The higher, the slower
+    private float originalResistanceVal;
     public int hookDirection = 0;
 
     private bool hitObstacle = false;
@@ -14,6 +15,7 @@ public class HookBehavior : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        originalResistanceVal = hookResistanceVal;
     }
 
     // Update is called once per frame
@@ -21,11 +23,6 @@ public class HookBehavior : MonoBehaviour
     {
         HookOutOfBoundsCheck();
 
-        if (hitObstacle && timer > 4)
-        {
-            hookResistanceVal = 25;
-        }
-        timer += Time.deltaTime;
         RotateHookToBobber();
     }
 
@@ -72,10 +69,13 @@ public class HookBehavior : MonoBehaviour
 
     }
 
-    public void ReduceSpeed(float multiplier)
+    public void ChangeSpeed(float hookResistance)
     {
-        hookResistanceVal *= multiplier;
-        hitObstacle = true;
-        timer = 0;
+        hookResistanceVal = hookResistance;
+    }
+
+    public void ResetSpeed()
+    {
+        hookResistanceVal = originalResistanceVal;
     }
 }

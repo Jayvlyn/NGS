@@ -86,23 +86,30 @@ public class MinigameObstacle : MonoBehaviour
             currentSpeed *= -1;
         }
 
-        Debug.Log("Bounce off bounds");
+        //Debug.Log("Bounce off bounds");
     }
 
     #endregion
+
+    HookBehavior hb;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Hook")
         {
-            fishMinigame.ReduceProgress(reduceAmount);
-            collision.GetComponent<HookBehavior>().ReduceSpeed(speedPenalty);
-            OnDisable();
+            //fishMinigame.ReduceProgress(reduceAmount);
+            if(hb == null) hb = collision.GetComponent<HookBehavior>();
+            hb.ChangeSpeed(hb.hookResistanceVal * 2);
         }
     }
 
-    private void OnDisable()
-    {
-        Destroy(this.gameObject);
-    }
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.tag == "Hook")
+		{
+            if(hb == null) hb = collision.GetComponent<HookBehavior>();
+            hb.ResetSpeed();
+		}
+	}
+
 }

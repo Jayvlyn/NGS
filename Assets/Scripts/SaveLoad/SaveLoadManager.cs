@@ -8,13 +8,17 @@ public class SaveLoadManager : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
+    [SerializeField] private GameObject gameSettings;
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
     private int selected = -1;
-    public void Save()
+    public bool Save(string name)
     {
-        SaveData data = new();
+
+        foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
+
+        SaveData data = new(name);
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
@@ -28,6 +32,8 @@ public class SaveLoadManager : MonoBehaviour
         sw.Write(dataString);
         sw.Close();
         UpdateDisplay();
+
+        return true;
     }
 
     private void UpdateDisplay()
@@ -47,35 +53,58 @@ public class SaveLoadManager : MonoBehaviour
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
             int j = i;
-            go.GetComponent<Button>().onClick.AddListener(() => Select(j));
+            foreach(var comp in go.GetComponentsInChildren<Button>())
+            {
+                comp.onClick.AddListener(() => Select(j));
+                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => Load());
+                else comp.onClick.AddListener(() => Delete());
+            }
             options.Add(go);
         }
     }
 
     public void Select(int save)
     {
-        if (selected != -1)
-        {
-            options[selected].GetComponent<Image>().color = Color.white;
-        }
         selected = save;
     }
 
     public void Load()
     {
-        Debug.Log($"Loaded Save {selected}");
+        string path = Path.Combine(Application.dataPath, "Saves");
+        path = Path.Combine(path, $"{saveList[selected].id}.json");
+        if (File.Exists(path))
+        {
+            //use this saveList[selected] to fill out & load settings
+            Debug.Log($"Loaded Save from {path}");
+        }
     }
 
-    private void Start()
+    public void Delete()
     {
         string path = Path.Combine(Application.dataPath, "Saves");
-        foreach (string file in Directory.GetFiles(path))
+        path = Path.Combine(path, $"{saveList[selected].id}.json");
+
+        if(File.Exists(path))
         {
-            if (file.EndsWith(".json"))
+            saveList.Remove(saveList[selected]);
+            File.Delete(path);
+            UpdateDisplay();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (saveList.Count == 0)
+        {
+            string path = Path.Combine(Application.dataPath, "Saves");
+            foreach (string file in Directory.GetFiles(path))
             {
-                StreamReader sr = new(Path.Combine(path, file));
-                saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
-                sr.Close();
+                if (file.EndsWith(".json"))
+                {
+                    StreamReader sr = new(Path.Combine(path, file));
+                    saveList.Add(JsonUtility.FromJson<SaveData>(sr.ReadToEnd()));
+                    sr.Close();
+                }
             }
         }
         UpdateDisplay();
