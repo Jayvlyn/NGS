@@ -92,10 +92,12 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private AnimationCurve fishCastCurve;
 	public AnimationCurve grappleCastCurveBase;
 	private AnimationCurve grappleCastCurve;
+	private Vector2 waterMidpoint;
 
 	// Inputs
 	private float moveInput; // left-right 1D axis
-							 // Handle Held Inputs
+
+	// Handle Held Inputs
 	private bool moveHeld = false;
 	private bool jumpHeld = false;
 	private bool reelHeld = false;
@@ -121,117 +123,19 @@ public class PlatformingPlayerController : Interactor
 		onGround = isGrounded();
 
 
-		// Timers
-		if (jumpBuffer >= 0)
-		{
-			jumpBuffer -= Time.deltaTime;
-		}
-		if (landTimer <= bunnyHopWindow)
-		{
-			landTimer += Time.deltaTime;
-		}
+		ProcessUpdateTimers();
 
-		// Process Rod State (Visuals)
-		switch (currentRodState)
-		{
-			case RodState.CASTING:
-				UpdateLineRendererEnds();
-				break;
-			case RodState.RETURNING:
-				UpdateLineRendererEnds();
-				break;
-			case RodState.HOOKED:
-				UpdateLineRendererEnds();
-				break;
-			case RodState.FISHCASTING:
-				UpdateLineRendererEnds();
-				break;
-			default:
-				break;
-		}
+		ProcessRodStateUpdate();
 	}
+
 
 	private void FixedUpdate()
 	{
-		// Ground friction
-		if (onGround && currentRodState != RodState.HOOKED)
-		{
-			rb.linearVelocityX *= groundFriction;
-		}
+		DoGroundFriction();
 
-		// Movement
-		if (moveHeld)
-		{
-			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
-																	// change dir
+		ProcessMoveInput();
 
-			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
-			{ // changing dir on ground
-				speed *= changeDirSpeedMult;
-			}
-
-			// move when not moving max speed
-			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
-			{
-				Vector2 dir = new Vector2(moveInput, 0);
-				rb.AddForce(dir * speed, ForceMode2D.Force);
-			}
-		}
-
-		// Process Rod State
-		switch (currentRodState)
-		{
-			case RodState.RETURNING:
-				//Debug.Log(hookRb.transform.position);
-				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
-				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
-				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
-
-				if (Vector2.Distance(hookRb.gameObject.transform.position, transform.position) <= completeReturnDistance)
-				{
-					ChangeRodState(RodState.INACTIVE);
-				}
-
-				break;
-			case RodState.HOOKED:
-				float dist = Vector2.Distance(transform.position, hookRb.transform.position);
-				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
-                if (distanceJoint.distance > maxLineLength)
-                {
-					distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
-				}
-
-                if (dist < detachDistance)
-                {
-					ChangeRodState(RodState.RETURNING);
-                }
-                // Reeling
-                if (reelHeld)
-				{
-					if (slackHeld) // Give Slack
-					{
-						if (distanceJoint.distance < maxLineLength)
-						{
-							distanceJoint.distance += Time.deltaTime * reelSpeed;
-							if (Vector2.Distance(transform.position, hookRb.transform.position) < 0.5)
-							{
-								dir = (transform.position - hookRb.transform.position).normalized;
-								rb.AddForce(dir * 50, ForceMode2D.Force);
-							}
-						}
-					}
-					else // Reel In
-					{
-						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
-						dir = (hookRb.transform.position - transform.position).normalized;
-						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
-					}
-				}
-
-				break;
-			default:
-				break;
-		}
+		ProcessRodStateFixedUpdate();
 	}
 
 	#endregion
@@ -246,7 +150,7 @@ public class PlatformingPlayerController : Interactor
 			moveHeld = true;
 			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
 			{
-				flipX();
+				FlipX();
 			}
 		}
 		else
@@ -345,39 +249,99 @@ public class PlatformingPlayerController : Interactor
 		Vector3 waterDir = (waterMidpoint - (Vector2)transform.position).normalized;
 		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
 		{
-			flipX();
+			FlipX();
 		}
 		ChangeRodState(RodState.FISHCASTING);
 	}
 
-	private Vector2 waterMidpoint;
-	public IEnumerator VisualFishCast(float speed = 1)
+	/// <summary>
+	/// Call in fixed update
+	/// </summary>
+	private void ProcessMoveInput()
 	{
-		float dist = waterMidpoint.x - transform.position.x;
-		hookRb.bodyType = RigidbodyType2D.Kinematic;
-		float t = 0;
-		while (t < dist)
+		// Movement
+		if (moveHeld)
 		{
-			Vector2 pos;
-			pos.x = (t / dist) * Mathf.Sign(spriteT.localScale.x);
-			pos.y = fishCastCurve.Evaluate(t / dist);
-			hookRb.transform.position = (Vector2)this.transform.position + pos;
+			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+																	// change dir
 
-			t += Time.deltaTime * speed;
-			yield return null;
+			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
+			{ // changing dir on ground
+				speed *= changeDirSpeedMult;
+			}
+
+			// move when not moving max speed
+			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
+			{
+				Vector2 dir = new Vector2(moveInput, 0);
+				rb.AddForce(dir * speed, ForceMode2D.Force);
+			}
 		}
-
-		hookRb.bodyType = RigidbodyType2D.Dynamic;
-	}
-
-	public void OnDoneFishing()
-	{
-		ChangeRodState(RodState.RETURNING);
 	}
 
 	#endregion
 
-	#region FISHING ROD GRAPPLING HOOK
+	#region INPUT HOLDING HANDLING
+
+	private void OnEnable()
+	{
+		Application.focusChanged += OnFocusChanged;
+	}
+
+	private void OnDisable()
+	{
+		Application.focusChanged -= OnFocusChanged;
+	}
+
+	private void OnFocusChanged(bool hasFocus)
+	{
+		if (hasFocus)
+		{
+		}
+		else
+		{ // game lost focus aka player tabbed out
+			UnholdAllInputs(); // player is no longer holding input if tabbed out
+		}
+	}
+
+	private void UnholdAllInputs()
+	{
+		moveHeld = false;
+		jumpHeld = false;
+		reelHeld = false;
+		slackHeld = false;
+	}
+
+	#endregion
+
+	#region MOVE STATE
+	public enum MoveState
+	{
+		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING
+	}
+	public MoveState currentMoveState = MoveState.IDLE;
+
+	public void ChangeMoveState(MoveState state)
+	{
+		currentMoveState = state;
+	}
+
+	private void DoGroundFriction()
+	{
+		// Ground friction
+		if (onGround && currentRodState != RodState.HOOKED)
+		{
+			rb.linearVelocityX *= groundFriction;
+		}
+	}
+
+	private void FlipX()
+	{
+		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+	}
+	#endregion
+
+	#region FISHING ROD
 	public enum RodState
 	{
 		INACTIVE, CASTING, RETURNING, HOOKED, FISHCASTING
@@ -427,6 +391,85 @@ public class PlatformingPlayerController : Interactor
 		if (hookEnd) lineRenderer.SetPosition(0, hookRb.position);
 	}
 
+	private void ProcessRodStateUpdate()
+	{
+		switch (currentRodState)
+		{
+			case RodState.CASTING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.RETURNING:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.HOOKED:
+				UpdateLineRendererEnds();
+				break;
+			case RodState.FISHCASTING:
+				UpdateLineRendererEnds();
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void ProcessRodStateFixedUpdate()
+	{
+		// Process Rod State
+		switch (currentRodState)
+		{
+			case RodState.RETURNING:
+				//Debug.Log(hookRb.transform.position);
+				hookRb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
+				Vector2 dir = (transform.position - hookRb.transform.position).normalized;
+				hookRb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
+
+				if (Vector2.Distance(hookRb.gameObject.transform.position, transform.position) <= completeReturnDistance)
+				{
+					ChangeRodState(RodState.INACTIVE);
+				}
+
+				break;
+			case RodState.HOOKED:
+				float dist = Vector2.Distance(transform.position, hookRb.transform.position);
+				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
+				if (distanceJoint.distance > maxLineLength)
+				{
+					distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+				}
+
+				if (dist < detachDistance)
+				{
+					ChangeRodState(RodState.RETURNING);
+				}
+				// Reeling
+				if (reelHeld)
+				{
+					if (slackHeld) // Give Slack
+					{
+						if (distanceJoint.distance < maxLineLength)
+						{
+							distanceJoint.distance += Time.deltaTime * reelSpeed;
+							if (Vector2.Distance(transform.position, hookRb.transform.position) < 0.5)
+							{
+								dir = (transform.position - hookRb.transform.position).normalized;
+								rb.AddForce(dir * 50, ForceMode2D.Force);
+							}
+						}
+					}
+					else // Reel In
+					{
+						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+						dir = (hookRb.transform.position - transform.position).normalized;
+						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
+					}
+				}
+
+				break;
+			default:
+				break;
+		}
+	}
+
 	/// <summary>
 	/// Method responsible for starting coroutine to do visual casting for grappling hook
 	/// </summary>
@@ -472,7 +515,7 @@ public class PlatformingPlayerController : Interactor
 		Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
 		if (dir.x * transform.localScale.x < 0f)
 		{
-			flipX(); // flip to look in casting direction
+			FlipX(); // flip to look in casting direction
 		}
 
 
@@ -569,20 +612,36 @@ public class PlatformingPlayerController : Interactor
 
 	private void OnEnterFishCastingState()
 	{
-		//hookRb.bodyType = RigidbodyType2D.Dynamic;
 		hookCol.isTrigger = false;
 		hookRb.gameObject.SetActive(true);
 
 		lineRenderer.enabled = true;
 
 		StartCoroutine(VisualFishCast(2));
+	}
 
-		//dir = spriteT.localScale.x * Vector2.right + Vector2.up;
-		//dir.Normalize();
+	public IEnumerator VisualFishCast(float speed = 1)
+	{
+		float dist = waterMidpoint.x - transform.position.x;
+		hookRb.bodyType = RigidbodyType2D.Kinematic;
+		float t = 0;
+		while (t < dist)
+		{
+			Vector2 pos;
+			pos.x = (t / dist) * Mathf.Sign(spriteT.localScale.x);
+			pos.y = fishCastCurve.Evaluate(t / dist);
+			hookRb.transform.position = (Vector2)this.transform.position + pos;
 
-		//float dist = Vector2.Distance(transform.position, interactedWaterT.position);
+			t += Time.deltaTime * speed;
+			yield return null;
+		}
 
-		//hookRb.AddForce(dir * 30 * dist);
+		hookRb.bodyType = RigidbodyType2D.Dynamic;
+	}
+
+	public void OnDoneFishing()
+	{
+		ChangeRodState(RodState.RETURNING);
 	}
 
 	#endregion
@@ -661,7 +720,7 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
-		flipX();
+		FlipX();
 	}
 	//--------------
 
@@ -682,7 +741,7 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
-	#region COROUTINE TIMERS
+	#region TIMERS
 
 	public Coroutine coyoteTimer;
 	public IEnumerator CoyoteTimer(float coyoteTime)
@@ -713,6 +772,19 @@ public class PlatformingPlayerController : Interactor
 	public bool isJumpTimerActive()
 	{
 		return jumpTimer != null;
+	}
+
+	private void ProcessUpdateTimers()
+	{
+		// Timers
+		if (jumpBuffer >= 0)
+		{
+			jumpBuffer -= Time.deltaTime;
+		}
+		if (landTimer <= bunnyHopWindow)
+		{
+			landTimer += Time.deltaTime;
+		}
 	}
 
 	#endregion
@@ -787,43 +859,7 @@ public class PlatformingPlayerController : Interactor
 
 	#endregion
 
-	#region INPUT HOLDING HANDLING
-
-	private void OnEnable()
-	{
-		Application.focusChanged += OnFocusChanged;
-	}
-
-	private void OnDisable()
-	{
-		Application.focusChanged -= OnFocusChanged;
-	}
-
-	private void OnFocusChanged(bool hasFocus)
-	{
-		if (hasFocus)
-		{
-		}
-		else
-		{ // game lost focus aka player tabbed out
-			UnholdAllInputs(); // player is no longer holding input if tabbed out
-		}
-	}
-
-	private void UnholdAllInputs()
-	{
-		moveHeld = false;
-		jumpHeld = false;
-		reelHeld = false;
-		slackHeld = false;
-	}
-
-	#endregion
-
-	private void flipX()
-	{
-		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
-	}
+	#region DEBUG DRAWING
 
 	private void OnDrawGizmos()
 	{
@@ -855,4 +891,5 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	#endregion
 }
