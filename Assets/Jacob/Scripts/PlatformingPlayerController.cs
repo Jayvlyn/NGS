@@ -46,6 +46,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField, Tooltip("Time jump input will be stored so the player will jump again once then hit the ground")]
 	private float jumpBufferTime = 0.1f;
 
+	[SerializeField]
+	private float jumpTime = 0.5f;
+
 	[SerializeField] private float coyoteTime = 0.1f;
 
 	[SerializeField] private int totalJumps = 1;
@@ -116,16 +119,20 @@ public class PlatformingPlayerController : Interactor
 		currentWallJumps = totalWallJumps;
 
 		ChangeRodState(RodState.INACTIVE);
+		ChangeMoveState(MoveState.IDLE);
 	}
 
 	public void Update()
 	{
-		onGround = isGrounded();
+		//Debug.Log(currentMoveState);
 
+		onGround = isGrounded();
 
 		ProcessUpdateTimers();
 
 		ProcessRodStateUpdate();
+
+		ProcessMoveStateUpdate();
 	}
 
 
@@ -148,13 +155,18 @@ public class PlatformingPlayerController : Interactor
 		if (moveInput != 0)
 		{
 			moveHeld = true;
-			if((moveInput < 0 && spriteT.localScale.x > 0) || (moveInput > 0 && spriteT.localScale.x < 0))
+
+			if(currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING); 
+
+			if(moveInput * spriteT.localScale.x < 0)
 			{
 				FlipX();
 			}
 		}
 		else
 		{
+			if(currentMoveState == MoveState.RUNNING) ChangeMoveState(MoveState.IDLE);
+
 			moveHeld = false;
 		}
 	}
@@ -321,9 +333,48 @@ public class PlatformingPlayerController : Interactor
 	}
 	public MoveState currentMoveState = MoveState.IDLE;
 
-	public void ChangeMoveState(MoveState state)
+	private void ChangeMoveState(MoveState state)
 	{
+		//Debug.Log($"Changing from {currentMoveState} to {state}");
 		currentMoveState = state;
+	}
+
+	private void ProcessMoveStateUpdate()
+	{
+		switch (currentMoveState)
+		{
+			case MoveState.IDLE:
+				break;
+			case MoveState.RUNNING:
+				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.JUMPING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.FALLING:
+				break;
+			case MoveState.WALLJUMPING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
+			case MoveState.SWIMMING:
+				break;
+			case MoveState.AIR_CASTING:
+				break;
+			case MoveState.GROUND_CASTING:
+				break;
+			case MoveState.AIR_REELING:
+				break;
+			case MoveState.GROUND_REELING:
+				break;
+			case MoveState.GROUND_HOOKED:
+				break;
+			case MoveState.AIR_HOOKED:
+				//LookAtHook();
+				// RECOMPOILE;
+				break;
+			case MoveState.GROUND_HOOKED_WALKING:
+				break;
+		}
 	}
 
 	private void DoGroundFriction()
@@ -338,6 +389,13 @@ public class PlatformingPlayerController : Interactor
 	private void FlipX()
 	{
 		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
+	}
+
+	private void LookAtHook()
+	{
+		Vector2 direction = ((Vector2)hookRb.transform.position - (Vector2)transform.position).normalized;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0f, 0f, angle);
 	}
 	#endregion
 
@@ -513,11 +571,10 @@ public class PlatformingPlayerController : Interactor
 
 		Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 		Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
-		if (dir.x * transform.localScale.x < 0f)
+		if (dir.x * spriteT.localScale.x < 0f)
 		{
 			FlipX(); // flip to look in casting direction
 		}
-
 
 		Vector2 overlapPos = mousePos;
 		float distanceToMouse = Vector2.Distance(transform.position, mousePos);
@@ -673,8 +730,10 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
+		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
+		ChangeMoveState(MoveState.JUMPING);
 		currentJumps--;
-		jumpTimer = StartCoroutine(JumpTimer(0.5f));
+		jumpTimer = jumpTime;
 		if (rb.linearVelocityY < 0) rb.linearVelocityY = 0;
 		Vector2 force = Vector2.up * jumpForce * (inWater ? 0.5f : 1);
 
@@ -701,12 +760,11 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoWallJump()
 	{
+		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
+		ChangeMoveState(MoveState.WALLJUMPING);
 		currentWallJumps--;
-		if (jumpTimer != null)
-		{
-			StopCoroutine(jumpTimer);
-			jumpTimer = null;
-		}
+		if (jumpTimer > 0) jumpTimer = 0;
+		
 
 		Vector2 dir = Vector2.up * wallJumpUpwardsInfluence;
 
@@ -729,6 +787,12 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
+		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING)
+		{
+			if(moveHeld) ChangeMoveState(MoveState.RUNNING);
+			else		 ChangeMoveState(MoveState.IDLE);
+		}
+
 		landTimer = 0; // will count up until bunny hop window is passed
 		currentJumps = totalJumps;
 		currentWallJumps = totalWallJumps;
@@ -755,13 +819,6 @@ public class PlatformingPlayerController : Interactor
 		return coyoteTimer != null;
 	}
 
-	public Coroutine jumpTimer;
-	public IEnumerator JumpTimer(float jumpTime)
-	{
-		yield return new WaitForSeconds(jumpTime);
-		jumpTimer = null;
-	}
-
 	// Jump buffer counts in update
 	private float jumpBuffer;
 	public bool isJumpBufferActive()
@@ -769,9 +826,10 @@ public class PlatformingPlayerController : Interactor
 		return jumpBuffer > 0;
 	}
 
+	float jumpTimer = 0;
 	public bool isJumpTimerActive()
 	{
-		return jumpTimer != null;
+		return jumpTimer > 0;
 	}
 
 	private void ProcessUpdateTimers()
@@ -780,6 +838,10 @@ public class PlatformingPlayerController : Interactor
 		if (jumpBuffer >= 0)
 		{
 			jumpBuffer -= Time.deltaTime;
+		}
+		if (jumpTimer >= 0)
+		{
+			jumpTimer -= Time.deltaTime;
 		}
 		if (landTimer <= bunnyHopWindow)
 		{
@@ -794,21 +856,25 @@ public class PlatformingPlayerController : Interactor
 	{
 		inWater = newState;
 	}
+
 	private bool isGrounded()
 	{
-		if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
+		if(jumpTime - jumpTimer > 0.1f) // dont check if left the ground 0.1 seconds ago (or less)
 		{
-			if (!onGround) OnLand(); // first frame returning true, so just landed
-			return true;
-		}
-		// not on currently ground:
-		if (onGround) // was grounded last frame
-		{
-			if (currentJumps == totalJumps) // left ground without jumping off ground
+			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
-				currentJumps--;
-				if (coyoteTimer != null) StopCoroutine(coyoteTimer);
-				coyoteTimer = StartCoroutine(CoyoteTimer(coyoteTime));
+				if (!onGround) OnLand(); // first frame returning true, so just landed
+				return true; // set onGround to true;
+			}
+			// not on currently ground:
+			if (onGround) // was grounded last frame
+			{
+				if (currentJumps == totalJumps) // left ground without jumping off ground
+				{
+					currentJumps--;
+					if (coyoteTimer != null) StopCoroutine(coyoteTimer);
+					coyoteTimer = StartCoroutine(CoyoteTimer(coyoteTime));
+				}
 			}
 		}
 		return false;
@@ -855,6 +921,11 @@ public class PlatformingPlayerController : Interactor
 	{
 		return (isJumpBufferActive() && jumpBuffer < bunnyHopWindow) || // jump buffer is within bhop window before landing
 			   (landTimer < bunnyHopWindow); // land timer is within bhop window after landing
+	}
+
+	private bool isFalling()
+	{
+		return (rb.linearVelocityY < 0 && currentRodState == RodState.INACTIVE);
 	}
 
 	#endregion
