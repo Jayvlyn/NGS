@@ -787,7 +787,6 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
-		Debug.Log("On Land");
 		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING)
 		{
 			if(moveHeld) ChangeMoveState(MoveState.RUNNING);
