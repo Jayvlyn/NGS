@@ -102,6 +102,7 @@ public class Collection : Singleton<Collection>
             fishImg.sprite = fish.sprite;
             fishImg.color = Color.white;
             polaroid.color = Color.white;
+            rarityImg.color = Color.white;
             rarityImg.sprite = InventoryUIFiller.Instance.getStarsFromRarity(fishData.highestRarity);
 
             //set text
@@ -132,5 +133,5 @@ public class Collection : Singleton<Collection>
         fishCollection[fishName] = collectionPrefab;
         return collectionPrefab;
     }
-
+    
 }
