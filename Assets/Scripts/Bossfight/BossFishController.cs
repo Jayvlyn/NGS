@@ -4,6 +4,7 @@ using UnityEngine;
 public class BossFishController : MonoBehaviour
 {
     public static Fish bossFish;
+    public static bool caughtBoss;
 
     [SerializeField] private BossfightPlayerController player;
     [SerializeField] private Camera cam;

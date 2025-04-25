@@ -75,7 +75,7 @@ public class BossfightPlayerController : MonoBehaviour
 		else
 		{
             holdingReel = false;
-			joint.enabled = true;
+			joint.enabled = activeBlockers.Count == 0;
 		}
 	}
 
@@ -120,6 +120,7 @@ public class BossfightPlayerController : MonoBehaviour
         if (Mathf.Abs(angle) > 120)
         {
             activeBlockers.Add(collision);
+            joint.enabled = false;
         }
     }
 

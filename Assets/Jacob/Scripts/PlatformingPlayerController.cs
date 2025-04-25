@@ -113,6 +113,9 @@ public class PlatformingPlayerController : Interactor
 	{
 		base.Start();
 
+		if(BossFishController.caughtBoss) Inventory.Instance.AddFish(BossFishController.bossFish);
+		BossFishController.caughtBoss = false;
+
 		cam = Camera.main;
 
 		currentJumps = totalJumps;
