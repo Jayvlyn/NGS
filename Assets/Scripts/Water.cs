@@ -1,6 +1,7 @@
 using GameEvents;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Water : InteractableObject
 {
@@ -53,6 +54,8 @@ public class Water : InteractableObject
             if(fish.isBoss)
             {
                 onBossBite.Raise(fish);
+                BossFishController.bossFish = fish;
+                SceneManager.LoadScene("BossfightScene");
             }
             else
             {

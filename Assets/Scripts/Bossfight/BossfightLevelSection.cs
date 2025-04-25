@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Splines;
 
 public class BossfightLevelSection : MonoBehaviour
@@ -12,5 +13,7 @@ public class BossfightLevelSection : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Player Entered Win Area");
+        Inventory.Instance.AddFish(BossFishController.bossFish);
+        SceneManager.LoadScene("GameScene");
     }
 }

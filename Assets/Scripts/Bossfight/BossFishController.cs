@@ -3,8 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(PathFollower))]
 public class BossFishController : MonoBehaviour
 {
+    public static Fish bossFish;
+
     [SerializeField] private BossfightPlayerController player;
     [SerializeField] private Camera cam;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float baseMovementSpeed;
     private float baseDistance = -1f;
     private Rigidbody2D body;
@@ -14,6 +17,10 @@ public class BossFishController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (bossFish != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = bossFish.sprite;
+        }
         cameraStartingZ = cam.transform.position.z;
         pathFollower = GetComponent<PathFollower>();
         body = GetComponent<Rigidbody2D>();
