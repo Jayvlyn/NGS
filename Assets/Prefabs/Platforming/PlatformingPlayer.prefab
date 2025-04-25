@@ -310,7 +310,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.71, y: -1.99, z: 0}
   m_LocalScale: {x: 0.32, y: 0.32, z: 0.32}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6125027497295351764}
   - {fileID: 1577787648814511174}
@@ -473,14 +473,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   groundCheckT: {fileID: 6125027497295351764}
-  groundCheckSize: {x: 0.3, y: 0.1}
+  groundCheckSize: {x: 0.15, y: 0.03}
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
   rightCheckT: {fileID: 1577787648814511174}
-  rightCheckSize: {x: 0.02, y: 0.19}
+  rightCheckSize: {x: 0.04, y: 0.19}
   leftCheckT: {fileID: 6428020383112335711}
-  leftCheckSize: {x: 0.02, y: 0.19}
+  leftCheckSize: {x: 0.04, y: 0.19}
   fishCastCurve:
     serializedVersion: 2
     m_Curve:
@@ -837,7 +837,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3.125, y: 3.125, z: 3.125}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 336382778679360374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
