@@ -15,6 +15,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Collider2D hookCol;
 	[SerializeField] private Transform spriteT;
 	[HideInInspector] public Transform interactedWaterT;
+	[SerializeField] private Animator animator;
 	[SerializeField] VoidEvent onInventory;
 	private Camera cam;
 
@@ -111,6 +112,7 @@ public class PlatformingPlayerController : Interactor
 
 	public override void Start()
 	{
+		Time.timeScale = 0.2f;
 		base.Start();
 
 		if(BossFishController.caughtBoss) Inventory.Instance.AddFish(BossFishController.bossFish);
@@ -333,7 +335,7 @@ public class PlatformingPlayerController : Interactor
 	#region MOVE STATE
 	public enum MoveState
 	{
-		IDLE, RUNNING, JUMPING, FALLING, RISING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING, WALKING_REELING
+		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING, WALKING_REELING, WALL_STICKING
 	}
 	public MoveState currentMoveState = MoveState.IDLE;
 
@@ -341,6 +343,50 @@ public class PlatformingPlayerController : Interactor
 	{
 		//Debug.Log($"Changing from {currentMoveState} to {state}");
 		currentMoveState = state;
+		switch (state)
+		{
+			case MoveState.IDLE:
+				SetTrigger("ToIdle");
+				break;
+			case MoveState.RUNNING:
+				SetTrigger("ToRun");
+				break;
+			case MoveState.JUMPING:
+				SetTrigger("ToJump");
+				break;
+			case MoveState.FALLING:
+				SetTrigger("ToFall");
+				break;
+			case MoveState.WALLJUMPING:
+				SetTrigger("ToWallJump");
+				break;
+			case MoveState.SWIMMING:
+				SetTrigger("ToSwim");
+				break;
+			case MoveState.AIR_CASTING:
+				SetTrigger("ToAirCast");
+				break;
+			case MoveState.GROUND_CASTING:
+				SetTrigger("ToGroundCast");
+				break;
+			case MoveState.AIR_REELING:
+				SetTrigger("ToAirReel");
+				break;
+			case MoveState.GROUND_REELING:
+				SetTrigger("ToGroundReel");
+				break;
+			case MoveState.GROUND_HOOKED:
+				SetTrigger("ToGroundHooked");
+				break;
+			case MoveState.AIR_HOOKED:
+				SetTrigger("ToAirHooked");
+				break;
+			case MoveState.GROUND_HOOKED_WALKING:
+				SetTrigger("ToGrappledWalk");
+				break;
+			case MoveState.WALKING_REELING:
+				break;
+		}
 	}
 
 	private void ProcessMoveStateUpdate()
@@ -348,6 +394,8 @@ public class PlatformingPlayerController : Interactor
 		switch (currentMoveState)
 		{
 			case MoveState.IDLE:
+				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				
 				break;
 			case MoveState.RUNNING:
 				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
@@ -356,9 +404,6 @@ public class PlatformingPlayerController : Interactor
 				if (isFalling()) ChangeMoveState(MoveState.FALLING);
 				break;
 			case MoveState.FALLING:
-				break;
-			case MoveState.RISING:
-				if (isFalling()) ChangeMoveState(MoveState.FALLING);
 				break;
 			case MoveState.WALLJUMPING:
 				if (isFalling()) ChangeMoveState(MoveState.FALLING);
@@ -376,7 +421,6 @@ public class PlatformingPlayerController : Interactor
 				else if (currentRodState == RodState.INACTIVE)
 				{
 					if(isFalling()) ChangeMoveState(MoveState.FALLING);
-					else ChangeMoveState(MoveState.RISING);
 				}
 				break;
 			case MoveState.GROUND_REELING:
@@ -384,6 +428,7 @@ public class PlatformingPlayerController : Interactor
 				else if (currentRodState == RodState.INACTIVE) ChangeMoveState(MoveState.IDLE);
 				break;
 			case MoveState.GROUND_HOOKED:
+				if (!onGround) ChangeMoveState(MoveState.AIR_HOOKED);
 				if (currentRodState == RodState.RETURNING)
 				{
 					ChangeMoveState(MoveState.GROUND_REELING);
@@ -393,7 +438,6 @@ public class PlatformingPlayerController : Interactor
 				if(currentRodState == RodState.RETURNING)
 				{
 					if (isFalling()) ChangeMoveState(MoveState.FALLING);
-					else ChangeMoveState(MoveState.RISING);
 				}
 				//LookAtHook();
 				break;
@@ -986,6 +1030,17 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	#endregion
+
+	string currentTrigger;
+
+	void SetTrigger(string triggerName)
+	{
+		if (!string.IsNullOrEmpty(currentTrigger))
+			animator.ResetTrigger(currentTrigger); // Clear the previous trigger
+
+		animator.SetTrigger(triggerName); // Set the new trigger
+		currentTrigger = triggerName; // Remember the new one
+	}
 
 	#region DEBUG DRAWING
 

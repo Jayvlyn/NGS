@@ -191,7 +191,7 @@ Transform:
   m_GameObject: {fileID: 1175297089210662393}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.53, y: 0.003, z: 0}
+  m_LocalPosition: {x: 0.299, y: -0.087, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -266,7 +266,7 @@ Transform:
   m_GameObject: {fileID: 4161718424164305519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.529, y: -0.004, z: 0}
+  m_LocalPosition: {x: -0.384, y: -0.087, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -381,7 +381,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.004331559, y: -0.09745121}
+  m_Offset: {x: -0.03952965, y: -0.09745121}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -391,7 +391,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6621674, y: 0.8050976}
+  m_Size: {x: 0.57444495, y: 0.8050976}
   m_EdgeRadius: 0
 --- !u!114 &5430223865702074187
 MonoBehaviour:
@@ -445,6 +445,7 @@ MonoBehaviour:
   hookCol: {fileID: 446745433903773732}
   spriteT: {fileID: 3381539768182715777}
   interactedWaterT: {fileID: 0}
+  animator: {fileID: 3214544822688978555}
   onInventory: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
   moveSpeed: 33
   moveVelocityLimit: 10
@@ -478,9 +479,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   rightCheckT: {fileID: 1577787648814511174}
-  rightCheckSize: {x: 0.04, y: 0.19}
+  rightCheckSize: {x: 0.1, y: 0.19}
   leftCheckT: {fileID: 6428020383112335711}
-  leftCheckSize: {x: 0.04, y: 0.19}
+  leftCheckSize: {x: 0.1, y: 0.19}
   fishCastCurve:
     serializedVersion: 2
     m_Curve:
@@ -567,7 +568,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 5.11314
+  m_Distance: 6.6989927
   m_MaxDistanceOnly: 1
 --- !u!120 &1781532249685237151
 LineRenderer:
@@ -819,6 +820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3381539768182715777}
   - component: {fileID: 6211767658396992440}
+  - component: {fileID: 3214544822688978555}
   m_Layer: 10
   m_Name: BunnySprite
   m_TagString: Untagged
@@ -885,7 +887,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7db28de54b2f4284eb218927dd51944f, type: 3}
+  m_Sprite: {fileID: -741225768, guid: f9ef21c6f3af06942b20de4758e4418f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -896,6 +898,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3214544822688978555
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6343699967925498643}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 68b9940061a32374f8651176aae1794b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9065545618937251511
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,7 +945,7 @@ Transform:
   m_GameObject: {fileID: 9065545618937251511}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.555, z: 0}
+  m_LocalPosition: {x: -0.029, y: -0.518, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
