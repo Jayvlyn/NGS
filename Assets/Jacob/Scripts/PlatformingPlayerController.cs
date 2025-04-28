@@ -159,7 +159,8 @@ public class PlatformingPlayerController : Interactor
 		{
 			moveHeld = true;
 
-			if(currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING); 
+			if (currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING);
+			else if (currentMoveState == MoveState.GROUND_HOOKED) ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
 
 			if(moveInput * spriteT.localScale.x < 0)
 			{
@@ -332,7 +333,7 @@ public class PlatformingPlayerController : Interactor
 	#region MOVE STATE
 	public enum MoveState
 	{
-		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING
+		IDLE, RUNNING, JUMPING, FALLING, RISING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING, WALKING_REELING
 	}
 	public MoveState currentMoveState = MoveState.IDLE;
 
@@ -356,26 +357,51 @@ public class PlatformingPlayerController : Interactor
 				break;
 			case MoveState.FALLING:
 				break;
+			case MoveState.RISING:
+				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				break;
 			case MoveState.WALLJUMPING:
 				if (isFalling()) ChangeMoveState(MoveState.FALLING);
 				break;
 			case MoveState.SWIMMING:
 				break;
 			case MoveState.AIR_CASTING:
+				if(currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.AIR_REELING);
 				break;
 			case MoveState.GROUND_CASTING:
+				if(currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.GROUND_REELING);
 				break;
 			case MoveState.AIR_REELING:
+				if (!reelHeld && currentRodState == RodState.HOOKED) ChangeMoveState(MoveState.AIR_HOOKED);
+				else if (currentRodState == RodState.INACTIVE)
+				{
+					if(isFalling()) ChangeMoveState(MoveState.FALLING);
+					else ChangeMoveState(MoveState.RISING);
+				}
 				break;
 			case MoveState.GROUND_REELING:
+				if (!reelHeld && currentRodState == RodState.HOOKED) ChangeMoveState(MoveState.GROUND_HOOKED);
+				else if (currentRodState == RodState.INACTIVE) ChangeMoveState(MoveState.IDLE);
 				break;
 			case MoveState.GROUND_HOOKED:
+				if (currentRodState == RodState.RETURNING)
+				{
+					ChangeMoveState(MoveState.GROUND_REELING);
+				}
 				break;
 			case MoveState.AIR_HOOKED:
+				if(currentRodState == RodState.RETURNING)
+				{
+					if (isFalling()) ChangeMoveState(MoveState.FALLING);
+					else ChangeMoveState(MoveState.RISING);
+				}
 				//LookAtHook();
-				// RECOMPOILE;
 				break;
 			case MoveState.GROUND_HOOKED_WALKING:
+				if (!moveHeld) ChangeMoveState(MoveState.GROUND_HOOKED);
+				break;
+			case MoveState.WALKING_REELING:
+				
 				break;
 		}
 	}
@@ -424,10 +450,17 @@ public class PlatformingPlayerController : Interactor
 		{
 			case RodState.INACTIVE:
 				OnEnterInactiveState();
+				if(currentMoveState == MoveState.WALKING_REELING) // returning
+				{
+					ChangeMoveState(MoveState.RUNNING);
+				}
 				break;
 
 			case RodState.CASTING:
 				OnEnterCastingState();
+				if(onGround) ChangeMoveState(MoveState.GROUND_CASTING);
+				else ChangeMoveState(MoveState.AIR_CASTING);
+
 				break;
 
 			case RodState.RETURNING:
@@ -436,11 +469,14 @@ public class PlatformingPlayerController : Interactor
 
 			case RodState.HOOKED:
 				OnEnterHookedState();
-
+				if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
+				else ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
 
 			case RodState.FISHCASTING:
 				OnEnterFishCastingState();
+				if (onGround) ChangeMoveState(MoveState.GROUND_CASTING);
+				else ChangeMoveState(MoveState.AIR_CASTING);
 
 				break;
 		}
@@ -519,6 +555,12 @@ public class PlatformingPlayerController : Interactor
 					}
 					else // Reel In
 					{
+						if(currentMoveState != MoveState.AIR_REELING || currentMoveState != MoveState.GROUND_REELING)
+						{
+							if(onGround) ChangeMoveState(MoveState.GROUND_REELING);
+							else ChangeMoveState(MoveState.AIR_REELING);
+						}
+
 						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
 						dir = (hookRb.transform.position - transform.position).normalized;
 						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
@@ -794,6 +836,14 @@ public class PlatformingPlayerController : Interactor
 		{
 			if(moveHeld) ChangeMoveState(MoveState.RUNNING);
 			else		 ChangeMoveState(MoveState.IDLE);
+		}
+		else if(currentMoveState == MoveState.AIR_REELING)
+		{
+			ChangeMoveState(MoveState.GROUND_REELING);
+		}
+		else if(currentMoveState == MoveState.AIR_HOOKED)
+		{
+			ChangeMoveState(MoveState.GROUND_HOOKED);
 		}
 
 		landTimer = 0; // will count up until bunny hop window is passed
