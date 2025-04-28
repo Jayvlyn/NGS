@@ -107,30 +107,30 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Load()
     {
+        var save = saveList[selected];
         string path = Path.Combine(Application.dataPath, "Saves");
-        path = Path.Combine(path, $"{saveList[selected].id}.json");
-
+        path = Path.Combine(path, $"{save.id}.json");
+        
         //load data
         if (File.Exists(path))
         {
             //load inventory & money
             (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
-            inventoryData.Item1 = saveList[selected].inventory;
-            inventoryData.Item2 = saveList[selected].money;
+            Inventory.Instance.ApplyData(save.inventory, save.money);
 
             //load key binds
-            gameSettings.platformerKeys = saveList[selected].platformerKeybinds;
-            gameSettings.minigameKeys = saveList[selected].minigameKeybinds;
-            gameSettings.bossGameKeys = saveList[selected].bossGameKeybinds;
+            gameSettings.platformerKeys = save.platformerKeybinds;
+            gameSettings.minigameKeys = save.minigameKeybinds;
+            gameSettings.bossGameKeys = save.bossGameKeybinds;
 
             //load settings
-            gameSettings.hasPostProcessing = saveList[selected].hasPostProcessing;
-            gameSettings.screenResolution = saveList[selected].screenResolution;
-            gameSettings.isFullScreen = saveList[selected].isFullScreen;
+            gameSettings.hasPostProcessing = save.hasPostProcessing;
+            gameSettings.screenResolution = save.screenResolution;
+            gameSettings.isFullScreen = save.isFullScreen;
 
             //load player
-            gameSettings.position = saveList[selected].position;
-            id = saveList[selected].id;
+            gameSettings.position = save.position;
+            id = save.id;
         }
 
         //Apply loaded data

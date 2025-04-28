@@ -89,4 +89,14 @@ public class ModifySettings : MonoBehaviour
         settings.hasPostProcessing = postProcessing.enabled;
         settings.screenResolution = resolutionDropdown.value;
     }
+
+    public void ApplyData()
+    {
+        mixer.SetFloat("MasterVol", settings.masterVolume);
+        mixer.SetFloat("MusicVol", settings.musicVolume);
+        mixer.SetFloat("SFXVol", settings.sfxVolume);
+        Screen.fullScreen = settings.isFullScreen;
+        postProcessing.enabled = settings.hasPostProcessing;
+        resolutionDropdown.value = settings.screenResolution;
+    }
 }
