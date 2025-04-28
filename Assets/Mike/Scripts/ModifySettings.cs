@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -13,31 +14,34 @@ public class ModifySettings : MonoBehaviour
 
     public Volume postProcessing;
 
-    Resolution[] resolutions;
+    List<Resolution> res;
 
     void Start()
     {
-        resolutions = Screen.resolutions;
+        res = Screen.resolutions.ToList();
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
-
+        List<Resolution> newRes = new List<Resolution>();
         int currentResIndex = 0;
-        for(int i = 0; i < resolutions.Length; i++)
+        string prev = "";
+
+        for (int i = 0; i < res.Count; i++)
         {
-            //float aspect = (float)resolutions[i].width / resolutions[i].height;
-            //if (Mathf.Abs(aspect - (16f / 9f)) > 0.01f) continue;
+            string check = res[i].width + "x" + res[i].height;
+            float aspect = (float)res[i].width / res[i].height;
+            if (check == prev || Mathf.Abs(aspect - (16f / 9f)) > 0.2f) continue;
 
-            string option = resolutions[i].width + "x" + resolutions[i].height;
-
+            string option = check;
+            prev = check;
             options.Add(option);
-
-            if (resolutions[i].width == Screen.currentResolution.width && 
-                resolutions[i].height == Screen.currentResolution.height)
+            newRes.Add(res[i]);
+            if (res[i].width == Screen.currentResolution.width && res[i].height == Screen.currentResolution.height)
             {
                 currentResIndex = i;
             }
         }
 
+        res = newRes;
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
@@ -63,7 +67,7 @@ public class ModifySettings : MonoBehaviour
 
     public void SetResolution(int resIndex)
     {
-        Screen.SetResolution(resolutions[resIndex].width, resolutions[resIndex].height, Screen.fullScreen);
+        Screen.SetResolution(res[resIndex].width, res[resIndex].height, Screen.fullScreen);
     }
 
     public void SetFullScreen(bool isFullScreen)
