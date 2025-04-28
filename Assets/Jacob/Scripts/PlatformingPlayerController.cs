@@ -127,7 +127,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{
-		//Debug.Log(currentMoveState);
+		Debug.Log(currentMoveState);
 
 		onGround = isGrounded();
 
@@ -858,6 +858,10 @@ public class PlatformingPlayerController : Interactor
 	public void UpdateWater(bool newState)
 	{
 		inWater = newState;
+		if(inWater)
+		{
+			ChangeMoveState(MoveState.SWIMMING);
+		}
 	}
 
 	private bool isGrounded()
