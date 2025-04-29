@@ -10,8 +10,7 @@ public class GameSettings : ScriptableObject
 
     public int screenResolution;
 
-    public bool hasPostProcessing;
-    public bool isFullScreen;
+    public ToggleData toggleData;
 
     public positionData position;
 

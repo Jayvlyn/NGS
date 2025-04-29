@@ -160,6 +160,7 @@ MonoBehaviour:
   mixer: {fileID: 24100000, guid: fd8426117eef26d47a4f6f63224f8509, type: 2}
   resolutionDropdown: {fileID: 5840224402029049995}
   postProcessing: {fileID: 0}
+  MouseMode: {fileID: 1637214005448226948}
 --- !u!114 &8761768832387112577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +426,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 631786084649413801}
     m_Modifications:
+    - target: {fileID: 2788049899319724067, guid: c62a2a82d094d0e42b633ba9348f0797, type: 3}
+      propertyPath: gameSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
     - target: {fileID: 6440143872499975421, guid: c62a2a82d094d0e42b633ba9348f0797, type: 3}
       propertyPath: m_Name
       value: Load Game
@@ -1328,6 +1333,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce0812a678cedfc469302b5389afcf5c, type: 3}
+--- !u!114 &1637214005448226948 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9049549953744137994, guid: ce0812a678cedfc469302b5389afcf5c, type: 3}
+  m_PrefabInstance: {fileID: 7723383958294714254}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2939974596260278045 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4891502500510660755, guid: ce0812a678cedfc469302b5389afcf5c, type: 3}
