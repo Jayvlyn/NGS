@@ -4,8 +4,8 @@ using UnityEngine;
 public class DialogueManager : Singleton<DialogueManager>
 {
     [SerializeField] private GameObject dialoguePrefab;
-    [SerializeField] private int nameIndex;
-    [SerializeField] private int dialogueIndex;
+    [SerializeField] private int nameIndex = 0;
+    [SerializeField] private int dialogueIndex = 1;
     public GameObject CreateDialogue(Transform location, string dialogue = "", float lifetime = 30, string speakerName = "")
     {
         GameObject go = Instantiate(dialoguePrefab, location);
@@ -32,6 +32,6 @@ public class DialogueManager : Singleton<DialogueManager>
     public void Start()
     {
         //Debug only
-        CreateDialogue(transform, "This is a test dialogue created to verify that everything is working properly", "Tester");
+        //CreateDialogue(transform, "This is a test dialogue created to verify that everything is working properly", "Tester");
     }
 }
