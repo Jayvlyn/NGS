@@ -1040,7 +1040,7 @@ public class PlatformingPlayerController : Interactor
 	public void UpdateWater(bool newState)
 	{
 		inWater = newState;
-		if(inWater)
+		if(inWater && !onGround)
 		{
 			ChangeMoveState(MoveState.SWIMMING);
 		}
