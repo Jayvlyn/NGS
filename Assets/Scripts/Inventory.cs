@@ -46,6 +46,7 @@ public class Inventory : Singleton<Inventory>
         {
             currentFish[fish.fishName].currentFish.Remove(fish);
             InventoryUIFiller.Instance.RemoveFishFromInventoryUI(fish);
+            Destroy(fish);
         }
     }
     

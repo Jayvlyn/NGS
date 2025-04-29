@@ -9,14 +9,15 @@ public class QuestGiver : InteractableObject
     [SerializeField] protected int currentQuestIndex = -1;
     [SerializeField] protected QuestData[] potentialQuests;
     [SerializeField] protected bool givesCosmetic = true;
+    [SerializeField] protected string questGiverName = "";
     //True if you have not initiated an interaction with this object yet
     protected bool canInteract = true;
 
     [SerializeField] protected BoolListener listener;
     [SerializeField] protected GameObject confirmationPopupPrefab;
-    [SerializeField] protected int confirmationPopupFishNameIndex = 1;
-    [SerializeField] protected int confirmationPopupFishLengthIndex = 2;
-    [SerializeField] protected Transform confirmationPopupTransform;
+    [SerializeField] protected Transform dialoguePopupTransform;
+
+    private Fish lowestViable = null;
 
     protected GameObject currentPopup = null;
     protected override void Start()
@@ -35,7 +36,7 @@ public class QuestGiver : InteractableObject
             bool firstTimeDescribing = false;
             if(currentQuestIndex != -1)
             {
-                Fish lowestViable = null;
+                lowestViable = null;
                 foreach(Fish fish in Inventory.Instance.GetFishData(potentialQuests[currentQuestIndex].FishName).currentFish)
                 {
                     if(fish.length >= potentialQuests[currentQuestIndex].MinLength && (lowestViable == null || lowestViable.length > fish.length))
@@ -45,12 +46,13 @@ public class QuestGiver : InteractableObject
                 }
                 if(lowestViable != null)
                 {
-                    currentPopup = Instantiate(confirmationPopupPrefab, confirmationPopupTransform);
-                    currentPopup.GetComponentInChildren<BoolPopup>().Event.RegisterListener(listener);
-                    currentPopup.GetComponentInChildren<Image>().sprite = lowestViable.sprite;
-                    TMP_Text[] texts = currentPopup.GetComponentsInChildren<TMP_Text>();
-                    texts[confirmationPopupFishNameIndex].text = lowestViable.fishName;
-                    texts[confirmationPopupFishLengthIndex].text = lowestViable.length.ToString();
+                    currentPopup = Instantiate(confirmationPopupPrefab);
+                    ConfirmationBoolPopup popup = currentPopup.GetComponentInChildren<ConfirmationBoolPopup>();
+                    popup.Event.RegisterListener(listener);
+                    popup.FishImage.sprite = lowestViable.sprite;
+                    popup.FishNameText.text = lowestViable.fishName;
+                    popup.FishLengthText.text = lowestViable.length.ToString();
+                    popup.QuestionText.text = $"Give this fish to {questGiverName}?";
                     canInteract = false;
                 }
             }
@@ -61,15 +63,10 @@ public class QuestGiver : InteractableObject
             }
             if(canInteract)
             {
-                if (firstTimeDescribing)
-                {
-                    //TODO: Attach Dialogue system to display the quest description
-                }
-                else
-                {
-                    //TODO: Attache Dialogue System to display the repeat description for the quest
-                    //(should default to the normal description if the string is empty)
-                }
+                DialogueManager.Instance.CreateDialogue(dialoguePopupTransform,
+                    firstTimeDescribing || potentialQuests[currentQuestIndex].RepeatDescription == string.Empty ?
+                    potentialQuests[currentQuestIndex].QuestDescription :
+                    potentialQuests[currentQuestIndex].RepeatDescription, questGiverName);
             }
         }
     }
@@ -80,6 +77,8 @@ public class QuestGiver : InteractableObject
         {
             if(complete)
             {
+                Inventory.Instance.RemoveFish(lowestViable);
+                lowestViable = null;
                 if(completedAQuest)
                 {
                     Inventory.Instance.AddMoney(potentialQuests[currentQuestIndex].Reward);
