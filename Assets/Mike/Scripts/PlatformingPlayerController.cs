@@ -515,9 +515,10 @@ public class PlatformingPlayerController : Interactor
 				break;
 			case MoveState.GROUND_HOOKED_WALKING:
 				if (!moveHeld) ChangeMoveState(MoveState.GROUND_HOOKED);
+				if (!onGround) ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
 			case MoveState.WALKING_REELING:
-				
+				if (!onGround) ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
 			case MoveState.WALL_STICKING:
 				if(isFacingRight() && !isTouchingLeftWall() || isFacingLeft() && !isTouchingRightWall())
