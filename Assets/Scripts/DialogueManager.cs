@@ -4,15 +4,13 @@ using UnityEngine;
 public class DialogueManager : Singleton<DialogueManager>
 {
     [SerializeField] private GameObject dialoguePrefab;
-    [SerializeField] private int nameIndex = 0;
-    [SerializeField] private int dialogueIndex = 1;
-    public GameObject CreateDialogue(Transform location, string dialogue = "", float lifetime = 30, string speakerName = "")
+    public GameObject CreateDialogue(Transform location, string dialogue = "", float lifetime = 10, string speakerName = "")
     {
         GameObject go = Instantiate(dialoguePrefab, location);
-        go.GetComponentInChildren<VoidPopup>().Lifetime = lifetime;
-        TMP_Text[] texts = go.GetComponentsInChildren<TMP_Text>();
-        texts[dialogueIndex].text = dialogue;
-        texts[nameIndex].text = speakerName;
+        DialogueVoidPopup popup = go.GetComponentInChildren<DialogueVoidPopup>();
+        popup.Lifetime = lifetime;
+        popup.dialogueText.text = dialogue;
+        popup.nameText.text = speakerName;
         go.GetComponent<Canvas>().worldCamera = Camera.current;
         return go;
     }
@@ -22,7 +20,7 @@ public class DialogueManager : Singleton<DialogueManager>
     }
     public GameObject CreateDialogue(Transform location, string dialogue, string speakerName)
     {
-        return CreateDialogue(location, dialogue, 30, speakerName);
+        return CreateDialogue(location, dialogue, 10, speakerName);
     }
     public GameObject CreateDialogue(string speakerName, Transform location)
     {

@@ -45,6 +45,7 @@ public class Inventory : Singleton<Inventory>
         if(currentFish.ContainsKey(fish.fishName))
         {
             currentFish[fish.fishName].currentFish.Remove(fish);
+            Destroy(fish);
         }
     }
     
