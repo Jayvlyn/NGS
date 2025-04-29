@@ -13,6 +13,7 @@ public class DialogueManager : Singleton<DialogueManager>
         TMP_Text[] texts = go.GetComponentsInChildren<TMP_Text>();
         texts[dialogueIndex].text = dialogue;
         texts[nameIndex].text = speakerName;
+        go.GetComponent<Canvas>().worldCamera = Camera.current;
         return go;
     }
     public GameObject CreateDialogue(Transform location, float lifetime, string speakerName = "")
@@ -26,5 +27,11 @@ public class DialogueManager : Singleton<DialogueManager>
     public GameObject CreateDialogue(string speakerName, Transform location)
     {
         return CreateDialogue(location, "", speakerName);
+    }
+
+    public void Start()
+    {
+        //Debug only
+        CreateDialogue(transform, "This is a test dialogue created to verify that everything is working properly", "Tester");
     }
 }

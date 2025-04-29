@@ -21,7 +21,10 @@ public abstract class Popup<T> : MonoBehaviour
 
     public virtual void ClosePopup(T result)
     {
-        Event.Raise(result);
+        if(Event != null)
+        {
+            Event.Raise(result);
+        }
         Destroy(gameObject);
     }
 }
