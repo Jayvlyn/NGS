@@ -184,9 +184,9 @@ public class PlatformingPlayerController : Interactor
 		{
 			moveHeld = true;
 			if (currentMoveState == MoveState.WALL_STICKING) ChangeMoveState(MoveState.FALLING);
-
-			if (currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING);
+			else if (currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING);
 			else if (currentMoveState == MoveState.GROUND_HOOKED) ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
+			else if (currentMoveState == MoveState.GROUND_REELING) ChangeMoveState(MoveState.WALKING_REELING);
 
 			if(moveInput * spriteT.localScale.x < 0)
 			{
@@ -306,7 +306,9 @@ public class PlatformingPlayerController : Interactor
 		if (moveHeld)
 		{
 			float speed = !onGround ? moveSpeed * airControlMod : moveSpeed; // half move speed in air
-																	// change dir
+
+			if (currentRodState == RodState.HOOKED) speed = speed * 0.7f;
+
 
 			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
 			{ // changing dir on ground
@@ -371,7 +373,7 @@ public class PlatformingPlayerController : Interactor
 			rb.gravityScale = startingGravity;
 		}
 
-		//Debug.Log($"Changing from {currentMoveState} to {state}");
+		Debug.Log($"Changing from {currentMoveState} to {state}");
 		currentMoveState = state;
 		switch (state)
 		{
@@ -415,6 +417,7 @@ public class PlatformingPlayerController : Interactor
 				SetTrigger("ToGrappledWalk");
 				break;
 			case MoveState.WALKING_REELING:
+				SetTrigger("ToReelWalk");
 				break;
 			case MoveState.WALL_STICKING:
 				FlipX();
@@ -596,6 +599,9 @@ public class PlatformingPlayerController : Interactor
 
 			case RodState.RETURNING:
 				OnEnterReturningState();
+				if (onGround) ChangeMoveState(MoveState.GROUND_REELING);
+				else ChangeMoveState(MoveState.AIR_REELING);
+
 				break;
 
 			case RodState.HOOKED:
