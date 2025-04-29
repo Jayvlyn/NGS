@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -109,7 +110,7 @@ public class MenuUI : MonoBehaviour
     {
         if (keyBinds.activeSelf)
         {
-            keyBinds.SetActive(false);
+            //keyBinds.SetActive(false);
             SaveKeyBinds();
         }
         else
@@ -151,7 +152,6 @@ public class MenuUI : MonoBehaviour
     private void SaveKeyBinds()
     {
         var settings = GetComponent<ModifySettings>().settings;
-
         switch (keyBinds.GetComponentInChildren<KeyRebinder>().data.actionMap)
         {
             case 0:
@@ -186,6 +186,11 @@ public class MenuUI : MonoBehaviour
     {
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
+        GetComponent<ModifySettings>().ApplyData();
+        foreach (var binds in keyBinds.transform.Find("PageArea").GetComponentsInChildren<Image>())
+        {
+            foreach (var bind in binds.GetComponentsInChildren<KeyRebinder>()) bind.ApplyData();
+        }
         Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
     }

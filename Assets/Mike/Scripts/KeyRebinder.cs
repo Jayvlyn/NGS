@@ -102,4 +102,9 @@ public class KeyRebinder : MonoBehaviour
         save.bindingPath = path;
         data = save;
     }
+
+    public void ApplyData()
+    {
+
+    }
 }

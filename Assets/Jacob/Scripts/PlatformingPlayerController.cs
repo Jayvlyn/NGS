@@ -15,6 +15,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Collider2D hookCol;
 	[SerializeField] private Transform spriteT;
 	[HideInInspector] public Transform interactedWaterT;
+	[SerializeField] private Animator animator;
 	[SerializeField] VoidEvent onInventory;
 	private Camera cam;
 
@@ -26,6 +27,7 @@ public class PlatformingPlayerController : Interactor
 	//[SerializeField] private float reelVelocityLimit = 40f;
 
 	[SerializeField] private float jumpForce = 20f;
+	[SerializeField] private float airControlMod = 0.4f;
 
 	[SerializeField] private float bhopForce = 20f;
 
@@ -48,6 +50,10 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField]
 	private float jumpTime = 0.5f;
+	private float startingGravity;
+
+	[SerializeField, Tooltip("Higher = Player will lose wall sticking faster")]
+	private float wallStickGravityIncreaseMult = 10f;
 
 	[SerializeField] private float coyoteTime = 0.1f;
 
@@ -111,6 +117,7 @@ public class PlatformingPlayerController : Interactor
 
 	public override void Start()
 	{
+		//Time.timeScale = 0.2f;
 		base.Start();
 
 		if(BossFishController.caughtBoss) Inventory.Instance.AddFish(BossFishController.bossFish);
@@ -120,6 +127,7 @@ public class PlatformingPlayerController : Interactor
 
 		currentJumps = totalJumps;
 		currentWallJumps = totalWallJumps;
+		startingGravity = rb.gravityScale;
 
 		ChangeRodState(RodState.INACTIVE);
 		ChangeMoveState(MoveState.IDLE);
@@ -127,7 +135,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{
-		//Debug.Log(currentMoveState);
+		Debug.Log(currentMoveState);
 
 		onGround = isGrounded();
 
@@ -158,8 +166,10 @@ public class PlatformingPlayerController : Interactor
 		if (moveInput != 0)
 		{
 			moveHeld = true;
+			if (currentMoveState == MoveState.WALL_STICKING) ChangeMoveState(MoveState.FALLING);
 
-			if(currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING); 
+			if (currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING);
+			else if (currentMoveState == MoveState.GROUND_HOOKED) ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
 
 			if(moveInput * spriteT.localScale.x < 0)
 			{
@@ -180,9 +190,10 @@ public class PlatformingPlayerController : Interactor
 		{
 			jumpHeld = true;
 
-			if((isTouchingLeftWall() ^ isTouchingRightWall()) && !onGround && !inWater)
+			if(currentMoveState == MoveState.WALL_STICKING)
 			{
-				TryWallJump();
+				DoWallJump();
+				return;
 			}
 			else 
 			{
@@ -277,7 +288,7 @@ public class PlatformingPlayerController : Interactor
 		// Movement
 		if (moveHeld)
 		{
-			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+			float speed = !onGround ? moveSpeed * airControlMod : moveSpeed; // half move speed in air
 																	// change dir
 
 			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
@@ -332,50 +343,178 @@ public class PlatformingPlayerController : Interactor
 	#region MOVE STATE
 	public enum MoveState
 	{
-		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING
+		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING, WALKING_REELING, WALL_STICKING
 	}
 	public MoveState currentMoveState = MoveState.IDLE;
 
 	private void ChangeMoveState(MoveState state)
 	{
+		if(currentMoveState == MoveState.WALL_STICKING)
+		{ // exiting wall stick
+			rb.gravityScale = startingGravity;
+		}
+
 		//Debug.Log($"Changing from {currentMoveState} to {state}");
 		currentMoveState = state;
+		switch (state)
+		{
+			case MoveState.IDLE:
+				SetTrigger("ToIdle");
+				break;
+			case MoveState.RUNNING:
+				SetTrigger("ToRun");
+				break;
+			case MoveState.JUMPING:
+				SetTrigger("ToJump");
+				break;
+			case MoveState.FALLING:
+				SetTrigger("ToFall");
+				break;
+			case MoveState.WALLJUMPING:
+				SetTrigger("ToWallJump");
+				break;
+			case MoveState.SWIMMING:
+				SetTrigger("ToSwim");
+				break;
+			case MoveState.AIR_CASTING:
+				SetTrigger("ToAirCast");
+				break;
+			case MoveState.GROUND_CASTING:
+				SetTrigger("ToGroundCast");
+				break;
+			case MoveState.AIR_REELING:
+				SetTrigger("ToAirReel");
+				break;
+			case MoveState.GROUND_REELING:
+				SetTrigger("ToGroundReel");
+				break;
+			case MoveState.GROUND_HOOKED:
+				SetTrigger("ToGroundHooked");
+				break;
+			case MoveState.AIR_HOOKED:
+				SetTrigger("ToAirHooked");
+				break;
+			case MoveState.GROUND_HOOKED_WALKING:
+				SetTrigger("ToGrappledWalk");
+				break;
+			case MoveState.WALKING_REELING:
+				break;
+			case MoveState.WALL_STICKING:
+				FlipX();
+				rb.linearVelocityY = 0;
+				rb.gravityScale = 0;
+
+				SetTrigger("ToWallStick");
+				break;
+		}
 	}
 
+	bool touchingLeft;
+	bool touchingRight;
 	private void ProcessMoveStateUpdate()
 	{
 		switch (currentMoveState)
 		{
 			case MoveState.IDLE:
+				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				
 				break;
 			case MoveState.RUNNING:
 				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				if (isFacingLeft() && moveInput > 0 || isFacingRight() && moveInput < 0) FlipX();
 				break;
 			case MoveState.JUMPING:
 				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				isTouchingLeftWall();
+				if(jumpTime - jumpTimer > 0.3f)
+				{
+					touchingLeft = isTouchingLeftWall();
+					touchingRight = isTouchingRightWall();
+
+					if (!onGround && currentWallJumps > 0)
+					{
+						if(touchingLeft && isFacingLeft() || touchingRight && isFacingRight()) ChangeMoveState(MoveState.WALL_STICKING);
+					}
+					
+				}
 				break;
 			case MoveState.FALLING:
+				if (isFacingLeft() && moveInput > 0 || isFacingRight() && moveInput < 0) FlipX();
+
+				touchingLeft = isTouchingLeftWall();
+				touchingRight = isTouchingRightWall();
+
+				if (!onGround && currentWallJumps > 0)
+				{
+					if (touchingLeft && isFacingLeft() || touchingRight && isFacingRight()) ChangeMoveState(MoveState.WALL_STICKING);
+				}
 				break;
 			case MoveState.WALLJUMPING:
 				if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				touchingLeft = isTouchingLeftWall();
+				touchingRight = isTouchingRightWall();
+
+				if (!onGround && currentWallJumps > 0)
+				{
+					if (touchingLeft && isFacingLeft() || touchingRight && isFacingRight()) ChangeMoveState(MoveState.WALL_STICKING);
+				}
 				break;
 			case MoveState.SWIMMING:
 				break;
 			case MoveState.AIR_CASTING:
+				if(currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.AIR_REELING);
 				break;
 			case MoveState.GROUND_CASTING:
+				if(currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.GROUND_REELING);
 				break;
 			case MoveState.AIR_REELING:
+				if (!reelHeld && currentRodState == RodState.HOOKED) ChangeMoveState(MoveState.AIR_HOOKED);
+				else if (currentRodState == RodState.INACTIVE)
+				{
+					if(isFalling()) ChangeMoveState(MoveState.FALLING);
+				}
 				break;
 			case MoveState.GROUND_REELING:
+				if (!reelHeld && currentRodState == RodState.HOOKED) ChangeMoveState(MoveState.GROUND_HOOKED);
+				else if (currentRodState == RodState.INACTIVE) ChangeMoveState(MoveState.IDLE);
 				break;
 			case MoveState.GROUND_HOOKED:
+				if (!onGround) ChangeMoveState(MoveState.AIR_HOOKED);
+				if (currentRodState == RodState.RETURNING)
+				{
+					ChangeMoveState(MoveState.GROUND_REELING);
+				}
 				break;
 			case MoveState.AIR_HOOKED:
+				if(currentRodState == RodState.RETURNING)
+				{
+					if (isFalling()) ChangeMoveState(MoveState.FALLING);
+				}
 				//LookAtHook();
-				// RECOMPOILE;
 				break;
 			case MoveState.GROUND_HOOKED_WALKING:
+				if (!moveHeld) ChangeMoveState(MoveState.GROUND_HOOKED);
+				break;
+			case MoveState.WALKING_REELING:
+				
+				break;
+			case MoveState.WALL_STICKING:
+				if(isFacingRight() && !isTouchingLeftWall() || isFacingLeft() && !isTouchingRightWall())
+				{
+					ChangeMoveState(MoveState.FALLING);
+				}
+
+				if (rb.gravityScale < startingGravity)
+				{
+					rb.gravityScale += Time.deltaTime + rb.gravityScale;
+					rb.gravityScale *= wallStickGravityIncreaseMult;
+				}
+				else if (rb.gravityScale >= startingGravity)
+				{
+					rb.gravityScale = startingGravity;
+					ChangeMoveState(MoveState.FALLING);
+				}
+
 				break;
 		}
 	}
@@ -424,10 +563,17 @@ public class PlatformingPlayerController : Interactor
 		{
 			case RodState.INACTIVE:
 				OnEnterInactiveState();
+				if(currentMoveState == MoveState.WALKING_REELING) // returning
+				{
+					ChangeMoveState(MoveState.RUNNING);
+				}
 				break;
 
 			case RodState.CASTING:
 				OnEnterCastingState();
+				if(onGround) ChangeMoveState(MoveState.GROUND_CASTING);
+				else ChangeMoveState(MoveState.AIR_CASTING);
+
 				break;
 
 			case RodState.RETURNING:
@@ -436,11 +582,14 @@ public class PlatformingPlayerController : Interactor
 
 			case RodState.HOOKED:
 				OnEnterHookedState();
-
+				if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
+				else ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
 
 			case RodState.FISHCASTING:
 				OnEnterFishCastingState();
+				if (onGround) ChangeMoveState(MoveState.GROUND_CASTING);
+				else ChangeMoveState(MoveState.AIR_CASTING);
 
 				break;
 		}
@@ -519,6 +668,12 @@ public class PlatformingPlayerController : Interactor
 					}
 					else // Reel In
 					{
+						if(currentMoveState != MoveState.AIR_REELING || currentMoveState != MoveState.GROUND_REELING)
+						{
+							if(onGround) ChangeMoveState(MoveState.GROUND_REELING);
+							else ChangeMoveState(MoveState.AIR_REELING);
+						}
+
 						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
 						dir = (hookRb.transform.position - transform.position).normalized;
 						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
@@ -751,24 +906,14 @@ public class PlatformingPlayerController : Interactor
 	}
 	//-----------
 
-
-	// WALL JUMPING
-	public void TryWallJump()
-	{
-		if (currentWallJumps > 0)
-		{
-			DoWallJump();
-		}
-	}
-
 	public void DoWallJump()
 	{
 		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.WALLJUMPING);
 		currentWallJumps--;
-		if (jumpTimer > 0) jumpTimer = 0;
-		
 
+		jumpTimer = jumpTime;
+		
 		Vector2 dir = Vector2.up * wallJumpUpwardsInfluence;
 
 		if(isTouchingLeftWall())
@@ -781,7 +926,6 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		rb.AddForce(dir * jumpForce, ForceMode2D.Impulse);
-		FlipX();
 	}
 	//--------------
 
@@ -790,10 +934,18 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
-		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING)
+		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING || currentMoveState == MoveState.WALL_STICKING)
 		{
 			if(moveHeld) ChangeMoveState(MoveState.RUNNING);
 			else		 ChangeMoveState(MoveState.IDLE);
+		}
+		else if(currentMoveState == MoveState.AIR_REELING)
+		{
+			ChangeMoveState(MoveState.GROUND_REELING);
+		}
+		else if(currentMoveState == MoveState.AIR_HOOKED)
+		{
+			ChangeMoveState(MoveState.GROUND_HOOKED);
 		}
 
 		landTimer = 0; // will count up until bunny hop window is passed
@@ -835,6 +987,16 @@ public class PlatformingPlayerController : Interactor
 		return jumpTimer > 0;
 	}
 
+	public bool isFacingRight()
+	{
+		return spriteT.localScale.x > 0;
+	}
+
+	public bool isFacingLeft()
+	{
+		return spriteT.localScale.x < 0;
+	}
+
 	private void ProcessUpdateTimers()
 	{
 		// Timers
@@ -858,6 +1020,10 @@ public class PlatformingPlayerController : Interactor
 	public void UpdateWater(bool newState)
 	{
 		inWater = newState;
+		if(inWater)
+		{
+			ChangeMoveState(MoveState.SWIMMING);
+		}
 	}
 
 	private bool isGrounded()
@@ -887,7 +1053,7 @@ public class PlatformingPlayerController : Interactor
 	{
 		if (Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer))
 		{
-			return true;
+            return true;
 		}
 		return false;
 	}
@@ -932,6 +1098,17 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	#endregion
+
+	string currentTrigger;
+
+	void SetTrigger(string triggerName)
+	{
+		if (!string.IsNullOrEmpty(currentTrigger))
+			animator.ResetTrigger(currentTrigger); // Clear the previous trigger
+
+		animator.SetTrigger(triggerName); // Set the new trigger
+		currentTrigger = triggerName; // Remember the new one
+	}
 
 	#region DEBUG DRAWING
 
