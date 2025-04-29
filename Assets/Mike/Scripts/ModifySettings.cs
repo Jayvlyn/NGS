@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class ModifySettings : MonoBehaviour
 {
@@ -92,11 +93,22 @@ public class ModifySettings : MonoBehaviour
 
     public void ApplyData()
     {
-        mixer.SetFloat("MasterVol", settings.masterVolume);
-        mixer.SetFloat("MusicVol", settings.musicVolume);
-        mixer.SetFloat("SFXVol", settings.sfxVolume);
-        Screen.fullScreen = settings.isFullScreen;
-        postProcessing.enabled = settings.hasPostProcessing;
+        //load in the sound data
+        foreach(var slider in transform.Find("Settings").GetComponentsInChildren<Slider>())
+        {
+            if (slider.name == "MasterVolume") slider.value = settings.masterVolume;
+            else if (slider.name == "MusicVolume") slider.value = settings.musicVolume;
+            else slider.value = settings.sfxVolume;
+        }
+
+        //load in the toggle data
+        foreach (var toggle in transform.Find("Settings").GetComponentsInChildren<Toggle>())
+        {
+            if (toggle.name == "PostProcessing") toggle.isOn = settings.hasPostProcessing;
+            else toggle.isOn = settings.isFullScreen;
+        }
+
+        //load in screen resolution
         resolutionDropdown.value = settings.screenResolution;
     }
 }
