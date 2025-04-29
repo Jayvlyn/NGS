@@ -27,6 +27,7 @@ public class PlatformingPlayerController : Interactor
 	//[SerializeField] private float reelVelocityLimit = 40f;
 
 	[SerializeField] private float jumpForce = 20f;
+	[SerializeField] private float airControlMod = 0.4f;
 
 	[SerializeField] private float bhopForce = 20f;
 
@@ -287,7 +288,7 @@ public class PlatformingPlayerController : Interactor
 		// Movement
 		if (moveHeld)
 		{
-			float speed = !onGround ? moveSpeed * 0.5f : moveSpeed; // half move speed in air
+			float speed = !onGround ? moveSpeed * airControlMod : moveSpeed; // half move speed in air
 																	// change dir
 
 			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite

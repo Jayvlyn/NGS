@@ -447,7 +447,7 @@ MonoBehaviour:
   interactedWaterT: {fileID: 0}
   animator: {fileID: 3214544822688978555}
   onInventory: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
-  moveSpeed: 33
+  moveSpeed: 22
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
   jumpForce: 12
@@ -460,7 +460,6 @@ MonoBehaviour:
   jumpBufferTime: 0.1
   jumpTime: 0.5
   wallStickGravityIncreaseMult: 0.5
-  wallStickOffset: 0.05
   coyoteTime: 0.1
   totalJumps: 1
   totalWallJumps: 5
