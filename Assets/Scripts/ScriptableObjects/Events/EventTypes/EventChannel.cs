@@ -30,7 +30,6 @@ public abstract class EventChannel<T> : ScriptableObject
     }
 
 }
-public readonly struct None { };
 
 [CreateAssetMenu(menuName = "Events/EmptyEvent")]
 public class EmptyEvent : EventChannel<None>

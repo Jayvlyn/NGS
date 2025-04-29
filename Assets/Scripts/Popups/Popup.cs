@@ -4,15 +4,15 @@ using UnityEngine;
 public abstract class Popup<T> : MonoBehaviour
 {
     public BaseGameEvent<T> Event;
-    [SerializeField] protected float lifetime = -1; 
+    public float Lifetime = -1; 
     [SerializeField] protected T defaultResponse;
 
     protected virtual void FixedUpdate()
     {
-       if(lifetime != -1)
+       if(Lifetime != -1)
        {
-            lifetime -= Time.fixedDeltaTime;
-            if(lifetime < 0 )
+            Lifetime -= Time.fixedDeltaTime;
+            if(Lifetime < 0 )
             {
                 ClosePopup(defaultResponse);
             }
