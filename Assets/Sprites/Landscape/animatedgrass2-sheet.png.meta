@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b4de7c40fba9ea549b09186995139e96
+guid: 9d15ba99de4e3134e95697a81f35821a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tree1anim-Sheet_0
+      name: animatedgrass2-sheet_0
       rect:
         serializedVersion: 2
-        x: 39
-        y: 256
-        width: 153
-        height: 208
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,20 +138,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d1ecf178a01cc64aab5227e2b12150c
-      internalID: 1735696194
+      spriteID: 04d3148b1f6a14f40aeb595e95f8c0a9
+      internalID: 1474570208
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tree1anim-Sheet_1
+      name: animatedgrass2-sheet_1
       rect:
         serializedVersion: 2
-        x: 295
-        y: 256
-        width: 153
-        height: 208
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,20 +160,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1ee98e847b995a4418088356ee0b8732
-      internalID: 845574041
+      spriteID: 06df59dfcdf439a408b252291b081d9c
+      internalID: -78781011
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tree1anim-Sheet_2
+      name: animatedgrass2-sheet_2
       rect:
         serializedVersion: 2
-        x: 10
-        y: 78
-        width: 216
-        height: 144
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,20 +182,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3ad39a6558d81d47ae5a12a2712195b
-      internalID: -674048190
+      spriteID: 6fb899b2c6312de4cb3e8645536a1528
+      internalID: 1602472043
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tree1anim-Sheet_3
+      name: animatedgrass2-sheet_3
       rect:
         serializedVersion: 2
-        x: 265
-        y: 78
-        width: 217
-        height: 144
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,8 +204,140 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b37f4bf5785e61641ac08f6a987839c9
-      internalID: -539426580
+      spriteID: 77642c860c58e9041a900067ad4d0f6e
+      internalID: -1674653748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: animatedgrass2-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 630e359452e36f049a1edbbc82dee3b6
+      internalID: -547653546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: animatedgrass2-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67d662c2385692b4f96a3f32bd815f45
+      internalID: -1255029419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: animatedgrass2-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0ad9962f96052d419ef940fcc52422d
+      internalID: -1748322702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: animatedgrass2-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af54b11125cc1cb4f9e3265a2b78fcc6
+      internalID: 695378881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: animatedgrass2-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 469d0f152615d2a4d9526f0ab7fbff91
+      internalID: 574277884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: animatedgrass2-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd61003c55e2a6c408842b56cf2c1610
+      internalID: -1257092688
       vertices: []
       indices: 
       edges: []
@@ -224,10 +356,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tree1anim-Sheet_0: 1735696194
-      tree1anim-Sheet_1: 845574041
-      tree1anim-Sheet_2: -674048190
-      tree1anim-Sheet_3: -539426580
+      animatedgrass2-sheet_0: 1474570208
+      animatedgrass2-sheet_1: -78781011
+      animatedgrass2-sheet_2: 1602472043
+      animatedgrass2-sheet_3: -1674653748
+      animatedgrass2-sheet_4: -547653546
+      animatedgrass2-sheet_5: -1255029419
+      animatedgrass2-sheet_6: -1748322702
+      animatedgrass2-sheet_7: 695378881
+      animatedgrass2-sheet_8: 574277884
+      animatedgrass2-sheet_9: -1257092688
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
