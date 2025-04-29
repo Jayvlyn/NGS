@@ -16,6 +16,7 @@ public class QuestGiver : InteractableObject
     [SerializeField] protected GameObject confirmationPopupPrefab;
     [SerializeField] protected int confirmationPopupFishNameIndex = 1;
     [SerializeField] protected int confirmationPopupFishLengthIndex = 2;
+    [SerializeField] protected Transform confirmationPopupTransform;
 
     protected GameObject currentPopup = null;
     protected override void Start()
@@ -44,7 +45,7 @@ public class QuestGiver : InteractableObject
                 }
                 if(lowestViable != null)
                 {
-                    currentPopup = Instantiate(confirmationPopupPrefab);
+                    currentPopup = Instantiate(confirmationPopupPrefab, confirmationPopupTransform);
                     currentPopup.GetComponentInChildren<BoolPopup>().Event.RegisterListener(listener);
                     currentPopup.GetComponentInChildren<Image>().sprite = lowestViable.sprite;
                     TMP_Text[] texts = currentPopup.GetComponentsInChildren<TMP_Text>();
