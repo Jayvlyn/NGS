@@ -9,6 +9,8 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
     [SerializeField] public float randomRotationRange = 45f;
     [SerializeField] public GameObject fishInventoryUI;
     [SerializeField] public List<Fish> fishList;
+    [SerializeField] public List<Fish> fishListToRemove;
+    [SerializeField] public List<GameObject> currentInventoryUIElements;
 
     //needs to be set to true in the inspector. Will be set to false after start is ran. 
     private void Start()
@@ -31,7 +33,11 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
     public void AddFishToInventoryUI(Fish fish)
     {
         fishList.Add(fish);
-    }  
+    }
+    public void RemoveFishFromInventoryUI(Fish fish)
+    { 
+        fishListToRemove.Add(fish);
+    }
     //Method to add fish to the UI
     private void AddFishToUI(Fish fish)
     {
@@ -47,8 +53,20 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
         float randomRotation = Random.Range(-randomRotationRange, randomRotationRange);
         fishImg.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0,0,randomRotation);
         newPrefab.GetComponentsInChildren<Image>()[1].GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, 0, randomRotation);
+        currentInventoryUIElements.Add(newPrefab); //add to the list of current UI elements
     }
-
+    private void removeFishFromUI(Fish fish)
+    { 
+        foreach (GameObject fishUI in currentInventoryUIElements)
+        {
+            if (fishUI.GetComponent<FishInventoryItem>().fish == fish)
+            {
+                Destroy(fishUI);
+                currentInventoryUIElements.Remove(fishUI);
+                break;
+            }
+        }
+    }
     private void FixedUpdate()
     {
         //when inventory is set active then add the UI elements 
@@ -60,6 +78,14 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
                 
             }   
             fishList.Clear(); //clear after the list is added.
+        }
+        if (fishListToRemove.Count > 0 && this.isActiveAndEnabled)
+        {
+            foreach (Fish fish in fishListToRemove)
+            {
+                removeFishFromUI(fish);
+            }
+            fishListToRemove.Clear();
         }
     }
     //get correct star image based on rarity
