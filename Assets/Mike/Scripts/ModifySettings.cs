@@ -15,6 +15,8 @@ public class ModifySettings : MonoBehaviour
 
     public Volume postProcessing;
 
+    public Toggle MouseMode;
+
     List<Resolution> res;
 
     void Start()
@@ -81,13 +83,19 @@ public class ModifySettings : MonoBehaviour
         postProcessing.enabled = isPostProcessingOn;
     }
 
+    public void SetMouseMode(bool isMouseMode)
+    {
+        MouseMode.isOn = isMouseMode;
+    }
+
     public void SaveSettings()
     {
         mixer.GetFloat("MasterVol", out settings.masterVolume);
         mixer.GetFloat("MusicVol", out settings.musicVolume);
         mixer.GetFloat("SFXVol", out settings.sfxVolume);
-        settings.isFullScreen = Screen.fullScreen;
-        settings.hasPostProcessing = postProcessing.enabled;
+        settings.toggleData.isFullScreen = Screen.fullScreen;
+        settings.toggleData.hasPostProcessing = postProcessing.enabled;
+        settings.toggleData.isMouseMode = MouseMode.isOn;
         settings.screenResolution = resolutionDropdown.value;
     }
 
@@ -104,9 +112,10 @@ public class ModifySettings : MonoBehaviour
         //load in the toggle data
         foreach (var toggle in transform.Find("Settings").GetComponentsInChildren<Toggle>())
         {
-            if (toggle.name == "PostProcessing") toggle.isOn = settings.hasPostProcessing;
-            else toggle.isOn = settings.isFullScreen;
+            if (toggle.name == "PostProcessing") toggle.isOn = settings.toggleData.hasPostProcessing;
+            else toggle.isOn = settings.toggleData.isFullScreen;
         }
+        MouseMode.isOn = settings.toggleData.isMouseMode;
 
         //load in screen resolution
         resolutionDropdown.value = settings.screenResolution;

@@ -189,7 +189,13 @@ public class MenuUI : MonoBehaviour
         GetComponent<ModifySettings>().ApplyData();
         foreach (var binds in keyBinds.transform.Find("PageArea").GetComponentsInChildren<Image>())
         {
-            foreach (var bind in binds.GetComponentsInChildren<KeyRebinder>()) bind.ApplyData();
+            int i = 0;
+            foreach (var bind in binds.GetComponentsInChildren<KeyRebinder>())
+            {
+                bind.data = GetComponent<ModifySettings>().settings.platformerKeys[i];
+                bind.ApplyData();
+                i++;
+            }
         }
         Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
         pi.transform.localPosition = oldPosition;

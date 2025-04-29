@@ -105,6 +105,7 @@ public class KeyRebinder : MonoBehaviour
 
     public void ApplyData()
     {
-
+        //rebindingOperation = keyAction.action.PerformInteractiveRebinding(int.Parse(data.bindingId))
+        //        .OnComplete(operation => RebindComplete()).Start();
     }
 }

@@ -42,6 +42,7 @@ public class SaveLoadManager : MonoBehaviour
         SaveData data = saveList[0];
         foreach (var save in saveList) if (save.id.ToLower() == id.ToLower()) data = save;
         (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
+
         //save player data
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
@@ -53,8 +54,9 @@ public class SaveLoadManager : MonoBehaviour
         data.bossGameKeybinds = gameSettings.bossGameKeys;
 
         //save settings
-        data.hasPostProcessing = gameSettings.hasPostProcessing;
-        data.isFullScreen = gameSettings.isFullScreen;
+        data.toggleData.hasPostProcessing = gameSettings.toggleData.hasPostProcessing;
+        data.toggleData.isFullScreen = gameSettings.toggleData.isFullScreen;
+        data.toggleData.isMouseMode = gameSettings.toggleData.isMouseMode;
         data.screenResolution = gameSettings.screenResolution;
 
         //Save Volume
@@ -124,9 +126,10 @@ public class SaveLoadManager : MonoBehaviour
             gameSettings.bossGameKeys = save.bossGameKeybinds;
 
             //load settings
-            gameSettings.hasPostProcessing = save.hasPostProcessing;
+            gameSettings.toggleData.hasPostProcessing = save.toggleData.hasPostProcessing;
+            gameSettings.toggleData.isFullScreen = save.toggleData.isFullScreen;
+            gameSettings.toggleData.isMouseMode = save.toggleData.isMouseMode;
             gameSettings.screenResolution = save.screenResolution;
-            gameSettings.isFullScreen = save.isFullScreen;
 
             //load player
             gameSettings.position = save.position;

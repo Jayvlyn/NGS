@@ -10,9 +10,8 @@ public class SaveData
     public List<KeyBindingSaveData> bossGameKeybinds;
     public positionData position;
     public VolumeData volumeData;
-    public bool hasPostProcessing;
+    public ToggleData toggleData;
     public int screenResolution;
-    public bool isFullScreen;
     public double money;
     public string id;
 
@@ -27,7 +26,7 @@ public struct KeyBindingSaveData
 {
     public int actionMap;
     public string actionName;
-    public string bindingId; // To uniquely identify the binding within the action
+    public string bindingId;
     public string bindingPath;
 }
 
@@ -44,4 +43,12 @@ public struct VolumeData
     public float master;
     public float music;
     public float sfx;
+}
+
+[System.Serializable]
+public struct ToggleData
+{
+    public bool hasPostProcessing;
+    public bool isFullScreen;
+    public bool isMouseMode;
 }
