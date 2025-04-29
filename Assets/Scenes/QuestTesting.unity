@@ -257,7 +257,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 0
-  dialoguePrefab: {fileID: 7648253767280735602, guid: c86280a75bd271b498a83aa63ae5d96c, type: 3}
+  worldDialoguePrefab: {fileID: 7648253767280735602, guid: c86280a75bd271b498a83aa63ae5d96c, type: 3}
+  screenDialoguePrefab: {fileID: 7648253767280735602, guid: d7b13a04c3ae7694e823c668118520d5, type: 3}
 --- !u!114 &303904539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +458,7 @@ MonoBehaviour:
     MinLength: 100
     Reward: 100
   givesCosmetic: 0
-  questGiverName: TesterQuester
+  questGiverName: 
   listener: {fileID: 669593576}
   confirmationPopupPrefab: {fileID: 8243839037238558546, guid: cb65147bb81cb83488c0da191d828840, type: 3}
   dialoguePopupTransform: {fileID: 638889908}
