@@ -1,6 +1,7 @@
 using GameEvents;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Rigidbody2D hookRb;
 	[SerializeField] private Collider2D hookCol;
 	[SerializeField] private Transform spriteT;
+	[SerializeField] private CinemachineTargetGroup ctg;
 	[HideInInspector] public Transform interactedWaterT;
 	[SerializeField] private Animator animator;
 	[SerializeField] VoidEvent onInventory;
@@ -144,6 +146,23 @@ public class PlatformingPlayerController : Interactor
 		ProcessRodStateUpdate();
 
 		ProcessMoveStateUpdate();
+
+		if(currentMoveState == MoveState.IDLE)
+		{
+			if (ctg.Targets[1].Weight > 1)
+			{
+				ctg.Targets[1].Weight -= Time.deltaTime * 10;
+				if (ctg.Targets[1].Weight < 1) ctg.Targets[1].Weight = 1;
+			}
+		}
+		else
+		{
+			if (ctg.Targets[1].Weight < 3)
+			{
+				ctg.Targets[1].Weight += Time.deltaTime * 10;
+				if (ctg.Targets[1].Weight > 3) ctg.Targets[1].Weight = 3;
+			}
+		}
 	}
 
 
@@ -349,7 +368,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void ChangeMoveState(MoveState state)
 	{
-		if(currentMoveState == MoveState.WALL_STICKING)
+		if (currentMoveState == MoveState.WALL_STICKING)
 		{ // exiting wall stick
 			rb.gravityScale = startingGravity;
 		}

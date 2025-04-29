@@ -197,6 +197,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 336382778679360374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1243504112061606318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8812432432062140153}
+  - component: {fileID: 5759864753188917299}
+  m_Layer: 0
+  m_Name: CameraFollowTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8812432432062140153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243504112061606318}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.343872, y: 0.5133733, z: -7.7707777}
+  m_LocalScale: {x: 3.125, y: 3.125, z: 3.125}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 336382778679360374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5759864753188917299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243504112061606318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5eb80d8e62d9d145bb50fb783c0f731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionMode: 0
+  RotationMode: 0
+  UpdateMethod: 2
+  Targets:
+  - Object: {fileID: 4676565903972509479}
+    Weight: 1
+    Radius: 0
+  - Object: {fileID: 336382778679360374}
+    Weight: 3
+    Radius: 0
+  m_LegacyTargets: []
 --- !u!1 &3161573317724034509
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +373,7 @@ Transform:
   - {fileID: 829284198666577619}
   - {fileID: 3381539768182715777}
   - {fileID: 4676565903972509479}
+  - {fileID: 8812432432062140153}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6339232893670215032
@@ -444,13 +500,15 @@ MonoBehaviour:
   hookRb: {fileID: 2836803051751671902}
   hookCol: {fileID: 446745433903773732}
   spriteT: {fileID: 3381539768182715777}
+  ctg: {fileID: 5759864753188917299}
   interactedWaterT: {fileID: 0}
   animator: {fileID: 3214544822688978555}
   onInventory: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
-  moveSpeed: 22
+  moveSpeed: 30
   moveVelocityLimit: 10
   bhopVelocityLimit: 20
   jumpForce: 12
+  airControlMod: 0.4
   bhopForce: 5
   maxLineLength: 3.3
   castTime: 0.2
