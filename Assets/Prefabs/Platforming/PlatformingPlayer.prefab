@@ -321,7 +321,7 @@ Transform:
   m_GameObject: {fileID: 4161718424164305519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.384, y: -0.087, z: 0}
+  m_LocalPosition: {x: -0.373, y: -0.087, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -437,7 +437,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.03952965, y: -0.09745121}
+  m_Offset: {x: -0.03952965, y: -0.14449829}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -447,7 +447,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.57444495, y: 0.8050976}
+  m_Size: {x: 0.57444495, y: 0.89919174}
   m_EdgeRadius: 0
 --- !u!114 &5430223865702074187
 MonoBehaviour:
@@ -533,14 +533,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   groundCheckT: {fileID: 6125027497295351764}
-  groundCheckSize: {x: 0.15, y: 0.03}
+  groundCheckSize: {x: 0.11, y: -0.02}
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
   rightCheckT: {fileID: 1577787648814511174}
-  rightCheckSize: {x: 0.1, y: 0.19}
+  rightCheckSize: {x: 0.03, y: 0.19}
   leftCheckT: {fileID: 6428020383112335711}
-  leftCheckSize: {x: 0.1, y: 0.19}
+  leftCheckSize: {x: 0.03, y: 0.19}
   fishCastCurve:
     serializedVersion: 2
     m_Curve:
@@ -1004,7 +1004,7 @@ Transform:
   m_GameObject: {fileID: 9065545618937251511}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.029, y: -0.518, z: 0}
+  m_LocalPosition: {x: -0.029, y: -0.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

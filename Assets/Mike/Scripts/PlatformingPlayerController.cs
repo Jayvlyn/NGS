@@ -137,8 +137,6 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{
-		Debug.Log(currentMoveState);
-
 		onGround = isGrounded();
 
 		ProcessUpdateTimers();
