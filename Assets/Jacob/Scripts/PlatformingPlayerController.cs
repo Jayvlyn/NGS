@@ -479,6 +479,7 @@ public class PlatformingPlayerController : Interactor
 				}
 				break;
 			case MoveState.SWIMMING:
+				if(!inWater) ChangeMoveState(MoveState.IDLE);
 				break;
 			case MoveState.AIR_CASTING:
 				if(currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.AIR_REELING);
