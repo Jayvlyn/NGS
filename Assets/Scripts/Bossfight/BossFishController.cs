@@ -38,10 +38,6 @@ public class BossFishController : MonoBehaviour
         (Vector3, Quaternion) newTransform = pathFollower.GetNewTransform(baseMovementSpeed * speedMultiplier * Time.deltaTime);
         body.MovePositionAndRotation(newTransform.Item1, newTransform.Item2);
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, cameraStartingZ);
-        float distanceDifference = baseDistance - player.DesiredDistance;
-        if (distanceDifference > 0)
-        {
-            speedMultiplier = Mathf.Max(speedMultiplier, distanceDifference);
-        }
+        speedMultiplier = Mathf.Max(1, (baseDistance - player.DesiredDistance) * 2);
     }
 }
