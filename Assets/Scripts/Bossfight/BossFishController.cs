@@ -25,6 +25,7 @@ public class BossFishController : MonoBehaviour
         cameraStartingZ = cam.transform.position.z;
         pathFollower = GetComponent<PathFollower>();
         body = GetComponent<Rigidbody2D>();
+        caughtBoss = false;
     }
 
     // Update is called once per frame
@@ -40,7 +41,7 @@ public class BossFishController : MonoBehaviour
         float distanceDifference = baseDistance - player.DesiredDistance;
         if (distanceDifference > 0)
         {
-            speedMultiplier = Mathf.Max(speedMultiplier, Mathf.Pow(distanceDifference, 2));
+            speedMultiplier = Mathf.Max(speedMultiplier, distanceDifference * 1.5f);
         }
     }
 }
