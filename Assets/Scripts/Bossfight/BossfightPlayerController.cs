@@ -11,7 +11,8 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private BossFishController boss;
     [SerializeField] private float deathDistance = 10;
     [SerializeField] private float radius;
-    [SerializeField] private float angleTolerance  = 0.1f;
+    [SerializeField] private float angleTolerance = 0.1f;
+    [SerializeField] private bool immortalForTesting = false;
     private float desiredDistance = 2.5f;
 
     // Update is called once per frame
@@ -32,7 +33,7 @@ public class BossfightPlayerController : MonoBehaviour
             AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
         }
         currentDistance = Vector3.Distance(boss.transform.position, transform.position);
-        if(currentDistance >= deathDistance)
+        if(currentDistance >= deathDistance && !immortalForTesting)
         {
             SceneManager.LoadScene("GameScene");
         }
@@ -41,7 +42,7 @@ public class BossfightPlayerController : MonoBehaviour
             //body.MovePosition(transform.position + movement);
             AttemptMovement(movementSpeed * Time.deltaTime * moveInput.normalized);
             currentDistance = Vector3.Distance(boss.transform.position, transform.position);
-            desiredDistance = Mathf.Min(deathDistance, currentDistance, desiredDistance);
+            desiredDistance = Mathf.Max(Mathf.Min(deathDistance, currentDistance, desiredDistance), radius * 5);
         }
         if(currentDistance < radius * 2)
         {
