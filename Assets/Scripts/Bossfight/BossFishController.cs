@@ -41,7 +41,7 @@ public class BossFishController : MonoBehaviour
         float distanceDifference = baseDistance - player.DesiredDistance;
         if (distanceDifference > 0)
         {
-            speedMultiplier = Mathf.Max(speedMultiplier, distanceDifference * 1.5f);
+            speedMultiplier = Mathf.Max(speedMultiplier, distanceDifference);
         }
     }
 }
