@@ -2,45 +2,73 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
-[RequireComponent (typeof(Rigidbody2D))]
-[RequireComponent(typeof(DistanceJoint2D))]
+using UnityEngine.SceneManagement;
 
 public class BossfightPlayerController : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5.0f;
-    [SerializeField] private float reelSpeed = 1.0f;
+    [SerializeField] private float reelSpeed = 0.1f;
     [SerializeField] private BossFishController boss;
-    private Rigidbody2D body;
-    private DistanceJoint2D joint;
-    private readonly List<Collision2D> activeBlockers = new();
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        body = GetComponent<Rigidbody2D>();
-        joint = GetComponent<DistanceJoint2D>();
-    }
+    [SerializeField] private float deathDistance = 10;
+    [SerializeField] private float radius;
+    [SerializeField] private float angleTolerance  = 0.1f;
+    private float desiredDistance = 2.5f;
 
     // Update is called once per frame
     void Update()
     {
         float currentDistance = Vector3.Distance(boss.transform.position, transform.position);
-        Vector3 movement = new(0, 0);
-        if (moveInput != Vector2.zero)
-        {
-            movement = movementSpeed * Time.deltaTime * moveInput.normalized;
-            body.MovePosition(transform.position + movement);
-        }
         if (holdingReel)
         {
-            joint.distance -= reelSpeed * Time.deltaTime * Mathf.Pow(joint.distance * 0.2f, 2);
+            desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime;
+            desiredDistance = Mathf.Max(desiredDistance, radius * 5);
         }
-        if (holdingSlack || activeBlockers.Count > 0)
+        if (holdingSlack)
         {
-            joint.distance = currentDistance;
+            desiredDistance = Mathf.Min(deathDistance, currentDistance);
         }
-        body.linearVelocity = Vector3.zero;
-        body.angularVelocity = 0;
+        else if(currentDistance > desiredDistance)
+        {
+            AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
+        }
+        currentDistance = Vector3.Distance(boss.transform.position, transform.position);
+        if(currentDistance >= deathDistance)
+        {
+            SceneManager.LoadScene("GameScene");
+        }
+        if (moveInput != Vector2.zero)
+        {
+            //body.MovePosition(transform.position + movement);
+            AttemptMovement(movementSpeed * Time.deltaTime * moveInput.normalized);
+            currentDistance = Vector3.Distance(boss.transform.position, transform.position);
+            desiredDistance = Mathf.Min(deathDistance, currentDistance, desiredDistance);
+        }
+        if(currentDistance < radius * 2)
+        {
+            BossFishController.caughtBoss = true;
+            SceneManager.LoadScene("GameScene");
+        }
+        //if (holdingReel)
+        //{
+        //    //joint.distance -= reelSpeed * Time.deltaTime * Mathf.Pow(joint.distance * 0.2f, 2);
+        //}
+        //if (holdingSlack || activeBlockers.Count > 0)
+        //{
+        //    //joint.distance = currentDistance;
+        //    if(/*joint.distance >= deathDistance)*/true)
+        //    {
+        //        if(activeBlockers.Count > 0)
+        //        {
+        //            SceneManager.LoadScene("GameScene");
+        //        }
+        //        else
+        //        {
+        //            //joint.distance = deathDistance;
+        //        }
+        //    }
+        //}
+        //body.linearVelocity = Vector3.zero;
+        //body.angularVelocity = 0;
     }
 
     #region INPUT
@@ -70,12 +98,12 @@ public class BossfightPlayerController : MonoBehaviour
 		if (value.isPressed)
 		{
             holdingSlack = true;
-			joint.enabled = false;
+			//joint.enabled = false;
 		}
 		else
 		{
-            holdingReel = false;
-			joint.enabled = activeBlockers.Count == 0;
+            holdingSlack = false;
+			//joint.enabled = activeBlockers.Count == 0;
 		}
 	}
 
@@ -113,22 +141,36 @@ public class BossfightPlayerController : MonoBehaviour
 
 	#endregion
 
-	private void OnCollisionEnter2D(Collision2D collision)
+    private void AttemptMovement(Vector3 movement)
     {
-        Vector3 relPos = joint.connectedBody.transform.position - transform.position;
-        float angle = Vector3.Angle(collision.GetContact(0).normal, relPos);
-        if (Mathf.Abs(angle) > 120)
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, radius, movement.normalized, movement.magnitude,
+            LayerMask.GetMask("BossLevel"));
+        if(hit)
         {
-            activeBlockers.Add(collision);
-            joint.enabled = false;
+            transform.position += movement.normalized * (hit.distance - 0.01f);
+            desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
+            float dot = Vector3.Dot(movement.normalized, hit.normal.normalized);
+            if (dot < angleTolerance && dot > angleTolerance)
+            {
+                Vector3 AMovement = Quaternion.AngleAxis(90, new Vector3(0, 0, 1)) * hit.normal.normalized;
+                Vector3 BMovement = Quaternion.AngleAxis(-90, new Vector3(0, 0, 1)) * hit.normal.normalized;
+                float ADot = Vector3.Dot(movement.normalized, AMovement);
+                float BDot = Vector3.Dot(movement.normalized, BMovement);
+                if (ADot > BDot)
+                {
+                    AttemptMovement(AMovement * (movement.magnitude - hit.distance + 0.01f) * ADot);
+                }
+                else
+                {
+                    AttemptMovement(BMovement * (movement.magnitude - hit.distance + 0.01f) * BDot);
+                }
+            }
+        }
+        else
+        {
+            transform.position += movement;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        activeBlockers.Remove(collision);
-        joint.enabled = true;
-    }
-
-    public float DesiredDistance { get { return joint.distance; } }
+    public float DesiredDistance { get { return desiredDistance; } }
 }
