@@ -44,8 +44,11 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField, Tooltip("When changing direction, the players curent speed is used for counteraction, this variable multiplies against the current player speed")]
 	private float changeDirSpeedMult = 0.5f;
 
-	[SerializeField, Tooltip("Linear X Velocity of player will get multiplied by this value while on ground (1 = no friction)"), Range(0.8f, 1)]
+	[SerializeField, Tooltip("Linear X Velocity of player will get multiplied by this value while on the ground (1 = no friction)"), Range(0.8f, 1)]
 	private float groundFriction = 0.98f;
+
+	[SerializeField, Tooltip("Linear Velocity of player will get multiplied by this value while off the ground (1 = no friction)"), Range(0.8f, 1)]
+	private float airFriction = 0.98f;
 
 	[SerializeField, Tooltip("Time jump input will be stored so the player will jump again once then hit the ground")]
 	private float jumpBufferTime = 0.1f;
@@ -84,6 +87,8 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField, Tooltip("Then the player gets this close to the hook while in hooked state, it will detach")]
 	private float detachDistance = 0.5f;
+
+	[SerializeField] private LayerMask grappleableLayer;
 
 	[Header("Ground Check")]
 	[SerializeField] private LayerMask groundLayer;
@@ -145,7 +150,7 @@ public class PlatformingPlayerController : Interactor
 
 		ProcessMoveStateUpdate();
 
-		if(currentMoveState == MoveState.IDLE)
+		if (currentMoveState == MoveState.IDLE)
 		{
 			if (ctg.Targets[1].Weight > 1)
 			{
@@ -373,7 +378,7 @@ public class PlatformingPlayerController : Interactor
 			rb.gravityScale = startingGravity;
 		}
 
-		Debug.Log($"Changing from {currentMoveState} to {state}");
+		//Debug.Log($"Changing from {currentMoveState} to {state}");
 		currentMoveState = state;
 		switch (state)
 		{
@@ -544,9 +549,16 @@ public class PlatformingPlayerController : Interactor
 	private void DoGroundFriction()
 	{
 		// Ground friction
-		if (onGround && currentRodState != RodState.HOOKED)
+		if (onGround)
 		{
-			rb.linearVelocityX *= groundFriction;
+			if (currentRodState != RodState.HOOKED)
+			{
+				rb.linearVelocityX *= groundFriction;
+			}
+		}
+		else
+		{
+			rb.linearVelocity *= airFriction;
 		}
 	}
 
@@ -766,7 +778,7 @@ public class PlatformingPlayerController : Interactor
 			overlapPos = (Vector2)transform.position + dir * maxLineLength;
 		}
 
-		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, wallLayer);
+		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
 		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
 
 		Vector2 hookPos = Vector2.zero;

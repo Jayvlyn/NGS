@@ -249,7 +249,7 @@ MonoBehaviour:
     Weight: 1
     Radius: 0
   - Object: {fileID: 336382778679360374}
-    Weight: 3
+    Weight: 1.5
     Radius: 0
   m_LegacyTargets: []
 --- !u!1 &3161573317724034509
@@ -505,9 +505,9 @@ MonoBehaviour:
   animator: {fileID: 3214544822688978555}
   onInventory: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
   moveSpeed: 30
-  moveVelocityLimit: 10
+  moveVelocityLimit: 11
   bhopVelocityLimit: 20
-  jumpForce: 12
+  jumpForce: 10.5
   airControlMod: 0.4
   bhopForce: 5
   maxLineLength: 3.3
@@ -515,6 +515,7 @@ MonoBehaviour:
   reelSpeed: 70
   changeDirSpeedMult: 0.5
   groundFriction: 0.93
+  airFriction: 0.98
   jumpBufferTime: 0.1
   jumpTime: 0.5
   wallStickGravityIncreaseMult: 0.5
@@ -529,6 +530,9 @@ MonoBehaviour:
   hookReturnSpeedMod: 1
   aimAssistRadius: 0.8
   detachDistance: 0.5
+  grappleableLayer:
+    serializedVersion: 2
+    m_Bits: 4608
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -536,7 +540,7 @@ MonoBehaviour:
   groundCheckSize: {x: 0.11, y: -0.02}
   wallLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 4096
   rightCheckT: {fileID: 1577787648814511174}
   rightCheckSize: {x: 0.03, y: 0.19}
   leftCheckT: {fileID: 6428020383112335711}
