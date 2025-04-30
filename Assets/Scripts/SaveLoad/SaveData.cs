@@ -50,5 +50,6 @@ public struct ToggleData
 {
     public bool hasPostProcessing;
     public bool isFullScreen;
-    public bool isMouseMode;
+    public bool isMouseModeMinigame;
+    public bool isMouseModeBossgame;
 }
