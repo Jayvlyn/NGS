@@ -56,7 +56,8 @@ public class SaveLoadManager : MonoBehaviour
         //save settings
         data.toggleData.hasPostProcessing = gameSettings.toggleData.hasPostProcessing;
         data.toggleData.isFullScreen = gameSettings.toggleData.isFullScreen;
-        data.toggleData.isMouseMode = gameSettings.toggleData.isMouseMode;
+        data.toggleData.isMouseModeMinigame = gameSettings.toggleData.isMouseModeMinigame;
+        data.toggleData.isMouseModeBossgame = gameSettings.toggleData.isMouseModeBossgame;
         data.screenResolution = gameSettings.screenResolution;
 
         //Save Volume
@@ -128,7 +129,8 @@ public class SaveLoadManager : MonoBehaviour
             //load settings
             gameSettings.toggleData.hasPostProcessing = save.toggleData.hasPostProcessing;
             gameSettings.toggleData.isFullScreen = save.toggleData.isFullScreen;
-            gameSettings.toggleData.isMouseMode = save.toggleData.isMouseMode;
+            gameSettings.toggleData.isMouseModeMinigame = save.toggleData.isMouseModeMinigame;
+            gameSettings.toggleData.isMouseModeBossgame = save.toggleData.isMouseModeBossgame;
             gameSettings.screenResolution = save.screenResolution;
 
             //load player
