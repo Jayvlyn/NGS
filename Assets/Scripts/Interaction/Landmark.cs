@@ -3,10 +3,12 @@ using UnityEngine;
 public class Landmark : InteractableObject
 {
     [SerializeField] protected Transform dialoguePopupLocation;
-    [SerializeField] protected string landmarkDescription;
+    [SerializeField] protected string[] landmarkDescriptions;
+    [SerializeField] protected bool loops = false;
     [SerializeField] protected string landmarkName;
     [SerializeField] protected bool screenPopup;
     [SerializeField] protected float lifetime = 30;
+    protected int current = 0;
 
     protected override void Interact(InteractionPair pair)
     {
@@ -14,12 +16,17 @@ public class Landmark : InteractableObject
         {
             if(screenPopup)
             {
-                PopupManager.Instance.CreateScreenStatementPopup(landmarkDescription, lifetime, landmarkName);
+                PopupManager.Instance.CreateScreenStatementPopup(landmarkDescriptions[current], lifetime, landmarkName);
             }
             else
             {
 
-                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, landmarkDescription, lifetime, landmarkName);
+                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, landmarkDescriptions[current], lifetime, landmarkName);
+            }
+            current++;
+            if(current == landmarkDescriptions.Length)
+            {
+                current = loops ? 0 : current - 1;
             }
         }
     }
