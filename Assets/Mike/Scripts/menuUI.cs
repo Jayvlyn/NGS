@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.InputManagerEntry;
 
 public class MenuUI : MonoBehaviour
 {
@@ -152,20 +153,12 @@ public class MenuUI : MonoBehaviour
     private void SaveKeyBinds()
     {
         var settings = GetComponent<ModifySettings>().settings;
-        switch (keyBinds.GetComponentInChildren<KeyRebinder>().data.actionMap)
-        {
-            case 0:
-                settings.platformerKeys.Clear();
-                break;
-            case 1:
-                settings.minigameKeys.Clear();
-                break;
-            case 2:
-                settings.bossGameKeys.Clear();
-                break;
-        }
 
-        foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>())
+        settings.platformerKeys.Clear();
+        settings.minigameKeys.Clear();
+        settings.bossGameKeys.Clear();
+
+        foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
             switch (bind.data.actionMap)
             {
@@ -187,15 +180,18 @@ public class MenuUI : MonoBehaviour
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
         GetComponent<ModifySettings>().ApplyData();
-        foreach (var binds in keyBinds.transform.Find("PageArea").GetComponentsInChildren<Image>())
+
+        int i = 0;
+        foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
-            int i = 0;
-            foreach (var bind in binds.GetComponentsInChildren<KeyRebinder>())
-            {
-                bind.data = GetComponent<ModifySettings>().settings.platformerKeys[i];
-                bind.ApplyData();
-                i++;
-            }
+            print(bind.gameObject.name);
+            if(i > 12) bind.data = GetComponent<ModifySettings>().settings.bossGameKeys[i-13];
+            else if (i > 8) bind.data = GetComponent<ModifySettings>().settings.minigameKeys[i-9];
+            else bind.data = GetComponent<ModifySettings>().settings.platformerKeys[i];
+
+            bind.ApplyData();
+            
+            i++;
         }
         Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
         pi.transform.localPosition = oldPosition;

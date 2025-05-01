@@ -105,7 +105,10 @@ public class KeyRebinder : MonoBehaviour
 
     public void ApplyData()
     {
-        //rebindingOperation = keyAction.action.PerformInteractiveRebinding(int.Parse(data.bindingId))
-        //        .OnComplete(operation => RebindComplete()).Start();
+        print(data.actionName);
+        keyAction.action.ApplyBindingOverride(int.Parse(data.bindingId), data.bindingPath);
+
+        keyText.text = InputControlPath.ToHumanReadableString(keyAction.action.bindings[int.Parse(data.bindingId)].effectivePath,
+            InputControlPath.HumanReadableStringOptions.OmitDevice);
     }
 }
