@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlatformingHook : MonoBehaviour
 {
+	public Rigidbody2D rb;
+	public Collider2D col;
 	[SerializeField] private PlatformingPlayerController ppc;
 
 	private void Update()

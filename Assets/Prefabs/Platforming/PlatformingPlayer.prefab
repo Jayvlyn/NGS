@@ -79,12 +79,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 2b9690dc31deb744196ac4635e881912, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 804ff60c1ce9c8f4eb564537b02b025a, type: 3}
   m_Color: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 0.15, y: 0.17}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -151,8 +151,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.09}
-  m_Radius: 0.5
+  m_Offset: {x: 0.005204124, y: 0.0052477634}
+  m_Radius: 0.08144251
 --- !u!114 &4151659692587053803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d37a949161cdf4c91bca7307d2a146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 2836803051751671902}
+  col: {fileID: 446745433903773732}
   ppc: {fileID: 189020837219235779}
 --- !u!1 &1175297089210662393
 GameObject:
@@ -497,8 +499,7 @@ MonoBehaviour:
   rb: {fileID: 6339232893670215032}
   distanceJoint: {fileID: 1896222745735434132}
   lineRenderer: {fileID: 1781532249685237151}
-  hookRb: {fileID: 2836803051751671902}
-  hookCol: {fileID: 446745433903773732}
+  hook: {fileID: 4151659692587053803}
   spriteT: {fileID: 3381539768182715777}
   ctg: {fileID: 5759864753188917299}
   interactedWaterT: {fileID: 0}
@@ -532,7 +533,7 @@ MonoBehaviour:
   detachDistance: 0.5
   grappleableLayer:
     serializedVersion: 2
-    m_Bits: 4608
+    m_Bits: 12800
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
