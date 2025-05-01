@@ -47,7 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1839de7382943444a8f455cf62038158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 1878135894832438027}
+  flySpeed: 2
+  eatTimeLowerLimit: 2
+  eatTimeUpperLimit: 10
 --- !u!212 &6463014942568845042
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -94,7 +97,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 77367b8366e051245bc3d2e43d2cfa1b, type: 3}
   m_Color: {r: 0.39937097, g: 0.77043855, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.6, y: 0.32}
