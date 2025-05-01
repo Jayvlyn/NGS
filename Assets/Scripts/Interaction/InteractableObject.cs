@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class InteractableObject : MonoBehaviour
@@ -8,6 +9,8 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] protected InteractionEvent enterInteractionRangeEvent;
     [SerializeField] protected InteractionEvent exitInteractionRangeEvent;
     [SerializeField] protected InteractionEvent interactEvent;
+    [SerializeField] protected Transform popupLocation;
+    protected Dictionary<int, GameObject> currentPopups = new();
     protected virtual void Start()
     {
         Id = count;
@@ -31,6 +34,10 @@ public class InteractableObject : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {
             enterInteractionRangeEvent.Trigger(new InteractionPair(this, actor));
+            if(!currentPopups.ContainsKey(actor.Id))
+            {
+                currentPopups.Add(actor.Id, PopupManager.Instance.CreateWorldInteractionPopup(popupLocation));
+            }
         }
     }
 
@@ -39,6 +46,11 @@ public class InteractableObject : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {
             exitInteractionRangeEvent.Trigger(new InteractionPair(this, actor));
+            if (currentPopups.ContainsKey(actor.Id))
+            {
+                Destroy(currentPopups[actor.Id]);
+                currentPopups.Remove(actor.Id);
+            }
         }
     }
 }
