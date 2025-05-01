@@ -10,6 +10,7 @@ public class BossfightLevelGenerator : MonoBehaviour
     [SerializeField, Tooltip("Prefabs for the end sections, index 0 of main array is for entrances on the top, " +
         "continuing clockwise for cardinal directions")]
     private GameObjectCollection[] endSections;
+    [SerializeField] private GameObject emptyPrefab;
     [SerializeField] private float sizes;
     [SerializeField] private int desiredLevelSections;
     [SerializeField] private bool preventDuplicates = true;
@@ -83,7 +84,9 @@ public class BossfightLevelGenerator : MonoBehaviour
     private void PlaceAccordingTo(Dictionary<(int, int), (int, int)> placementLocations)
     {
         BossfightLevelSection previous = startingSection.GetComponent<BossfightLevelSection>();
+        AttemptPlaceEmptyAround(placementLocations, (0, 0));
         (int, int) current = GetNext(previous.EndPosition, (0, 0));
+        GameObject[] pastResults = null;
         while(placementLocations.ContainsKey(current))
         {
             (int, int) currentSection = placementLocations[current];
@@ -91,8 +94,10 @@ public class BossfightLevelGenerator : MonoBehaviour
             section.gameObject.transform.position = transform.position + new Vector3(current.Item1 * sizes, current.Item2 * sizes);
             previous.Next = section;
             previous = section;
+            pastResults = AttemptPlaceEmptyAround(placementLocations, current);
             current = GetNext(section.EndPosition, current);
         }
+        Destroy(pastResults[previous.EndPosition]);
         BossfightLevelSection endSection = Instantiate(endSections[previous.EndPosition].gameObjects[Random.Range(0, endSections[previous.EndPosition].gameObjects.Length)]).GetComponent<BossfightLevelSection>();
         endSection.transform.position = transform.position + new Vector3(current.Item1 * sizes, current.Item2 * sizes);
         previous.Next = endSection;
@@ -123,6 +128,29 @@ public class BossfightLevelGenerator : MonoBehaviour
                     result.Item2++;
                     break;
                 }
+        }
+        return result;
+    }
+    private GameObject[] AttemptPlaceEmptyAround(Dictionary<(int, int), (int, int)> invalidLocations, (int, int)attemptCenter)
+    {
+        GameObject[] results = new GameObject[4];
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2 - 1));
+        results[3] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2));
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2 + 1));
+        results[2] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1, attemptCenter.Item2 - 1));
+        results[0] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1, attemptCenter.Item2 + 1));
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2 - 1));
+        results[1] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2));
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2 + 1));
+        return results;
+    }
+    private GameObject AttemptPlaceEmptyAt(Dictionary<(int, int), (int, int)> invalidLocations, (int, int) at)
+    {
+        GameObject result = null;
+        if(!invalidLocations.ContainsKey(at))
+        {
+            result = Instantiate(emptyPrefab);
+            result.transform.position = transform.position + transform.position + new Vector3(at.Item1 * sizes, at.Item2 * sizes);
         }
         return result;
     }
