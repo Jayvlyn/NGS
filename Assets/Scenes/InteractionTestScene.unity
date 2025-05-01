@@ -875,7 +875,7 @@ GameObject:
   - component: {fileID: 1971122086}
   - component: {fileID: 1971122085}
   - component: {fileID: 1971122084}
-  - component: {fileID: 1971122083}
+  - component: {fileID: 1971122087}
   m_Layer: 0
   m_Name: Interactable
   m_TagString: Untagged
@@ -883,23 +883,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1971122083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1971122082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bcb9ef1becf70e48b48a90f89dab165, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionType: 0
-  enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
-  exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
-  interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
-  popupLocation: {fileID: 543434214}
 --- !u!58 &1971122084
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1007,6 +990,28 @@ Transform:
   - {fileID: 543434214}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1971122087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971122082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695da705957e3ac479a665ff030bfd12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionType: 0
+  enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
+  exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
+  interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
+  popupLocation: {fileID: 543434214}
+  dialoguePopupLocation: {fileID: 0}
+  landmarkDescription: Landmark
+  landmarkName: It makrs land
+  screenPopup: 0
+  lifetime: 30
 --- !u!1 &2018764280
 GameObject:
   m_ObjectHideFlags: 0
