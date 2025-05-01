@@ -63,7 +63,7 @@ public class QuestGiver : InteractableObject
             }
             if(canInteract)
             {
-                DialogueManager.Instance.CreateDialogue(dialoguePopupTransform,
+                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
                     firstTimeDescribing || potentialQuests[currentQuestIndex].RepeatDescription == string.Empty ?
                     potentialQuests[currentQuestIndex].QuestDescription :
                     potentialQuests[currentQuestIndex].RepeatDescription, questGiverName);
