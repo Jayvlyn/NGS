@@ -15,6 +15,7 @@ public class ObjectOnTileGenerator : MonoBehaviour
         "is greater than the object, with higher indexes overrriding lower indexes")] protected float[] chances;
     [SerializeField, Tooltip("Time in seconds of the loop of all objects being destroyed and new ones replacing them, -1 to disable")] protected float resetWithClearTime = 300f;
     [SerializeField, Tooltip("Time in seconds of the loop of generating new objects without destroying old objects, -1 to disable")] protected float resetTime = 150f;
+    [SerializeField] protected bool generateOnStart;
     private float currentClearResetTimer;
     private float currentResetTimer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +30,10 @@ public class ObjectOnTileGenerator : MonoBehaviour
         }
         currentClearResetTimer = resetWithClearTime;
         currentResetTimer = resetTime;
-        Generate();
+        if (generateOnStart)
+        {
+            Generate();
+        }
     }
 
     public void Update()
