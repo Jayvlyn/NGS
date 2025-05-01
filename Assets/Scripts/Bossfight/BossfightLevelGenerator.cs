@@ -29,8 +29,10 @@ public class BossfightLevelGenerator : MonoBehaviour
             }
         }
         availableSections = desiredLevelSections > availableSections && preventDuplicates ? availableSections : desiredLevelSections;
-        Dictionary<(int, int), (int, int)> placementLocations = new();
-        placementLocations.Add((0, 0), (-1, -1));
+        Dictionary<(int, int), (int, int)> placementLocations = new()
+        {
+            { (0, 0), (-1, -1) }
+        };
         if (GetValidPlacementFrom(ref placementLocations, ref sectionsPlaced, (0, 0), availableSections))
         {
             PlaceAccordingTo(placementLocations);
