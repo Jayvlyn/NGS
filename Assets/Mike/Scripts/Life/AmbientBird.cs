@@ -4,11 +4,14 @@ public class AmbientBird : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] private Animator animator;
+	[SerializeField] private SpriteRenderer spriteRenderer;
+	[SerializeField] private Collider2D col;
 	[Header("Tweaking")]
 	[SerializeField] private float minFlySpeed = 2;
 	[SerializeField] private float maxFlySpeed = 4;
 	[SerializeField] private float eatTimeLowerLimit = 2;
 	[SerializeField] private float eatTimeUpperLimit = 10;
+	[SerializeField] private Color[] colors;
 	private float flySpeed;
 	private float eatTimer;
 	private bool flying;
@@ -20,6 +23,7 @@ public class AmbientBird : MonoBehaviour
 		StartEatTimer();
 		flySpeed = Random.Range(minFlySpeed, maxFlySpeed);
 		FlipX(Mathf.Sign(Random.Range(-1f, 1f)));
+		spriteRenderer.color = colors[Random.Range(0, colors.Length - 1)];
 	}
 
 	private void Update()
@@ -57,6 +61,7 @@ public class AmbientBird : MonoBehaviour
 	{
 		if(collision.gameObject.CompareTag("Player"))
 		{
+			col.enabled = false;
 			FlyOff(Mathf.Sign(transform.position.x - collision.transform.position.x));
 			playerT = collision.transform;
 		}

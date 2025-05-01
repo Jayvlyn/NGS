@@ -48,9 +48,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1878135894832438027}
-  flySpeed: 2
+  spriteRenderer: {fileID: 6463014942568845042}
+  col: {fileID: 8396566313658472922}
+  minFlySpeed: 2
+  maxFlySpeed: 4
   eatTimeLowerLimit: 2
   eatTimeUpperLimit: 10
+  colors:
+  - {r: 0.4, g: 0.76862746, b: 1, a: 1}
+  - {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
+  - {r: 1, g: 0.9238833, b: 0.39999998, a: 1}
+  - {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+  - {r: 0.75764275, g: 0.39999998, b: 1, a: 1}
+  - {r: 1, g: 0.39999998, b: 0.41253212, a: 1}
+  - {r: 0.5168703, g: 0.91823894, b: 0.77428323, a: 1}
 --- !u!212 &6463014942568845042
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -96,7 +107,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 77367b8366e051245bc3d2e43d2cfa1b, type: 3}
-  m_Color: {r: 0.39937097, g: 0.77043855, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
