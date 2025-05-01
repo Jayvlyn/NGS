@@ -925,7 +925,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
-		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
+		//if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.JUMPING);
 		currentJumps--;
 		jumpTimer = jumpTime;

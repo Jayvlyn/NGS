@@ -15,7 +15,8 @@ public class ModifySettings : MonoBehaviour
 
     public Volume postProcessing;
 
-    public Toggle MouseMode;
+    public Toggle mouseModeMiniGame;
+    public Toggle mouseModeBossGame;
 
     List<Resolution> res;
 
@@ -83,9 +84,14 @@ public class ModifySettings : MonoBehaviour
         postProcessing.enabled = isPostProcessingOn;
     }
 
+    public void SetMouseModeMini(bool isMouseMode)
+    {
+        mouseModeBossGame.isOn = isMouseMode;
+    }
+
     public void SetMouseMode(bool isMouseMode)
     {
-        MouseMode.isOn = isMouseMode;
+        mouseModeMiniGame.isOn = isMouseMode;
     }
 
     public void SaveSettings()
@@ -95,7 +101,8 @@ public class ModifySettings : MonoBehaviour
         mixer.GetFloat("SFXVol", out settings.sfxVolume);
         settings.toggleData.isFullScreen = Screen.fullScreen;
         settings.toggleData.hasPostProcessing = postProcessing.enabled;
-        settings.toggleData.isMouseMode = MouseMode.isOn;
+        settings.toggleData.isMouseModeMinigame = mouseModeMiniGame.isOn;
+        settings.toggleData.isMouseModeBossgame = mouseModeBossGame.isOn;
         settings.screenResolution = resolutionDropdown.value;
     }
 
@@ -115,7 +122,8 @@ public class ModifySettings : MonoBehaviour
             if (toggle.name == "PostProcessing") toggle.isOn = settings.toggleData.hasPostProcessing;
             else toggle.isOn = settings.toggleData.isFullScreen;
         }
-        MouseMode.isOn = settings.toggleData.isMouseMode;
+        mouseModeMiniGame.isOn = settings.toggleData.isMouseModeMinigame;
+        mouseModeBossGame.isOn = settings.toggleData.isMouseModeBossgame;
 
         //load in screen resolution
         resolutionDropdown.value = settings.screenResolution;
