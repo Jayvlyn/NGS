@@ -78,13 +78,17 @@ public class ObjectOnTileGenerator : MonoBehaviour
 
     public void Clear()
     {
-        while(currentObjects.Count > 0)
+        for (int i = 0; i < potentialPositions.Count;)
         {
-            if (currentObjects[currentObjects.Keys.ToArray()[0]] != null)
+            if (currentObjects[currentObjects.Keys.ToArray()[i]] == null || Vector3.Distance(new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y), tilemap.CellToWorld(currentObjects.Keys.ToArray()[i]) + offset) < Camera.main.orthographicSize * 4)
             {
-                Destroy(currentObjects[currentObjects.Keys.ToArray()[0]]);
+                i++;
             }
-            currentObjects.Remove(currentObjects.Keys.ToArray()[0]);
+            else
+            {
+                Destroy(currentObjects[currentObjects.Keys.ToArray()[i]]);
+                currentObjects.Remove(currentObjects.Keys.ToArray()[i]);
+            }
         }
     }
 
@@ -92,7 +96,7 @@ public class ObjectOnTileGenerator : MonoBehaviour
     {
         foreach (Vector3Int position in potentialPositions)
         {
-            if (!currentObjects.ContainsKey(position))
+            if (!currentObjects.ContainsKey(position) && Vector3.Distance(new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y), tilemap.CellToWorld(position) + offset) >= Camera.main.orthographicSize * 4)
             {
                 float generatedType = Random.Range(0f, 1f);
                 for (int i = chances.Length - 1; i >= 0; i--)
