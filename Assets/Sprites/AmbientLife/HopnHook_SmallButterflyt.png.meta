@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -123,23 +123,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fishmock_0
+      name: HopnHook_SmallButterflyt_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 5
+        y: 0
         width: 32
-        height: 27
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 204842e089ab87a90800000000000000
-      internalID: -7315892432428301310
+      spriteID: 20aeefa9317831d4a828876416e7fd0c
+      internalID: -1317700718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HopnHook_SmallButterflyt_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da849e93889e76c4d8e63e58f66ded87
+      internalID: 1992719791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HopnHook_SmallButterflyt_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25d4063932e3f434a8807d73fd070dec
+      internalID: -948651220
       vertices: []
       indices: 
       edges: []
@@ -158,7 +202,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fishmock_0: -7315892432428301310
+      HopnHook_SmallButterflyt_0: -1317700718
+      HopnHook_SmallButterflyt_1: 1992719791
+      HopnHook_SmallButterflyt_2: -948651220
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -284,6 +284,37 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.2
+--- !u!1 &3567198306740433899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2689083944034939255}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2689083944034939255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3567198306740433899}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.06, y: 4.37, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 8449219365447026839}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3745402850688505355
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +630,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2689083944034939255}
   m_Father: {fileID: 4805355795122143134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7441920984362871099
@@ -618,12 +650,15 @@ MonoBehaviour:
   enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
+  popupLocation: {fileID: 2689083944034939255}
   onBite: {fileID: 11400000, guid: 2e987257edfec4d4a8d53521efbe2dfc, type: 2}
   onBossBite: {fileID: 11400000, guid: 019df21e073699e4785f3c6ca3e7e0a6, type: 2}
   onCast: {fileID: 11400000, guid: 6334f1fb75aed4649ba69128dfa5d70b, type: 2}
   onQuitFishing: {fileID: 11400000, guid: 1f6f2e6a67a97a644bad1cd9accc4d14, type: 2}
   ListOfFish:
+  - {fileID: 11400000, guid: b8825c3c53d72fb4cbbbafa8c0e93c12, type: 2}
   - {fileID: 11400000, guid: e45989468457dd24889577c08263722a, type: 2}
+  - {fileID: 11400000, guid: 0f937c2950593984fa6dbace659b6730, type: 2}
   rarityValues: 03000000070000001900000037000000
   maxFishingTime: 7
   maxDistFromStart: 2
