@@ -33,7 +33,7 @@ public class BossFishController : MonoBehaviour
     {
         if(baseDistance == -1f)
         {
-            baseDistance = player.DesiredDistance;
+            baseDistance = player.DesiredDistance * 2;
         }
         (Vector3, Quaternion) newTransform = pathFollower.GetNewTransform(baseMovementSpeed * speedMultiplier * Time.deltaTime);
         body.MovePositionAndRotation(newTransform.Item1, newTransform.Item2);
