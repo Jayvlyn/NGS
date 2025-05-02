@@ -18,7 +18,7 @@ public class BossfightPlayerController : MonoBehaviour
 
     private void Start()
     {
-        deathDistance *= playerStats.lineLength;
+        deathDistance *= playerStats.bossLineLength;
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class BossfightPlayerController : MonoBehaviour
         float currentDistance = Vector3.Distance(boss.transform.position, transform.position);
         if (holdingReel)
         {
-            desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.reelSpeed;
+            desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.bossReelSpeed;
             desiredDistance = Mathf.Max(desiredDistance, radius * 5);
         }
         if (holdingSlack)

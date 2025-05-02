@@ -33,6 +33,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private float bhopForce = 20f;
 
 	[SerializeField] private float maxLineLength = 10f;
+	[SerializeField] private PlayerStats playerStats;
 	public float MaxLineLength { get { return maxLineLength; } }
 
 	[SerializeField, Tooltip("How long it takes for hook to reach point it was casted to for grappling")] 
@@ -166,8 +167,6 @@ public class PlatformingPlayerController : Interactor
 			}
 		}
 	}
-
-
 	private void FixedUpdate()
 	{
 		DoGroundFriction();

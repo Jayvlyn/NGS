@@ -9,6 +9,9 @@ public class PlayerStats : ScriptableObject
     public float biteSpeed;
     public float catchSpeed;
     public float hookStrength;
-    public float lineLength;
-    public float reelSpeed;
+    public float bossLineLength;
+    public float bossReelSpeed;
+    public float grappleMaxCastSpeed;
+    public float platformingLineLength;
+    public float platformingReelSpeed;
 }
