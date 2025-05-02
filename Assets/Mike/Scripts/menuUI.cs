@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEngine.InputManagerEntry;
 
 public class MenuUI : MonoBehaviour
 {
@@ -131,6 +129,7 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterCreation.SetActive(false);
+            transform.Find("InventoryCollection").gameObject.SetActive(true);
         }
         else
         {
@@ -195,6 +194,7 @@ public class MenuUI : MonoBehaviour
         }
         Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
+        transform.Find("InventoryCollection").gameObject.SetActive(true);
     }
 
     public void SaveOnQuit()

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -22,6 +23,9 @@ public class SaveLoadManager : MonoBehaviour
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
+        data.platformerKeybinds = gameSettings.platformerKeys;
+        data.minigameKeybinds = gameSettings.minigameKeys;
+        data.bossGameKeybinds = gameSettings.bossGameKeys;
         id = data.id;
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
@@ -47,6 +51,22 @@ public class SaveLoadManager : MonoBehaviour
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
         data.position = gameSettings.position;
+
+        //copy current fish held
+        foreach (var key in data.inventory.Keys)
+        {
+            foreach (var f in data.inventory[key].currentFish)
+            {
+                caughtFish fish = new caughtFish();
+                fish.description = f.description;
+                fish.fishName = f.fishName;
+                fish.rarity = f.rarity;
+                fish.length = f.length;
+                fish.isBoss = f.isBoss;
+                data.inventory[key].fishHeld.Add(fish);
+            }
+
+        }
 
         //save keybinds
         data.platformerKeybinds = gameSettings.platformerKeys;
@@ -120,6 +140,23 @@ public class SaveLoadManager : MonoBehaviour
             //load inventory & money
             (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
             Inventory.Instance.ApplyData(save.inventory, save.money);
+
+            //copy saved inventory
+            foreach (var inv in save.inventory)
+            {
+                inv.Value.currentFish.Clear();
+                foreach (var fish in inv.Value.fishHeld)
+                {
+                    Fish newFish = new Fish();
+                    newFish.fishName = fish.fishName;
+                    newFish.rarity = fish.rarity;
+                    newFish.length = fish.length;
+                    newFish.description = fish.description;
+                    newFish.isBoss = fish.isBoss;
+                    inv.Value.currentFish.Add(newFish);
+                }
+                inv.Value.fishHeld.Clear();
+            }
 
             //load key binds
             gameSettings.platformerKeys = save.platformerKeybinds;

@@ -23,6 +23,7 @@ public class InventoryUIFiller : Singleton<InventoryUIFiller>
 
             foreach (Fish fish in fishData.currentFish)
             {
+                if(fish.sprite == null) fish.sprite = Resources.Load<Sprite>($"fish/{fish.fishName}");
                 AddFishToUI(fish);
             }
         }  

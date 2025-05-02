@@ -26,7 +26,8 @@ public class Inventory : Singleton<Inventory>
         {
             FishData fishData = new()
             {
-                currentFish = new()
+                currentFish = new(),
+                fishHeld = new()
             };
             currentFish.Add(fish.fishName, fishData);
             
