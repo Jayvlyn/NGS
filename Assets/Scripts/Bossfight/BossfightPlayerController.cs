@@ -49,6 +49,9 @@ public class BossfightPlayerController : MonoBehaviour
             BossFishController.caughtBoss = true;
             SceneManager.LoadScene("GameScene");
         }
+        transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
+        transform.rotation *= Quaternion.Euler(0, 0, -90);
+
         //if (holdingReel)
         //{
         //    //joint.distance -= reelSpeed * Time.deltaTime * Mathf.Pow(joint.distance * 0.2f, 2);

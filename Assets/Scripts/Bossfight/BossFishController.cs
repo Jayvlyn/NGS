@@ -37,7 +37,23 @@ public class BossFishController : MonoBehaviour
         }
         (Vector3, Quaternion) newTransform = pathFollower.GetNewTransform(baseMovementSpeed * speedMultiplier * Time.deltaTime);
         body.MovePositionAndRotation(newTransform.Item1, newTransform.Item2);
+        float zRotation = transform.rotation.eulerAngles.z;
+        while(zRotation > 180)
+        {
+            zRotation -= 360;
+        }
+        while(zRotation < -180)
+        {
+            zRotation += 360;
+        }
+        if(transform.localScale.y > 0 && 
+            (zRotation > 90 || zRotation < -90)
+            || (transform.localScale.y < 0 && 
+            zRotation < 90 && zRotation > -90))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+        }
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, cameraStartingZ);
-        speedMultiplier = Mathf.Max(1, (baseDistance - player.DesiredDistance) * 2);
+        speedMultiplier = Mathf.Max(1, baseDistance - player.DesiredDistance);
     }
 }
