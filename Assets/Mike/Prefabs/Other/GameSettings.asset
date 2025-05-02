@@ -16,13 +16,19 @@ MonoBehaviour:
   musicVolume: 0
   sfxVolume: 0
   screenResolution: 0
-  hasPostProcessing: 0
-  isFullScreen: 0
+  toggleData:
+    hasPostProcessing: 0
+    isFullScreen: 0
+    isMouseModeMinigame: 0
+    isMouseModeBossgame: 0
+  position:
+    x: 23.531288
+    y: 3.4050894
   platformerKeys:
   - actionMap: 0
     actionName: Jump
     bindingId: 0
-    bindingPath: <Keyboard>/g
+    bindingPath: <Keyboard>/space
   - actionMap: 0
     actionName: Interact
     bindingId: 0
@@ -67,11 +73,11 @@ MonoBehaviour:
   - actionMap: 1
     actionName: MoveHook
     bindingId: 2
-    bindingPath: <Keyboard>/upArrow
+    bindingPath: <Keyboard>/w
   - actionMap: 1
     actionName: MoveHook
     bindingId: 1
-    bindingPath: <Keyboard>/downArrow
+    bindingPath: <Keyboard>/s
   bossGameKeys:
   - actionMap: 2
     actionName: Move
@@ -92,7 +98,7 @@ MonoBehaviour:
   - actionMap: 2
     actionName: Reel
     bindingId: 0
-    bindingPath: <Keyboard>/r
+    bindingPath: <Keyboard>/e
   - actionMap: 2
     actionName: Slack
     bindingId: 0
