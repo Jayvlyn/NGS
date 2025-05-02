@@ -5,6 +5,7 @@ public class ShopData : InteractableObject
 {
     [SerializeField] private List<FishSellData> fishData;
     [SerializeField] private List<UpgradeData> upgradeData;
+    [SerializeField] private PlayerStats playerStats;
 
     protected override void Interact(InteractionPair pair)
     {
@@ -52,7 +53,7 @@ public class ShopData : InteractableObject
                 {
                     Inventory.Instance.AddMoney(-upgrade.currentCost);
                     upgrade.currentCost = upgrade.isMultiplicativeIncrease ? upgrade.currentCost * upgrade.costIncrease : upgrade.currentCost + upgrade.costIncrease;
-                    //Requires implementation of player upgradeability, will go here later
+                    playerStats.Upgrade(upgrade);
                 }
                 break;
             }

@@ -14,7 +14,7 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private float angleTolerance = 0.1f;
     [SerializeField] private bool immortalForTesting = false;
     [SerializeField] private PlayerStats playerStats;
-    private float desiredDistance = 2.5f;
+    [SerializeField] private float desiredDistance = 2.5f;
 
     private void Start()
     {
