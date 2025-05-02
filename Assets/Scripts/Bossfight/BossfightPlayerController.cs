@@ -177,4 +177,5 @@ public class BossfightPlayerController : MonoBehaviour
     }
 
     public float DesiredDistance { get { return desiredDistance; } }
+    public float MaxDistance { get { return deathDistance; } }
 }
