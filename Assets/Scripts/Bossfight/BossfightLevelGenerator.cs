@@ -149,7 +149,7 @@ public class BossfightLevelGenerator : MonoBehaviour
     private GameObject AttemptPlaceEmptyAt(Dictionary<(int, int), (int, int)> invalidLocations, (int, int) at)
     {
         GameObject result = null;
-        if(!invalidLocations.ContainsKey(at))
+        if(!invalidLocations.ContainsKey(at) && (at.Item1 != 0 || at.Item2 != 0))
         {
             result = Instantiate(emptyPrefab);
             result.transform.position = transform.position + transform.position + new Vector3(at.Item1 * sizes, at.Item2 * sizes);
