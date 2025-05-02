@@ -13,7 +13,13 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private float radius;
     [SerializeField] private float angleTolerance = 0.1f;
     [SerializeField] private bool immortalForTesting = false;
+    [SerializeField] private PlayerStats playerStats;
     private float desiredDistance = 2.5f;
+
+    private void Start()
+    {
+        deathDistance *= playerStats.lineLength;
+    }
 
     // Update is called once per frame
     void Update()
@@ -21,7 +27,7 @@ public class BossfightPlayerController : MonoBehaviour
         float currentDistance = Vector3.Distance(boss.transform.position, transform.position);
         if (holdingReel)
         {
-            desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime;
+            desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.reelSpeed;
             desiredDistance = Mathf.Max(desiredDistance, radius * 5);
         }
         if (holdingSlack)
