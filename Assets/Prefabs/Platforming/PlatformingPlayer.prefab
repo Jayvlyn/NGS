@@ -511,9 +511,7 @@ MonoBehaviour:
   jumpForce: 10.5
   airControlMod: 0.4
   bhopForce: 5
-  maxLineLength: 3.3
-  castTime: 0.2
-  reelSpeed: 70
+  playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
   changeDirSpeedMult: 0.5
   groundFriction: 0.93
   airFriction: 0.98
@@ -754,7 +752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pi: {fileID: 5430223865702074187}
-  moveSpeed: 10
+  baseMoveSpeed: 5
   reelSpeed: 6
   hookRb: {fileID: 0}
   bobberRb: {fileID: 0}
@@ -762,6 +760,8 @@ MonoBehaviour:
   maxLength: 1000
   sideLength: 500
   depthLength: 340
+  useMouseControl: 0
+  gameCanvas: {fileID: 0}
 --- !u!114 &1876301516158393029
 MonoBehaviour:
   m_ObjectHideFlags: 0

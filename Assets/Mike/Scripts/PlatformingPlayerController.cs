@@ -32,14 +32,8 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private float bhopForce = 20f;
 
-	[SerializeField] private float maxLineLength = 10f;
 	[SerializeField] private PlayerStats playerStats;
-	public float MaxLineLength { get { return maxLineLength; } }
-
-	[SerializeField, Tooltip("How long it takes for hook to reach point it was casted to for grappling")] 
-	private float castTime = 0.5f;
-
-	[SerializeField] private float reelSpeed = 10f;
+	public float MaxLineLength { get { return playerStats.platformingLineLength; } }
 
 	[SerializeField, Tooltip("When changing direction, the players curent speed is used for counteraction, this variable multiplies against the current player speed")]
 	private float changeDirSpeedMult = 0.5f;
@@ -668,7 +662,7 @@ public class PlatformingPlayerController : Interactor
 				//Debug.Log(hookRb.transform.position);
 				hook.rb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
 				Vector2 dir = (transform.position - hook.rb.transform.position).normalized;
-				hook.rb.AddForce(dir * reelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
+				hook.rb.AddForce(dir * playerStats.platformingReelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
 
 				if (Vector2.Distance(hook.rb.gameObject.transform.position, transform.position) <= completeReturnDistance)
 				{
@@ -679,9 +673,9 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				float dist = Vector2.Distance(transform.position, hook.rb.transform.position);
 				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
-				if (distanceJoint.distance > maxLineLength)
+				if (distanceJoint.distance > playerStats.platformingLineLength)
 				{
-					distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+					distanceJoint.distance -= Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
 				}
 
 				if (dist < detachDistance)
@@ -693,9 +687,9 @@ public class PlatformingPlayerController : Interactor
 				{
 					if (slackHeld) // Give Slack
 					{
-						if (distanceJoint.distance < maxLineLength)
+						if (distanceJoint.distance < playerStats.platformingLineLength)
 						{
-							distanceJoint.distance += Time.deltaTime * reelSpeed;
+							distanceJoint.distance += Time.deltaTime * playerStats.platformingReelSpeed;
 							if (Vector2.Distance(transform.position, hook.rb.transform.position) < 0.5)
 							{
 								dir = (transform.position - hook.rb.transform.position).normalized;
@@ -711,9 +705,9 @@ public class PlatformingPlayerController : Interactor
 							else ChangeMoveState(MoveState.AIR_REELING);
 						}
 
-						distanceJoint.distance -= Time.deltaTime * reelSpeed * 0.05f;
+						distanceJoint.distance -= Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
 						dir = (hook.rb.transform.position - transform.position).normalized;
-						rb.AddForce(dir * reelSpeed, ForceMode2D.Force);
+						rb.AddForce(dir * playerStats.platformingReelSpeed, ForceMode2D.Force);
 					}
 				}
 
@@ -733,11 +727,11 @@ public class PlatformingPlayerController : Interactor
 		float t = 0;
 		hook.rb.transform.position = transform.position;
 		Vector2 initialPosition = transform.position;
-		while (t < castTime)
+		while (t < playerStats.grappleMaxCastSpeed)
 		{
 			Vector2 currentPos;
-			currentPos.x = Mathf.Lerp(initialPosition.x, point.x, t / castTime);
-			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / castTime);
+			currentPos.x = Mathf.Lerp(initialPosition.x, point.x, t / playerStats.grappleMaxCastSpeed);
+			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / playerStats.grappleMaxCastSpeed);
 			hook.rb.transform.position = currentPos;
 
 			//float modifier = 1;
@@ -773,9 +767,9 @@ public class PlatformingPlayerController : Interactor
 
 		Vector2 overlapPos = mousePos;
 		float distanceToMouse = Vector2.Distance(transform.position, mousePos);
-		if(distanceToMouse > maxLineLength)
+		if(distanceToMouse > playerStats.platformingLineLength)
 		{
-			overlapPos = (Vector2)transform.position + dir * maxLineLength;
+			overlapPos = (Vector2)transform.position + dir * playerStats.platformingLineLength;
 		}
 
 		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
@@ -811,7 +805,7 @@ public class PlatformingPlayerController : Interactor
 		float yDiff = hookPos.y - transform.position.y;
 		float distance = Vector2.Distance(hookPos, transform.position);
 
-		castTime = distance * 0.2f;
+		playerStats.grappleMaxCastSpeed = distance * 0.2f;
 
 		grappleCastCurve = new AnimationCurve();
 		grappleCastCurve.CopyFrom(grappleCastCurveBase);
