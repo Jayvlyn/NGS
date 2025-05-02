@@ -109,13 +109,11 @@ public class MenuUI : MonoBehaviour
     {
         if (keyBinds.activeSelf)
         {
-            //keyBinds.SetActive(false);
             SaveKeyBinds();
         }
         else
         {
             GetComponent<ModifySettings>().SaveSettings();
-            //settings.SetActive(false);
         }
     }
 
