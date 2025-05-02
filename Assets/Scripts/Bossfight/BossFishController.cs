@@ -10,7 +10,7 @@ public class BossFishController : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float baseMovementSpeed;
-    private float baseDistance = -1f;
+    [SerializeField] private float maxSpeedMultiplier;
     private Rigidbody2D body;
     private PathFollower pathFollower;
     private float speedMultiplier = 1f;
@@ -31,10 +31,6 @@ public class BossFishController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(baseDistance == -1f)
-        {
-            baseDistance = player.DesiredDistance * 2;
-        }
         (Vector3, Quaternion) newTransform = pathFollower.GetNewTransform(baseMovementSpeed * speedMultiplier * Time.deltaTime);
         body.MovePositionAndRotation(newTransform.Item1, newTransform.Item2);
         float zRotation = transform.rotation.eulerAngles.z;
@@ -54,6 +50,6 @@ public class BossFishController : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         }
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, cameraStartingZ);
-        speedMultiplier = Mathf.Max(1, baseDistance - player.DesiredDistance);
+        speedMultiplier = Mathf.Lerp(1, maxSpeedMultiplier, player.DesiredDistance / player.MaxDistance);
     }
 }
