@@ -564,7 +564,7 @@ public class PlatformingPlayerController : Interactor
 	private void FlipX()
 	{
 		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
-		if(currentRodState == RodState.INACTIVE)
+		if(currentRodState == RodState.INACTIVE || currentRodState == RodState.FISHCASTING)
 			hook.transform.localScale = new Vector2(hook.transform.localScale.x * -1, hook.transform.localScale.y);
 	}
 
