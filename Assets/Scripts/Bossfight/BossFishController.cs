@@ -50,6 +50,6 @@ public class BossFishController : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         }
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, cameraStartingZ);
-        speedMultiplier = Mathf.Lerp(1, maxSpeedMultiplier, player.DesiredDistance / player.MaxDistance);
+        speedMultiplier = Mathf.Lerp(1, maxSpeedMultiplier, 1 - player.DesiredDistance / player.MaxDistance);
     }
 }
