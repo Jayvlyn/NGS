@@ -1,10 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 public class DayNightCycle : MonoBehaviour
 {
 	[Header("References")]
 	public Light2D globalLight;
+	public SpriteRenderer sky;
 
 	// game hour = minute
 	[Header("Time Settings")]
@@ -19,6 +20,8 @@ public class DayNightCycle : MonoBehaviour
 	public float middayIntensity = 1f;
 	public float midnightIntensity = 0.13f;
 	public float DawnIntensity => (middayIntensity + midnightIntensity) * 0.5f;
+	public Color noonSkyColor = Color.white;
+	public Color midnightSkyColor = Color.white;
 
 	[HideInInspector] public float currentTime;
 	public static bool isNight;
@@ -80,23 +83,27 @@ public class DayNightCycle : MonoBehaviour
 		if (CurrentHour >= sunriseEnd && CurrentHour < sunsetStart) // Full daylight period
 		{
 			globalLight.intensity = middayIntensity;
+			sky.color = noonSkyColor;
 			isNight = false;
 		}
 		else if (CurrentHour >= sunsetStart && CurrentHour < sunsetEnd) // Sunset transition
 		{
 			t = (CurrentHour - sunsetStart) / (sunsetEnd - sunsetStart);
 			globalLight.intensity = Mathf.Lerp(middayIntensity, midnightIntensity, t);
+			sky.color = Color.Lerp(noonSkyColor, midnightSkyColor, t);
 			isNight = t >= 0.5f;
 		}
 		else if (CurrentHour >= sunsetEnd || CurrentHour < sunriseStart) // Full nighttime period
 		{
 			globalLight.intensity = midnightIntensity;
+			sky.color = midnightSkyColor;
 			isNight = true;
 		}
 		else if (CurrentHour >= sunriseStart && CurrentHour < sunriseEnd) // Sunrise transition
 		{
 			t = (CurrentHour - sunriseStart) / (sunriseEnd - sunriseStart);
 			globalLight.intensity = Mathf.Lerp(midnightIntensity, middayIntensity, t);
+			sky.color = Color.Lerp(midnightSkyColor, noonSkyColor, t);
 			isNight = false;
 		}
 	}
