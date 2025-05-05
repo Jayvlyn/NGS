@@ -122,10 +122,15 @@ public class ModifySettings : MonoBehaviour
             if (toggle.name == "PostProcessing") toggle.isOn = settings.toggleData.hasPostProcessing;
             else toggle.isOn = settings.toggleData.isFullScreen;
         }
-        mouseModeMiniGame.isOn = settings.toggleData.isMouseModeMinigame;
-        mouseModeBossGame.isOn = settings.toggleData.isMouseModeBossgame;
+        
 
         //load in screen resolution
         resolutionDropdown.value = settings.screenResolution;
+    }
+
+    public void SaveMouseMode()
+    {
+        mouseModeMiniGame.isOn = settings.toggleData.isMouseModeMinigame;
+        mouseModeBossGame.isOn = settings.toggleData.isMouseModeBossgame;
     }
 }

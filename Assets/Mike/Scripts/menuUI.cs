@@ -26,7 +26,6 @@ public class MenuUI : Singleton<MenuUI>
     [SerializeField] Button backBtn;
     [SerializeField] Button createBtn;
     [SerializeField] TMP_InputField characterName;
-    public Toggle bossfightMouseInputToggle;
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
@@ -51,7 +50,8 @@ public class MenuUI : Singleton<MenuUI>
                 btn.onClick.AddListener(() => SaveOnQuit());
                 btn.onClick.AddListener(() => quitClicked());
             }
-            else btn.onClick = settingsBtn.onClick;
+            else if(btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
+            else btn.onClick.AddListener(() => MainMenuClicked());
         }
     }
 
@@ -66,12 +66,17 @@ public class MenuUI : Singleton<MenuUI>
         GetComponent<ModifySettings>().settings.position.y = pi.transform.localPosition.y;
     }
 
+    public void MainMenuClicked()
+    {
+        startMenu.SetActive(true);
+        var newVec = new Vector3(-5.35f, -4.22f, 0f);
+        pi.transform.localPosition = newVec;
+        pauseClicked();
+    }
+
     void newGameClicked()
     {
-        if (!loadMenu.activeSelf) loadMenu.SetActive(true);
         StartCoroutine(PlayUIAnim("SlideUp", characterCreation));
-        //characterCreation.SetActive(true);
-        //startMenu.SetActive(false);
     }
     void loadGameClicked()
     {
@@ -79,21 +84,18 @@ public class MenuUI : Singleton<MenuUI>
     }
     void settingsClicked()
     {
-        //settings.SetActive(true);
         StartCoroutine(PlayUIAnim("SlideDown", settings));
     }
 
     void pauseClicked()
     {
         StartCoroutine(PlayUIAnim("SlideDown", pause, true));
-        //Time.timeScale = (!pause.activeSelf) ? 0 : 1;
-        //pause.SetActive(!pause.activeSelf);
+        //Time.timeScale = (pause.activeSelf) ? 0 : 1;
     }
 
     void keyBindsClicked()
     {
         StartCoroutine(PlayUIAnim("SlideDown", keyBinds));
-        //keyBinds.SetActive(true);
     }
 
     void quitClicked()
@@ -133,6 +135,7 @@ public class MenuUI : Singleton<MenuUI>
     {
         bool created = false;
 
+        if (!loadMenu.activeSelf) loadMenu.SetActive(true);
         created = GetComponentInChildren<SaveLoadManager>().Save(characterName.text);
 
         if (created)
@@ -141,7 +144,6 @@ public class MenuUI : Singleton<MenuUI>
             startMenu.SetActive(false);
             transform.Find("InventoryCollection").gameObject.SetActive(true);
             StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
-            //characterCreation.SetActive(false);
         }
         else
         {
@@ -177,6 +179,8 @@ public class MenuUI : Singleton<MenuUI>
                     break;
             }
         }
+
+        GetComponent<ModifySettings>().SaveMouseMode();
     }
 
     public void LoadSaveGame()
@@ -221,11 +225,11 @@ public class MenuUI : Singleton<MenuUI>
 
         if (Both)
         {
-            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + 1);
+            yield return new WaitForSecondsRealtime(anim.GetCurrentAnimatorStateInfo(0).length);
 
             if (!anim.GetBool(name)) menu.SetActive(false);
         }
-        else yield return new WaitForSeconds(1);
+        else yield return new WaitForSecondsRealtime(1);
     }
 
     public void LoadMinigame(GameObject go)
