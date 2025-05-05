@@ -323,7 +323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstaclesToSpawn:
-  - {fileID: 6200299212229735857, guid: 16e5cda3b7e13024689d1192c3d0eab7, type: 3}
+  - obj: {fileID: 6200299212229735857, guid: 16e5cda3b7e13024689d1192c3d0eab7, type: 3}
+    weight: 1
   spawnPoints:
   - {fileID: 3073856836558847304}
   - {fileID: 4798965692055119992}
@@ -1312,7 +1313,6 @@ MonoBehaviour:
   boundsx: 450
   boundsy: 350
   boundsyoffset: 50
-  currentYBias: 0
   isCaught: 0
 --- !u!50 &5906862279221811559
 Rigidbody2D:
