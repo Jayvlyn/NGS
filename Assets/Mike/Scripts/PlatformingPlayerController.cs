@@ -752,55 +752,77 @@ public class PlatformingPlayerController : Interactor
 
 	private void OnEnterCastingState()
 	{
-		hook.col.isTrigger = true;
-		hook.rb.bodyType = RigidbodyType2D.Kinematic;
-		hook.rb.gameObject.SetActive(true);
-
-		lineRenderer.enabled = true;
-
-		Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-		Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
-		if (dir.x * spriteT.localScale.x < 0f)
+		if(!AttemptMouseFish())
 		{
-			FlipX(); // flip to look in casting direction
-		}
+            hook.col.isTrigger = true;
+            hook.rb.bodyType = RigidbodyType2D.Kinematic;
+            hook.rb.gameObject.SetActive(true);
 
-		Vector2 overlapPos = mousePos;
-		float distanceToMouse = Vector2.Distance(transform.position, mousePos);
-		if(distanceToMouse > playerStats.platformingLineLength)
+            lineRenderer.enabled = true;
+
+            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
+            if (dir.x * spriteT.localScale.x < 0f)
+            {
+                FlipX(); // flip to look in casting direction
+            }
+
+            Vector2 overlapPos = mousePos;
+            float distanceToMouse = Vector2.Distance(transform.position, mousePos);
+            if (distanceToMouse > playerStats.platformingLineLength)
+            {
+                overlapPos = (Vector2)transform.position + dir * playerStats.platformingLineLength;
+            }
+
+            Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
+            DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
+
+            Vector2 hookPos = Vector2.zero;
+            if (hit != null)
+            {
+                hookPos = hit.ClosestPoint(overlapPos);
+                hook.rb.transform.position = hookPos;
+                hook.rb.transform.parent = null;
+
+                DefineCurveKeys(hookPos);
+
+                if (castHookToPoint != null) StopCoroutine(castHookToPoint);
+                castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
+            }
+            else
+            {
+                hookPos = (Vector2)transform.position + dir * MaxLineLength;
+                hook.rb.transform.position = hookPos;
+
+                DefineCurveKeys(hookPos);
+
+                if (castHookToPoint != null) StopCoroutine(castHookToPoint);
+                castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
+            }
+            //hookRb.AddForce(dir * castTime);
+        }
+    }
+
+	private bool AttemptMouseFish()
+	{
+		foreach(Collider2D col in Physics2D.OverlapCircleAll(cam.ScreenToWorldPoint(Input.mousePosition), aimAssistRadius))
 		{
-			overlapPos = (Vector2)transform.position + dir * playerStats.platformingLineLength;
+			Transform tr = col.gameObject.transform;
+			while(tr.parent != null)
+			{
+				tr = tr.parent;
+			}
+			InteractableObject obj = tr.gameObject.GetComponentInChildren<InteractableObject>();
+			if(CanInteractWith(obj))
+			{
+				TryInteract(obj);
+				return true;
+			}
 		}
-
-		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
-		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
-
-		Vector2 hookPos = Vector2.zero;
-		if (hit != null)
-		{
-			hookPos = hit.ClosestPoint(overlapPos);
-			hook.rb.transform.position = hookPos;
-			hook.rb.transform.parent = null;
-
-			DefineCurveKeys(hookPos);
-
-			if(castHookToPoint != null) StopCoroutine(castHookToPoint);
-			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
-		}
-		else
-		{
-			hookPos = (Vector2)transform.position + dir * MaxLineLength;
-			hook.rb.transform.position = hookPos;
-
-			DefineCurveKeys(hookPos);
-
-			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
-			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
-		}
-		//hookRb.AddForce(dir * castTime);
+		return false;
 	}
 
-	private void DefineCurveKeys(Vector2 hookPos)
+    private void DefineCurveKeys(Vector2 hookPos)
 	{
 		float yDiff = hookPos.y - transform.position.y;
 		float distance = Vector2.Distance(hookPos, transform.position);

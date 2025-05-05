@@ -57,11 +57,51 @@ public class Interactor : MonoBehaviour
 		}
 	}
 
+    protected void TryInteract(InteractableObject obj)
+    {
+        if(obj != null)
+        {
+            TryInteract(obj.Id);
+        }
+    }
+
+    protected void TryInteract(int id)
+    {
+        foreach(InteractableObject obj in objectStack)
+        {
+            if(obj.Id == id)
+            {
+                interactEvent.Trigger(new InteractionPair(obj, this));
+            }
+        }
+    }
+
     public virtual void Start()
     {
         Id = current;
         current++;
         enterInteractionRangeEvent.Subscribe(OnEnterInteractableRange);
         exitInteractionRangeEvent.Subscribe(OnExitInteractableRange);
+    }
+
+    public bool CanInteractWith(InteractableObject obj)
+    {
+        if(obj != null)
+        {
+            return CanInteractWith(obj.Id);
+        }
+        return false;
+    }
+
+    public bool CanInteractWith(int id)
+    {
+        foreach (InteractableObject interactable in objectStack)
+        {
+            if (interactable.Id == id)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
