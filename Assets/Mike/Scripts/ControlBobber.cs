@@ -9,7 +9,7 @@ public class ControlBobber : MonoBehaviour
     [SerializeField] public float reelSpeed = 0.5f;
 
     [SerializeField] public Rigidbody2D hookRb;
-	[SerializeField] private Rigidbody2D bobberRb;
+    [SerializeField] private Rigidbody2D bobberRb;
     [SerializeField] public float lineLength = 500.0f;
     [SerializeField] public float maxLength = 850.0f;
 
@@ -19,7 +19,7 @@ public class ControlBobber : MonoBehaviour
 
     private HookBehavior hookBehavior;
 
-    public bool useMouseControl = false;
+    [SerializeField] private GameSettings settings;
 
     [SerializeField] private Canvas gameCanvas;
 
@@ -41,7 +41,7 @@ public class ControlBobber : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (useMouseControl)
+        if (settings.toggleData.isMouseModeMinigame)
         {
             useMouseMovement();
         }
