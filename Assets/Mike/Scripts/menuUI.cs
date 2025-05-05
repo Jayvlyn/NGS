@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class MenuUI : MonoBehaviour
+public class MenuUI : Singleton<MenuUI>
 {
     [Header("Panels")]
     [SerializeField] GameObject characterCreation;
@@ -26,6 +26,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] Button backBtn;
     [SerializeField] Button createBtn;
     [SerializeField] TMP_InputField characterName;
+    public Toggle bossfightMouseInputToggle;
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;

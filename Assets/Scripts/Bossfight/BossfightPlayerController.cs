@@ -15,7 +15,6 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private bool immortalForTesting = false;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float desiredDistance = 2.5f;
-    public bool mouseControls = true;
 
     private void Start()
     {
@@ -85,7 +84,7 @@ public class BossfightPlayerController : MonoBehaviour
     private Vector2 GetMovement()
     {
         Vector2 result;
-        if(mouseControls)
+        if(MenuUI.Instance.bossfightMouseInputToggle.isOn)
         {
             result = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         }
