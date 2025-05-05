@@ -22,27 +22,29 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] float boundsy = 300.0f; // Y Bounds
     [SerializeField] float boundsyoffset = 150.0f; // Y Bounds offset
 
-    public float currentYBias;
-    private float currentWadeSpeed;
-    private float swimAngle;
+    //public float currentYBias;
+    //private float currentWadeSpeed;
+    private float swimAngle = 0;
+    private float goalAngle = 0;
 
     public bool isCaught = false;
 
     private float catchProgress = 20f; // 100 is win-condition.
-    private float currentSpeed = 0.0f;
+    private Vector2 velocity = new Vector3(1, 0, 0);
     private bool hooked;
 
 	private void OnEnable()
 	{
 		menu.pi.SwitchCurrentActionMap("Minigame");
-		currentYBias = 0.0f;
-		currentSpeed = swimSpeed;
-		currentWadeSpeed = wadeSpeed;
+		//currentYBias = 0.0f;
+		//currentSpeed = swimSpeed;
+		//currentWadeSpeed = wadeSpeed;
 		hooked = false;
 
 		catchProgBar.value = 25.0f;
 
 		fishImage.sprite = hookedFish.sprite;
+        UpdateDesiredAngle();
 	}
 
 	void FixedUpdate()
@@ -72,36 +74,48 @@ public class FishMinigame : MonoBehaviour
             return;
         }
 
-        // Flip the current Wading speed if it reaches one of the bounds
-        if(swimAngle > (0.75f + currentYBias) || swimAngle < (-0.75f + currentYBias))
+        //// Flip the current Wading speed if it reaches one of the bounds
+        //if(swimAngle > (0.75f + currentYBias) || swimAngle < (-0.75f + currentYBias))
+        //{
+        //    currentWadeSpeed *= -1;
+        //}
+        ////swimAngle += (currentWadeSpeed);
+        //swimAngle += currentWadeSpeed > 0 ? Random.Range(-currentSpeed)
+
+        //// Rotate Sprite
+        //Vector3 newEuler = new Vector3(0, 0, swimAngle);
+        //transform.Rotate(newEuler);
+
+        //Vector2 direction = new Vector2(transform.right.x, transform.right.y);
+
+        //direction.Normalize();
+        //direction.x *= currentSpeed;
+        //direction.y *= currentSpeed;
+
+        //Vector2 newPosition = new Vector2(transform.position.x + direction.x, transform.position.y + direction.y );
+        float panicModifier = hooked ? panicMulti : 1;
+        swimAngle = Mathf.Lerp(swimAngle, goalAngle, Time.deltaTime * panicModifier);
+        if(swimAngle - goalAngle > -5f && swimAngle - goalAngle < 5f)
         {
-            currentWadeSpeed *= -1;
+            UpdateDesiredAngle();
         }
-        swimAngle += (currentWadeSpeed);
-
-        // Rotate Sprite
-        Vector3 newEuler = new Vector3(0, 0, swimAngle);
-        transform.Rotate(newEuler);
-
-        Vector2 direction = new Vector2(transform.right.x, transform.right.y);
-
-        direction.Normalize();
-        direction.x *= currentSpeed;
-        direction.y *= currentSpeed;
-
-        Vector2 newPosition = new Vector2(transform.position.x + direction.x, transform.position.y + direction.y );
-
-        gameObject.GetComponent<Rigidbody2D>().MovePosition(newPosition);
+        velocity = panicModifier * swimSpeed * (Quaternion.Euler(0, 0, swimAngle) * Vector3.right);
+        //if(Mathf.Sign(velocity.x) != Mathf.Sign(transform.localScale.x))
+        //{
+        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //}
+        gameObject.GetComponent<Rigidbody2D>().MovePositionAndRotation(new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y), swimAngle);
+        
     }
 
     void FlipFish()
     {
         // Flip Sprite
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+        //Vector3 scale = transform.localScale;
+        //scale.x *= -1;
+        //transform.localScale = scale;
 
-        RandomizeDirectionBias();
+        //RandomizeDirectionBias();
 
         // Ensure fish goes back into bounds
         Vector2 tempPos = transform.localPosition;
@@ -110,26 +124,33 @@ public class FishMinigame : MonoBehaviour
         transform.localPosition = tempPos;
 
         // Switch Direction
-        currentSpeed *= -1;
-
+        swimAngle -= 180;
+        UpdateDesiredAngle(swimAngle);
     }
 
-    void RandomizeDirectionBias()
-    {
-        // Random Y Bias
-        currentYBias = Random.Range(-0.25f, 0.25f);
-    }
+    //void RandomizeDirectionBias()
+    //{
+    //    // Random Y Bias
+    //    currentYBias = Random.Range(-0.25f, 0.25f);
+    //}
 
     void KeepUpright()
     {
-        // Decides based on the scale, when to flip the Y scale, to keep the sprite upright
-        if ((transform.localEulerAngles.z > 90 && transform.localEulerAngles.z < 270) && transform.localScale.y == 1)
+        float zRotation = transform.rotation.eulerAngles.z;
+        while (zRotation > 180)
         {
-            FlipYScale();
+            zRotation -= 360;
         }
-        else if ((transform.localEulerAngles.z < 90 || transform.localEulerAngles.z > 270) && transform.localScale.y == -1)
+        while (zRotation < -180)
         {
-            FlipYScale();
+            zRotation += 360;
+        }
+        if (transform.localScale.y > 0 &&
+            (zRotation > 90 || zRotation < -90)
+            || (transform.localScale.y < 0 &&
+            zRotation < 90 && zRotation > -90))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         }
     }
 
@@ -152,6 +173,8 @@ public class FishMinigame : MonoBehaviour
         if (tempPos.y > 0) tempPos.y = boundsy-1;
         else tempPos.y = -boundsy-boundsyoffset+1;
         transform.localPosition = tempPos;
+        swimAngle -= 180;
+        UpdateDesiredAngle(swimAngle);
     }
 
     void UpdateCatchProg()
@@ -206,9 +229,9 @@ public class FishMinigame : MonoBehaviour
         if(collision.tag == "Hook")
         {
             hooked = true;
-            currentSpeed = (currentSpeed > 0) ? swimSpeed * panicMulti : -swimSpeed * panicMulti;
-            currentWadeSpeed = wadeSpeed * panicMulti;
-            RandomizeDirectionBias();
+            //currentSpeed = (currentSpeed > 0) ? swimSpeed * panicMulti : -swimSpeed * panicMulti;
+            //currentWadeSpeed = wadeSpeed * panicMulti;
+            //RandomizeDirectionBias();
         }
     }
 
@@ -217,9 +240,18 @@ public class FishMinigame : MonoBehaviour
         if(collision.tag == "Hook")
         {
             hooked = false;
-            currentSpeed = (currentSpeed > 0) ? swimSpeed : -swimSpeed;
-            currentWadeSpeed = wadeSpeed;
+            //currentSpeed = (currentSpeed > 0) ? swimSpeed : -swimSpeed;
+            //currentWadeSpeed = wadeSpeed;
         }
+    }
+
+    private void UpdateDesiredAngle()
+    {
+        goalAngle = Random.Range(goalAngle - wadeSpeed * 1800, goalAngle + wadeSpeed * 1800);
+    }
+    private void UpdateDesiredAngle(float oldAngle)
+    {
+        goalAngle = Random.Range(oldAngle - wadeSpeed * 1800, oldAngle + wadeSpeed * 1800);
     }
 
     public void SetHookedFish(Fish fish)
