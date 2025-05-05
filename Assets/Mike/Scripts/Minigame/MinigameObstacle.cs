@@ -112,4 +112,9 @@ public class MinigameObstacle : MonoBehaviour
 		}
 	}
 
+	private void OnDisable()
+	{
+		Destroy(gameObject);
+	}
+
 }

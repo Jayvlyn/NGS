@@ -37,11 +37,14 @@ public class QuestGiver : InteractableObject
             if(currentQuestIndex != -1)
             {
                 lowestViable = null;
-                foreach(Fish fish in Inventory.Instance.GetFishData(potentialQuests[currentQuestIndex].FishName).currentFish)
+                if(Inventory.Instance.GetFishData(potentialQuests[currentQuestIndex].Fish.fishName).currentFish != null)
                 {
-                    if(fish.length >= potentialQuests[currentQuestIndex].MinLength && (lowestViable == null || lowestViable.length > fish.length))
+                    foreach(Fish fish in Inventory.Instance.GetFishData(potentialQuests[currentQuestIndex].Fish.fishName).currentFish)
                     {
-                        lowestViable = fish;
+                        if(fish.length >= potentialQuests[currentQuestIndex].MinLength && (lowestViable == null || lowestViable.length > fish.length))
+                        {
+                            lowestViable = fish;
+                        }
                     }
                 }
                 if(lowestViable != null)
