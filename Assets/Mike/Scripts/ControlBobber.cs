@@ -56,7 +56,7 @@ public class ControlBobber : MonoBehaviour
     public void useWASDMovement()
     {
         float moveSpeed = baseMoveSpeed;
-        Debug.Log($"Bobber Input: {bobberInput}");
+        //Debug.Log($"Bobber Input: {bobberInput}");
         if (bobberInput < 0 && bobberRb.transform.localPosition.x >= -sideLength)
         {
             bobberRb.MovePosition(new Vector2(bobberRb.position.x - moveSpeed, bobberRb.position.y));
