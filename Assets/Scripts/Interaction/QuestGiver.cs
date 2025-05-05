@@ -54,7 +54,7 @@ public class QuestGiver : InteractableObject
                     popup.Event.RegisterListener(listener);
                     popup.FishImage.sprite = lowestViable.sprite;
                     popup.FishNameText.text = lowestViable.fishName;
-                    popup.FishLengthText.text = lowestViable.length.ToString();
+                    popup.FishLengthText.text = lowestViable.length.ToString() + " cm";
                     popup.QuestionText.text = $"Give this fish to {questGiverName}?";
                     canInteract = false;
                 }

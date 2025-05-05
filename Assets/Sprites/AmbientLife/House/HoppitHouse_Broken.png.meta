@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0428a1a4cf2b8c7438f590fd05f8a49a
+guid: 54add950aa8b1314a8763e7c823fbe12
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -123,45 +123,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HopnHook_ShopkeepTalking_0
+      name: fishmock_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 112
-        height: 64
+        y: 5
+        width: 32
+        height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f61f70af1103fdb46acbdc5ccc06332d
-      internalID: -1347863824
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HopnHook_ShopkeepTalking_1
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 0
-        width: 112
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e3ee5544c9d563b4eae4b07d0d893d64
-      internalID: 1557592828
+      spriteID: 204842e089ab87a90800000000000000
+      internalID: -7315892432428301310
       vertices: []
       indices: 
       edges: []
@@ -180,8 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HopnHook_ShopkeepTalking_0: -1347863824
-      HopnHook_ShopkeepTalking_1: 1557592828
+      fishmock_0: -7315892432428301310
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
