@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -15,6 +13,8 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private bool immortalForTesting = false;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float desiredDistance = 2.5f;
+
+    [SerializeField] GameSettings settings;
 
     private void Start()
     {
@@ -84,7 +84,7 @@ public class BossfightPlayerController : MonoBehaviour
     private Vector2 GetMovement()
     {
         Vector2 result;
-        if(MenuUI.Instance.bossfightMouseInputToggle.isOn)
+        if(settings.toggleData.isMouseModeBossgame)
         {
             result = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         }
