@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4932841322919480954}
   - component: {fileID: 2566753976826324353}
   m_Layer: 0
-  m_Name: RedBlueButterflies
+  m_Name: Butterflies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,38 +221,38 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 2
+      minMaxState: 4
       minColor: {r: 0.3679244, g: 0.46362507, b: 1, a: 1}
       maxColor: {r: 1, g: 0.27439126, b: 0.09119487, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
-        key3: {r: 0, g: 0, b: 0, a: 0}
-        key4: {r: 0, g: 0, b: 0, a: 0}
-        key5: {r: 0, g: 0, b: 0, a: 0}
-        key6: {r: 0, g: 0, b: 0, a: 0}
-        key7: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 1, g: 0.62306863, b: 0.11635202, a: 1}
+        key1: {r: 0.96323454, g: 0.9685534, b: 0.18579152, a: 1}
+        key2: {r: 0.3124245, g: 0.8930817, b: 0.28365165, a: 1}
+        key3: {r: 0.24213827, g: 0.99741507, b: 1, a: 1}
+        key4: {r: 0.24213827, g: 0.29275665, b: 1, a: 1}
+        key5: {r: 0.590991, g: 0.21069163, b: 1, a: 1}
+        key6: {r: 1, g: 0.26729542, b: 0.8910554, a: 1}
+        key7: {r: 0.8805031, g: 0.2575055, b: 0.2575055, a: 1}
         ctime0: 0
-        ctime1: 65535
-        ctime2: 0
-        ctime3: 0
-        ctime4: 0
-        ctime5: 0
-        ctime6: 0
-        ctime7: 0
+        ctime1: 9509
+        ctime2: 20689
+        ctime3: 29298
+        ctime4: 39964
+        ctime5: 48830
+        ctime6: 57440
+        ctime7: 65278
         atime0: 0
         atime1: 65535
-        atime2: 0
-        atime3: 0
-        atime4: 0
-        atime5: 0
-        atime6: 0
-        atime7: 0
+        atime2: 65535
+        atime3: 65535
+        atime4: 65535
+        atime5: 65535
+        atime6: 65535
+        atime7: 65535
         m_Mode: 0
-        m_ColorSpace: -1
-        m_NumColorKeys: 2
+        m_ColorSpace: 0
+        m_NumColorKeys: 8
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
