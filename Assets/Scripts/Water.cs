@@ -120,25 +120,33 @@ public class Water : InteractableObject
         }
     }
 
-    private float GenerateLength(Fish fish)
-    {
-        switch (fish.rarity)
-        {
-            case Rarity.Common:
-                return Random.Range(fish.minLength, Mathf.Lerp(fish.minLength,fish.maxLength,.2f));
-            case Rarity.Uncommon:
-                return Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .2f), Mathf.Lerp(fish.minLength, fish.maxLength, .4f));
-            case Rarity.Rare:
-                return Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .4f), Mathf.Lerp(fish.minLength, fish.maxLength, .6f));
-            case Rarity.SuperRare:
-                return Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .6f), Mathf.Lerp(fish.minLength, fish.maxLength, .8f));
-            case Rarity.Legendary:
-                return Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .8f), fish.maxLength);
-        }
-        return fish.minLength;
-    }
+	private float GenerateLength(Fish fish)
+	{
+		float length = fish.minLength;
 
-    protected override void Interact(InteractionPair pair)
+		switch (fish.rarity)
+		{
+			case Rarity.Common:
+				length = Random.Range(fish.minLength, Mathf.Lerp(fish.minLength, fish.maxLength, .2f));
+				break;
+			case Rarity.Uncommon:
+				length = Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .2f), Mathf.Lerp(fish.minLength, fish.maxLength, .4f));
+				break;
+			case Rarity.Rare:
+				length = Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .4f), Mathf.Lerp(fish.minLength, fish.maxLength, .6f));
+				break;
+			case Rarity.SuperRare:
+				length = Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .6f), Mathf.Lerp(fish.minLength, fish.maxLength, .8f));
+				break;
+			case Rarity.Legendary:
+				length = Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .8f), fish.maxLength);
+				break;
+		}
+
+		return Mathf.Round(length * 10f) / 10f; // cut off after one decimal (4.123214415 -> 4.1)
+	}
+
+	protected override void Interact(InteractionPair pair)
     {
         if (pair.obj.Id == Id)
         {
