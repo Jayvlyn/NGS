@@ -14,7 +14,7 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private float angleTolerance = 0.1f;
     [SerializeField] private bool immortalForTesting = false;
     [SerializeField] private PlayerStats playerStats;
-    private float desiredDistance = 2.5f;
+    [SerializeField] private float desiredDistance = 2.5f;
 
     private void Start()
     {
@@ -43,10 +43,10 @@ public class BossfightPlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("GameScene");
         }
-        if (moveInput != Vector2.zero)
+        if (GetMovement().magnitude > 0.1f)
         {
             //body.MovePosition(transform.position + movement);
-            AttemptMovement(movementSpeed * Time.deltaTime * moveInput.normalized);
+            AttemptMovement(movementSpeed * Time.deltaTime * GetMovement().normalized);
             currentDistance = Vector3.Distance(boss.transform.position, transform.position);
             desiredDistance = Mathf.Max(Mathf.Min(deathDistance, currentDistance, desiredDistance), radius * 5);
         }
@@ -80,6 +80,21 @@ public class BossfightPlayerController : MonoBehaviour
         //body.linearVelocity = Vector3.zero;
         //body.angularVelocity = 0;
     }
+
+    private Vector2 GetMovement()
+    {
+        Vector2 result;
+        if(MenuUI.Instance.bossfightMouseInputToggle.isOn)
+        {
+            result = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        }
+        else
+        {
+            result = moveInput.normalized;
+        }
+        return result;
+    }
+
 
     #region INPUT
 

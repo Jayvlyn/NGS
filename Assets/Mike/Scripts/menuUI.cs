@@ -1,10 +1,11 @@
+using System.Collections;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class MenuUI : MonoBehaviour
+public class MenuUI : Singleton<MenuUI>
 {
     [Header("Panels")]
     [SerializeField] GameObject characterCreation;
@@ -25,6 +26,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] Button backBtn;
     [SerializeField] Button createBtn;
     [SerializeField] TMP_InputField characterName;
+    public Toggle bossfightMouseInputToggle;
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
@@ -67,27 +69,31 @@ public class MenuUI : MonoBehaviour
     void newGameClicked()
     {
         if (!loadMenu.activeSelf) loadMenu.SetActive(true);
-        characterCreation.SetActive(true);
-        startMenu.SetActive(false);
+        StartCoroutine(PlayUIAnim("SlideUp", characterCreation));
+        //characterCreation.SetActive(true);
+        //startMenu.SetActive(false);
     }
     void loadGameClicked()
     {
-        loadMenu.SetActive(!loadMenu.activeSelf);
+        StartCoroutine(PlayUIAnim("SlideRight", loadMenu, true));
     }
     void settingsClicked()
     {
-        settings.SetActive(true);
+        //settings.SetActive(true);
+        StartCoroutine(PlayUIAnim("SlideDown", settings));
     }
 
     void pauseClicked()
     {
-        pause.SetActive(!pause.activeSelf);
-        Time.timeScale = (pause.activeSelf) ? 0 : 1;
+        StartCoroutine(PlayUIAnim("SlideDown", pause, true));
+        //Time.timeScale = (!pause.activeSelf) ? 0 : 1;
+        //pause.SetActive(!pause.activeSelf);
     }
 
     void keyBindsClicked()
     {
-        keyBinds.SetActive(true);
+        StartCoroutine(PlayUIAnim("SlideDown", keyBinds));
+        //keyBinds.SetActive(true);
     }
 
     void quitClicked()
@@ -101,8 +107,14 @@ public class MenuUI : MonoBehaviour
 
     void backClicked()
     {
-        if (keyBinds.activeSelf) keyBinds.SetActive(false);
-        else settings.SetActive(false);
+        if (keyBinds.activeSelf)
+        {
+            StartCoroutine(PlayUIAnim("SlideDown", keyBinds, true));
+        }
+        else
+        {
+            StartCoroutine(PlayUIAnim("SlideDown", settings, true));
+        }
     }
 
     void saveClicked()
@@ -126,8 +138,10 @@ public class MenuUI : MonoBehaviour
         if (created)
         {
             loadMenu.SetActive(false);
-            characterCreation.SetActive(false);
+            startMenu.SetActive(false);
             transform.Find("InventoryCollection").gameObject.SetActive(true);
+            StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
+            //characterCreation.SetActive(false);
         }
         else
         {
@@ -136,15 +150,8 @@ public class MenuUI : MonoBehaviour
     }
 
     public void OnInventory()
-    { 
-        if (inventoryMenu.activeSelf)
-        {
-            inventoryMenu.SetActive(false);
-        }
-        else
-        {
-            inventoryMenu.SetActive(true);
-        }
+    {
+        StartCoroutine(PlayUIAnim("SlideLeft", inventoryMenu, true));
     }
 
     private void SaveKeyBinds()
@@ -199,5 +206,30 @@ public class MenuUI : MonoBehaviour
     {
         loadMenu.SetActive(true);
         GetComponentInChildren<SaveLoadManager>().autoSave();
+    }
+
+    public IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false)
+    {
+        var anim = menu.GetComponent<Animator>();
+
+        if (anim.GetBool(name)) anim.SetBool(name, false);
+        else
+        {
+            menu.SetActive(true);
+            anim.SetBool(name, true);
+        }
+
+        if (Both)
+        {
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + 1);
+
+            if (!anim.GetBool(name)) menu.SetActive(false);
+        }
+        else yield return new WaitForSeconds(1);
+    }
+
+    public void LoadMinigame(GameObject go)
+    {
+        StartCoroutine(PlayUIAnim("SlideUp", go, false));
     }
 }

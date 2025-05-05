@@ -2640,6 +2640,7 @@ GameObject:
   - component: {fileID: 6084109625293945050}
   - component: {fileID: 2741538739498469394}
   - component: {fileID: 7640896430820444578}
+  - component: {fileID: 5924195656509486230}
   m_Layer: 5
   m_Name: KeyBindsScreen
   m_TagString: Untagged
@@ -2726,6 +2727,28 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 12db8679bac920b4cb5bbb457b1ac6b4, type: 3}
   - {fileID: 21300000, guid: 0349358ed41fa1b49ba71d5c4f2b7d5d, type: 3}
   frameInterval: 0.3
+--- !u!95 &5924195656509486230
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501352835481815199}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9d60be7559827a749a5f91c890feabbb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2507166936036196163
 GameObject:
   m_ObjectHideFlags: 0
