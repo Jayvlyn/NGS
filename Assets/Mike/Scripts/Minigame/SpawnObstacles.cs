@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnObstacles : MonoBehaviour
 {
-    [SerializeField] List<GameObject> obstaclesToSpawn;
+    [SerializeField] List<WeightedObject> obstaclesToSpawn;
     [SerializeField] List<Transform> spawnPoints;
     public int min { get; set; }
     public int max { get; set; }
@@ -11,27 +11,39 @@ public class SpawnObstacles : MonoBehaviour
     private void OnEnable()
     {
         int spawnAmount = Random.Range(min, max);
-        for (int i = 0; i < spawnAmount; i++)
+        for (int i = 0; i < spawnAmount;)
         {
-            Spawn();
+            i += Spawn(spawnAmount - i);
         }
     }
 
-    private void Spawn()
+    private int Spawn(int maxWeight)
     {
-        if (spawnPoints.Count == 0 || obstaclesToSpawn.Count == 0) return;
+        if (spawnPoints.Count == 0 || obstaclesToSpawn.Count == 0) return maxWeight;
 
         int sIndex = Random.Range(0, spawnPoints.Count);
         int oIndex = Random.Range(0, obstaclesToSpawn.Count);
-
+        int i = 0;
+        for (; obstaclesToSpawn[oIndex].weight > maxWeight && i < obstaclesToSpawn.Count; i++)
+        {
+            oIndex++;
+            if(oIndex == obstaclesToSpawn.Count)
+            {
+                oIndex = 0;
+            }
+        }
+        if(i == obstaclesToSpawn.Count)
+        {
+            return maxWeight;
+        }
         Vector3 randomOffset = Random.insideUnitCircle * 150;
         Vector3 spawnPosition = spawnPoints[sIndex].position + randomOffset;
 
-        GameObject spawnedObject = Instantiate(obstaclesToSpawn[oIndex], spawnPosition, spawnPoints[sIndex].rotation, transform.Find("Background").transform);
+        GameObject spawnedObject = Instantiate(obstaclesToSpawn[oIndex].obj, spawnPosition, spawnPoints[sIndex].rotation, transform.Find("Background").transform);
 
         spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = GetComponentInChildren<FishMinigame>();
         spawnedObject.SetActive(true);
-
+        return obstaclesToSpawn[oIndex].weight;
         
     }
 }
