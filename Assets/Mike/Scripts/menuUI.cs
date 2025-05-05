@@ -89,8 +89,13 @@ public class MenuUI : Singleton<MenuUI>
 
     void pauseClicked()
     {
+        //if(!transform.Find("CastUI").gameObject.activeSelf && !transform.Find("Minigame").gameObject.activeSelf)
+        //{
+        //    StartCoroutine(PlayUIAnim("SlideDown", pause, true));
+        //    //Time.timeScale = (pause.activeSelf) ? 0 : 1;
+        //}
         StartCoroutine(PlayUIAnim("SlideDown", pause, true));
-        //Time.timeScale = (pause.activeSelf) ? 0 : 1;
+        Time.timeScale = (pause.activeSelf) ? 0 : 1;
     }
 
     void keyBindsClicked()
@@ -234,6 +239,6 @@ public class MenuUI : Singleton<MenuUI>
 
     public void LoadMinigame(GameObject go)
     {
-        StartCoroutine(PlayUIAnim("SlideUp", go, false));
+        StartCoroutine(PlayUIAnim("SlideUp", go, go.activeSelf));
     }
 }

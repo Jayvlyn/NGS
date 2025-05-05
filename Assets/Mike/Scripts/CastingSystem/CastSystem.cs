@@ -52,7 +52,7 @@ public class CastSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ResetCast();
-		    }
+            }
             else if (Input.anyKeyDown)
             {
                 CheckCast(castBar.value);
@@ -106,7 +106,8 @@ public class CastSystem : MonoBehaviour
         speed = 50;
 
         castBar.value = 0;
-		castScreen.SetActive(false);
+        MenuUI.Instance.LoadMinigame(MenuUI.Instance.transform.Find("CastUI").gameObject);
+        //castScreen.SetActive(false);
     }
 
     public void SetWaterT(Transform waterT)
