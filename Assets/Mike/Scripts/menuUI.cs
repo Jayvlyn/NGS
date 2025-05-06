@@ -62,8 +62,11 @@ public class MenuUI : Singleton<MenuUI>
 
     private void FixedUpdate()
     {
-        GetComponent<ModifySettings>().settings.position.x = pi.transform.localPosition.x;
-        GetComponent<ModifySettings>().settings.position.y = pi.transform.localPosition.y;
+        if(pi != null)
+        {
+            GetComponent<ModifySettings>().settings.position.x = pi.transform.localPosition.x;
+            GetComponent<ModifySettings>().settings.position.y = pi.transform.localPosition.y;
+        }
     }
 
     public void MainMenuClicked()
