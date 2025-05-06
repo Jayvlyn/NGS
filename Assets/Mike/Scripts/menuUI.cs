@@ -182,6 +182,7 @@ public class MenuUI : Singleton<MenuUI>
             loadMenu.SetActive(false);
             startMenu.SetActive(false);
             gameLoaded = true;
+            Time.timeScale = 1;
             transform.Find("InventoryCollection").gameObject.SetActive(true);
             StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
         }
@@ -228,6 +229,7 @@ public class MenuUI : Singleton<MenuUI>
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
         gameLoaded = true;
+        Time.timeScale = 1;
         modifySettings.ApplyData();
 
         int i = 0;
