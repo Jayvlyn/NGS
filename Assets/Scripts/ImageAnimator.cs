@@ -20,7 +20,7 @@ public class ImageAnimator : MonoBehaviour
 	{
 		if(swapTimer > 0)
 		{
-			swapTimer -= Time.deltaTime;
+			swapTimer -= Time.unscaledDeltaTime;
 		}
 		else // swap image
 		{
