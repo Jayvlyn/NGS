@@ -145,7 +145,6 @@ MonoBehaviour:
   backBtn: {fileID: 3944906313169765735}
   createBtn: {fileID: 4227910159773037827}
   characterName: {fileID: 5334877999912082820}
-  bossfightMouseInputToggle: {fileID: 1647220851549602061}
   pauseAction: {fileID: -7459436573456147142, guid: 097c45eb17bad3640a9c78e2eec485f5, type: 3}
   pi: {fileID: 0}
 --- !u!114 &8170412535288247596
@@ -194,17 +193,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7197698133410025792}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 121387977886062855}
+        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+        m_MethodName: LoadMinigame
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 7197698133410025792}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 5584226391238323431}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -234,13 +233,13 @@ MonoBehaviour:
   unityEventResponse:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5177473489628720442}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 121387977886062855}
+        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+        m_MethodName: LoadMinigame
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 5177473489628720442}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

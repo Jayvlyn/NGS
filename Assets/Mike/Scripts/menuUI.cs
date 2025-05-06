@@ -94,8 +94,8 @@ public class MenuUI : Singleton<MenuUI>
         //    StartCoroutine(PlayUIAnim("SlideDown", pause, true));
         //    //Time.timeScale = (pause.activeSelf) ? 0 : 1;
         //}
+        Time.timeScale = (!pause.activeSelf) ? 0 : 1;
         StartCoroutine(PlayUIAnim("SlideDown", pause, true));
-        Time.timeScale = (pause.activeSelf) ? 0 : 1;
     }
 
     void keyBindsClicked()
