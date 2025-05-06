@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class MenuUI : Singleton<MenuUI>
 {
+    public static bool gameLoaded = false;
+
     [Header("Panels")]
     [SerializeField] GameObject characterCreation;
     [SerializeField] GameObject startMenu;
@@ -38,6 +40,9 @@ public class MenuUI : Singleton<MenuUI>
 
     void Start()
     {
+        if(gameLoaded) startMenu.SetActive(false);
+        else startMenu.SetActive(true);
+
         if(newGameBtn != null) newGameBtn.onClick.AddListener(() => newGameClicked());
         if(loadGameBtn != null) loadGameBtn.onClick.AddListener(() => loadGameClicked());
         if(settingsBtn != null) settingsBtn.onClick.AddListener(() => settingsClicked());
@@ -83,6 +88,7 @@ public class MenuUI : Singleton<MenuUI>
 
     public void MainMenuClicked()
     {
+        gameLoaded = false;
         startMenu.SetActive(true);
         var newVec = new Vector3(-5.35f, -4.22f, 0f);
         pi.transform.localPosition = newVec;
@@ -162,6 +168,7 @@ public class MenuUI : Singleton<MenuUI>
         {
             loadMenu.SetActive(false);
             startMenu.SetActive(false);
+            gameLoaded = true;
             transform.Find("InventoryCollection").gameObject.SetActive(true);
             StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
         }
@@ -207,6 +214,7 @@ public class MenuUI : Singleton<MenuUI>
     {
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
+        gameLoaded = true;
         GetComponent<ModifySettings>().ApplyData();
 
         int i = 0;
