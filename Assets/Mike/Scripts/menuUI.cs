@@ -35,6 +35,7 @@ public class MenuUI : Singleton<MenuUI>
     public PlayerInput pi;
 
     private GameSettings gameSettings;
+    private ModifySettings modifySettings;
     private Vector3 oldPosition;
 
 
@@ -63,7 +64,9 @@ public class MenuUI : Singleton<MenuUI>
             else btn.onClick.AddListener(() => MainMenuClicked());
         }
 
-        gameSettings = GetComponent<ModifySettings>().settings;
+        modifySettings = GetComponent<ModifySettings>();
+
+		gameSettings = modifySettings.settings;
     }
 
     void Update()
@@ -153,7 +156,7 @@ public class MenuUI : Singleton<MenuUI>
         }
         else
         {
-            GetComponent<ModifySettings>().SaveSettings();
+            modifySettings.SaveSettings();
         }
     }
 
@@ -207,7 +210,7 @@ public class MenuUI : Singleton<MenuUI>
             }
         }
 
-        GetComponent<ModifySettings>().SaveMouseMode();
+        modifySettings.SaveMouseMode();
     }
 
     public void LoadSaveGame()
@@ -215,7 +218,7 @@ public class MenuUI : Singleton<MenuUI>
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
         gameLoaded = true;
-        GetComponent<ModifySettings>().ApplyData();
+        modifySettings.ApplyData();
 
         int i = 0;
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
