@@ -26,6 +26,9 @@ public class BubbleSpawner : MonoBehaviour
 	private IEnumerator ReturnAfterDelay(GameObject obj, float delay)
 	{
 		yield return new WaitForSeconds(delay);
-		pool.Return(obj);
+		if (obj != null)
+		{
+			pool.Return(obj);
+		}
 	}
 }
