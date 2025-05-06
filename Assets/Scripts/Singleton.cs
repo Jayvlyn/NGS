@@ -34,7 +34,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         }
         else if(overrideOthers)
         {
-            Destroy(instance);
+            Destroy(instance.gameObject);
             instance = this as T;
             DontDestroyOnLoad(this.gameObject);
         }

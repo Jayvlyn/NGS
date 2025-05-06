@@ -67,7 +67,9 @@ public class MenuUI : Singleton<MenuUI>
         modifySettings = GetComponent<ModifySettings>();
 
 		gameSettings = modifySettings.settings;
-    }
+
+		LoadPosition();
+	}
 
     void Update()
     {
