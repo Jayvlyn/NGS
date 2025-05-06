@@ -42,7 +42,6 @@ public class BossfightPlayerController : MonoBehaviour
         if(currentDistance >= deathDistance && !immortalForTesting)
         {
             SceneManager.LoadScene("GameScene");
-            MenuUI.Instance.LoadPosition();
         }
         if (GetMovement().magnitude > 0.1f)
         {
@@ -55,7 +54,6 @@ public class BossfightPlayerController : MonoBehaviour
         {
             BossFishController.caughtBoss = true;
             SceneManager.LoadScene("GameScene");
-            MenuUI.Instance.LoadPosition();
         }
         transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
         transform.rotation *= Quaternion.Euler(0, 0, -90);
