@@ -68,7 +68,7 @@ public class MenuUI : Singleton<MenuUI>
 
 		gameSettings = modifySettings.settings;
 
-        SetPosition(true);
+        SetPosition();
 		LoadPosition();
 
 	}
@@ -173,6 +173,8 @@ public class MenuUI : Singleton<MenuUI>
 
         if (created)
         {
+            SetPosition(true);
+            LoadPosition();
             loadMenu.SetActive(false);
             startMenu.SetActive(false);
             gameLoaded = true;
