@@ -68,7 +68,14 @@ public class MenuUI : Singleton<MenuUI>
 
 		gameSettings = modifySettings.settings;
 
-		LoadPosition();
+        if (oldPosition == Vector3.zero)
+        {
+		    LoadPosition();
+        }
+        else
+        {
+            pi.transform.position = new Vector3(-5.35f, -4.22f, 0f);
+		}
 	}
 
     void Update()
