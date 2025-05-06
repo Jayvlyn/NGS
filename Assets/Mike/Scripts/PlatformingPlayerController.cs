@@ -813,7 +813,7 @@ public class PlatformingPlayerController : Interactor
 				tr = tr.parent;
 			}
 			InteractableObject obj = tr.gameObject.GetComponentInChildren<InteractableObject>();
-			if(CanInteractWith(obj) && obj.interactionType == InteractionType.Fish)
+			if (CanInteractWith(obj) && obj.interactionType == InteractionType.Fish && Time.timeScale != 0)
 			{
 				TryInteract(obj);
 				return true;

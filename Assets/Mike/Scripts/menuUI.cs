@@ -41,8 +41,12 @@ public class MenuUI : Singleton<MenuUI>
 
     void Start()
     {
-        if(gameLoaded) startMenu.SetActive(false);
-        else startMenu.SetActive(true);
+        if (gameLoaded) startMenu.SetActive(false);
+        else
+        {
+            startMenu.SetActive(true);
+			Time.timeScale = 0;
+		}
 
         if(newGameBtn != null) newGameBtn.onClick.AddListener(() => newGameClicked());
         if(loadGameBtn != null) loadGameBtn.onClick.AddListener(() => loadGameClicked());
