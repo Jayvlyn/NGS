@@ -68,7 +68,7 @@ public class MenuUI : Singleton<MenuUI>
 
 		gameSettings = modifySettings.settings;
 
-        SetPosition();
+        SetPosition(true);
 		LoadPosition();
 
 	}
@@ -277,8 +277,15 @@ public class MenuUI : Singleton<MenuUI>
         pi.transform.localPosition = oldPosition;
     }
 
-    public void SetPosition()
+    public void SetPosition(bool reset = false)
     {
-        oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        if(reset)
+        {
+            oldPosition = new Vector3(-5.3f, -4.2f, 0f);
+        }
+        else
+        {
+            oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        }
     }
 }
