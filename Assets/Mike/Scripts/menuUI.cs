@@ -3,10 +3,13 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuUI : Singleton<MenuUI>
 {
+    public static bool gameLoaded = false;
+
     [Header("Panels")]
     [SerializeField] GameObject characterCreation;
     [SerializeField] GameObject startMenu;
@@ -31,9 +34,16 @@ public class MenuUI : Singleton<MenuUI>
     [SerializeField] InputActionReference pauseAction;
     public PlayerInput pi;
 
+    private GameSettings gameSettings;
+    private ModifySettings modifySettings;
+    private Vector3 oldPosition;
+
 
     void Start()
     {
+        if(gameLoaded) startMenu.SetActive(false);
+        else startMenu.SetActive(true);
+
         if(newGameBtn != null) newGameBtn.onClick.AddListener(() => newGameClicked());
         if(loadGameBtn != null) loadGameBtn.onClick.AddListener(() => loadGameClicked());
         if(settingsBtn != null) settingsBtn.onClick.AddListener(() => settingsClicked());
@@ -53,24 +63,35 @@ public class MenuUI : Singleton<MenuUI>
             else if(btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
             else btn.onClick.AddListener(() => MainMenuClicked());
         }
+
+        modifySettings = GetComponent<ModifySettings>();
+
+		gameSettings = modifySettings.settings;
     }
 
     void Update()
     {
         if (pauseAction.action.triggered) pauseClicked();
+        //if (SceneManager.GetActiveScene().name == "") changed = true;
+        //if (changed)
+        //{
+        //    Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        //    pi.transform.localPosition = oldPosition;
+        //}
     }
 
     private void FixedUpdate()
     {
         if(pi != null)
         {
-            GetComponent<ModifySettings>().settings.position.x = pi.transform.localPosition.x;
-            GetComponent<ModifySettings>().settings.position.y = pi.transform.localPosition.y;
+            gameSettings.position.x = pi.transform.localPosition.x;
+            gameSettings.position.y = pi.transform.localPosition.y;
         }
     }
 
     public void MainMenuClicked()
     {
+        gameLoaded = false;
         startMenu.SetActive(true);
         var newVec = new Vector3(-5.35f, -4.22f, 0f);
         pi.transform.localPosition = newVec;
@@ -135,7 +156,7 @@ public class MenuUI : Singleton<MenuUI>
         }
         else
         {
-            GetComponent<ModifySettings>().SaveSettings();
+            modifySettings.SaveSettings();
         }
     }
 
@@ -150,6 +171,7 @@ public class MenuUI : Singleton<MenuUI>
         {
             loadMenu.SetActive(false);
             startMenu.SetActive(false);
+            gameLoaded = true;
             transform.Find("InventoryCollection").gameObject.SetActive(true);
             StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
         }
@@ -166,7 +188,7 @@ public class MenuUI : Singleton<MenuUI>
 
     private void SaveKeyBinds()
     {
-        var settings = GetComponent<ModifySettings>().settings;
+        var settings = gameSettings;
 
         settings.platformerKeys.Clear();
         settings.minigameKeys.Clear();
@@ -188,28 +210,29 @@ public class MenuUI : Singleton<MenuUI>
             }
         }
 
-        GetComponent<ModifySettings>().SaveMouseMode();
+        modifySettings.SaveMouseMode();
     }
 
     public void LoadSaveGame()
     {
         loadMenu.SetActive(false);
         startMenu.SetActive(false);
-        GetComponent<ModifySettings>().ApplyData();
+        gameLoaded = true;
+        modifySettings.ApplyData();
 
         int i = 0;
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
             print(bind.gameObject.name);
-            if(i > 12) bind.data = GetComponent<ModifySettings>().settings.bossGameKeys[i-13];
-            else if (i > 8) bind.data = GetComponent<ModifySettings>().settings.minigameKeys[i-9];
-            else bind.data = GetComponent<ModifySettings>().settings.platformerKeys[i];
+            if(i > 12) bind.data = gameSettings.bossGameKeys[i-13];
+            else if (i > 8) bind.data = gameSettings.minigameKeys[i-9];
+            else bind.data = gameSettings.platformerKeys[i];
 
             bind.ApplyData();
             
             i++;
         }
-        Vector3 oldPosition = new Vector3(GetComponent<ModifySettings>().settings.position.x, GetComponent<ModifySettings>().settings.position.y, 0f);
+        Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
         transform.Find("InventoryCollection").gameObject.SetActive(true);
     }
@@ -243,5 +266,15 @@ public class MenuUI : Singleton<MenuUI>
     public void LoadMinigame(GameObject go)
     {
         StartCoroutine(PlayUIAnim("SlideUp", go, go.activeSelf));
+    }
+
+    public void LoadPosition()
+    {
+        pi.transform.localPosition = oldPosition;
+    }
+
+    public void SetPosition()
+    {
+        oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
     }
 }

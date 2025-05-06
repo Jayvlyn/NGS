@@ -17,7 +17,7 @@ public class WardrobeManager : MonoBehaviour
 
     public void ConfirmbuttonPressed()
     {
-        WardrobeMaterial.SetTexture("_TargetPalette", WardrobeTextures[CurrentIndex]);
+        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[CurrentIndex]);
         CloseWardrobe();
     }
     public void OpenWardrobe()
@@ -39,7 +39,7 @@ public class WardrobeManager : MonoBehaviour
         {
             CurrentIndex = WardrobeTextures.Length - 1;
         }
-        WardrobeMaterial.SetTexture("_TargetPalette", WardrobeTextures[CurrentIndex]);
+        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[CurrentIndex]);
         WardrobeName.text = WardrobeNames[CurrentIndex];
     }
 }
