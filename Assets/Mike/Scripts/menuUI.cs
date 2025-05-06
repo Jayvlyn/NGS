@@ -68,14 +68,9 @@ public class MenuUI : Singleton<MenuUI>
 
 		gameSettings = modifySettings.settings;
 
-        if (oldPosition == Vector3.zero)
-        {
-		    LoadPosition();
-        }
-        else
-        {
-            pi.transform.position = new Vector3(-5.35f, -4.22f, 0f);
-		}
+        SetPosition();
+		LoadPosition();
+
 	}
 
     void Update()
@@ -102,7 +97,7 @@ public class MenuUI : Singleton<MenuUI>
     {
         gameLoaded = false;
         startMenu.SetActive(true);
-        var newVec = new Vector3(-5.35f, -4.22f, 0f);
+        var newVec = new Vector3(-5.3f, -4.2f, 0f);
         pi.transform.localPosition = newVec;
         pauseClicked();
     }
