@@ -5,7 +5,7 @@ public class InteractableObject : MonoBehaviour
 {
     public int Id {  get; private set; }
     private static int count = 0;
-    [SerializeField] protected InteractionType interactionType;
+    public InteractionType interactionType;
     [SerializeField] protected InteractionEvent enterInteractionRangeEvent;
     [SerializeField] protected InteractionEvent exitInteractionRangeEvent;
     [SerializeField] protected InteractionEvent interactEvent;
