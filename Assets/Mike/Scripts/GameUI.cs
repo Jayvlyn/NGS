@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuUI : Singleton<MenuUI>
+public class GameUI : Singleton<GameUI>
 {
     public static bool gameLoaded = false;
 
@@ -45,40 +45,40 @@ public class MenuUI : Singleton<MenuUI>
         else
         {
             startMenu.SetActive(true);
-			Time.timeScale = 0;
-		}
+            Time.timeScale = 0;
+        }
 
-        if(newGameBtn != null) newGameBtn.onClick.AddListener(() => newGameClicked());
-        if(loadGameBtn != null) loadGameBtn.onClick.AddListener(() => loadGameClicked());
-        if(settingsBtn != null) settingsBtn.onClick.AddListener(() => settingsClicked());
-        if(keyBindBtn != null) keyBindBtn.onClick.AddListener(() => keyBindsClicked());
-        if(quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
-        if(saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
-        if(backBtn != null) backBtn.onClick.AddListener(() => backClicked());
-        if(createBtn != null) createBtn.onClick.AddListener(() => createClicked());
+        if (newGameBtn != null) newGameBtn.onClick.AddListener(() => newGameClicked());
+        if (loadGameBtn != null) loadGameBtn.onClick.AddListener(() => loadGameClicked());
+        if (settingsBtn != null) settingsBtn.onClick.AddListener(() => settingsClicked());
+        if (keyBindBtn != null) keyBindBtn.onClick.AddListener(() => keyBindsClicked());
+        if (quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
+        if (saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
+        if (backBtn != null) backBtn.onClick.AddListener(() => backClicked());
+        if (createBtn != null) createBtn.onClick.AddListener(() => createClicked());
         foreach (Button btn in pause.GetComponentsInChildren<Button>())
         {
-            if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
-            else if(btn.name == "QuitBtn")
+            if (btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
+            else if (btn.name == "QuitBtn")
             {
                 btn.onClick.AddListener(() => SaveOnQuit());
                 btn.onClick.AddListener(() => quitClicked());
             }
-            else if(btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
+            else if (btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
             else btn.onClick.AddListener(() => MainMenuClicked());
         }
 
         modifySettings = GetComponent<ModifySettings>();
 
-		gameSettings = modifySettings.settings;
+        gameSettings = modifySettings.settings;
 
-        if(pi != null)
+        if (pi != null)
         {
             SavePosition();
             LoadPosition();
         }
 
-	}
+    }
 
     void Update()
     {
@@ -87,7 +87,7 @@ public class MenuUI : Singleton<MenuUI>
 
     private void FixedUpdate()
     {
-        if(pi != null)
+        if (pi != null)
         {
             gameSettings.position.x = pi.transform.localPosition.x;
             gameSettings.position.y = pi.transform.localPosition.y;
@@ -101,7 +101,7 @@ public class MenuUI : Singleton<MenuUI>
         var newVec = new Vector3(-5.3f, -4.2f, 0f);
         pi.transform.localPosition = newVec;
         pauseClicked();
-        SceneManager.LoadScene("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
     }
 
     void newGameClicked()
@@ -131,9 +131,9 @@ public class MenuUI : Singleton<MenuUI>
     void quitClicked()
     {
         #if UNITY_EDITOR
-            EditorApplication.ExitPlaymode();
+                EditorApplication.ExitPlaymode();
         #else
-            Application.Quit();
+                Application.Quit();
         #endif
     }
 
@@ -170,7 +170,7 @@ public class MenuUI : Singleton<MenuUI>
 
         if (created)
         {
-            SceneManager.LoadScene("GameScene");
+            //SceneManager.LoadScene("GameScene");
             SavePosition(true);
             LoadPosition();
             loadMenu.SetActive(false);
@@ -237,12 +237,12 @@ public class MenuUI : Singleton<MenuUI>
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
             print(bind.gameObject.name);
-            if(i > 12) bind.data = gameSettings.bossGameKeys[i-13];
-            else if (i > 8) bind.data = gameSettings.minigameKeys[i-9];
+            if (i > 12) bind.data = gameSettings.bossGameKeys[i - 13];
+            else if (i > 8) bind.data = gameSettings.minigameKeys[i - 9];
             else bind.data = gameSettings.platformerKeys[i];
 
             bind.ApplyData();
-            
+
             i++;
         }
         Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
@@ -288,7 +288,7 @@ public class MenuUI : Singleton<MenuUI>
 
     public void SavePosition(bool reset = false)
     {
-        if(reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
+        if (reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
         else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
     }
 }
