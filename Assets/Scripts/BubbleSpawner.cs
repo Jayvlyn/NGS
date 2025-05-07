@@ -14,6 +14,7 @@ public class BubbleSpawner : MonoBehaviour
 		{
 			GameObject obj = pool.Get(transform.position, Quaternion.identity);
 			StartCoroutine(ReturnAfterDelay(obj, 3f));
+			StartCoroutine(ReturnIfPastHeight(obj, 900));
 			timer = spawnInterval;
 		}
 		else
@@ -21,6 +22,15 @@ public class BubbleSpawner : MonoBehaviour
 			timer -= Time.deltaTime;
 		}
 
+	}
+
+	private IEnumerator ReturnIfPastHeight(GameObject obj, float height)
+	{
+		while(obj != null && obj.activeSelf)
+		{
+			if (transform.position.y > height) pool.Return(obj);
+			yield return null;
+		}
 	}
 
 	private IEnumerator ReturnAfterDelay(GameObject obj, float delay)

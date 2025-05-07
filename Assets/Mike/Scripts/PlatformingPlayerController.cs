@@ -890,7 +890,7 @@ public class PlatformingPlayerController : Interactor
 
 	public IEnumerator VisualFishCast(float speed = 1)
 	{
-		float dist = waterMidpoint.x - transform.position.x;
+		float dist = Mathf.Abs(waterMidpoint.x - transform.position.x);
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
 		float t = 0;
 		while (t < dist)

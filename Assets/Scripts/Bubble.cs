@@ -9,7 +9,6 @@ public class Bubble : MonoBehaviour
 	[SerializeField] private float floatSpeed = 1f;
 	[SerializeField] private float waveAmplitude = 0.5f;
 	[SerializeField] private float waveFrequency = 1f;
-	[SerializeField] private float maxHeight = 900f;
 
 	private float startX;
 	private float timeOffset;
@@ -26,7 +25,5 @@ public class Bubble : MonoBehaviour
 		float y = transform.position.y + floatSpeed * Time.deltaTime;
 		float x = startX + Mathf.Sin((Time.time + timeOffset) * waveFrequency) * waveAmplitude;
 		transform.position = new Vector3(x, y, transform.position.z);
-
-		if(transform.position.y > maxHeight) Destroy(gameObject);
 	}
 }
