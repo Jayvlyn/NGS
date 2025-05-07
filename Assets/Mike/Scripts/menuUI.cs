@@ -16,8 +16,6 @@ public class MenuUI : Singleton<MenuUI>
     [SerializeField] GameObject loadMenu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
-    [SerializeField] GameObject pause;
-    [SerializeField] GameObject inventoryMenu;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button newGameBtn;
@@ -56,17 +54,17 @@ public class MenuUI : Singleton<MenuUI>
         if(saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if(backBtn != null) backBtn.onClick.AddListener(() => backClicked());
         if(createBtn != null) createBtn.onClick.AddListener(() => createClicked());
-        foreach (Button btn in pause.GetComponentsInChildren<Button>())
-        {
-            if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
-            else if(btn.name == "QuitBtn")
-            {
-                btn.onClick.AddListener(() => SaveOnQuit());
-                btn.onClick.AddListener(() => quitClicked());
-            }
-            else if(btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
-            else btn.onClick.AddListener(() => MainMenuClicked());
-        }
+        //foreach (Button btn in pause.GetComponentsInChildren<Button>())
+        //{
+        //    if(btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
+        //    else if(btn.name == "QuitBtn")
+        //    {
+        //        btn.onClick.AddListener(() => SaveOnQuit());
+        //        btn.onClick.AddListener(() => quitClicked());
+        //    }
+        //    else if(btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
+        //    else btn.onClick.AddListener(() => MainMenuClicked());
+        //}
 
         modifySettings = GetComponent<ModifySettings>();
 
@@ -82,7 +80,7 @@ public class MenuUI : Singleton<MenuUI>
 
     void Update()
     {
-        if (pauseAction.action.triggered) pauseClicked();
+        //if (pauseAction.action.triggered) pauseClicked();
     }
 
     private void FixedUpdate()
@@ -94,33 +92,19 @@ public class MenuUI : Singleton<MenuUI>
         }
     }
 
-    public void MainMenuClicked()
-    {
-        gameLoaded = false;
-        startMenu.SetActive(true);
-        var newVec = new Vector3(-5.3f, -4.2f, 0f);
-        pi.transform.localPosition = newVec;
-        pauseClicked();
-        SceneManager.LoadScene("MainMenu");
-    }
-
     void newGameClicked()
     {
         StartCoroutine(PlayUIAnim("SlideUp", characterCreation));
     }
+
     void loadGameClicked()
     {
         StartCoroutine(PlayUIAnim("SlideRight", loadMenu, true));
     }
+
     void settingsClicked()
     {
         StartCoroutine(PlayUIAnim("SlideDown", settings));
-    }
-
-    void pauseClicked()
-    {
-        Time.timeScale = (!pause.activeSelf) ? 0 : 1;
-        StartCoroutine(PlayUIAnim("SlideDown", pause, true));
     }
 
     void keyBindsClicked()
@@ -193,10 +177,10 @@ public class MenuUI : Singleton<MenuUI>
         StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
     }
 
-    public void OnInventory()
-    {
-        StartCoroutine(PlayUIAnim("SlideLeft", inventoryMenu, true));
-    }
+    //public void OnInventory()
+    //{
+    //    StartCoroutine(PlayUIAnim("SlideLeft", inventoryMenu, true));
+    //}
 
     private void SaveKeyBinds()
     {
