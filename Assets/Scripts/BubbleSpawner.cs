@@ -14,14 +14,13 @@ public class BubbleSpawner : MonoBehaviour
 		{
 			GameObject obj = pool.Get(transform.position, Quaternion.identity);
 			StartCoroutine(ReturnAfterDelay(obj, 3f));
-			StartCoroutine(ReturnIfPastHeight(obj, 900));
+			StartCoroutine(ReturnIfPastHeight(obj, 410));
 			timer = spawnInterval;
 		}
 		else
 		{
 			timer -= Time.deltaTime;
 		}
-
 	}
 
 	private IEnumerator ReturnIfPastHeight(GameObject obj, float height)
