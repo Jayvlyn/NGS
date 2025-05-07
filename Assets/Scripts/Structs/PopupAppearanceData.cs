@@ -4,5 +4,6 @@ using UnityEngine;
 public struct PopupAppearanceData
 {
     public AppearanceType AppearanceType;
-    public int time;
+    public float Time;
+    public float Offset;
 }

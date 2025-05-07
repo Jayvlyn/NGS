@@ -1,7 +1,9 @@
+using GameEvents;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PopupManager : Singleton<PopupManager>
 {
@@ -9,8 +11,9 @@ public class PopupManager : Singleton<PopupManager>
     [SerializeField] private GameObject screenSpeechPrefab;
     [SerializeField] private GameObject worldInteractPrefab;
     [SerializeField] private InputActionReference interactAction;
+    [SerializeField] private GameObject fishConfirmationPopupPrefab;
     #region World Statement
-    public GameObject CreateWorldStatementPopup(Transform location, string statement = "", float lifetime = 10, string stater = "")
+    public GameObject CreateWorldStatementPopup(Transform location, string statement = "", float lifetime = 10, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData())
     {
         GameObject go = Instantiate(worldSpeechPrefab, location);
         DialogueVoidPopup popup = go.GetComponentInChildren<DialogueVoidPopup>();
@@ -32,23 +35,32 @@ public class PopupManager : Singleton<PopupManager>
             Destroy(popup.nameText.transform.parent.gameObject);
         }
         go.GetComponent<Canvas>().worldCamera = Camera.current;
+        switch(appearance.AppearanceType)
+        {
+            case AppearanceType.ZoomIn:
+                go.AddComponent<Zoomer>().time = appearance.Time;
+                break;
+            case AppearanceType.FadeIn:
+                go.AddComponent<Fader>().time = appearance.Time;
+                break;
+        }
         return go;
     }
-    public GameObject CreateWorldStatementPopup(Transform location, float lifetime, string stater = "")
+    public GameObject CreateWorldStatementPopup(Transform location, float lifetime, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        return CreateWorldStatementPopup(location, "", lifetime, stater);
+        return CreateWorldStatementPopup(location, "", lifetime, stater, appearance);
     }
-    public GameObject CreateWorldStatementPopup(Transform location, string statement, string stater)
+    public GameObject CreateWorldStatementPopup(Transform location, string statement, string stater, PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        return CreateWorldStatementPopup(location, statement, 10, stater);
+        return CreateWorldStatementPopup(location, statement, 10, stater, appearance);
     }
-    public GameObject CreateWorldStatementPopup(string stater, Transform location)
+    public GameObject CreateWorldStatementPopup(string stater, Transform location, PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        return CreateWorldStatementPopup(location, "", stater);
+        return CreateWorldStatementPopup(location, "", stater, appearance);
     }
     #endregion World Statement
     #region Screen Statement
-    public GameObject CreateScreenStatementPopup(string statement, float lifetime, string stater = "")
+    public GameObject CreateScreenStatementPopup(string statement, float lifetime, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData())
     {
         GameObject go = Instantiate(worldSpeechPrefab);
         DialogueVoidPopup popup = go.GetComponentInChildren<DialogueVoidPopup>();
@@ -70,19 +82,37 @@ public class PopupManager : Singleton<PopupManager>
             Destroy(popup.nameText.transform.parent.gameObject);
         }
         go.GetComponent<Canvas>().worldCamera = Camera.current;
+        switch(appearance.AppearanceType)
+        {
+            case AppearanceType.ZoomIn:
+                go.AddComponent<Zoomer>().time = appearance.Time;
+                break;
+            case AppearanceType.FadeIn:
+                go.AddComponent<Fader>().time = appearance.Time;
+                break;
+            case AppearanceType.FromBottom:
+            case AppearanceType.FromTop:
+            case AppearanceType.FromRight:
+            case AppearanceType.FromLeft:
+                Flyer component = go.AddComponent<Flyer>();
+                component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
+                component.offset = appearance.Offset;
+                component.time = appearance.Time;
+                break;
+        }
         return go;
     }
-    public GameObject CreateScreenStatementPopup(float lifetime, string stater = "")
+    public GameObject CreateScreenStatementPopup(float lifetime, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        return CreateScreenStatementPopup("", lifetime, stater);
+        return CreateScreenStatementPopup("", lifetime, stater, appearance);
     }
-    public GameObject CreateScreenStatementPopup(string statement, string speakerName)
+    public GameObject CreateScreenStatementPopup(string statement, string speakerName, PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        return CreateScreenStatementPopup(statement, 10, speakerName);
+        return CreateScreenStatementPopup(statement, 10, speakerName, appearance);
     }
-    public GameObject CreateScreenStatementPopup(string text, bool isSpeaker)
+    public GameObject CreateScreenStatementPopup(string text, bool isSpeaker, PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        return CreateScreenStatementPopup(isSpeaker ? string.Empty : text, isSpeaker ? text : string.Empty);
+        return CreateScreenStatementPopup(isSpeaker ? string.Empty : text, isSpeaker ? text : string.Empty, appearance);
     }
     #endregion Screen Statement
     #region World Interaction Popups
@@ -94,5 +124,26 @@ public class PopupManager : Singleton<PopupManager>
             InputControlPath.HumanReadableStringOptions.OmitDevice);
         return go;
     }
+
+    public GameObject CreateStatementPopup(PopupData popupData)
+    {
+        return popupData.IsWorldPopup ? 
+            CreateWorldStatementPopup(popupData.WorldLocation, popupData.Statement, 
+            popupData.Lifetime, popupData.Name, popupData.Appearance) : 
+            CreateScreenStatementPopup(popupData.Statement, popupData.Lifetime, popupData.Name, popupData.Appearance);
+    }
+
+    public GameObject CreateFishConfirmationPopup(IGameEventListener<bool> listener, Sprite sprite, string fishName, float fishLength, string receiverName, bool selling = false)
+    {
+        GameObject go = Instantiate(fishConfirmationPopupPrefab);
+        ConfirmationBoolPopup popup = go.GetComponentInChildren<ConfirmationBoolPopup>();
+        popup.Event.RegisterListener(listener);
+        popup.FishImage.sprite = sprite;
+        popup.FishNameText.text = fishName;
+        popup.FishLengthText.text = fishLength.ToString() + " cm";
+        popup.QuestionText.text = $"{(selling ? "Sell" : "Give")} this fish to {receiverName}?";
+        return go;
+    }
+
     #endregion World Interaction Popups
 }
