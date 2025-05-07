@@ -302,9 +302,10 @@ public class PlatformingPlayerController : Interactor
 		// Movement
 		if (moveHeld)
 		{
-			float speed = !onGround ? moveSpeed * airControlMod : moveSpeed; // half move speed in air
-
-			if (currentRodState == RodState.HOOKED) speed = speed * 0.7f;
+			float speed = moveSpeed;
+			if (!onGround) speed *= airControlMod;
+			else if (inWater) speed *= airControlMod * 0.5f;
+			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.4f;
 
 
 			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
@@ -434,10 +435,12 @@ public class PlatformingPlayerController : Interactor
 		{
 			case MoveState.IDLE:
 				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				else if (inWater) ChangeMoveState(MoveState.SWIMMING);
 				
 				break;
 			case MoveState.RUNNING:
 				if (!isGrounded() && isFalling()) ChangeMoveState(MoveState.FALLING);
+				else if (inWater) ChangeMoveState(MoveState.SWIMMING);
 				if (isFacingLeft() && moveInput > 0 || isFacingRight() && moveInput < 0) FlipX();
 				break;
 			case MoveState.JUMPING:
