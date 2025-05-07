@@ -43,14 +43,14 @@ public class Fader : MonoBehaviour
         }
         else
         {
-            float completion = time / currentTime;
+            float completion = currentTime / time;
             foreach (TMP_Text text in texts)
             {
-                text.color = new Color(text.color.r, text.color.g, text.color.b, currentTime);
+                text.color = new Color(text.color.r, text.color.g, text.color.b, completion);
             }
             foreach (Image image in images)
             {
-                image.color = new Color(image.color.r, image.color.g, image.color.b, currentTime);
+                image.color = new Color(image.color.r, image.color.g, image.color.b, completion);
             }
         }
     }

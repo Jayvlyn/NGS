@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PopupManager : Singleton<PopupManager>
 {
@@ -62,7 +63,7 @@ public class PopupManager : Singleton<PopupManager>
     #region Screen Statement
     public GameObject CreateScreenStatementPopup(string statement, float lifetime, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData())
     {
-        GameObject go = Instantiate(worldSpeechPrefab);
+        GameObject go = Instantiate(screenSpeechPrefab);
         DialogueVoidPopup popup = go.GetComponentInChildren<DialogueVoidPopup>();
         popup.Lifetime = lifetime;
         if (statement != string.Empty)
@@ -92,9 +93,16 @@ public class PopupManager : Singleton<PopupManager>
                 break;
             case AppearanceType.FromBottom:
             case AppearanceType.FromTop:
+                appearance.Offset *= Screen.height; 
+                Flyer component = go.AddComponent<Flyer>();
+                component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
+                component.offset = appearance.Offset;
+                component.time = appearance.Time;
+                break;
             case AppearanceType.FromRight:
             case AppearanceType.FromLeft:
-                Flyer component = go.AddComponent<Flyer>();
+                appearance.Offset *= Screen.width;
+                component = go.AddComponent<Flyer>();
                 component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
                 component.offset = appearance.Offset;
                 component.time = appearance.Time;
