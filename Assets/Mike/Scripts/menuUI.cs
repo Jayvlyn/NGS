@@ -72,7 +72,7 @@ public class MenuUI : Singleton<MenuUI>
 
 		gameSettings = modifySettings.settings;
 
-        SetPosition();
+        SavePosition();
 		LoadPosition();
 
 	}
@@ -166,7 +166,7 @@ public class MenuUI : Singleton<MenuUI>
 
         if (created)
         {
-            SetPosition(true);
+            SavePosition(true);
             LoadPosition();
             loadMenu.SetActive(false);
             startMenu.SetActive(false);
@@ -274,7 +274,7 @@ public class MenuUI : Singleton<MenuUI>
         pi.transform.localPosition = oldPosition;
     }
 
-    public void SetPosition(bool reset = false)
+    public void SavePosition(bool reset = false)
     {
         if(reset)
         {
