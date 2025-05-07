@@ -72,8 +72,11 @@ public class MenuUI : Singleton<MenuUI>
 
 		gameSettings = modifySettings.settings;
 
-        SavePosition();
-		LoadPosition();
+        if(pi != null)
+        {
+            SavePosition();
+            LoadPosition();
+        }
 
 	}
 
@@ -166,6 +169,7 @@ public class MenuUI : Singleton<MenuUI>
 
         if (created)
         {
+            //SceneManager.LoadScene("GameScene");
             SavePosition(true);
             LoadPosition();
             loadMenu.SetActive(false);
@@ -179,6 +183,13 @@ public class MenuUI : Singleton<MenuUI>
         {
             characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
         }
+    }
+
+    public void ExitCreateCharacter()
+    {
+        loadMenu.SetActive(false);
+        startMenu.SetActive(true);
+        StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
     }
 
     public void OnInventory()
@@ -276,13 +287,7 @@ public class MenuUI : Singleton<MenuUI>
 
     public void SavePosition(bool reset = false)
     {
-        if(reset)
-        {
-            oldPosition = new Vector3(-5.3f, -4.2f, 0f);
-        }
-        else
-        {
-            oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
-        }
+        if(reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
+        else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
     }
 }

@@ -437,6 +437,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 121387977886062855}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExitCreateCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556712098099510997, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6840890016136574067, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
       propertyPath: image
       value: 
