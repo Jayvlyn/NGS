@@ -80,12 +80,6 @@ public class MenuUI : Singleton<MenuUI>
     void Update()
     {
         if (pauseAction.action.triggered) pauseClicked();
-        //if (SceneManager.GetActiveScene().name == "") changed = true;
-        //if (changed)
-        //{
-        //    Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
-        //    pi.transform.localPosition = oldPosition;
-        //}
     }
 
     private void FixedUpdate()
@@ -121,11 +115,6 @@ public class MenuUI : Singleton<MenuUI>
 
     void pauseClicked()
     {
-        //if(!transform.Find("CastUI").gameObject.activeSelf && !transform.Find("Minigame").gameObject.activeSelf)
-        //{
-        //    StartCoroutine(PlayUIAnim("SlideDown", pause, true));
-        //    //Time.timeScale = (pause.activeSelf) ? 0 : 1;
-        //}
         Time.timeScale = (!pause.activeSelf) ? 0 : 1;
         StartCoroutine(PlayUIAnim("SlideDown", pause, true));
     }
