@@ -905,6 +905,7 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		hook.rb.bodyType = RigidbodyType2D.Dynamic;
+		hook.rb.linearVelocityY = -1;
 	}
 
 	public void OnDoneFishing()

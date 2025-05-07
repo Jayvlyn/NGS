@@ -28,7 +28,7 @@ public class BubbleSpawner : MonoBehaviour
 	{
 		while(obj != null && obj.activeSelf)
 		{
-			Debug.Log(obj.transform.position.y);
+			//Debug.Log(obj.transform.position.y);
 			if (obj.transform.position.y > height) pool.Return(obj); // higher = lower number
 			yield return null;
 		}
