@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class CastSystem : MonoBehaviour
 {
-	[SerializeField] MenuUI menu;
     [SerializeField] TransformEvent onCastFinished;
 
 	[Header("Pop-up & cast bar")]
@@ -28,7 +27,7 @@ public class CastSystem : MonoBehaviour
 
 	private void OnEnable()
 	{
-		menu.pi.SwitchCurrentActionMap("Minigame");
+		GameUI.Instance.pi.SwitchCurrentActionMap("Minigame");
 		increment = 0.01f;
 		increase = 0;
         startDelay = 0.2f;
@@ -38,7 +37,7 @@ public class CastSystem : MonoBehaviour
 
 	private void OnDisable()
 	{
-		menu.pi.SwitchCurrentActionMap("Platformer");
+        GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 	}
 
 	void Update()
@@ -106,7 +105,7 @@ public class CastSystem : MonoBehaviour
         speed = 50;
 
         castBar.value = 0;
-        MenuUI.Instance.LoadMinigame(MenuUI.Instance.transform.Find("CastUI").gameObject);
+        GameUI.Instance.LoadMinigame(GameUI.Instance.transform.Find("CastUI").gameObject);
         //castScreen.SetActive(false);
     }
 

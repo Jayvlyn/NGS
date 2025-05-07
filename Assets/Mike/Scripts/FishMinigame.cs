@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class FishMinigame : MonoBehaviour
 {
-    [SerializeField] MenuUI menu;
     private Fish hookedFish;
     [SerializeField] Slider catchProgBar;
     [SerializeField] Image fishImage;
@@ -36,7 +35,7 @@ public class FishMinigame : MonoBehaviour
 
 	private void OnEnable()
 	{
-		menu.pi.SwitchCurrentActionMap("Minigame");
+		GameUI.Instance.pi.SwitchCurrentActionMap("Minigame");
 		//currentYBias = 0.0f;
 		//currentSpeed = swimSpeed;
 		//currentWadeSpeed = wadeSpeed;
@@ -218,9 +217,9 @@ public class FishMinigame : MonoBehaviour
 	private void OnFinish()
 	{
 		minigameEvent.Raise(isCaught);
-		menu.pi.SwitchCurrentActionMap("Platformer");
+		GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 		catchProgress = 20f;
-        MenuUI.Instance.LoadMinigame(MenuUI.Instance.transform.Find("Minigame").gameObject);
+        GameUI.Instance.LoadMinigame(GameUI.Instance.transform.Find("Minigame").gameObject);
         //minigameUI.SetActive(false);
     }
 

@@ -177,7 +177,7 @@ public class SaveLoadManager : MonoBehaviour
 
         //Apply loaded data
         print("Apply the loaded data");
-        GetComponentInParent<MenuUI>().LoadSaveGame();
+        GameUI.Instance.LoadSaveGame();
     }
 
     public void Delete()
