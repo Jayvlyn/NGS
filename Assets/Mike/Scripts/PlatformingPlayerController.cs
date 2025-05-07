@@ -228,7 +228,7 @@ public class PlatformingPlayerController : Interactor
 	{
 		if (value.isPressed)
 		{
-			if (currentRodState == RodState.INACTIVE)
+			if (currentRodState == RodState.INACTIVE && !inWater)
 			{
 				ChangeRodState(RodState.CASTING);
 			}
@@ -305,7 +305,7 @@ public class PlatformingPlayerController : Interactor
 			float speed = moveSpeed;
 			if (!onGround) speed *= airControlMod;
 			else if (inWater) speed *= airControlMod * 0.5f;
-			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.4f;
+			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.5f;
 
 
 			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
