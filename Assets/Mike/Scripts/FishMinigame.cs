@@ -9,6 +9,7 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] Slider catchProgBar;
     [SerializeField] Image fishImage;
     [SerializeField] GameObject minigameUI;
+    [SerializeField] HookingEffect[] hookingEffects;
 
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
@@ -189,6 +190,12 @@ public class FishMinigame : MonoBehaviour
             catchProgress -= 0.01f * catchMulti;
             catchProgBar.value = catchProgress / maxCatchProgress;
         }
+
+
+		foreach (HookingEffect hookingEffect in hookingEffects)
+		{
+			hookingEffect.SetTargetScale(catchProgress / maxCatchProgress);
+		}
     }
     void CheckIfComplete()
     {
@@ -230,6 +237,10 @@ public class FishMinigame : MonoBehaviour
         if(collision.tag == "Hook")
         {
             hooked = true;
+            foreach(HookingEffect hookingEffect in hookingEffects)
+            {
+                hookingEffect.OnHooked();
+            }
             //currentSpeed = (currentSpeed > 0) ? swimSpeed * panicMulti : -swimSpeed * panicMulti;
             //currentWadeSpeed = wadeSpeed * panicMulti;
             //RandomizeDirectionBias();
@@ -241,9 +252,13 @@ public class FishMinigame : MonoBehaviour
         if(collision.tag == "Hook")
         {
             hooked = false;
-            //currentSpeed = (currentSpeed > 0) ? swimSpeed : -swimSpeed;
-            //currentWadeSpeed = wadeSpeed;
-        }
+			foreach (HookingEffect hookingEffect in hookingEffects)
+			{
+				hookingEffect.OnUnhooked();
+			}
+			//currentSpeed = (currentSpeed > 0) ? swimSpeed : -swimSpeed;
+			//currentWadeSpeed = wadeSpeed;
+		}
     }
 
     private void UpdateDesiredAngle()
