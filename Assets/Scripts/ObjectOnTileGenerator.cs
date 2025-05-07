@@ -78,7 +78,7 @@ public class ObjectOnTileGenerator : MonoBehaviour
 
     public void Clear()
     {
-        for (int i = 0; i < potentialPositions.Count;)
+        for (int i = 0; i < currentObjects.Count;)
         {
             if (currentObjects[currentObjects.Keys.ToArray()[i]] == null || Vector3.Distance(new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y), tilemap.CellToWorld(currentObjects.Keys.ToArray()[i]) + offset) < Camera.main.orthographicSize * 4)
             {
