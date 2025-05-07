@@ -654,6 +654,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wardrobe
       objectReference: {fileID: 0}
+    - target: {fileID: 7241103892574775532, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1254,7 +1258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3117650151062226873, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1807,13 +1811,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Minigame
       objectReference: {fileID: 0}
-    - target: {fileID: 5619628553193683364, guid: e3146a6a9693885498818e22925348f2, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 2064130541851390973, guid: e3146a6a9693885498818e22925348f2, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5619628553193683364, guid: e3146a6a9693885498818e22925348f2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5619628553193683364, guid: e3146a6a9693885498818e22925348f2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5710183225152703863, guid: e3146a6a9693885498818e22925348f2, type: 3}
       propertyPath: menu
