@@ -545,21 +545,17 @@ public class PlatformingPlayerController : Interactor
 
 	private void DoGroundFriction()
 	{
-		if (!onIce)
+		// Ground friction
+		if (onGround && !onIce)
 		{
-			// Ground friction
-			if (onGround)
+			if (currentRodState != RodState.HOOKED)
 			{
-				if (currentRodState != RodState.HOOKED)
-				{
-					rb.linearVelocityX *= groundFriction;
-				}
+				rb.linearVelocityX *= groundFriction;
 			}
-			else
-			{
-				rb.linearVelocity *= airFriction;
-			}
-
+		}
+		else
+		{
+			rb.linearVelocity *= airFriction;
 		}
 	}
 
@@ -951,6 +947,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
+		onIce = false;
+		rb.gravityScale = startingGravity;
 		//if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.JUMPING);
 		currentJumps--;
@@ -1095,29 +1093,20 @@ public class PlatformingPlayerController : Interactor
 		{
 			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
-				if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
-				{
-					onIce = true;
-				}
-				else
-				{
-					onIce = false;
-				}
+				isOnIce();
+				Debug.Log("checks past");
                 if (!onGround) OnLand(); // first frame returning true, so just landed
 				return true; // set onGround to true;
 			}
-			else if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
-			{
-				onIce = true;
-				if (!onGround) OnLand();
-				return true;
-			}
-			else
-			{
+			// not on currently ground:
+			if(onIce) // on ice last check
+			{ 
 				onIce = false;
+				rb.gravityScale = startingGravity;
 			}
-            // not on currently ground:
-            if (onGround) // was grounded last frame
+		
+
+            if (onGround) // was grounded last check
 			{
 				if (currentJumps == totalJumps) // left ground without jumping off ground
 				{
@@ -1128,6 +1117,22 @@ public class PlatformingPlayerController : Interactor
 			}
 		}
 		return false;
+	}
+
+	private bool isOnIce()
+	{
+		if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
+		{
+			onIce = true;
+			rb.gravityScale = 0;
+			return true;
+		}
+		else
+		{
+			onIce = false;
+			rb.gravityScale = startingGravity;
+			return false;
+		}
 	}
 
 	private bool isTouchingRightWall()
