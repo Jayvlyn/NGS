@@ -86,9 +86,11 @@ public class PlatformingPlayerController : Interactor
 
 	[Header("Ground Check")]
 	[SerializeField] private LayerMask groundLayer;
+	[SerializeField] private LayerMask iceLayer;
 	[SerializeField] private Transform groundCheckT;
 	[SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
 	private bool onGround;
+	private bool onIce = false;
 	private bool inWater;
 
 	[Header("Wall Checks")]
@@ -544,7 +546,7 @@ public class PlatformingPlayerController : Interactor
 	private void DoGroundFriction()
 	{
 		// Ground friction
-		if (onGround)
+		if (onGround && !onIce)
 		{
 			if (currentRodState != RodState.HOOKED)
 			{
@@ -1089,11 +1091,29 @@ public class PlatformingPlayerController : Interactor
 		{
 			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
-				if (!onGround) OnLand(); // first frame returning true, so just landed
+				if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
+				{
+					onIce = true;
+				}
+				else
+				{
+					onIce = false;
+				}
+                if (!onGround) OnLand(); // first frame returning true, so just landed
 				return true; // set onGround to true;
 			}
-			// not on currently ground:
-			if (onGround) // was grounded last frame
+			else if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
+			{
+				onIce = true;
+				if (!onGround) OnLand();
+				return true;
+			}
+			else
+			{
+				onIce = false;
+			}
+            // not on currently ground:
+            if (onGround) // was grounded last frame
 			{
 				if (currentJumps == totalJumps) // left ground without jumping off ground
 				{
