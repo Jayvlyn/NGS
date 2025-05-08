@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class SaveLoadManager : MonoBehaviour
+public class SaveLoadManager : Singleton<SaveLoadManager>
 {
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
@@ -43,6 +43,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void autoSave()
     {
+        if(id == "") id = gameSettings.id;
         SaveData data = saveList[0];
         foreach (var save in saveList) if (save.id.ToLower() == id.ToLower()) data = save;
         (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
