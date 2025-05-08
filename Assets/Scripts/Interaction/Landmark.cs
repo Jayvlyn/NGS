@@ -8,6 +8,8 @@ public class Landmark : InteractableObject
     [SerializeField] protected string landmarkName;
     [SerializeField] protected bool screenPopup;
     [SerializeField] protected float lifetime = 30;
+    [SerializeField] protected PopupAppearanceData appearanceData;
+    [SerializeField] protected PopupAppearanceData closingData;
     protected int current = 0;
 
     protected override void Interact(InteractionPair pair)
@@ -16,12 +18,12 @@ public class Landmark : InteractableObject
         {
             if(screenPopup)
             {
-                PopupManager.Instance.CreateScreenStatementPopup(landmarkDescriptions[current], lifetime, landmarkName);
+                PopupManager.Instance.CreateScreenStatementPopup(landmarkDescriptions[current], lifetime, landmarkName, appearanceData, closingData);
             }
             else
             {
 
-                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, landmarkDescriptions[current], lifetime, landmarkName);
+                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, landmarkDescriptions[current], lifetime, landmarkName, appearanceData, closingData);
             }
             current++;
             if(current == landmarkDescriptions.Length)
