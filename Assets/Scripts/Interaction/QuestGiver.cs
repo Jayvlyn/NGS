@@ -14,8 +14,8 @@ public class QuestGiver : InteractableObject
     protected bool canInteract = true;
 
     [SerializeField] protected BoolListener listener;
-    [SerializeField] protected GameObject confirmationPopupPrefab;
     [SerializeField] protected Transform dialoguePopupTransform;
+    [SerializeField] protected PopupAppearanceData appearanceData;
 
     private Fish lowestViable = null;
 
@@ -49,13 +49,7 @@ public class QuestGiver : InteractableObject
                 }
                 if(lowestViable != null)
                 {
-                    currentPopup = Instantiate(confirmationPopupPrefab);
-                    ConfirmationBoolPopup popup = currentPopup.GetComponentInChildren<ConfirmationBoolPopup>();
-                    popup.Event.RegisterListener(listener);
-                    popup.FishImage.sprite = lowestViable.sprite;
-                    popup.FishNameText.text = lowestViable.fishName;
-                    popup.FishLengthText.text = lowestViable.length.ToString() + " cm";
-                    popup.QuestionText.text = $"Give this fish to {questGiverName}?";
+                    currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
                     canInteract = false;
                 }
             }
@@ -69,7 +63,7 @@ public class QuestGiver : InteractableObject
                 PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
                     firstTimeDescribing || potentialQuests[currentQuestIndex].RepeatDescription == string.Empty ?
                     potentialQuests[currentQuestIndex].QuestDescription :
-                    potentialQuests[currentQuestIndex].RepeatDescription, questGiverName);
+                    potentialQuests[currentQuestIndex].RepeatDescription, questGiverName, appearanceData);
             }
         }
     }
