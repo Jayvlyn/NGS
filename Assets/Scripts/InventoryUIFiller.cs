@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryUIFiller : Singleton<InventoryUIFiller>
+public class InventoryUIFiller : MonoBehaviour
 {
     [SerializeField] public GameObject fishInventoryUIPrefab;
     [SerializeField] public List<Sprite> starSprites;

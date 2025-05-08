@@ -19,6 +19,7 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] GameObject pause;
     [SerializeField] GameObject inventoryMenu;
 
+
     [Header("Buttons&Inputs")]
     [SerializeField] Button newGameBtn;
     [SerializeField] Button loadGameBtn;
@@ -33,7 +34,8 @@ public class GameUI : Singleton<GameUI>
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
     public PlayerInput pi;
-
+    [SerializeField] public InventoryUIFiller inventoryUIFiller;
+    [SerializeField] public Collection collection;
     private GameSettings gameSettings;
     private ModifySettings modifySettings;
     private Vector3 oldPosition;

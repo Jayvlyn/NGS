@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public class Collection : Singleton<Collection>
+public class Collection : MonoBehaviour
 {
 
     [SerializeField] Dictionary<string, GameObject> fishCollection = new();
@@ -103,7 +103,7 @@ public class Collection : Singleton<Collection>
             fishImg.color = Color.white;
             polaroid.color = Color.white;
             rarityImg.color = Color.white;
-            rarityImg.sprite = InventoryUIFiller.Instance.getStarsFromRarity(fishData.highestRarity);
+            rarityImg.sprite = GameUI.Instance.inventoryUIFiller.getStarsFromRarity(fishData.highestRarity);
 
             //set text
             collectionPrefab.GetComponentsInChildren<TMP_Text>()[0].text = fish.fishName;

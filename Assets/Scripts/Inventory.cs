@@ -21,7 +21,7 @@ public class Inventory : Singleton<Inventory>
 
     public void AddFish(Fish fish)
     {
-        InventoryUIFiller.Instance.AddFishToInventoryUI(fish);
+        GameUI.Instance.inventoryUIFiller.AddFishToInventoryUI(fish);
         if (!currentFish.ContainsKey(fish.fishName))
         {
             FishData fishData = new()
@@ -37,7 +37,7 @@ public class Inventory : Singleton<Inventory>
         data.highestRarity = fish.rarity > data.highestRarity ? fish.rarity : data.highestRarity;
         data.largestCaught = Mathf.Max(fish.length, data.largestCaught);
         data.currentFish.Add(fish);
-        Collection.Instance.AddFishToCollection(fish, data);
+        GameUI.Instance.collection.AddFishToCollection(fish, data);
         currentFish[fish.fishName] = data;
     }
 
@@ -46,7 +46,7 @@ public class Inventory : Singleton<Inventory>
         if(currentFish.ContainsKey(fish.fishName))
         {
             currentFish[fish.fishName].currentFish.Remove(fish);
-            InventoryUIFiller.Instance.RemoveFishFromInventoryUI(fish);
+            GameUI.Instance.inventoryUIFiller.RemoveFishFromInventoryUI(fish);
             Destroy(fish);
         }
     }
