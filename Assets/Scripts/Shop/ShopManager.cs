@@ -117,7 +117,7 @@ public class ShopManager : Singleton<ShopManager>
     {
         Inventory.Instance.RemoveFish(fish);
         Inventory.Instance.AddMoney(currentShop.GetFishPrice(fish));
-        if (fish.name == previousFishType)
+        if (fish.fishName == previousFishType)
         {
             while (pastFishTiles.Count > 0)
             {
@@ -157,11 +157,12 @@ public class ShopManager : Singleton<ShopManager>
                     new Vector3(sellFishUIPrefabMarginData.x * (column + 1) + column * sellFishUIPrefabSizeData.x - 7.5f,
                     sellFishUIPrefabMarginData.y * -(row + 1) + -row * sellFishUIPrefabSizeData.y);
                 go.GetComponentInChildren<TMP_Text>().text = 
-                    $"{currentFish[current].length:2F} cm long " +
-                    $"{currentFish[current].name}: " +
-                    $"{currentShop.GetFishPrice(currentFish[current]):2F} Gold";
+                    $"{currentFish[current].length:F2} cm long " +
+                    $"{currentFish[current].fishName}: " +
+                    $"{currentShop.GetFishPrice(currentFish[current]):F2} Gold";
                 go.GetComponentsInChildren<Image>()[1].sprite = currentFish[current].sprite;
-                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(currentFish[current]); });
+                Fish fish = currentFish[current];
+                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(fish); });
                 pastFishTiles.Add(go);
             }
         }
@@ -310,6 +311,6 @@ public class ShopManager : Singleton<ShopManager>
     private void Start()
     {
         //testing only, remove later
-        Open(testingShopData);
+        //Open(testingShopData);
     }
 }

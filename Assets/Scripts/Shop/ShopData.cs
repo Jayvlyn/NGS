@@ -9,13 +9,17 @@ public class ShopData : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-        ShopManager.Instance.Open(this);
+        if(pair.obj.Id == Id)
+        {
+            ShopManager.Instance.Open(this);
+        }
     }
+
     public void SellFish(Fish fish)
     {
         foreach(FishSellData fishPrice in fishData)
         {
-            if(fishPrice.name == fish.name)
+            if(fishPrice.fish.fishName == fish.fishName)
             {
                 Inventory.Instance.AddMoney(fishPrice.pricePerCM * fish.length);
                 Inventory.Instance.RemoveFish(fish);
@@ -29,7 +33,7 @@ public class ShopData : InteractableObject
         double price = 0;
         foreach (FishSellData fishPrice in fishData)
         {
-            if (fishPrice.name == fish.name)
+            if (fishPrice.fish.fishName == fish.fishName)
             {
                 price = fishPrice.pricePerCM * fish.length;
                 break;
@@ -64,7 +68,7 @@ public class ShopData : InteractableObject
         List<(string, Sprite)> results = new();
         foreach(FishSellData data in fishData)
         {
-            results.Add((data.name, data.sprite));
+            results.Add((data.fish.fishName, data.fish.sprite));
         }
         return results;
     }
@@ -74,7 +78,7 @@ public class ShopData : InteractableObject
         bool result = false;
         foreach(FishSellData data in fishData)
         {
-            if(data.name == fishName)
+            if(data.fish.fishName == fishName)
             {
                 result = true;
                 break;
