@@ -737,12 +737,12 @@ public class PlatformingPlayerController : Interactor
 			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / playerStats.grappleMaxCastSpeed);
 			hook.rb.transform.position = currentPos;
 
-			//float modifier = 1;
+			float modifier = 2;
 
 			//if(t/castTime < 0.5) modifier -= t / castTime;
 			//else modifier += t / castTime;
 
-			t += Time.deltaTime;//* modifier;
+			t += Time.deltaTime * modifier;
 			yield return null;
 		}
 		hook.rb.transform.position = point;
