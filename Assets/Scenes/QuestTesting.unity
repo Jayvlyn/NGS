@@ -1162,7 +1162,7 @@ MonoBehaviour:
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
   popupLocation: {fileID: 1106711631}
-  dialoguePopupLocation: {fileID: 0}
+  dialoguePopupLocation: {fileID: 1106711631}
   landmarkDescriptions:
   - Oranage Banana Words
   loops: 0
@@ -1170,6 +1170,10 @@ MonoBehaviour:
   screenPopup: 1
   lifetime: 30
   appearanceData:
+    AppearanceType: 1
+    Time: 5
+    Offset: 5
+  closingData:
     AppearanceType: 3
     Time: 5
     Offset: 5

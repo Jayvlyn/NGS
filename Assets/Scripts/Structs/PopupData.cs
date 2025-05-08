@@ -9,4 +9,5 @@ public struct PopupData
     public float Lifetime;
     public string Name;
     public PopupAppearanceData Appearance;
+    public PopupAppearanceData Disappearance;
 }
