@@ -545,17 +545,21 @@ public class PlatformingPlayerController : Interactor
 
 	private void DoGroundFriction()
 	{
-		// Ground friction
-		if (onGround && !onIce)
+		if (!onIce)
 		{
-			if (currentRodState != RodState.HOOKED)
+			// Ground friction
+			if (onGround)
 			{
-				rb.linearVelocityX *= groundFriction;
+				if (currentRodState != RodState.HOOKED)
+				{
+					rb.linearVelocityX *= groundFriction;
+				}
 			}
-		}
-		else
-		{
-			rb.linearVelocity *= airFriction;
+			else
+			{
+				rb.linearVelocity *= airFriction;
+			}
+
 		}
 	}
 
