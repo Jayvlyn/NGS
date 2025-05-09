@@ -44,6 +44,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField, Tooltip("Linear Velocity of player will get multiplied by this value while off the ground (1 = no friction)"), Range(0.8f, 1)]
 	private float airFriction = 0.98f;
 
+	[SerializeField, Tooltip("Linear Velocity of player will get multiplied by this value while sliding on ice (1 = no friction)"), Range(0.8f, 1)]
+	private float iceFriction = 0.98f;
+
 	[SerializeField, Tooltip("Time jump input will be stored so the player will jump again once then hit the ground")]
 	private float jumpBufferTime = 0.1f;
 
@@ -546,11 +549,15 @@ public class PlatformingPlayerController : Interactor
 	private void DoGroundFriction()
 	{
 		// Ground friction
-		if (onGround && !onIce)
+		if (onGround)
 		{
-			if (currentRodState != RodState.HOOKED)
+			if (currentRodState != RodState.HOOKED && !onIce)
 			{
 				rb.linearVelocityX *= groundFriction;
+			}
+			else if(onIce)
+			{
+				rb.linearVelocityX *= iceFriction;
 			}
 		}
 		else
