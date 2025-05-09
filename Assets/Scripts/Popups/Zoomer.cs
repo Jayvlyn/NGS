@@ -12,25 +12,25 @@ public class Zoomer : PearanceHandler
             if (canvas != null)
             {
                 trans = canvas.transform;
-                originalScale = canvas.transform.localScale;
-                trans.localScale = Vector3.zero;
             }
             else
             {
-                Destroy(this);
+                trans = transform;
             }
+            originalScale = trans.localScale;
+            trans.localScale = Vector3.zero;
         }
         else
         {
             if (canvas != null)
             {
                 trans = canvas.transform;
-                originalScale = trans.localScale;
             }
             else
             {
-                Destroy(gameObject);
+                trans = transform;
             }
+            originalScale = trans.localScale;
         }
     }
 
