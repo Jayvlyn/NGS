@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class GameUI : Singleton<GameUI>
 {
-    private bool gameStart = true;
+    [HideInInspector] public bool gameStart = true;
 
     [Header("Panels")]
     [SerializeField] GameObject loadGame;
@@ -30,11 +30,13 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] public Collection collection;
     [HideInInspector] public GameSettings gameSettings;
     private ModifySettings modifySettings;
+    //private SaveLoadManager saveSystem;
     private Vector3 oldPosition;
 
 
     void Start()
     {
+        //saveSystem = loadGame.GetComponent<SaveLoadManager>();
         if (keyBindBtn != null) keyBindBtn.onClick.AddListener(() => keyBindsClicked());
         if (saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if (backBtn != null) backBtn.onClick.AddListener(() => backClicked());
@@ -59,6 +61,12 @@ public class GameUI : Singleton<GameUI>
             SavePosition(gameStart);
             LoadPosition();
             gameStart = false;
+        }
+        if(SaveLoadManager.selected != -1)
+        {
+            loadGame.SetActive(true);
+            loadGame.GetComponent<SaveLoadManager>().Load();
+            loadGame.SetActive(false);
         }
     }
 
@@ -135,7 +143,7 @@ public class GameUI : Singleton<GameUI>
 
     void CharacterCreated()
     {
-        
+
     }
 
 
@@ -146,24 +154,22 @@ public class GameUI : Singleton<GameUI>
 
     private void SaveKeyBinds()
     {
-        var settings = gameSettings;
-
-        settings.platformerKeys.Clear();
-        settings.minigameKeys.Clear();
-        settings.bossGameKeys.Clear();
+        gameSettings.platformerKeys.Clear();
+        gameSettings.minigameKeys.Clear();
+        gameSettings.bossGameKeys.Clear();
 
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
             switch (bind.data.actionMap)
             {
                 case 0:
-                    settings.platformerKeys.Add(bind.data);
+                    gameSettings.platformerKeys.Add(bind.data);
                     break;
                 case 1:
-                    settings.minigameKeys.Add(bind.data);
+                    gameSettings.minigameKeys.Add(bind.data);
                     break;
                 case 2:
-                    settings.bossGameKeys.Add(bind.data);
+                    gameSettings.bossGameKeys.Add(bind.data);
                     break;
             }
         }
@@ -190,13 +196,13 @@ public class GameUI : Singleton<GameUI>
         }
         Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
-        transform.Find("InventoryCollection").gameObject.SetActive(true);
+        inventoryMenu.gameObject.SetActive(true);
     }
 
     public void SaveOnQuit()
     {
         loadGame.SetActive(true);
-        SaveLoadManager.Instance.autoSave();
+        loadGame.GetComponent<SaveLoadManager>().autoSave();
         loadGame.SetActive(false);
     }
 

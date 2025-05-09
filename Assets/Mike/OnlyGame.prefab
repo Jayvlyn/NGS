@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 1
+  gameStart: 1
   loadGame: {fileID: 5479962102087140339}
   settings: {fileID: 3082545194496712927}
   keyBinds: {fileID: 7590457216437857061}
@@ -138,7 +139,7 @@ MonoBehaviour:
   pi: {fileID: 0}
   inventoryUIFiller: {fileID: 8269974427274400706}
   collection: {fileID: 8917379044987710725}
-  gameSettings: {fileID: 0}
+  gameSettings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
 --- !u!114 &8170412535288247596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +477,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4332821758467176285, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: WardrobeMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 890908e392ede0c409c910cd8a5209de, type: 2}
     - target: {fileID: 7241103892574775532, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
       propertyPath: m_Name
       value: Wardrobe
@@ -601,6 +606,10 @@ PrefabInstance:
     - target: {fileID: 8283566884965178325, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
       propertyPath: m_Name
       value: CastUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283566884965178325, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
       propertyPath: bestOutcome.m_PersistentCalls.m_Calls.Array.size

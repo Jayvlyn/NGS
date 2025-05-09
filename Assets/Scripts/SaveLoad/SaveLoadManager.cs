@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SaveLoadManager : Singleton<SaveLoadManager>
+public class SaveLoadManager : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
@@ -13,7 +13,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
-    private int selected = -1;
+    [HideInInspector] public static int selected = -1;
     private string id = "";
     public bool Save(string name, bool newGame = true)
     {
@@ -117,11 +117,18 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             foreach(var comp in go.GetComponentsInChildren<Button>())
             {
                 comp.onClick.AddListener(() => Select(j));
-                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => Load());
+                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => LoadSelected());
                 else comp.onClick.AddListener(() => Delete());
             }
             options.Add(go);
         }
+    }
+
+    public void LoadSelected()
+    {
+        //var sceneIndex = SceneManager.GetActiveScene().buildIndex+1;
+        //if (sceneIndex % SceneManager.sceneCountInBuildSettings == 0) sceneIndex = 1;
+        SceneManager.LoadScene("TestGame");
     }
 
     public void Select(int save)
@@ -134,7 +141,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         var save = saveList[selected];
         string path = Path.Combine(Application.dataPath, "Saves");
         path = Path.Combine(path, $"{save.id}.json");
-        
+
         //load data
         if (File.Exists(path))
         {
@@ -176,9 +183,10 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             id = save.id;
         }
 
-        //Apply loaded data
+        //Apply loaded data & unselect
         print("Apply the loaded data");
         GameUI.Instance.LoadSaveGame();
+        selected = -1;
     }
 
     public void Delete()

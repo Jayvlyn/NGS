@@ -95,7 +95,7 @@ public class MenuUI : MonoBehaviour
         bool created = false;
 
         if (!loadMenu.activeSelf) loadMenu.SetActive(true);
-        created = SaveLoadManager.Instance.Save(characterName.text);
+        created = loadMenu.GetComponent<SaveLoadManager>().Save(characterName.text);
         gameSettings.id = characterName.text;
 
         if (created)
