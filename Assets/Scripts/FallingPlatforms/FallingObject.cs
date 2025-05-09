@@ -1,7 +1,10 @@
+using GameEvents;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class FallingObject : MonoBehaviour
 {
+    private static int runningCount = 0;
     [SerializeField] private GameObject imageObject;
     [SerializeField] private Transform platformPlacement;
     [SerializeField] private GameObject platformPrefab;
@@ -13,8 +16,14 @@ public class FallingObject : MonoBehaviour
     [SerializeField] private float fallTime;
     [SerializeField] private float regenCooldown;
     [SerializeField] private PopupAppearanceData appearance;
+    [SerializeField] private BaseGameEvent<int> fallEvent;
     private int currentInsideCount = 0;
-
+    public int Id { get; private set; }
+    private void Start()
+    {
+        Id = runningCount;
+        runningCount++;
+    }
     private void Update()
     {
         if(imageObject == null && currentPlatform != null)
@@ -32,6 +41,7 @@ public class FallingObject : MonoBehaviour
                     faller.velocity = new Vector3(0, -fallSpeed);
                     faller.lifetime = fallTime;
                     currentTime = fallTime;
+                    fallEvent.Raise(Id);
                 }
                 else if(currentPlatform != null)
                 {
