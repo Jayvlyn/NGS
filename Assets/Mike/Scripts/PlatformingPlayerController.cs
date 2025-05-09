@@ -142,7 +142,6 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{
-		Debug.Log(touchingIceWall);
 		onGround = isGrounded();
 
 		ProcessUpdateTimers();
@@ -1151,13 +1150,13 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
-	readonly int iceWallLayer = LayerMask.NameToLayer("IceWall");
+	public LayerMask iceWallLayer;
 	private bool isTouchingRightWall()
 	{
 		Collider2D col = Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer);
 		if (col != null)
 		{
-			touchingIceWall = (col.gameObject.layer == iceWallLayer);
+			touchingIceWall = (iceWallLayer == (iceWallLayer | (1 << col.gameObject.layer)));
 			return true;
 		}
 		return false;
@@ -1168,7 +1167,7 @@ public class PlatformingPlayerController : Interactor
 		Collider2D col = Physics2D.OverlapBox(leftCheckT.position, leftCheckSize, 0, wallLayer);
 		if (col != null)
 		{
-			touchingIceWall = (col.gameObject.layer == iceWallLayer);
+			touchingIceWall = (iceWallLayer == (iceWallLayer | (1 << col.gameObject.layer)));
 			return true;
 		}
 		return false;

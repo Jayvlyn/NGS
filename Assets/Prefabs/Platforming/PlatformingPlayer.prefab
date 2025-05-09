@@ -516,6 +516,7 @@ MonoBehaviour:
   changeDirSpeedMult: 0.5
   groundFriction: 0.93
   airFriction: 0.98
+  iceFriction: 0.98
   jumpBufferTime: 0.1
   jumpTime: 0.5
   wallStickGravityIncreaseMult: 0.5
@@ -532,7 +533,7 @@ MonoBehaviour:
   detachDistance: 0.5
   grappleableLayer:
     serializedVersion: 2
-    m_Bits: 12800
+    m_Bits: 209408
   groundLayer:
     serializedVersion: 2
     m_Bits: 66048
@@ -616,6 +617,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   currentMoveState: 0
   currentRodState: 0
+  iceWallLayer: 0
 --- !u!232 &1896222745735434132
 DistanceJoint2D:
   m_ObjectHideFlags: 0
