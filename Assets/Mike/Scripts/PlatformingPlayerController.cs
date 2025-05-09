@@ -142,6 +142,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{
+		Debug.Log(touchingIceWall);
 		onGround = isGrounded();
 
 		ProcessUpdateTimers();
