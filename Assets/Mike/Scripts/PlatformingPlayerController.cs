@@ -94,6 +94,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
 	private bool onGround;
 	private bool onIce = false;
+	private bool touchingIceWall = false;
 	private bool inWater;
 
 	[Header("Wall Checks")]
@@ -425,7 +426,14 @@ public class PlatformingPlayerController : Interactor
 			case MoveState.WALL_STICKING:
 				FlipX();
 				rb.linearVelocityY = 0;
-				rb.gravityScale = 0;
+				if(touchingIceWall)
+				{ // ice wall, not as sticky
+					rb.gravityScale = startingGravity * 0.8f;
+				}
+				else // normal wall, full stick
+				{
+					rb.gravityScale = 0;
+				}
 
 				SetTrigger("ToWallStick");
 				break;
@@ -1142,19 +1150,24 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	readonly int iceWallLayer = LayerMask.NameToLayer("IceWall");
 	private bool isTouchingRightWall()
 	{
-		if (Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer))
+		Collider2D col = Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer);
+		if (col != null)
 		{
-            return true;
+			touchingIceWall = (col.gameObject.layer == iceWallLayer);
+			return true;
 		}
 		return false;
 	}
 
 	private bool isTouchingLeftWall()
 	{
-		if (Physics2D.OverlapBox(leftCheckT.position, leftCheckSize, 0, wallLayer))
+		Collider2D col = Physics2D.OverlapBox(leftCheckT.position, leftCheckSize, 0, wallLayer);
+		if (col != null)
 		{
+			touchingIceWall = (col.gameObject.layer == iceWallLayer);
 			return true;
 		}
 		return false;
