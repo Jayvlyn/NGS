@@ -428,11 +428,11 @@ public class PlatformingPlayerController : Interactor
 				rb.linearVelocityY = 0;
 				if(touchingIceWall)
 				{ // ice wall, not as sticky
-					rb.gravityScale = startingGravity * 0.8f;
+					rb.gravityScale = startingGravity * 0.5f;
 				}
 				else // normal wall, full stick
 				{
-					rb.gravityScale = 0;
+					rb.gravityScale = startingGravity * 0.1f;
 				}
 
 				SetTrigger("ToWallStick");
