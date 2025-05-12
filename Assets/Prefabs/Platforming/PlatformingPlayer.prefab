@@ -617,7 +617,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   currentMoveState: 0
   currentRodState: 0
-  iceWallLayer: 0
+  iceWallLayer:
+    serializedVersion: 2
+    m_Bits: 131072
 --- !u!232 &1896222745735434132
 DistanceJoint2D:
   m_ObjectHideFlags: 0
