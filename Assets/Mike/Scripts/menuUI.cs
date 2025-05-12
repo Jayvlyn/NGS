@@ -123,6 +123,7 @@ public class MenuUI : MonoBehaviour
         gameSettings.platformerKeys.Clear();
         gameSettings.minigameKeys.Clear();
         gameSettings.bossGameKeys.Clear();
+        LoadKeysForSaving(true);
 
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
@@ -139,6 +140,8 @@ public class MenuUI : MonoBehaviour
                     break;
             }
         }
+
+        LoadKeysForSaving(false);
 
         modifySettings.SaveMouseMode();
     }
@@ -163,5 +166,22 @@ public class MenuUI : MonoBehaviour
         Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
         transform.Find("InventoryCollection").gameObject.SetActive(true);
+    }
+
+    public void LoadKeysForSaving(bool active, bool reset = false)
+    {
+        var tg = keyBinds.GetComponentInChildren<TabGroup>();
+
+        int i = 0;
+        foreach (var kb in keyBinds.GetComponentInChildren<TabGroup>().objectsToSwap)
+        {
+            i++;
+            if (tg.selectedTab.name == "Tab1" && i == 1 && reset) continue;
+            else if (tg.selectedTab.name == "Tab2" && i == 2 && reset) continue;
+            else if (reset && i == 3) continue;
+            kb.SetActive(active);
+        }
+
+        
     }
 }

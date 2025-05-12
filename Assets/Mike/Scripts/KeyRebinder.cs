@@ -40,7 +40,7 @@ public class KeyRebinder : MonoBehaviour
     {
         keyText.text = ".....";
 
-        playerController.SwitchCurrentActionMap("RebindKeys");
+        if(playerController != null) playerController.SwitchCurrentActionMap("RebindKeys");
 
         if (keyAction.action.type == InputActionType.Value && keyAction.action.expectedControlType == "Axis")
         {
@@ -77,7 +77,7 @@ public class KeyRebinder : MonoBehaviour
 
         Save(keyAction.action.name, bindingIndex.ToString(), keyAction.action.bindings[bindingIndex].effectivePath);
 
-        playerController.SwitchCurrentActionMap("Platformer");
+        if (playerController != null) playerController.SwitchCurrentActionMap("Platformer");
     }
 
     private int GetBindingIndexByName(string name)

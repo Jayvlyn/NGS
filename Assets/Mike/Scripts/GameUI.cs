@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class GameUI : Singleton<GameUI>
 {
-    [HideInInspector] public bool gameStart = true;
+    [HideInInspector] public static bool gameStart = true;
 
     [Header("Panels")]
     [SerializeField] GameObject loadGame;
@@ -55,6 +55,8 @@ public class GameUI : Singleton<GameUI>
         modifySettings = GetComponent<ModifySettings>();
 
         gameSettings = modifySettings.settings;
+
+        //if(gameStart) LoadSaveGame();
 
         if (pi != null)
         {
