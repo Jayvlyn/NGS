@@ -215,7 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ed41e9975397d4485bdaaa465dfaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 0}
   onCastFinished: {fileID: 11400000, guid: 43a0113537bcec04e8cadf952de9826f, type: 2}
   castScreen: {fileID: 8283566884965178325}
   castBar: {fileID: 5617099761016278299}
@@ -845,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2578616, g: 0.2578616, b: 0.2578616, a: 0.8117647}
+  m_Color: {r: 0.2578616, g: 0.2578616, b: 0.2578616, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
