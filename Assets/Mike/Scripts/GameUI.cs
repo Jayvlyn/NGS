@@ -30,13 +30,11 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] public Collection collection;
     [HideInInspector] public GameSettings gameSettings;
     private ModifySettings modifySettings;
-    //private SaveLoadManager saveSystem;
     private Vector3 oldPosition;
 
 
     void Start()
     {
-        //saveSystem = loadGame.GetComponent<SaveLoadManager>();
         if (keyBindBtn != null) keyBindBtn.onClick.AddListener(() => keyBindsClicked());
         if (saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if (backBtn != null) backBtn.onClick.AddListener(() => backClicked());
@@ -70,6 +68,9 @@ public class GameUI : Singleton<GameUI>
             loadGame.GetComponent<SaveLoadManager>().Load();
             loadGame.SetActive(false);
         }
+
+        LoadBindingOnStart(true);
+        LoadBindingOnStart(false);
     }
 
     void Update()
@@ -141,11 +142,6 @@ public class GameUI : Singleton<GameUI>
         {
             modifySettings.SaveSettings();
         }
-    }
-
-    void CharacterCreated()
-    {
-
     }
 
 
@@ -222,5 +218,28 @@ public class GameUI : Singleton<GameUI>
     {
         if (reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
         else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+    }
+
+    public void LoadBindingOnStart(bool active)
+    {
+        settings.SetActive(active);
+        keyBinds.SetActive(active);
+        var tg = keyBinds.GetComponentInChildren<TabGroup>();
+
+        switch (tg.selectedTab.name)
+        {
+            case "Tab1":
+                tg.objectsToSwap[1].SetActive(active);
+                tg.objectsToSwap[2].SetActive(active);
+                break;
+            case "Tab2":
+                tg.objectsToSwap[0].SetActive(active);
+                tg.objectsToSwap[2].SetActive(active);
+                break;
+            case "Tab3":
+                tg.objectsToSwap[0].SetActive(active);
+                tg.objectsToSwap[1].SetActive(active);
+                break;
+        }
     }
 }

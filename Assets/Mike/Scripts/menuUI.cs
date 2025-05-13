@@ -47,7 +47,10 @@ public class MenuUI : MonoBehaviour
         modifySettings = GetComponent<ModifySettings>();
 
 		gameSettings = modifySettings.settings;
-	}
+
+        LoadBindingOnStart(true);
+        LoadBindingOnStart(false);
+    }
 
     void newGameClicked()
     {
@@ -123,8 +126,7 @@ public class MenuUI : MonoBehaviour
         gameSettings.platformerKeys.Clear();
         gameSettings.minigameKeys.Clear();
         gameSettings.bossGameKeys.Clear();
-        LoadKeysForSaving(true);
-
+        
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
             switch (bind.data.actionMap)
@@ -140,8 +142,6 @@ public class MenuUI : MonoBehaviour
                     break;
             }
         }
-
-        LoadKeysForSaving(false);
 
         modifySettings.SaveMouseMode();
     }
@@ -168,20 +168,26 @@ public class MenuUI : MonoBehaviour
         transform.Find("InventoryCollection").gameObject.SetActive(true);
     }
 
-    public void LoadKeysForSaving(bool active, bool reset = false)
+    public void LoadBindingOnStart(bool active)
     {
+        settings.SetActive(active);
+        keyBinds.SetActive(active);
         var tg = keyBinds.GetComponentInChildren<TabGroup>();
 
-        int i = 0;
-        foreach (var kb in keyBinds.GetComponentInChildren<TabGroup>().objectsToSwap)
+        switch (tg.selectedTab.name)
         {
-            i++;
-            if (tg.selectedTab.name == "Tab1" && i == 1 && reset) continue;
-            else if (tg.selectedTab.name == "Tab2" && i == 2 && reset) continue;
-            else if (reset && i == 3) continue;
-            kb.SetActive(active);
+            case "Tab1":
+                tg.objectsToSwap[1].SetActive(active);
+                tg.objectsToSwap[2].SetActive(active);
+                break;
+            case "Tab2":
+                tg.objectsToSwap[0].SetActive(active);
+                tg.objectsToSwap[2].SetActive(active);
+                break;
+            case "Tab3":
+                tg.objectsToSwap[0].SetActive(active);
+                tg.objectsToSwap[1].SetActive(active);
+                break;
         }
-
-        
     }
 }

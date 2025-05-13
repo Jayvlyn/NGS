@@ -16,8 +16,12 @@ public class KeyRebinder : MonoBehaviour
 
     public KeyBindingSaveData data { get; set; }
 
-    private void Start()
+    private bool initialized = false;
+
+    private void OnEnable()
     {
+        if (initialized) return;
+
         int ind = keyAction.action.GetBindingIndexForControl(keyAction.action.controls[0]);
         if(keyAction.action.type == InputActionType.Value && keyAction.action.expectedControlType == "Axis")
         {
@@ -34,6 +38,8 @@ public class KeyRebinder : MonoBehaviour
         if (compositPartName != "") ind = GetBindingIndexByName(compositPartName);
 
         Save(keyAction.action.name, ind.ToString(), keyAction.action.bindings[ind].effectivePath);
+
+        initialized = true;
     }
 
     public void StartRebinding()
