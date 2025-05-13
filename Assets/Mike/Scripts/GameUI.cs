@@ -43,11 +43,15 @@ public class GameUI : Singleton<GameUI>
             if (btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
             else if (btn.name == "QuitBtn")
             {
-                btn.onClick.AddListener(() => SaveOnQuit());
+                btn.onClick.AddListener(() => AutoSave());
                 btn.onClick.AddListener(() => quitClicked());
             }
             else if (btn.name == "SettingsBtn") btn.onClick.AddListener(() => settingsClicked());
-            else btn.onClick.AddListener(() => MainMenuClicked());
+            else
+            {
+                btn.onClick.AddListener(() => AutoSave());
+                btn.onClick.AddListener(() => MainMenuClicked());
+            }
         }
 
         modifySettings = GetComponent<ModifySettings>();
@@ -89,9 +93,8 @@ public class GameUI : Singleton<GameUI>
 
     public void MainMenuClicked()
     {
-        var newVec = new Vector3(-5.3f, -4.2f, 0f);
-        pi.transform.localPosition = newVec;
         pauseClicked();
+        gameStart = true;
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -197,7 +200,7 @@ public class GameUI : Singleton<GameUI>
         inventoryMenu.gameObject.SetActive(true);
     }
 
-    public void SaveOnQuit()
+    public void AutoSave()
     {
         loadGame.SetActive(true);
         loadGame.GetComponent<SaveLoadManager>().autoSave();

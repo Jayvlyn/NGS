@@ -106,13 +106,13 @@ public class SaveLoadManager : MonoBehaviour
         }
         float rows = saveList.Count / columns;
         int actualRows = (rows - ((int) rows) > 0) ? (int)rows + 1 : (int)rows;
-        content.sizeDelta = new Vector2(content.sizeDelta.x, actualRows * 100 + 20);
+        content.sizeDelta = new Vector2(content.sizeDelta.x, actualRows * 118 + 50);
         for(int i = 0; i < saveList.Count; i++)
         {
             GameObject go = Instantiate(savePrefab, content);
             go.GetComponent<LoadData>().ApplyData(saveList[i]);
             RectTransform rect = go.GetComponent<RectTransform>();
-            rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
+            //rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
             int j = i;
             foreach(var comp in go.GetComponentsInChildren<Button>())
             {
@@ -180,6 +180,7 @@ public class SaveLoadManager : MonoBehaviour
 
             //load player
             gameSettings.position = save.position;
+            gameSettings.id = save.id;
             id = save.id;
         }
 
