@@ -29,6 +29,7 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private float jumpForce = 20f;
 	[SerializeField] private float airControlMod = 0.4f;
+	[SerializeField] private float iceMoveMod = 0.5f;
 
 	[SerializeField] private float bhopForce = 20f;
 
@@ -313,6 +314,7 @@ public class PlatformingPlayerController : Interactor
 			float speed = moveSpeed;
 			if (!onGround) speed *= airControlMod;
 			else if (inWater) speed *= airControlMod * 0.5f;
+			else if (onIce) speed *= iceMoveMod;
 			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.5f;
 
 
