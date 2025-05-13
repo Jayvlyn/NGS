@@ -33,8 +33,8 @@ public class Parallax : MonoBehaviour
         if (movementx > startposx + lengthx) startposx += lengthx;
         else if (movementx < startposx - lengthx) startposx -= lengthx;
 
-        if (movementy > startposy + lengthy) startposy += lengthy;
-        else if (movementy < startposy - lengthy) startposy -= lengthy;
+        //if (movementy > startposy + lengthy) startposy += lengthy;
+       // else if (movementy < startposy - lengthy) startposy -= lengthy;
         
     }
 }

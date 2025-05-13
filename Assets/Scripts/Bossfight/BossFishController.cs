@@ -1,6 +1,7 @@
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PathFollower))]
+[RequireComponent (typeof(FishRotator))]
 public class BossFishController : MonoBehaviour
 {
     public static Fish bossFish;
@@ -11,6 +12,7 @@ public class BossFishController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float baseMovementSpeed;
     [SerializeField] private float maxSpeedMultiplier;
+    [SerializeField] private FishRotator rotator;
     private Rigidbody2D body;
     private PathFollower pathFollower;
     private float speedMultiplier = 1f;
@@ -32,7 +34,8 @@ public class BossFishController : MonoBehaviour
     void Update()
     {
         (Vector3, Quaternion) newTransform = pathFollower.GetNewTransform(baseMovementSpeed * speedMultiplier * Time.deltaTime);
-        body.MovePositionAndRotation(newTransform.Item1, newTransform.Item2);
+        rotator.BaseRotation = newTransform.Item2;
+        body.MovePosition(newTransform.Item1);
         float zRotation = transform.rotation.eulerAngles.z;
         while(zRotation > 180)
         {

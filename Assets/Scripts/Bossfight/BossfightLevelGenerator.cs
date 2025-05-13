@@ -33,21 +33,26 @@ public class BossfightLevelGenerator : MonoBehaviour
         {
             { (0, 0), (-1, -1) }
         };
-        if (GetValidPlacementFrom(ref placementLocations, ref sectionsPlaced, (0, 0), availableSections))
+        (int, int) endLocation = (0, 0);
+        if (GetValidPlacementFrom(ref placementLocations, ref sectionsPlaced, (0, 0), availableSections, ref endLocation))
         {
-            PlaceAccordingTo(placementLocations);
+            PlaceAccordingTo(placementLocations, endLocation);
         }
         else
         {
             Debug.Log("No valid placements found");
         }
     }
-    private bool GetValidPlacementFrom(ref Dictionary<(int, int), (int, int)> placementLocations, ref Dictionary<(int, int), bool> sectionsPlaced, (int, int) location, int sectionsLeft)
+    private bool GetValidPlacementFrom(ref Dictionary<(int, int), (int, int)> placementLocations, ref Dictionary<(int, int), bool> sectionsPlaced, (int, int) location, int sectionsLeft, ref (int, int) endLocation)
     {
         int placementDirection = GetEndPosition(placementLocations[location]);
         (int, int) nextPlacement = GetNext(placementDirection, location);
         bool unoccupied = !placementLocations.ContainsKey(nextPlacement);
         bool result = unoccupied && sectionsLeft == 0;
+        if(result)
+        {
+            endLocation = nextPlacement;
+        }
         if(!result && unoccupied)
         {
             int original = Random.Range(0, levelSections[placementDirection].gameObjects.Length);
@@ -59,7 +64,7 @@ public class BossfightLevelGenerator : MonoBehaviour
                     placementLocations.Add(nextPlacement, (placementDirection, current));
                     sectionsPlaced[(placementDirection, current)] = preventDuplicates;
                     Debug.Log($"Attempted to place section at {nextPlacement}, ");
-                    result = GetValidPlacementFrom(ref placementLocations, ref sectionsPlaced, nextPlacement, sectionsLeft - 1);
+                    result = GetValidPlacementFrom(ref placementLocations, ref sectionsPlaced, nextPlacement, sectionsLeft - 1, ref endLocation);
                     if (!result)
                     {
                         Debug.Log($"Canceled attempt to place section at {nextPlacement}");
@@ -83,10 +88,10 @@ public class BossfightLevelGenerator : MonoBehaviour
         return type.Item1 == -1 ? startingSection.GetComponent<BossfightLevelSection>().EndPosition : levelSections[type.Item1].gameObjects[type.Item2].GetComponent<BossfightLevelSection>().EndPosition;
     }
 
-    private void PlaceAccordingTo(Dictionary<(int, int), (int, int)> placementLocations)
+    private void PlaceAccordingTo(Dictionary<(int, int), (int, int)> placementLocations, (int, int) endLocation)
     {
         BossfightLevelSection previous = startingSection.GetComponent<BossfightLevelSection>();
-        AttemptPlaceEmptyAround(placementLocations, (0, 0));
+        AttemptPlaceEmptyAround(placementLocations, (0, 0), endLocation);
         (int, int) current = GetNext(previous.EndPosition, (0, 0));
         GameObject[] pastResults = null;
         while(placementLocations.ContainsKey(current))
@@ -96,7 +101,7 @@ public class BossfightLevelGenerator : MonoBehaviour
             section.gameObject.transform.position = transform.position + new Vector3(current.Item1 * sizes, current.Item2 * sizes);
             previous.Next = section;
             previous = section;
-            pastResults = AttemptPlaceEmptyAround(placementLocations, current);
+            pastResults = AttemptPlaceEmptyAround(placementLocations, current, endLocation);
             current = GetNext(section.EndPosition, current);
         }
         Destroy(pastResults[previous.EndPosition]);
@@ -104,7 +109,6 @@ public class BossfightLevelGenerator : MonoBehaviour
         endSection.transform.position = transform.position + new Vector3(current.Item1 * sizes, current.Item2 * sizes);
         previous.Next = endSection;
     }
-
     private (int, int) GetNext(int direction, (int, int) basedOn)
     {
         (int, int) result = basedOn;
@@ -133,23 +137,23 @@ public class BossfightLevelGenerator : MonoBehaviour
         }
         return result;
     }
-    private GameObject[] AttemptPlaceEmptyAround(Dictionary<(int, int), (int, int)> invalidLocations, (int, int)attemptCenter)
+    private GameObject[] AttemptPlaceEmptyAround(Dictionary<(int, int), (int, int)> invalidLocations, (int, int)attemptCenter, (int, int) additionalInvalid)
     {
         GameObject[] results = new GameObject[4];
-        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2 - 1));
-        results[3] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2));
-        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2 + 1));
-        results[2] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1, attemptCenter.Item2 - 1));
-        results[0] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1, attemptCenter.Item2 + 1));
-        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2 - 1));
-        results[1] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2));
-        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2 + 1));
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2 - 1), additionalInvalid);
+        results[3] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2), additionalInvalid);
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 - 1, attemptCenter.Item2 + 1), additionalInvalid);
+        results[2] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1, attemptCenter.Item2 - 1), additionalInvalid);
+        results[0] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1, attemptCenter.Item2 + 1), additionalInvalid);
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2 - 1), additionalInvalid);
+        results[1] = AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2), additionalInvalid);
+        AttemptPlaceEmptyAt(invalidLocations, (attemptCenter.Item1 + 1, attemptCenter.Item2 + 1), additionalInvalid);
         return results;
     }
-    private GameObject AttemptPlaceEmptyAt(Dictionary<(int, int), (int, int)> invalidLocations, (int, int) at)
+    private GameObject AttemptPlaceEmptyAt(Dictionary<(int, int), (int, int)> invalidLocations, (int, int) at, (int, int) additionalInvalid)
     {
         GameObject result = null;
-        if(!invalidLocations.ContainsKey(at) && (at.Item1 != 0 || at.Item2 != 0))
+        if(!invalidLocations.ContainsKey(at) && (at.Item1 != 0 || at.Item2 != 0) && (at.Item1 != additionalInvalid.Item1 || at.Item2 != additionalInvalid.Item2))
         {
             result = Instantiate(emptyPrefab);
             result.transform.position = transform.position + transform.position + new Vector3(at.Item1 * sizes, at.Item2 * sizes);

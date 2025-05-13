@@ -1,7 +1,7 @@
 using GameEvents;
 using UnityEngine;
 using UnityEngine.UI;
-
+[RequireComponent(typeof(FishRotator))]
 public class FishMinigame : MonoBehaviour
 {
     private Fish hookedFish;
@@ -33,6 +33,9 @@ public class FishMinigame : MonoBehaviour
     private Vector2 velocity = new Vector3(1, 0, 0);
     private bool hooked;
 
+    private Rigidbody2D rb;
+    [SerializeField] private FishRotator rotator;
+
 	private void OnEnable()
 	{
 		GameUI.Instance.pi.SwitchCurrentActionMap("Minigame");
@@ -45,6 +48,7 @@ public class FishMinigame : MonoBehaviour
 
 		fishImage.sprite = hookedFish.sprite;
         UpdateDesiredAngle();
+        rb = GetComponent<Rigidbody2D>();
 	}
 
 	void FixedUpdate()
@@ -104,7 +108,8 @@ public class FishMinigame : MonoBehaviour
         //{
         //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         //}
-        gameObject.GetComponent<Rigidbody2D>().MovePositionAndRotation(new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y), swimAngle);
+        rotator.BaseRotation = Quaternion.Euler(0, 0, swimAngle);
+        rb.MovePosition(new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y));
         
     }
 

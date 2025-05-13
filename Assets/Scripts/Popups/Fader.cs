@@ -6,6 +6,7 @@ public class Fader : PearanceHandler
 {
     private Image[] images;
     private TMP_Text[] texts;
+    private SpriteRenderer[] spriteRenderers;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,7 +21,12 @@ public class Fader : PearanceHandler
         {
             text.color = new Color(text.color.r, text.color.g, text.color.b, closing ? 1 : 0);
         }
-        if(images.Length == 0 &&  texts.Length == 0)
+        spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach(SpriteRenderer spriteRenderer in spriteRenderers)
+        {
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, closing ? 1 : 0);
+        }
+        if(images.Length == 0 &&  texts.Length == 0 && spriteRenderers.Length == 0)
         {
             if(closing)
             {
@@ -63,6 +69,10 @@ public class Fader : PearanceHandler
                 {
                     image.color = new Color(image.color.r, image.color.g, image.color.b, completion);
                 }
+                foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+                {
+                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, completion);
+                }
             }
         }
         else
@@ -81,6 +91,10 @@ public class Fader : PearanceHandler
                 foreach (Image image in images)
                 {
                     image.color = new Color(image.color.r, image.color.g, image.color.b, completion);
+                }
+                foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+                {
+                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, completion);
                 }
             }
         }

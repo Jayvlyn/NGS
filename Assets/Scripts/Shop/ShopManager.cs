@@ -95,7 +95,7 @@ public class ShopManager : Singleton<ShopManager>
     {
         if(type == string.Empty && previousFishType != string.Empty)
         {
-            type = string.Empty;
+            type = previousFishType;
         }
         if(Inventory.Instance.GetData().Item1[type].currentFish.Count > 0)
         {
@@ -105,7 +105,7 @@ public class ShopManager : Singleton<ShopManager>
                     Inventory.Instance.GetData().Item1[type].currentFish[1].length ? 1 : 0;
                 SellFish(Inventory.Instance.GetData().Item1[type].currentFish[removeAt]);
             }
-            if ((!overrideSellAllOfType && !sellAllOfTypeExcludeLargest) || 
+            if ((!overrideSellAllOfType && !sellAllOfTypeExcludeLargest.isOn) || 
                 (!sellAllExcludeLargest.isOn && overrideSellAllOfType))
             {
                 SellFish(Inventory.Instance.GetData().Item1[type].currentFish[0]);
@@ -126,7 +126,9 @@ public class ShopManager : Singleton<ShopManager>
             }
             if(state == ShopState.SellFish)
             {
-                GenerateFishTiles(previousFishType);
+                string str = previousFishType;
+                previousFishType = string.Empty;
+                GenerateFishTiles(str);
             }
             else
             {
@@ -164,6 +166,7 @@ public class ShopManager : Singleton<ShopManager>
                 Fish fish = currentFish[current];
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(fish); });
                 pastFishTiles.Add(go);
+                previousFishType = fishType;
             }
         }
     }

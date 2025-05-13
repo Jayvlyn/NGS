@@ -912,6 +912,7 @@ MonoBehaviour:
   shrinkOutSpeed: 1
   rotateSpeed: 100
   initialOffset: 45
+  scaleScaler: 1
   currentState: 2
 --- !u!1 &3180568883577715348
 GameObject:
@@ -1223,6 +1224,7 @@ MonoBehaviour:
   shrinkOutSpeed: 1
   rotateSpeed: 100
   initialOffset: 70
+  scaleScaler: 1
   currentState: 2
 --- !u!1 &4590974994986418050
 GameObject:
@@ -1480,6 +1482,7 @@ MonoBehaviour:
   shrinkOutSpeed: 1
   rotateSpeed: 100
   initialOffset: 0
+  scaleScaler: 1
   currentState: 2
 --- !u!1 &6724319418112971322
 GameObject:
@@ -1614,6 +1617,7 @@ GameObject:
   - component: {fileID: 5189343022230894398}
   - component: {fileID: 1965084599814660262}
   - component: {fileID: 6636337950799138318}
+  - component: {fileID: 7112920172083344224}
   m_Layer: 5
   m_Name: FishSprite
   m_TagString: Untagged
@@ -1656,7 +1660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0b5b3a70043f14299da6c04b537769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 0}
   catchProgBar: {fileID: 4018101964788536591}
   fishImage: {fileID: 6636337950799138318}
   minigameUI: {fileID: 2064130541851390973}
@@ -1674,6 +1677,7 @@ MonoBehaviour:
   boundsy: 350
   boundsyoffset: 50
   isCaught: 0
+  rotator: {fileID: 7112920172083344224}
 --- !u!50 &5906862279221811559
 Rigidbody2D:
   serializedVersion: 5
@@ -1785,6 +1789,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7112920172083344224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7001391215323874973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10cac4781989fe943ab6db2485eec043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseRotation: {x: 0, y: 0, z: 0, w: 0}
+  min: -15
+  max: 15
+  loop: 0
+  speed: 100
+  increasing: 1
+  rb: {fileID: 5906862279221811559}
 --- !u!1 &7928242982355516966
 GameObject:
   m_ObjectHideFlags: 0

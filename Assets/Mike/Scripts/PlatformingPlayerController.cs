@@ -29,6 +29,7 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private float jumpForce = 20f;
 	[SerializeField] private float airControlMod = 0.4f;
+	[SerializeField] private float iceMoveMod = 0.5f;
 
 	[SerializeField] private float bhopForce = 20f;
 
@@ -43,6 +44,9 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField, Tooltip("Linear Velocity of player will get multiplied by this value while off the ground (1 = no friction)"), Range(0.8f, 1)]
 	private float airFriction = 0.98f;
+
+	[SerializeField, Tooltip("Linear Velocity of player will get multiplied by this value while sliding on ice (1 = no friction)"), Range(0.8f, 1)]
+	private float iceFriction = 0.98f;
 
 	[SerializeField, Tooltip("Time jump input will be stored so the player will jump again once then hit the ground")]
 	private float jumpBufferTime = 0.1f;
@@ -86,9 +90,14 @@ public class PlatformingPlayerController : Interactor
 
 	[Header("Ground Check")]
 	[SerializeField] private LayerMask groundLayer;
+	[SerializeField] private LayerMask iceLayer;
 	[SerializeField] private Transform groundCheckT;
 	[SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
+	[SerializeField] private float slopeCheckDistance = 0.15f;
+	[SerializeField] private float slopeModifier = 1.5f;
 	private bool onGround;
+	private bool onIce = false;
+	private bool touchingIceWall = false;
 	private bool inWater;
 
 	[Header("Wall Checks")]
@@ -305,6 +314,7 @@ public class PlatformingPlayerController : Interactor
 			float speed = moveSpeed;
 			if (!onGround) speed *= airControlMod;
 			else if (inWater) speed *= airControlMod * 0.5f;
+			else if (onIce) speed *= iceMoveMod;
 			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.5f;
 
 
@@ -316,10 +326,29 @@ public class PlatformingPlayerController : Interactor
 			// move when not moving max speed
 			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
 			{
-				Vector2 dir = new Vector2(moveInput, 0);
-				rb.AddForce(dir * speed, ForceMode2D.Force);
+				//Vector2 dir = new Vector2(moveInput, 0);
+				rb.AddForce(GetMovement(speed), ForceMode2D.Force);
 			}
 		}
+	}
+
+	private Vector2 GetMovement(float speed)
+	{
+		float absMovement = Mathf.Abs(moveInput);
+		Vector2 dir = new(speed * moveInput, 0);
+		RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
+		Debug.Log(hit.collider != null);
+		if(hit)
+		{
+			RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * moveInput, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
+			if(hit2)
+			{
+				dir = hit2.point - hit.point;
+				Debug.Log(dir);
+				dir = absMovement * speed * dir.normalized * (1 + slopeModifier * Mathf.Max(0, dir.normalized.y)) + -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
+			}
+		}
+		return dir;
 	}
 
 	#endregion
@@ -420,7 +449,14 @@ public class PlatformingPlayerController : Interactor
 			case MoveState.WALL_STICKING:
 				FlipX();
 				rb.linearVelocityY = 0;
-				rb.gravityScale = 0;
+				if(touchingIceWall)
+				{ // ice wall, not as sticky
+					rb.gravityScale = startingGravity * 0.5f;
+				}
+				else // normal wall, full stick
+				{
+					rb.gravityScale = startingGravity * 0.1f;
+				}
 
 				SetTrigger("ToWallStick");
 				break;
@@ -546,9 +582,13 @@ public class PlatformingPlayerController : Interactor
 		// Ground friction
 		if (onGround)
 		{
-			if (currentRodState != RodState.HOOKED)
+			if (currentRodState != RodState.HOOKED && !onIce)
 			{
 				rb.linearVelocityX *= groundFriction;
+			}
+			else if(onIce)
+			{
+				rb.linearVelocityX *= iceFriction;
 			}
 		}
 		else
@@ -737,12 +777,12 @@ public class PlatformingPlayerController : Interactor
 			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / playerStats.grappleMaxCastSpeed);
 			hook.rb.transform.position = currentPos;
 
-			//float modifier = 1;
+			float modifier = 2;
 
 			//if(t/castTime < 0.5) modifier -= t / castTime;
 			//else modifier += t / castTime;
 
-			t += Time.deltaTime;//* modifier;
+			t += Time.deltaTime * modifier;
 			yield return null;
 		}
 		hook.rb.transform.position = point;
@@ -945,6 +985,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
+		onIce = false;
+		rb.gravityScale = startingGravity;
 		//if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.JUMPING);
 		currentJumps--;
@@ -1089,11 +1131,20 @@ public class PlatformingPlayerController : Interactor
 		{
 			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
-				if (!onGround) OnLand(); // first frame returning true, so just landed
+				isOnIce();
+				Debug.Log("checks past");
+                if (!onGround) OnLand(); // first frame returning true, so just landed
 				return true; // set onGround to true;
 			}
 			// not on currently ground:
-			if (onGround) // was grounded last frame
+			if(onIce) // on ice last check
+			{ 
+				onIce = false;
+				rb.gravityScale = startingGravity;
+			}
+		
+
+            if (onGround) // was grounded last check
 			{
 				if (currentJumps == totalJumps) // left ground without jumping off ground
 				{
@@ -1106,19 +1157,40 @@ public class PlatformingPlayerController : Interactor
 		return false;
 	}
 
+	private bool isOnIce()
+	{
+		if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
+		{
+			onIce = true;
+			rb.gravityScale = 0;
+			return true;
+		}
+		else
+		{
+			onIce = false;
+			rb.gravityScale = startingGravity;
+			return false;
+		}
+	}
+
+	public LayerMask iceWallLayer;
 	private bool isTouchingRightWall()
 	{
-		if (Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer))
+		Collider2D col = Physics2D.OverlapBox(rightCheckT.position, rightCheckSize, 0, wallLayer);
+		if (col != null)
 		{
-            return true;
+			touchingIceWall = (iceWallLayer == (iceWallLayer | (1 << col.gameObject.layer)));
+			return true;
 		}
 		return false;
 	}
 
 	private bool isTouchingLeftWall()
 	{
-		if (Physics2D.OverlapBox(leftCheckT.position, leftCheckSize, 0, wallLayer))
+		Collider2D col = Physics2D.OverlapBox(leftCheckT.position, leftCheckSize, 0, wallLayer);
+		if (col != null)
 		{
+			touchingIceWall = (iceWallLayer == (iceWallLayer | (1 << col.gameObject.layer)));
 			return true;
 		}
 		return false;
@@ -1182,7 +1254,14 @@ public class PlatformingPlayerController : Interactor
 		// Right Check
 		Gizmos.color = new Color(0, 0, 1, 0.5f);
 		Gizmos.DrawCube(rightCheckT.position, rightCheckSize);
-	}
+
+		//Slope Checks
+		Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + 0.01f), new Vector3(transform.position.x, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+
+    }
 
 	private void DebugDrawCircle(Vector2 center, float radius, Color color, float duration = 0f, int segments = 32)
 	{
