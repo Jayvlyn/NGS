@@ -29,6 +29,7 @@ public class PlatformingPlayerController : Interactor
 
 	[SerializeField] private float jumpForce = 20f;
 	[SerializeField] private float airControlMod = 0.4f;
+	[SerializeField] private float iceMoveMod = 0.5f;
 
 	[SerializeField] private float bhopForce = 20f;
 
@@ -92,6 +93,8 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private LayerMask iceLayer;
 	[SerializeField] private Transform groundCheckT;
 	[SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
+	[SerializeField] private float slopeCheckDistance = 0.15f;
+	[SerializeField] private float slopeModifier = 1.5f;
 	private bool onGround;
 	private bool onIce = false;
 	private bool touchingIceWall = false;
@@ -311,6 +314,7 @@ public class PlatformingPlayerController : Interactor
 			float speed = moveSpeed;
 			if (!onGround) speed *= airControlMod;
 			else if (inWater) speed *= airControlMod * 0.5f;
+			else if (onIce) speed *= iceMoveMod;
 			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.5f;
 
 
@@ -322,10 +326,29 @@ public class PlatformingPlayerController : Interactor
 			// move when not moving max speed
 			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
 			{
-				Vector2 dir = new Vector2(moveInput, 0);
-				rb.AddForce(dir * speed, ForceMode2D.Force);
+				//Vector2 dir = new Vector2(moveInput, 0);
+				rb.AddForce(GetMovement(speed), ForceMode2D.Force);
 			}
 		}
+	}
+
+	private Vector2 GetMovement(float speed)
+	{
+		float absMovement = Mathf.Abs(moveInput);
+		Vector2 dir = new(speed * moveInput, 0);
+		RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
+		Debug.Log(hit.collider != null);
+		if(hit)
+		{
+			RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * moveInput, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
+			if(hit2)
+			{
+				dir = hit2.point - hit.point;
+				Debug.Log(dir);
+				dir = absMovement * speed * dir.normalized * (1 + slopeModifier * Mathf.Max(0, dir.normalized.y)) + -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
+			}
+		}
+		return dir;
 	}
 
 	#endregion
@@ -1231,7 +1254,14 @@ public class PlatformingPlayerController : Interactor
 		// Right Check
 		Gizmos.color = new Color(0, 0, 1, 0.5f);
 		Gizmos.DrawCube(rightCheckT.position, rightCheckSize);
-	}
+
+		//Slope Checks
+		Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + 0.01f), new Vector3(transform.position.x, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+
+    }
 
 	private void DebugDrawCircle(Vector2 center, float radius, Color color, float duration = 0f, int segments = 32)
 	{
