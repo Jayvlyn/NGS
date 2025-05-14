@@ -128,7 +128,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         //var sceneIndex = SceneManager.GetActiveScene().buildIndex+1;
         //if (sceneIndex % SceneManager.sceneCountInBuildSettings == 0) sceneIndex = 1;
-        SceneManager.LoadScene("TestGame");
+        SceneManager.LoadScene("GameScene");
     }
 
     public void Select(int save)

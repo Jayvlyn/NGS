@@ -105,7 +105,7 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterName.text.Remove(0);
-            SceneManager.LoadScene("TestGame");
+            SceneManager.LoadScene("GameScene");
             //play loading screen while switching to game
         }
         else
