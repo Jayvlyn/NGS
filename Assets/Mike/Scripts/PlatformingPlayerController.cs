@@ -64,6 +64,7 @@ public class PlatformingPlayerController : Interactor
 	private int currentJumps;
 
 	[SerializeField] private int totalWallJumps = 3;
+	[SerializeField] private bool wallJumpLimit = false;
 	private int currentWallJumps;
 	[SerializeField] private float wallJumpUpwardsInfluence = 1;
 	[SerializeField] private float wallJumpSidewaysInfluence = 1;
@@ -1009,7 +1010,7 @@ public class PlatformingPlayerController : Interactor
 	{
 		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.WALLJUMPING);
-		currentWallJumps--;
+		if(wallJumpLimit) currentWallJumps--;
 
 		jumpTimer = jumpTime;
 		
