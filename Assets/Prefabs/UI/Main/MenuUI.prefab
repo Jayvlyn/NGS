@@ -14,9 +14,6 @@ GameObject:
   - component: {fileID: 1230761250940154681}
   - component: {fileID: 6455844806586121984}
   - component: {fileID: 1182990261383817680}
-  - component: {fileID: 1824565096551014876}
-  - component: {fileID: 1713936898772505159}
-  - component: {fileID: 6547504016358773680}
   m_Layer: 5
   m_Name: MenuUI
   m_TagString: Untagged
@@ -122,14 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc85338197ddf9747b932752a4e78c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overrideOthers: 1
   characterCreation: {fileID: 6667465382450423069}
-  startMenu: {fileID: 7171747238924979568}
+  lodingScreen: {fileID: 0}
   loadMenu: {fileID: 4370046324416509360}
   settings: {fileID: 2072952512989364131}
   keyBinds: {fileID: 6869472987305718873}
-  pause: {fileID: 0}
-  inventoryMenu: {fileID: 0}
   newGameBtn: {fileID: 6548503683531043436}
   loadGameBtn: {fileID: 2018144233970013871}
   settingsBtn: {fileID: 1078509291071643832}
@@ -139,7 +133,6 @@ MonoBehaviour:
   backBtn: {fileID: 53166551536605723}
   createBtn: {fileID: 4875457003121393035}
   characterName: {fileID: 3678557942157317388}
-  pauseAction: {fileID: -7459436573456147142, guid: 097c45eb17bad3640a9c78e2eec485f5, type: 3}
   pi: {fileID: 0}
 --- !u!114 &1182990261383817680
 MonoBehaviour:
@@ -159,126 +152,6 @@ MonoBehaviour:
   postProcessing: {fileID: 0}
   mouseModeMiniGame: {fileID: 2358602665960843256}
   mouseModeBossGame: {fileID: 2368866420828184177}
---- !u!114 &1824565096551014876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702100932821717748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0195bc870639a54a98b34996c1a41ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 2e987257edfec4d4a8d53521efbe2dfc, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FishMinigame, Assembly-CSharp
-        m_MethodName: SetHookedFish
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6455844806586121984}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
-        m_MethodName: LoadMinigame
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1713936898772505159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702100932821717748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb56c99a5c42175478e7b555a67e0106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 6334f1fb75aed4649ba69128dfa5d70b, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6455844806586121984}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
-        m_MethodName: LoadMinigame
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CastSystem, Assembly-CSharp
-        m_MethodName: SetWaterT
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
---- !u!114 &6547504016358773680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702100932821717748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b663e92038a8fc847b65ab6d544e0e21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6455844806586121984}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
-        m_MethodName: OnInventory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &5243091937828981449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -418,7 +291,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8738215574713814970, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
   m_PrefabInstance: {fileID: 5243091937828981449}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7171747238924979568}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -440,11 +313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7171747238924979568 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3117650151062226873, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
-  m_PrefabInstance: {fileID: 5243091937828981449}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6714028238721566962
 PrefabInstance:
   m_ObjectHideFlags: 0

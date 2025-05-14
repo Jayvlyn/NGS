@@ -81,7 +81,7 @@ public class ModifySettings : MonoBehaviour
 
     public void SetPostProcessing(bool isPostProcessingOn)
     {
-        postProcessing.enabled = isPostProcessingOn;
+        if(postProcessing != null) postProcessing.enabled = isPostProcessingOn;
     }
 
     public void SetMouseModeMini(bool isMouseMode)
@@ -100,7 +100,7 @@ public class ModifySettings : MonoBehaviour
         mixer.GetFloat("MusicVol", out settings.musicVolume);
         mixer.GetFloat("SFXVol", out settings.sfxVolume);
         settings.toggleData.isFullScreen = Screen.fullScreen;
-        settings.toggleData.hasPostProcessing = postProcessing.enabled;
+        if(postProcessing != null) settings.toggleData.hasPostProcessing = postProcessing.enabled;
         settings.toggleData.isMouseModeMinigame = mouseModeMiniGame.isOn;
         settings.toggleData.isMouseModeBossgame = mouseModeBossGame.isOn;
         settings.screenResolution = resolutionDropdown.value;

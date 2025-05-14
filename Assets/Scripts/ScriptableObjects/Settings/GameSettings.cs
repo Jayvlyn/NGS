@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Scriptable Objects/GameSettings")]
 public class GameSettings : ScriptableObject
 {
+    public string id;
+
     public float masterVolume;
     public float musicVolume;
     public float sfxVolume;

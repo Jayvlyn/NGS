@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SaveLoadManager : MonoBehaviour
@@ -13,7 +13,7 @@ public class SaveLoadManager : MonoBehaviour
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
-    private int selected = -1;
+    [HideInInspector] public static int selected = -1;
     private string id = "";
     public bool Save(string name, bool newGame = true)
     {
@@ -43,6 +43,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void autoSave()
     {
+        if(id == "") id = gameSettings.id;
         SaveData data = saveList[0];
         foreach (var save in saveList) if (save.id.ToLower() == id.ToLower()) data = save;
         (SerializedDictionary<string, FishData>, double) inventoryData = Inventory.Instance.GetData();
@@ -105,22 +106,29 @@ public class SaveLoadManager : MonoBehaviour
         }
         float rows = saveList.Count / columns;
         int actualRows = (rows - ((int) rows) > 0) ? (int)rows + 1 : (int)rows;
-        content.sizeDelta = new Vector2(content.sizeDelta.x, actualRows * 100 + 20);
+        content.sizeDelta = new Vector2(content.sizeDelta.x, actualRows * 118 + 50);
         for(int i = 0; i < saveList.Count; i++)
         {
             GameObject go = Instantiate(savePrefab, content);
             go.GetComponent<LoadData>().ApplyData(saveList[i]);
             RectTransform rect = go.GetComponent<RectTransform>();
-            rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
+            //rect.anchoredPosition = new Vector2(i % columns * 120 + 20, (int)(-i / columns) * 120 - 20);
             int j = i;
             foreach(var comp in go.GetComponentsInChildren<Button>())
             {
                 comp.onClick.AddListener(() => Select(j));
-                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => Load());
+                if(comp.name == "LoadBtn") comp.onClick.AddListener(() => LoadSelected());
                 else comp.onClick.AddListener(() => Delete());
             }
             options.Add(go);
         }
+    }
+
+    public void LoadSelected()
+    {
+        //var sceneIndex = SceneManager.GetActiveScene().buildIndex+1;
+        //if (sceneIndex % SceneManager.sceneCountInBuildSettings == 0) sceneIndex = 1;
+        SceneManager.LoadScene("TestGame");
     }
 
     public void Select(int save)
@@ -133,7 +141,7 @@ public class SaveLoadManager : MonoBehaviour
         var save = saveList[selected];
         string path = Path.Combine(Application.dataPath, "Saves");
         path = Path.Combine(path, $"{save.id}.json");
-        
+
         //load data
         if (File.Exists(path))
         {
@@ -172,12 +180,14 @@ public class SaveLoadManager : MonoBehaviour
 
             //load player
             gameSettings.position = save.position;
+            gameSettings.id = save.id;
             id = save.id;
         }
 
-        //Apply loaded data
+        //Apply loaded data & unselect
         print("Apply the loaded data");
         GameUI.Instance.LoadSaveGame();
+        selected = -1;
     }
 
     public void Delete()

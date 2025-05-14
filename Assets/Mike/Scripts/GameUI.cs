@@ -8,12 +8,10 @@ using UnityEngine.UI;
 
 public class GameUI : Singleton<GameUI>
 {
-    public static bool gameLoaded = false;
+    [HideInInspector] public static bool gameStart = true;
 
     [Header("Panels")]
-    [SerializeField] GameObject characterCreation;
-    [SerializeField] GameObject startMenu;
-    [SerializeField] GameObject loadMenu;
+    [SerializeField] GameObject loadGame;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
@@ -21,65 +19,62 @@ public class GameUI : Singleton<GameUI>
 
 
     [Header("Buttons&Inputs")]
-    [SerializeField] Button newGameBtn;
-    [SerializeField] Button loadGameBtn;
-    [SerializeField] Button settingsBtn;
-    [SerializeField] Button quitBtn;
     [SerializeField] Button keyBindBtn;
     [SerializeField] Button saveBtn;
     [SerializeField] Button backBtn;
-    [SerializeField] Button createBtn;
-    [SerializeField] TMP_InputField characterName;
 
     [Header("Player")]
     [SerializeField] InputActionReference pauseAction;
-    public PlayerInput pi;
+    [SerializeField] public PlayerInput pi;
     [SerializeField] public InventoryUIFiller inventoryUIFiller;
     [SerializeField] public Collection collection;
-    private GameSettings gameSettings;
+    [HideInInspector] public GameSettings gameSettings;
     private ModifySettings modifySettings;
     private Vector3 oldPosition;
 
 
     void Start()
     {
-        if (gameLoaded) startMenu.SetActive(false);
-        else
-        {
-            startMenu.SetActive(true);
-            Time.timeScale = 0;
-        }
-
-        if (newGameBtn != null) newGameBtn.onClick.AddListener(() => newGameClicked());
-        if (loadGameBtn != null) loadGameBtn.onClick.AddListener(() => loadGameClicked());
-        if (settingsBtn != null) settingsBtn.onClick.AddListener(() => settingsClicked());
         if (keyBindBtn != null) keyBindBtn.onClick.AddListener(() => keyBindsClicked());
-        if (quitBtn != null) quitBtn.onClick.AddListener(() => quitClicked());
         if (saveBtn != null) saveBtn.onClick.AddListener(() => saveClicked());
         if (backBtn != null) backBtn.onClick.AddListener(() => backClicked());
-        if (createBtn != null) createBtn.onClick.AddListener(() => createClicked());
         foreach (Button btn in pause.GetComponentsInChildren<Button>())
         {
             if (btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
             else if (btn.name == "QuitBtn")
             {
-                btn.onClick.AddListener(() => SaveOnQuit());
+                btn.onClick.AddListener(() => AutoSave());
                 btn.onClick.AddListener(() => quitClicked());
             }
-            else if (btn.name == "SettingsBtn") btn.onClick = settingsBtn.onClick;
-            else btn.onClick.AddListener(() => MainMenuClicked());
+            else if (btn.name == "SettingsBtn") btn.onClick.AddListener(() => settingsClicked());
+            else
+            {
+                btn.onClick.AddListener(() => AutoSave());
+                btn.onClick.AddListener(() => MainMenuClicked());
+            }
         }
 
         modifySettings = GetComponent<ModifySettings>();
 
         gameSettings = modifySettings.settings;
 
+        //if(gameStart) LoadSaveGame();
+
         if (pi != null)
         {
-            SavePosition();
+            SavePosition(gameStart);
             LoadPosition();
+            gameStart = false;
+        }
+        if(SaveLoadManager.selected != -1)
+        {
+            loadGame.SetActive(true);
+            loadGame.GetComponent<SaveLoadManager>().Load();
+            loadGame.SetActive(false);
         }
 
+        LoadBindingOnStart(true);
+        LoadBindingOnStart(false);
     }
 
     void Update()
@@ -98,36 +93,25 @@ public class GameUI : Singleton<GameUI>
 
     public void MainMenuClicked()
     {
-        gameLoaded = false;
-        startMenu.SetActive(true);
-        var newVec = new Vector3(-5.3f, -4.2f, 0f);
-        pi.transform.localPosition = newVec;
         pauseClicked();
-        //SceneManager.LoadScene("MainMenu");
+        gameStart = true;
+        SceneManager.LoadScene("MainMenu");
     }
 
-    void newGameClicked()
-    {
-        StartCoroutine(PlayUIAnim("SlideUp", characterCreation));
-    }
-    void loadGameClicked()
-    {
-        StartCoroutine(PlayUIAnim("SlideRight", loadMenu, true));
-    }
     void settingsClicked()
     {
-        StartCoroutine(PlayUIAnim("SlideDown", settings));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", settings));
     }
 
     void pauseClicked()
     {
         Time.timeScale = (!pause.activeSelf) ? 0 : 1;
-        StartCoroutine(PlayUIAnim("SlideDown", pause, true));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", pause, true));
     }
 
     void keyBindsClicked()
     {
-        StartCoroutine(PlayUIAnim("SlideDown", keyBinds));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", keyBinds));
     }
 
     void quitClicked()
@@ -143,11 +127,11 @@ public class GameUI : Singleton<GameUI>
     {
         if (keyBinds.activeSelf)
         {
-            StartCoroutine(PlayUIAnim("SlideDown", keyBinds, true));
+            StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", keyBinds, true));
         }
         else
         {
-            StartCoroutine(PlayUIAnim("SlideDown", settings, true));
+            StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", settings, true));
         }
     }
 
@@ -163,63 +147,30 @@ public class GameUI : Singleton<GameUI>
         }
     }
 
-    void createClicked()
-    {
-        bool created = false;
-
-        if (!loadMenu.activeSelf) loadMenu.SetActive(true);
-        created = GetComponentInChildren<SaveLoadManager>().Save(characterName.text);
-
-        if (created)
-        {
-            //SceneManager.LoadScene("GameScene");
-            SavePosition(true);
-            LoadPosition();
-            loadMenu.SetActive(false);
-            startMenu.SetActive(false);
-            gameLoaded = true;
-            Time.timeScale = 1;
-            transform.Find("InventoryCollection").gameObject.SetActive(true);
-            StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
-        }
-        else
-        {
-            characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
-        }
-    }
-
-    public void ExitCreateCharacter()
-    {
-        loadMenu.SetActive(false);
-        startMenu.SetActive(true);
-        StartCoroutine(PlayUIAnim("SlideUp", characterCreation, true));
-    }
 
     public void OnInventory()
     {
-        StartCoroutine(PlayUIAnim("SlideLeft", inventoryMenu, true));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideLeft", inventoryMenu, true));
     }
 
     private void SaveKeyBinds()
     {
-        var settings = gameSettings;
-
-        settings.platformerKeys.Clear();
-        settings.minigameKeys.Clear();
-        settings.bossGameKeys.Clear();
+        gameSettings.platformerKeys.Clear();
+        gameSettings.minigameKeys.Clear();
+        gameSettings.bossGameKeys.Clear();
 
         foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
         {
             switch (bind.data.actionMap)
             {
                 case 0:
-                    settings.platformerKeys.Add(bind.data);
+                    gameSettings.platformerKeys.Add(bind.data);
                     break;
                 case 1:
-                    settings.minigameKeys.Add(bind.data);
+                    gameSettings.minigameKeys.Add(bind.data);
                     break;
                 case 2:
-                    settings.bossGameKeys.Add(bind.data);
+                    gameSettings.bossGameKeys.Add(bind.data);
                     break;
             }
         }
@@ -229,9 +180,6 @@ public class GameUI : Singleton<GameUI>
 
     public void LoadSaveGame()
     {
-        loadMenu.SetActive(false);
-        startMenu.SetActive(false);
-        gameLoaded = true;
         Time.timeScale = 1;
         modifySettings.ApplyData();
 
@@ -249,38 +197,19 @@ public class GameUI : Singleton<GameUI>
         }
         Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
-        transform.Find("InventoryCollection").gameObject.SetActive(true);
+        inventoryMenu.gameObject.SetActive(true);
     }
 
-    public void SaveOnQuit()
+    public void AutoSave()
     {
-        loadMenu.SetActive(true);
-        GetComponentInChildren<SaveLoadManager>().autoSave();
-    }
-
-    public IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false)
-    {
-        var anim = menu.GetComponent<Animator>();
-
-        if (anim.GetBool(name)) anim.SetBool(name, false);
-        else
-        {
-            menu.SetActive(true);
-            anim.SetBool(name, true);
-        }
-
-        if (Both)
-        {
-            yield return new WaitForSecondsRealtime(anim.GetCurrentAnimatorStateInfo(0).length);
-
-            if (!anim.GetBool(name)) menu.SetActive(false);
-        }
-        else yield return new WaitForSecondsRealtime(1);
+        loadGame.SetActive(true);
+        loadGame.GetComponent<SaveLoadManager>().autoSave();
+        loadGame.SetActive(false);
     }
 
     public void LoadMinigame(GameObject go)
     {
-        StartCoroutine(PlayUIAnim("SlideUp", go, go.activeSelf));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideUp", go, go.activeSelf));
     }
 
     public void LoadPosition()
@@ -292,5 +221,28 @@ public class GameUI : Singleton<GameUI>
     {
         if (reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
         else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+    }
+
+    public void LoadBindingOnStart(bool active)
+    {
+        settings.SetActive(active);
+        keyBinds.SetActive(active);
+        var tg = keyBinds.GetComponentInChildren<TabGroup>();
+
+        switch (tg.selectedTab.name)
+        {
+            case "Tab1":
+                tg.objectsToSwap[1].SetActive(active);
+                tg.objectsToSwap[2].SetActive(active);
+                break;
+            case "Tab2":
+                tg.objectsToSwap[0].SetActive(active);
+                tg.objectsToSwap[2].SetActive(active);
+                break;
+            case "Tab3":
+                tg.objectsToSwap[0].SetActive(active);
+                tg.objectsToSwap[1].SetActive(active);
+                break;
+        }
     }
 }
