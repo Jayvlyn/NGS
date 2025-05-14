@@ -1,4 +1,5 @@
 using GameEvents;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class CastSystem : MonoBehaviour
     private float increase = 0;
     private float speed = 0;
     private float startDelay;
+    private bool moving = false;
 
     private Transform waterT;
 
@@ -31,12 +33,12 @@ public class CastSystem : MonoBehaviour
 		increment = 0.01f;
 		increase = 0;
         startDelay = 0.2f;
-        
-		SpeedVariance(castBar.value);
+        moving = true;
 	}
 
 	private void OnDisable()
 	{
+        moving = false;
         GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 	}
 
@@ -58,7 +60,7 @@ public class CastSystem : MonoBehaviour
 		    }
         }
 
-        SpeedVariance(castBar.value);
+        if(moving) SpeedVariance(castBar.value);
 
         Rebound(castBar.value);
 
@@ -100,14 +102,22 @@ public class CastSystem : MonoBehaviour
 
     private void ResetCast()
     {
-        increment = 0.01f;
-        increase = 0;
-        speed = 50;
-
-        castBar.value = 0;
+        StartCoroutine(ResetOnDelay());
         GameUI.Instance.LoadMinigame(GameUI.Instance.transform.Find("CastUI").gameObject);
         //castScreen.SetActive(false);
     }
+
+    private IEnumerator ResetOnDelay()
+    {
+        moving = false;
+        speed = 0;
+        yield return new WaitForSeconds(3);
+		increment = 0.01f;
+		increase = 0;
+		speed = 50;
+
+		castBar.value = 0;
+	}
 
     public void SetWaterT(Transform waterT)
     {
