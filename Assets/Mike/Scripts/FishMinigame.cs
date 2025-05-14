@@ -1,4 +1,5 @@
 using GameEvents;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 [RequireComponent(typeof(FishRotator))]
@@ -22,6 +23,13 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] float boundsy = 300.0f; // Y Bounds
     [SerializeField] float boundsyoffset = 150.0f; // Y Bounds offset
 
+    [SerializeField] Transform bobberT;
+    [SerializeField] Transform hookT;
+    [SerializeField] Transform fishT;
+    private Vector2 initialBobberPos;
+    private Vector2 initialHookPos;
+    private Vector2 initialFishPos;
+
     //public float currentYBias;
     //private float currentWadeSpeed;
     private float swimAngle = 0;
@@ -36,6 +44,13 @@ public class FishMinigame : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private FishRotator rotator;
 
+	private void Start()
+	{
+		initialBobberPos = bobberT.position;
+		initialHookPos = hookT.position;
+		initialFishPos = fishT.position;
+	}
+
 	private void OnEnable()
 	{
 		GameUI.Instance.pi.SwitchCurrentActionMap("Minigame");
@@ -43,12 +58,21 @@ public class FishMinigame : MonoBehaviour
 		//currentSpeed = swimSpeed;
 		//currentWadeSpeed = wadeSpeed;
 		hooked = false;
+        isCaught = false;
 
 		catchProgBar.value = 25.0f;
 
 		fishImage.sprite = hookedFish.sprite;
         UpdateDesiredAngle();
         rb = GetComponent<Rigidbody2D>();
+	}
+
+	private void OnDisable()
+	{
+		catchProgress = 20f;
+        bobberT.position = initialBobberPos;
+        hookT.position = initialHookPos;
+        fishT.position = initialFishPos;
 	}
 
 	void FixedUpdate()
@@ -60,7 +84,7 @@ public class FishMinigame : MonoBehaviour
 
 	private void Update()
 	{
-        CheckIfComplete();
+        if(!isCaught) CheckIfComplete();
 	}
 
 	void MoveFish()
@@ -223,7 +247,6 @@ public class FishMinigame : MonoBehaviour
 	{
 		minigameEvent.Raise(isCaught);
 		GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
-		catchProgress = 20f;
         GameUI.Instance.LoadMinigame(GameUI.Instance.transform.Find("Minigame").gameObject);
         //minigameUI.SetActive(false);
     }

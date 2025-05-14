@@ -104,8 +104,8 @@ public class CastSystem : MonoBehaviour
     {
         StartCoroutine(ResetOnDelay());
         GameUI.Instance.LoadMinigame(GameUI.Instance.transform.Find("CastUI").gameObject);
-        //castScreen.SetActive(false);
-    }
+		//castScreen.SetActive(false);
+	}
 
     private IEnumerator ResetOnDelay()
     {
