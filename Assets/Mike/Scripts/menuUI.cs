@@ -10,7 +10,6 @@ public class MenuUI : MonoBehaviour
 {
     [Header("Panels")]
     [SerializeField] GameObject characterCreation;
-    [SerializeField] GameObject lodingScreen;
     [SerializeField] GameObject loadMenu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
@@ -105,7 +104,8 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterName.text.Remove(0);
-            SceneManager.LoadScene("GameScene");
+            //SceneManager.LoadScene("GameScene");
+            SceneLoader.LoadScene("GameScene");
             //play loading screen while switching to game
         }
         else
