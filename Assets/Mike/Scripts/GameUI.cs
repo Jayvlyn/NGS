@@ -96,6 +96,7 @@ public class GameUI : Singleton<GameUI>
         pauseClicked();
         gameStart = true;
         //SceneManager.LoadScene("MainMenu");
+        Inventory.Instance.RestInventory();
         SceneLoader.LoadScene("MainMenu");
     }
 
