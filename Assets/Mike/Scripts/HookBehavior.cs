@@ -26,7 +26,7 @@ public class HookBehavior : MonoBehaviour
         RotateHookToBobber();
     }
 
-    public void HookOutOfBoundsCheck()
+	public void HookOutOfBoundsCheck()
     {
         if (hookParent.position.x <= transform.position.x - 10)
         {
