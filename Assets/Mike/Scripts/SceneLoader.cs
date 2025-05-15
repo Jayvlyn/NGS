@@ -6,6 +6,7 @@ using System.Collections;
 public class SceneLoader : MonoBehaviour
 {
     public static string sceneToLoad;
+    public GameSettings persistSettings;
     public Slider progressBar;
 
     void Start()

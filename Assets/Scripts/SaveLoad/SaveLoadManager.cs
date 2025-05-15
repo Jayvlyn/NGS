@@ -202,6 +202,7 @@ public class SaveLoadManager : MonoBehaviour
             File.Delete(path);
             UpdateDisplay();
         }
+        selected = -1;
     }
 
     private void OnEnable()
