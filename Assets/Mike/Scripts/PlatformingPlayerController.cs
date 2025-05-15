@@ -1183,7 +1183,10 @@ public class PlatformingPlayerController : Interactor
 		if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
 		{
 			onIce = true;
-			rb.gravityScale = 0;
+			if(GetSlope().y == 0)
+			{
+				rb.gravityScale = 0;
+			}
 			return true;
 		}
 		else
