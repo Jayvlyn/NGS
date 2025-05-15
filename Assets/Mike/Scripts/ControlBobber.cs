@@ -39,7 +39,13 @@ public class ControlBobber : MonoBehaviour
 		{
 			HandleMouseInput();
 		}
-		HandleMovement();
+
+		HandleBobberMovement();
+
+		// Pass vertical input to hookBehavior for vertical movement
+		hookBehavior.SetVerticalInput(hookInput);
+
+		// Note: HookBehavior handles horizontal movement internally based on bobber position and resistance
 	}
 
 	private void HandleMouseInput()
@@ -62,7 +68,7 @@ public class ControlBobber : MonoBehaviour
 			hookInput = 0;
 	}
 
-	private void HandleMovement()
+	private void HandleBobberMovement()
 	{
 		float moveSpeed = baseMoveSpeed;
 
@@ -74,22 +80,6 @@ public class ControlBobber : MonoBehaviour
 		else if (bobberInput > 0 && bobberRb.transform.localPosition.x <= sideLength)
 		{
 			bobberRb.MovePosition(new Vector2(bobberRb.position.x + moveSpeed, bobberRb.position.y));
-		}
-
-		// Move hook vertically
-		if (hookInput < 0 && hookRb.transform.localPosition.y > -depthLength)
-		{
-			lineLength += reelSpeed;
-			float moveDistance = Vector2.Distance(hookRb.transform.position, new Vector2(bobberRb.transform.position.x, hookRb.transform.position.y)) / hookBehavior.hookResistanceVal;
-			float moveFinal = moveDistance * hookBehavior.hookDirection;
-			Vector2 movement = new Vector2(hookRb.transform.position.x + moveFinal, hookRb.transform.position.y - reelSpeed);
-			hookRb.transform.position = movement;
-		}
-		else if (hookInput > 0 && hookRb.transform.localPosition.y < depthLength)
-		{
-			lineLength -= reelSpeed;
-			Vector2 direction = (bobberRb.transform.position - hookRb.transform.position).normalized * reelSpeed;
-			hookRb.transform.position += (Vector3)direction;
 		}
 	}
 
