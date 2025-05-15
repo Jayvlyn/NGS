@@ -20,13 +20,15 @@ public class MinigameObstacle : MonoBehaviour
     {
         imageObject.GetComponent<Image>().sprite = image;
         currentSpeed = speed;
+        currentSpeed += Random.Range(-5, 6);
+        currentSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
         transform.Rotate(0f, 0f, 20f);
     }
 
 
     void Update()
     {
-        if(currentSpeed > 0) MoveObstacle();
+        if(currentSpeed != 0) MoveObstacle();
     }
 
     #region SwimLogic
