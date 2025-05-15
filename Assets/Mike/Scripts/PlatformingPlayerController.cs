@@ -335,21 +335,41 @@ public class PlatformingPlayerController : Interactor
 
 	private Vector2 GetMovement(float speed)
 	{
-		float absMovement = Mathf.Abs(moveInput);
-		Vector2 dir = new(speed * moveInput, 0);
-		RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
-		Debug.Log(hit.collider != null);
+		Vector2 movement = GetSlope(moveInput);
+		movement *= speed;
+		if(movement.y != 0 && !onIce)
+		{
+			movement += -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
+        }
+		return movement;
+	}
+
+	private Vector2 GetSlope(float magnitude = 0)
+	{
+		Vector2 result = new Vector2(magnitude, 0);
+		float absMagnitude;
+		bool forMovement = true;
+		if(magnitude == 0)
+		{
+            absMagnitude = magnitude == 0 ? 1 : Mathf.Abs(magnitude);
+			magnitude = 1;
+			forMovement = false;
+        }
+		else
+		{
+			absMagnitude = Mathf.Abs(magnitude);
+		}
+		RaycastHit2D hit = Physics2D.Raycast(forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude + 0.01f) : new Vector2(transform.position.x - magnitude, transform.position.y + slopeCheckDistance + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
 		if(hit)
 		{
-			RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * moveInput, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
-			if(hit2)
-			{
-				dir = hit2.point - hit.point;
-				Debug.Log(dir);
-				dir = absMovement * speed * dir.normalized * (1 + slopeModifier * Mathf.Max(0, dir.normalized.y)) + -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
-			}
-		}
-		return dir;
+            RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
+            if (hit2)
+            {
+                result = hit2.point - hit.point;
+                result = absMagnitude * result.normalized;
+            }
+        }
+		return result;
 	}
 
 	#endregion
