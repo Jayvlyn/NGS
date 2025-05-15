@@ -128,7 +128,8 @@ public class SaveLoadManager : MonoBehaviour
     {
         //var sceneIndex = SceneManager.GetActiveScene().buildIndex+1;
         //if (sceneIndex % SceneManager.sceneCountInBuildSettings == 0) sceneIndex = 1;
-        SceneManager.LoadScene("GameScene");
+        //SceneManager.LoadScene("GameScene");
+        SceneLoader.LoadScene(saveList[selected].position.currentLocation);
     }
 
     public void Select(int save)
@@ -201,6 +202,7 @@ public class SaveLoadManager : MonoBehaviour
             File.Delete(path);
             UpdateDisplay();
         }
+        selected = -1;
     }
 
     private void OnEnable()

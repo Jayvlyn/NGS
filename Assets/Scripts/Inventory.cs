@@ -50,6 +50,12 @@ public class Inventory : Singleton<Inventory>
             Destroy(fish);
         }
     }
+
+    public void RestInventory()
+    {
+        currentFish.Clear();
+        money = 0;
+    }
     
     public FishData GetFishData(string name)
     {

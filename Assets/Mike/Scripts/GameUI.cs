@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class GameUI : Singleton<GameUI>
 {
     [HideInInspector] public static bool gameStart = true;
+    [HideInInspector] public bool saveTime = false;
 
     [Header("Panels")]
     [SerializeField] GameObject loadGame;
@@ -43,12 +44,14 @@ public class GameUI : Singleton<GameUI>
             if (btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
             else if (btn.name == "QuitBtn")
             {
+                btn.onClick.AddListener(() => SaveTime());
                 btn.onClick.AddListener(() => AutoSave());
                 btn.onClick.AddListener(() => quitClicked());
             }
             else if (btn.name == "SettingsBtn") btn.onClick.AddListener(() => settingsClicked());
             else
             {
+                btn.onClick.AddListener(() => SaveTime());
                 btn.onClick.AddListener(() => AutoSave());
                 btn.onClick.AddListener(() => MainMenuClicked());
             }
@@ -95,7 +98,9 @@ public class GameUI : Singleton<GameUI>
     {
         pauseClicked();
         gameStart = true;
-        SceneManager.LoadScene("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
+        Inventory.Instance.RestInventory();
+        SceneLoader.LoadScene("MainMenu");
     }
 
     void settingsClicked()
@@ -221,6 +226,7 @@ public class GameUI : Singleton<GameUI>
     {
         if (reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
         else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        SaveTime();
     }
 
     public void LoadBindingOnStart(bool active)
@@ -244,5 +250,10 @@ public class GameUI : Singleton<GameUI>
                 tg.objectsToSwap[1].SetActive(active);
                 break;
         }
+    }
+
+    public void SaveTime(bool state = true)
+    {
+        saveTime = state;
     }
 }

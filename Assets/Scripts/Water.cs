@@ -56,7 +56,8 @@ public class Water : InteractableObject
                 onBossBite.Raise(fish);
                 BossFishController.bossFish = fish;
                 GameUI.Instance.SavePosition();
-                SceneManager.LoadScene("BossfightScene");
+                //SceneManager.LoadScene("BossfightScene");
+                SceneLoader.LoadScene("BossfightScene");
             }
             else
             {
