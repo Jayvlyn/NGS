@@ -24,7 +24,7 @@ public class SpawnObstacles : MonoBehaviour
         int sIndex = Random.Range(0, spawnPoints.Count);
         int oIndex = Random.Range(0, obstaclesToSpawn.Count);
         int i = 0;
-        for (; obstaclesToSpawn[oIndex].weight > maxWeight && i < obstaclesToSpawn.Count; i++)
+        for (; obstaclesToSpawn[oIndex].cost > maxWeight && i < obstaclesToSpawn.Count; i++)
         {
             oIndex++;
             if(oIndex == obstaclesToSpawn.Count)
@@ -43,7 +43,7 @@ public class SpawnObstacles : MonoBehaviour
 
         spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = GetComponentInChildren<FishMinigame>();
         spawnedObject.SetActive(true);
-        return obstaclesToSpawn[oIndex].weight;
+        return obstaclesToSpawn[oIndex].cost;
         
     }
 }

@@ -2,80 +2,81 @@ using UnityEngine;
 
 public class HookBehavior : MonoBehaviour
 {
-    [SerializeField] public Transform hookParent;
-    public float hookResistanceVal = 25.0f; // The higher, the slower
-    private float originalResistanceVal;
-    public int hookDirection = 0;
+	[SerializeField] public Transform hookParent;
+	public float hookResistanceVal = 25.0f; // Higher = slower
+	private float originalResistanceVal;
+	public int hookDirection = 0;
 
-    private bool hitObstacle = false;
-    private float timer = 0;
+	private float verticalInput = 0f;
+	public float verticalSpeed = 0.5f;
 
-    Rigidbody2D rb;
+	private Rigidbody2D rb;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        originalResistanceVal = hookResistanceVal;
-    }
+	void Start()
+	{
+		rb = GetComponent<Rigidbody2D>();
+		rb.gravityScale = 0; // Prevent falling
+		originalResistanceVal = hookResistanceVal;
+	}
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        HookOutOfBoundsCheck();
+	void FixedUpdate()
+	{
+		HookOutOfBoundsCheck();
+		MoveHook();
+		RotateHookToBobber();
+	}
 
-        RotateHookToBobber();
-    }
+	public void SetVerticalInput(float input)
+	{
+		verticalInput = input;
+	}
 
-    public void HookOutOfBoundsCheck()
-    {
-        if (hookParent.position.x <= transform.position.x - 10)
-        {
-            //Debug.Log("Hook should move left");
-            hookDirection = -1;
-            KeepHookUnderBobber(Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
-            return;
-        }
+	void MoveHook()
+	{
+		float horizontalMove = 0f;
 
-        if (hookParent.position.x >= transform.position.x + 10)
-        {
-            //Debug.Log("Hook should move right");
-            hookDirection = 1;
-            KeepHookUnderBobber(Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y)));
-            return;
-        }
+		if (hookDirection != 0)
+		{
+			float distanceToBobber = Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y));
+			horizontalMove = (distanceToBobber / hookResistanceVal) * hookDirection;
+		}
 
-        hookDirection = 0;
-    }
+		float verticalMove = verticalInput * verticalSpeed;
 
-    void KeepHookUnderBobber(float distanceToBobber)
-    {
-        //Debug.Log("Move Hook");
-        float moveDistance = distanceToBobber / hookResistanceVal;
-        float moveFinal = moveDistance * hookDirection;
+		Vector2 newPos = rb.position + new Vector2(horizontalMove, verticalMove);
+		rb.MovePosition(newPos);
+	}
 
-        rb.MovePosition(new Vector2(transform.position.x + moveFinal, transform.position.y));
-    }
+	void HookOutOfBoundsCheck()
+	{
+		float xDiff = hookParent.position.x - transform.position.x;
 
-    void RotateHookToBobber()
-    {
-        Vector2 dir = hookParent.transform.position - transform.position;
-        Vector3 rotation = transform.localEulerAngles;
+		if (Mathf.Abs(xDiff) >= 10f)
+		{
+			hookDirection = xDiff < 0 ? -1 : 1;
+		}
+		else
+		{
+			hookDirection = 0;
+		}
+	}
 
-        float angle = -dir.x / 10;
+	void RotateHookToBobber()
+	{
+		Vector2 dir = hookParent.position - transform.position;
+		float angle = -dir.x / 10f;
+		Vector3 rotation = transform.localEulerAngles;
+		rotation.z = angle;
+		transform.localEulerAngles = rotation;
+	}
 
-        rotation.z = angle;
+	public void ChangeSpeed(float newVal)
+	{
+		hookResistanceVal = newVal;
+	}
 
-        transform.localEulerAngles = rotation;
-
-    }
-
-    public void ChangeSpeed(float hookResistance)
-    {
-        hookResistanceVal = hookResistance;
-    }
-
-    public void ResetSpeed()
-    {
-        hookResistanceVal = originalResistanceVal;
-    }
+	public void ResetSpeed()
+	{
+		hookResistanceVal = originalResistanceVal;
+	}
 }

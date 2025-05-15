@@ -335,21 +335,47 @@ public class PlatformingPlayerController : Interactor
 
 	private Vector2 GetMovement(float speed)
 	{
-		float absMovement = Mathf.Abs(moveInput);
-		Vector2 dir = new(speed * moveInput, 0);
-		RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
-		Debug.Log(hit.collider != null);
-		if(hit)
+		Vector2 movement = GetSlope(moveInput);
+		movement *= speed;
+		if(movement.y != 0 && !onIce)
 		{
-			RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * moveInput, transform.position.y + slopeCheckDistance * absMovement + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
-			if(hit2)
-			{
-				dir = hit2.point - hit.point;
-				Debug.Log(dir);
-				dir = absMovement * speed * dir.normalized * (1 + slopeModifier * Mathf.Max(0, dir.normalized.y)) + -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
-			}
+			movement += -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
+        }
+		return movement;
+	}
+
+	private Vector2 GetSlope(float magnitude = 0)
+	{
+		Vector2 result = new Vector2(magnitude, 0);
+		float absMagnitude;
+		bool forMovement = true;
+		if(magnitude == 0)
+		{
+            absMagnitude = magnitude == 0 ? 1 : Mathf.Abs(magnitude);
+			magnitude = 1;
+			forMovement = false;
+        }
+		else
+		{
+			absMagnitude = Mathf.Abs(magnitude);
 		}
-		return dir;
+		Vector2 from = forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 3 + 0.01f);
+		//Vector2 to = from + (Vector2.down * (slopeCheckDistance * 8f + 0.05f));
+        RaycastHit2D hit = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 8f + 0.05f, groundLayer);
+        //Debug.DrawLine(from, to, hit ? Color.green : Color.red, 2);
+        if (hit)
+		{
+			from = new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f);
+			//to = from + (Vector2.down * (slopeCheckDistance * 8f + 0.05f));
+			RaycastHit2D hit2 = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 8f + 0.05f, groundLayer);
+			//Debug.DrawLine(from, to, hit2 ? Color.green : Color.red, 2);
+            if (hit2)
+            {
+                result = hit2.point - hit.point;
+                result = absMagnitude * result.normalized;
+            }
+        }
+		return result;
 	}
 
 	#endregion
@@ -1049,7 +1075,11 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		landTimer = 0; // will count up until bunny hop window is passed
-		currentJumps = totalJumps;
+		Vector2 slope = GetSlope();
+		if (Mathf.Abs(slope.x) >= Mathf.Abs(slope.y))
+		{
+			currentJumps = totalJumps;
+		}
 		currentWallJumps = totalWallJumps;
 		if (isJumpBufferActive())
 		{
@@ -1133,8 +1163,21 @@ public class PlatformingPlayerController : Interactor
 			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
 				isOnIce();
-				Debug.Log("checks past");
+				//Debug.Log("checks past");
                 if (!onGround) OnLand(); // first frame returning true, so just landed
+				else //stayed on ground
+				{
+                    //regenerates jump if you were on a steep slope and no longer are, or disables it if inverse
+                    Vector2 slope = GetSlope();
+                    if (Mathf.Abs(slope.x) >= Mathf.Abs(slope.y))
+                    {
+                        currentJumps = totalJumps;
+                    }
+					else
+					{
+						currentJumps = 0;
+					}
+                }
 				return true; // set onGround to true;
 			}
 			// not on currently ground:
@@ -1163,7 +1206,10 @@ public class PlatformingPlayerController : Interactor
 		if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
 		{
 			onIce = true;
-			rb.gravityScale = 0;
+			if(GetSlope().y == 0)
+			{
+				rb.gravityScale = 0;
+			}
 			return true;
 		}
 		else
@@ -1258,9 +1304,9 @@ public class PlatformingPlayerController : Interactor
 
 		//Slope Checks
 		Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
-        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + 0.01f), new Vector3(transform.position.x, transform.position.y - slopeCheckDistance * 3 + 0.01f));
-        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
+        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
+        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
 
     }
 

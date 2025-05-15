@@ -13,20 +13,22 @@ public class MinigameObstacle : MonoBehaviour
 
     [Header("Minigame effects")]
     [SerializeField] float speedPenalty;
-    [SerializeField] float reduceAmount;
+    [SerializeField] float explosionForce;
 
 
     void Start()
     {
         imageObject.GetComponent<Image>().sprite = image;
         currentSpeed = speed;
+        currentSpeed += Random.Range(-5, 6);
+        currentSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
         transform.Rotate(0f, 0f, 20f);
     }
 
 
     void Update()
     {
-        MoveObstacle();
+        if(currentSpeed != 0) MoveObstacle();
     }
 
     #region SwimLogic
@@ -97,9 +99,15 @@ public class MinigameObstacle : MonoBehaviour
     {
         if (collision.tag == "Hook")
         {
-            //fishMinigame.ReduceProgress(reduceAmount);
             if(hb == null) hb = collision.GetComponent<HookBehavior>();
-            hb.ChangeSpeed(hb.hookResistanceVal * 2);
+            if (explosionForce > 0)
+            {
+                if(collision.gameObject.TryGetComponent(out Rigidbody2D hookRb))
+                {
+                    ExplodeObstacle(hookRb);
+                }
+            }
+            if(speedPenalty > 0) hb.ChangeSpeed(hb.hookResistanceVal * speedPenalty);
         }
     }
 
@@ -108,13 +116,24 @@ public class MinigameObstacle : MonoBehaviour
 		if (collision.tag == "Hook")
 		{
             if(hb == null) hb = collision.GetComponent<HookBehavior>();
-            hb.ResetSpeed();
+            if(speedPenalty > 0) hb.ResetSpeed();
 		}
 	}
 
-	private void OnDisable()
-	{
-		Destroy(gameObject);
-	}
+    private void OnDisable()
+    {
+        Destroy(gameObject);
+    }
 
+    private void ExplodeObstacle(Rigidbody2D hookRb)
+    {
+        // do particle effect
+        // do forces
+        Debug.Log("adding force");
+        Vector2 explosionDir = (hookRb.transform.position - transform.position).normalized;
+        Vector2 forceVector = explosionDir * explosionForce;
+        hookRb.MovePosition(forceVector);
+
+        Destroy(gameObject);
+    }
 }
