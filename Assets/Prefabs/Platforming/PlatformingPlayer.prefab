@@ -464,6 +464,7 @@ MonoBehaviour:
   bhopVelocityLimit: 20
   jumpForce: 10.5
   airControlMod: 0.4
+  iceMoveMod: 0.5
   bhopForce: 5
   playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
   changeDirSpeedMult: 0.5
@@ -476,6 +477,7 @@ MonoBehaviour:
   coyoteTime: 0.1
   totalJumps: 1
   totalWallJumps: 5
+  wallJumpLimit: 0
   wallJumpUpwardsInfluence: 1
   wallJumpSidewaysInfluence: 0.5
   bunnyHopWindow: 0.05
@@ -495,6 +497,8 @@ MonoBehaviour:
     m_Bits: 65536
   groundCheckT: {fileID: 6125027497295351764}
   groundCheckSize: {x: 0.08, y: -0.01}
+  slopeCheckDistance: 0.11
+  slopeModifier: 1
   wallLayer:
     serializedVersion: 2
     m_Bits: 4096
