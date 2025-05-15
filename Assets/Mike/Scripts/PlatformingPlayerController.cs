@@ -359,10 +359,16 @@ public class PlatformingPlayerController : Interactor
 		{
 			absMagnitude = Mathf.Abs(magnitude);
 		}
-		RaycastHit2D hit = Physics2D.Raycast(forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 3 + 0.01f), Vector2.down, slopeCheckDistance * 6f + 0.04f, groundLayer);
-		if(hit)
+		Vector2 from = forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 3 + 0.01f);
+		//Vector2 to = from + (Vector2.down * (slopeCheckDistance * 8f + 0.05f));
+        RaycastHit2D hit = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 8f + 0.05f, groundLayer);
+        //Debug.DrawLine(from, to, hit ? Color.green : Color.red, 2);
+        if (hit)
 		{
-            RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f), Vector2.down, slopeCheckDistance * 6f + 0.04f, groundLayer);
+			from = new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f);
+			//to = from + (Vector2.down * (slopeCheckDistance * 8f + 0.05f));
+			RaycastHit2D hit2 = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 8f + 0.05f, groundLayer);
+			//Debug.DrawLine(from, to, hit2 ? Color.green : Color.red, 2);
             if (hit2)
             {
                 result = hit2.point - hit.point;
@@ -1069,7 +1075,11 @@ public class PlatformingPlayerController : Interactor
 		}
 
 		landTimer = 0; // will count up until bunny hop window is passed
-		currentJumps = totalJumps;
+		Vector2 slope = GetSlope();
+		if (Mathf.Abs(slope.x) >= Mathf.Abs(slope.y))
+		{
+			currentJumps = totalJumps;
+		}
 		currentWallJumps = totalWallJumps;
 		if (isJumpBufferActive())
 		{
@@ -1153,8 +1163,21 @@ public class PlatformingPlayerController : Interactor
 			if (Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, groundLayer) || inWater)
 			{
 				isOnIce();
-				Debug.Log("checks past");
+				//Debug.Log("checks past");
                 if (!onGround) OnLand(); // first frame returning true, so just landed
+				else //stayed on ground
+				{
+                    //regenerates jump if you were on a steep slope and no longer are, or disables it if inverse
+                    Vector2 slope = GetSlope();
+                    if (Mathf.Abs(slope.x) >= Mathf.Abs(slope.y))
+                    {
+                        currentJumps = totalJumps;
+                    }
+					else
+					{
+						currentJumps = 0;
+					}
+                }
 				return true; // set onGround to true;
 			}
 			// not on currently ground:
@@ -1281,9 +1304,9 @@ public class PlatformingPlayerController : Interactor
 
 		//Slope Checks
 		Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
-        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + 0.01f), new Vector3(transform.position.x, transform.position.y - slopeCheckDistance * 3 + 0.01f));
-        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - slopeCheckDistance * 3 + 0.01f));
+        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
+        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
+        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
 
     }
 
