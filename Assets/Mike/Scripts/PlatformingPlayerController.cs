@@ -359,7 +359,7 @@ public class PlatformingPlayerController : Interactor
 		{
 			absMagnitude = Mathf.Abs(magnitude);
 		}
-		RaycastHit2D hit = Physics2D.Raycast(forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude + 0.01f) : new Vector2(transform.position.x - magnitude, transform.position.y + slopeCheckDistance + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
+		RaycastHit2D hit = Physics2D.Raycast(forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
 		if(hit)
 		{
             RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude + 0.01f), Vector2.down, slopeCheckDistance * 3f, groundLayer);
