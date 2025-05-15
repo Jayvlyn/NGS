@@ -4,5 +4,5 @@ using UnityEngine;
 public struct WeightedObject
 {
     public GameObject obj;
-    public int weight;
+    public int cost;
 }
