@@ -6,11 +6,12 @@ using System.Collections;
 public class SceneLoader : MonoBehaviour
 {
     public static string sceneToLoad;
-    public GameSettings persistSettings;
+    public GameSettings settings;
     public Slider progressBar;
 
     void Start()
     {
+        settings.position.currentLocation = sceneToLoad;
         StartCoroutine(LoadAsync());
     }
 

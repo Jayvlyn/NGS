@@ -33,6 +33,8 @@ public struct KeyBindingSaveData
 [System.Serializable]
 public struct positionData
 {
+    public string currentLocation;
+    public float currentTime;
     public float x;
     public float y;
 }
