@@ -344,38 +344,55 @@ public class PlatformingPlayerController : Interactor
 		return movement;
 	}
 
-	private Vector2 GetSlope(float magnitude = 0)
+	private Vector2 GetSlope(float direction = 0)
 	{
-		Vector2 result = new Vector2(magnitude, 0);
-		float absMagnitude;
-		bool forMovement = true;
-		if(magnitude == 0)
+		//Vector2 result = new Vector2(magnitude, 0);
+		//float absMagnitude;
+		//bool forMovement = true;
+		//if(magnitude == 0)
+		//{
+		//          absMagnitude = magnitude == 0 ? 1 : Mathf.Abs(magnitude);
+		//	magnitude = 1;
+		//	forMovement = false;
+		//      }
+		//else
+		//{
+		//	absMagnitude = Mathf.Abs(magnitude);
+		//}
+		//Vector2 from = forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude * 4f + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f);
+		////Vector2 to = from + (Vector2.down * (slopeCheckDistance * 12f + 0.05f));
+		//      RaycastHit2D hit = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 12f + 0.05f, groundLayer);
+		//      //Debug.DrawLine(from, to, hit ? Color.green : Color.red, 2);
+		//      if (hit)
+		//{
+		//	from = new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude * 4f + 0.01f);
+		//	//to = from + (Vector2.down * (slopeCheckDistance * 12f + 0.05f));
+		//	RaycastHit2D hit2 = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 12f + 0.05f, groundLayer);
+		//	//Debug.DrawLine(from, to, hit2 ? Color.green : Color.red, 2);
+		//          if (hit2)
+		//          {
+		//              result = hit2.point - hit.point;
+		//              result = absMagnitude * result.normalized;
+		//          }
+		//      }
+		if(direction == 0)
 		{
-            absMagnitude = magnitude == 0 ? 1 : Mathf.Abs(magnitude);
-			magnitude = 1;
-			forMovement = false;
-        }
+			direction = isFacingLeft() ? 1 : -1;
+		}
 		else
 		{
-			absMagnitude = Mathf.Abs(magnitude);
+			direction = Mathf.Sign(direction);
 		}
-		Vector2 from = forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 3 + 0.01f);
-		//Vector2 to = from + (Vector2.down * (slopeCheckDistance * 8f + 0.05f));
-        RaycastHit2D hit = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 8f + 0.05f, groundLayer);
-        //Debug.DrawLine(from, to, hit ? Color.green : Color.red, 2);
+		Vector2 result = new Vector2(direction, 0);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
         if (hit)
-		{
-			from = new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude * 3f + 0.01f);
-			//to = from + (Vector2.down * (slopeCheckDistance * 8f + 0.05f));
-			RaycastHit2D hit2 = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 8f + 0.05f, groundLayer);
-			//Debug.DrawLine(from, to, hit2 ? Color.green : Color.red, 2);
-            if (hit2)
-            {
-                result = hit2.point - hit.point;
-                result = absMagnitude * result.normalized;
-            }
+        {
+			result = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
+			Vector2Int psuedo = new Vector2Int((int)(result.x * 1000), (int)(result.y * 1000));
+			result = new Vector2(psuedo.x * 0.001f, psuedo.y * 0.001f);
         }
-		return result;
+		Debug.Log(result);
+        return result;
 	}
 
 	#endregion
@@ -1304,9 +1321,9 @@ public class PlatformingPlayerController : Interactor
 
 		//Slope Checks
 		Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
-        Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
-        Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - (slopeCheckDistance * 4f + 0.04f)));
+        //Gizmos.DrawLine(new Vector3(transform.position.x + slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x + slopeCheckDistance, transform.position.y - (slopeCheckDistance * 8f + 0.04f)));
+        //Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x, transform.position.y - (slopeCheckDistance * 8f + 0.04f)));
+        //Gizmos.DrawLine(new Vector3(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f), new Vector3(transform.position.x - slopeCheckDistance, transform.position.y - (slopeCheckDistance * 8f + 0.04f)));
 
     }
 
