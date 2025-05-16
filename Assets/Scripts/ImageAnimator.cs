@@ -7,6 +7,7 @@ public class ImageAnimator : MonoBehaviour
     [SerializeField] Image image;
 	[SerializeField] Sprite[] sprites;
 	[SerializeField] float frameInterval = 0.3f;
+	[SerializeField] bool destroyOnEnd = false;
 	float swapTimer;
 	int index = 0;
 
@@ -27,6 +28,7 @@ public class ImageAnimator : MonoBehaviour
 			swapTimer = frameInterval;
 			if (index++ >= sprites.Length - 1)
 			{
+				if (destroyOnEnd) Destroy(gameObject);
 				index = 0;
 			}
 

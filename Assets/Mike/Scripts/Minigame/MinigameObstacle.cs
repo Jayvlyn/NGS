@@ -7,6 +7,7 @@ public class MinigameObstacle : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] Sprite image;
     [SerializeField] GameObject imageObject;
+    [SerializeField] GameObject spawnOnDestroy;
     private float currentSpeed = 0.0f;
 
     [SerializeField] public FishMinigame fishMinigame { set; get; }
@@ -133,6 +134,7 @@ public class MinigameObstacle : MonoBehaviour
         Vector2 forceVector = explosionDir * explosionForce;
         hb.ApplyImpulse(forceVector);
 
+        if(spawnOnDestroy != null) Instantiate(spawnOnDestroy, transform.position, transform.rotation, transform.parent);
         Destroy(gameObject);
     }
 }
