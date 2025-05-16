@@ -627,6 +627,9 @@ MonoBehaviour:
   hookResistanceVal: 25
   hookDirection: 0
   verticalSpeed: 4
+  externalDecayRate: 3
+  minY: 80
+  maxY: 470
 --- !u!114 &7971708289345694609
 MonoBehaviour:
   m_ObjectHideFlags: 0

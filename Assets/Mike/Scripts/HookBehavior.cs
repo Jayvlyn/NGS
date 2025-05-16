@@ -15,6 +15,9 @@ public class HookBehavior : MonoBehaviour
     private Vector2 externalVelocity = Vector2.zero;
     [SerializeField] private float externalDecayRate = 3f;
 
+    [SerializeField] private float minY = -20f;
+    [SerializeField] private float maxY = 5f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -47,12 +50,16 @@ public class HookBehavior : MonoBehaviour
         float verticalMove = verticalInput * verticalSpeed;
 
         Vector2 controlMovement = new Vector2(horizontalMove, verticalMove);
-
-        // Combine with external impulse
         Vector2 finalMove = controlMovement + externalVelocity * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + finalMove);
 
-        // Smoothly decay the external velocity
+        Vector2 targetPos = rb.position + finalMove;
+
+        // Clamp the Y position within min and max bounds
+        targetPos.y = Mathf.Clamp(targetPos.y, minY, maxY);
+
+        rb.MovePosition(targetPos);
+
+        // Smooth decay of external velocity
         externalVelocity = Vector2.Lerp(externalVelocity, Vector2.zero, externalDecayRate * Time.fixedDeltaTime);
     }
 
