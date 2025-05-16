@@ -105,11 +105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed490b8ab0f1ae419f6022e6bd675bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
+  speed: 20
+  rotateSpeed: 15
   image: {fileID: 21300000, guid: 0550fe2d900752c40a3e6c20c5b5a934, type: 3}
   imageObject: {fileID: 7871500671596667619}
   spawnOnDestroy: {fileID: 0}
-  speedPenalty: 3
+  speedPenalty: 4
   explosionForce: 0
 --- !u!1 &7871500671596667619
 GameObject:
