@@ -6,7 +6,6 @@ public class MinigameObstacle : MonoBehaviour
     [Header("Obstacle references")]
     [SerializeField] float speed;
     [SerializeField] float rotateSpeed = 45;
-    [SerializeField] Sprite image;
     [SerializeField] GameObject imageObject;
     [SerializeField] GameObject spawnOnDestroy;
     private float currentSpeed = 0.0f;
@@ -21,7 +20,6 @@ public class MinigameObstacle : MonoBehaviour
 
     void Start()
     {
-        imageObject.GetComponent<Image>().sprite = image;
         currentSpeed = speed;
         currentSpeed += Random.Range(-5, 6);
         currentSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;

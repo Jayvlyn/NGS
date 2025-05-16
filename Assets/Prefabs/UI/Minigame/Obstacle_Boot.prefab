@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8625951185936290918}
   - component: {fileID: 3895386628178932210}
-  - component: {fileID: 3512850322738880539}
   - component: {fileID: 8952307044513932103}
+  - component: {fileID: 3648149490109725425}
   m_Layer: 5
   m_Name: Obstacle_Boot
   m_TagString: Untagged
@@ -47,8 +47,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6200299212229735857}
   m_CullTransparentMesh: 1
---- !u!61 &3512850322738880539
-BoxCollider2D:
+--- !u!114 &8952307044513932103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6200299212229735857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed490b8ab0f1ae419f6022e6bd675bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 44
+  rotateSpeed: 45
+  imageObject: {fileID: 7871500671596667619}
+  spawnOnDestroy: {fileID: 0}
+  speedPenalty: 2
+  explosionForce: 0
+--- !u!60 &3648149490109725425
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -81,7 +99,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5913849, y: 0.8763733}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -91,26 +109,15 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 89.76413, y: 82.2536}
-  m_EdgeRadius: 0
---- !u!114 &8952307044513932103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200299212229735857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed490b8ab0f1ae419f6022e6bd675bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 44
-  image: {fileID: 21300000, guid: 23ba70e03d7649b4f9a59dc8d01fa897, type: 3}
-  imageObject: {fileID: 7871500671596667619}
-  spawnOnDestroy: {fileID: 0}
-  speedPenalty: 2
-  explosionForce: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.54437256, y: -8.072296}
+      - {x: -37.058968, y: -15.476841}
+      - {x: -40.32463, y: -46.715084}
+      - {x: 43.04634, y: -49.436733}
+      - {x: 43.58185, y: 41.655792}
+      - {x: -22.45562, y: 26.800259}
+  m_UseDelaunayMesh: 0
 --- !u!1 &7871500671596667619
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 209396bdcfe56cc47baac8903f975949, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 36e4706d1f60c434ba060fef912a98d9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
