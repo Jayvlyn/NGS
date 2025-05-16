@@ -339,7 +339,6 @@ public class PlatformingPlayerController : Interactor
 				Vector2 slopeB = GetSlope(1);
 				Vector2 slope = slopeA.y < 0 ? slopeA : slopeB;
 				slope = rb.gravityScale * 8 * new Vector2(Mathf.Sign(slope.x) * -slope.y, 0);
-				Debug.Log(slope);
 				rb.AddForce(slope);
 			}
 
