@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterCreation: {fileID: 6667465382450423069}
-  lodingScreen: {fileID: 0}
   loadMenu: {fileID: 4370046324416509360}
   settings: {fileID: 2072952512989364131}
   keyBinds: {fileID: 6869472987305718873}
@@ -284,17 +283,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3568914216739439987 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8738215574713814970, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
-  m_PrefabInstance: {fileID: 5243091937828981449}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &5145603871692249133 stripped
@@ -703,10 +691,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 6840890016136574067, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
-      propertyPath: image
-      value: 
-      objectReference: {fileID: 3568914216739439987}
     - target: {fileID: 7130324658940927342, guid: 4db41fac14603534fb27da02691cdf60, type: 3}
       propertyPath: m_Controller
       value: 

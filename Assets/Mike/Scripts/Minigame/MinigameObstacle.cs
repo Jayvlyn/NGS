@@ -5,10 +5,12 @@ public class MinigameObstacle : MonoBehaviour
 {
     [Header("Obstacle references")]
     [SerializeField] float speed;
+    [SerializeField] float rotateSpeed = 45;
     [SerializeField] Sprite image;
     [SerializeField] GameObject imageObject;
     [SerializeField] GameObject spawnOnDestroy;
     private float currentSpeed = 0.0f;
+    private float currentRotateSpeed = 0.0f;
 
     [SerializeField] public FishMinigame fishMinigame { set; get; }
 
@@ -23,7 +25,12 @@ public class MinigameObstacle : MonoBehaviour
         currentSpeed = speed;
         currentSpeed += Random.Range(-5, 6);
         currentSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
-        transform.Rotate(0f, 0f, 20f);
+
+        currentRotateSpeed = rotateSpeed;
+        currentRotateSpeed += Random.Range(-5, 6);
+		currentRotateSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
+
+		transform.Rotate(0f, 0f, Random.Range(-20, 20));
     }
 
 
@@ -51,9 +58,9 @@ public class MinigameObstacle : MonoBehaviour
             return;
         }
 
-        imageObject.transform.Rotate(0f,0f, 45f * Time.deltaTime);
+        transform.Rotate(0f,0f, currentRotateSpeed * Time.deltaTime);
 
-        Vector2 direction = new Vector2(transform.right.x, transform.right.y);
+        Vector2 direction = Vector2.right;
 
         direction.Normalize();
         direction.x *= currentSpeed * Time.deltaTime;

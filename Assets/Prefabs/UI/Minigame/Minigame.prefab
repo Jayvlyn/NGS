@@ -482,6 +482,7 @@ MonoBehaviour:
   - {fileID: 1728136853, guid: 0a376f5257fac3a42bb1204ede947621, type: 3}
   - {fileID: -1860256128, guid: 0a376f5257fac3a42bb1204ede947621, type: 3}
   frameInterval: 0.2
+  destroyOnEnd: 0
 --- !u!114 &8120898443925726638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,8 +629,8 @@ MonoBehaviour:
   hookDirection: 0
   verticalSpeed: 4
   externalDecayRate: 3
-  minY: 80
-  maxY: 470
+  minY: 0.14
+  maxY: 0.87
 --- !u!114 &7971708289345694609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2054,6 +2055,7 @@ MonoBehaviour:
   - {fileID: 1728136853, guid: 7212fd2ccb068ef428d549c0699ea9bf, type: 3}
   - {fileID: -1860256128, guid: 7212fd2ccb068ef428d549c0699ea9bf, type: 3}
   frameInterval: 0.2
+  destroyOnEnd: 0
 --- !u!114 &6037024845890309190
 MonoBehaviour:
   m_ObjectHideFlags: 0

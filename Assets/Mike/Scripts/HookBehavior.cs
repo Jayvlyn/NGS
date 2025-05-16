@@ -47,15 +47,19 @@ public class HookBehavior : MonoBehaviour
             horizontalMove = (distanceToBobber / hookResistanceVal) * hookDirection;
         }
 
-        float verticalMove = verticalInput * verticalSpeed;
+        float verticalMove = verticalInput * verticalSpeed / hookResistanceVal;
 
         Vector2 controlMovement = new Vector2(horizontalMove, verticalMove);
         Vector2 finalMove = controlMovement + externalVelocity * Time.fixedDeltaTime;
 
         Vector2 targetPos = rb.position + finalMove;
 
+        //Debug.Log("Before: " + targetPos.y);
         // Clamp the Y position within min and max bounds
-        targetPos.y = Mathf.Clamp(targetPos.y, minY, maxY);
+        targetPos.y = Mathf.Clamp(targetPos.y, minY * Screen.height, maxY * Screen.height);
+        //Debug.Log("After: " + targetPos.y);
+        //Debug.Log("Max: "+ maxY * Screen.currentResolution.height);
+        //Debug.Log("Min: "+ minY * Screen.currentResolution.height);
 
         rb.MovePosition(targetPos);
 
