@@ -54,8 +54,12 @@ public class HookBehavior : MonoBehaviour
 
         Vector2 targetPos = rb.position + finalMove;
 
+        //Debug.Log("Before: " + targetPos.y);
         // Clamp the Y position within min and max bounds
-        targetPos.y = Mathf.Clamp(targetPos.y, minY, maxY);
+        targetPos.y = Mathf.Clamp(targetPos.y, minY * Screen.currentResolution.height, maxY * Screen.currentResolution.height);
+        //Debug.Log("After: " + targetPos.y);
+        //Debug.Log("Max: "+ maxY * Screen.currentResolution.height);
+        //Debug.Log("Min: "+ minY * Screen.currentResolution.height);
 
         rb.MovePosition(targetPos);
 
