@@ -56,7 +56,7 @@ public class HookBehavior : MonoBehaviour
 
         //Debug.Log("Before: " + targetPos.y);
         // Clamp the Y position within min and max bounds
-        targetPos.y = Mathf.Clamp(targetPos.y, minY * Screen.currentResolution.height, maxY * Screen.currentResolution.height);
+        targetPos.y = Mathf.Clamp(targetPos.y, minY * Screen.height, maxY * Screen.height);
         //Debug.Log("After: " + targetPos.y);
         //Debug.Log("Max: "+ maxY * Screen.currentResolution.height);
         //Debug.Log("Min: "+ minY * Screen.currentResolution.height);
