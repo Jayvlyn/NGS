@@ -391,7 +391,7 @@ public class PlatformingPlayerController : Interactor
 			Vector2Int psuedo = new Vector2Int((int)(result.x * 1000), (int)(result.y * 1000));
 			result = new Vector2(psuedo.x * 0.001f, psuedo.y * 0.001f);
         }
-		Debug.Log(result);
+		//Debug.Log(result);
         return result;
 	}
 
