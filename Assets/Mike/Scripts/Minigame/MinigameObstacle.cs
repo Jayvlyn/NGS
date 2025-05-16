@@ -58,9 +58,9 @@ public class MinigameObstacle : MonoBehaviour
             return;
         }
 
-        imageObject.transform.Rotate(0f,0f, currentRotateSpeed * Time.deltaTime);
+        transform.Rotate(0f,0f, currentRotateSpeed * Time.deltaTime);
 
-        Vector2 direction = new Vector2(transform.right.x, transform.right.y);
+        Vector2 direction = Vector2.right;
 
         direction.Normalize();
         direction.x *= currentSpeed * Time.deltaTime;
