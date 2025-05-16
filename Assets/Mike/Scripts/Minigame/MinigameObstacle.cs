@@ -102,9 +102,9 @@ public class MinigameObstacle : MonoBehaviour
             if(hb == null) hb = collision.GetComponent<HookBehavior>();
             if (explosionForce > 0)
             {
-                if(collision.gameObject.TryGetComponent(out Rigidbody2D hookRb))
+                if(collision.gameObject.TryGetComponent(out HookBehavior hb))
                 {
-                    ExplodeObstacle(hookRb);
+                    ExplodeObstacle(hb);
                 }
             }
             if(speedPenalty > 0) hb.ChangeSpeed(hb.hookResistanceVal * speedPenalty);
@@ -125,14 +125,13 @@ public class MinigameObstacle : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void ExplodeObstacle(Rigidbody2D hookRb)
+    private void ExplodeObstacle(HookBehavior hb)
     {
         // do particle effect
         // do forces
-        Debug.Log("adding force");
-        Vector2 explosionDir = (hookRb.transform.position - transform.position).normalized;
+        Vector2 explosionDir = (hb.transform.position - transform.position).normalized;
         Vector2 forceVector = explosionDir * explosionForce;
-        hookRb.MovePosition(forceVector);
+        hb.ApplyImpulse(forceVector);
 
         Destroy(gameObject);
     }

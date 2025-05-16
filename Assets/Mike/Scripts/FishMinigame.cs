@@ -46,9 +46,9 @@ public class FishMinigame : MonoBehaviour
 
 	private void Start()
 	{
-		initialBobberPos = bobberT.position;
-		initialHookPos = hookT.position;
-		initialFishPos = fishT.position;
+		initialBobberPos = bobberT.localPosition;
+		initialHookPos = hookT.localPosition;
+		initialFishPos = fishT.localPosition;
 	}
 
 	private void OnEnable()
@@ -70,9 +70,9 @@ public class FishMinigame : MonoBehaviour
 	private void OnDisable()
 	{
 		catchProgress = 20f;
-        bobberT.position = initialBobberPos;
-        hookT.position = initialHookPos;
-        fishT.position = initialFishPos;
+        bobberT.localPosition = initialBobberPos;
+        hookT.localPosition = initialHookPos;
+        fishT.localPosition = initialFishPos;
 	}
 
 	void FixedUpdate()
@@ -101,26 +101,6 @@ public class FishMinigame : MonoBehaviour
             BottomTopBounce();
             return;
         }
-
-        //// Flip the current Wading speed if it reaches one of the bounds
-        //if(swimAngle > (0.75f + currentYBias) || swimAngle < (-0.75f + currentYBias))
-        //{
-        //    currentWadeSpeed *= -1;
-        //}
-        ////swimAngle += (currentWadeSpeed);
-        //swimAngle += currentWadeSpeed > 0 ? Random.Range(-currentSpeed)
-
-        //// Rotate Sprite
-        //Vector3 newEuler = new Vector3(0, 0, swimAngle);
-        //transform.Rotate(newEuler);
-
-        //Vector2 direction = new Vector2(transform.right.x, transform.right.y);
-
-        //direction.Normalize();
-        //direction.x *= currentSpeed;
-        //direction.y *= currentSpeed;
-
-        //Vector2 newPosition = new Vector2(transform.position.x + direction.x, transform.position.y + direction.y );
         float panicModifier = hooked ? panicMulti : 1;
         swimAngle = Mathf.Lerp(swimAngle, goalAngle, Time.deltaTime * panicModifier);
         if(swimAngle - goalAngle > -5f && swimAngle - goalAngle < 5f)
@@ -128,10 +108,6 @@ public class FishMinigame : MonoBehaviour
             UpdateDesiredAngle();
         }
         velocity = panicModifier * swimSpeed * (Quaternion.Euler(0, 0, swimAngle) * Vector3.right);
-        //if(Mathf.Sign(velocity.x) != Mathf.Sign(transform.localScale.x))
-        //{
-        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //}
         rotator.BaseRotation = Quaternion.Euler(0, 0, swimAngle);
         rb.MovePosition(new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y));
         
