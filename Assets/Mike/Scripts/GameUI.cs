@@ -69,14 +69,19 @@ public class GameUI : Singleton<GameUI>
             LoadPosition();
             gameStart = false;
         }
+
         if(SaveLoadManager.selected != -1)
         {
             loadGame.SetActive(true);
             loadGame.GetComponent<SaveLoadManager>().Load();
             loadGame.SetActive(false);
         }
+        else
+        {
+            inventoryMenu.SetActive(true);
+        }
 
-        LoadBindingOnStart(true);
+            LoadBindingOnStart(true);
         LoadBindingOnStart(false);
     }
 
