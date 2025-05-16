@@ -8,6 +8,7 @@ public class MinigameObstacle : MonoBehaviour
     [SerializeField] float rotateSpeed = 45;
     [SerializeField] GameObject imageObject;
     [SerializeField] GameObject spawnOnDestroy;
+    [SerializeField] bool randomInitialRotation = true;
     private float currentSpeed = 0.0f;
     private float currentRotateSpeed = 0.0f;
 
@@ -28,7 +29,7 @@ public class MinigameObstacle : MonoBehaviour
         currentRotateSpeed += Random.Range(-5, 6);
 		currentRotateSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
 
-		transform.Rotate(0f, 0f, Random.Range(-20, 20));
+		if(randomInitialRotation) transform.Rotate(0f, 0f, Random.Range(-20, 20));
     }
 
 
