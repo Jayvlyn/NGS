@@ -331,13 +331,26 @@ public class PlatformingPlayerController : Interactor
 				rb.AddForce(GetMovement(speed), ForceMode2D.Force);
 			}
 		}
+		else if(onIce)
+		{
+			Vector2 slopeA = GetSlope(-1);
+			if(Mathf.Abs(slopeA.x) > 0.707f)
+			{
+				Vector2 slopeB = GetSlope(1);
+				Vector2 slope = slopeA.y < 0 ? slopeA : slopeB;
+				slope = rb.gravityScale * 8 * new Vector2(Mathf.Sign(slope.x) * -slope.y, 0);
+				Debug.Log(slope);
+				rb.AddForce(slope);
+			}
+
+		}
 	}
 
 	private Vector2 GetMovement(float speed)
 	{
 		Vector2 movement = GetSlope(moveInput);
 		movement *= speed;
-		if(movement.y != 0 && !onIce)
+		if(movement.y != 0)
 		{
 			movement += -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
         }
@@ -377,7 +390,7 @@ public class PlatformingPlayerController : Interactor
 		//      }
 		if(direction == 0)
 		{
-			direction = isFacingLeft() ? 1 : -1;
+			direction = isFacingLeft() ? -1 : 1;
 		}
 		else
 		{
@@ -388,10 +401,9 @@ public class PlatformingPlayerController : Interactor
         if (hit)
         {
 			result = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
-			Vector2Int psuedo = new Vector2Int((int)(result.x * 1000), (int)(result.y * 1000));
-			result = new Vector2(psuedo.x * 0.001f, psuedo.y * 0.001f);
+			Vector2Int psuedo = new Vector2Int((int)(result.x * 100), (int)(result.y * 100));
+			result = new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
         }
-		//Debug.Log(result);
         return result;
 	}
 
