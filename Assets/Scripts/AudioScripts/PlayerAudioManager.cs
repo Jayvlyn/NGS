@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerAudioManager : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class PlayerAudioManager : MonoBehaviour
     [SerializeField] AudioClip runLoop;
     [SerializeField] AudioClip walkLoop; // for hooked movement
     [SerializeField] AudioClip wallSlideLoop;
-    [SerializeField] AudioClip[] jumps;
+    [SerializeField] AudioClip jump;
     [SerializeField] AudioClip[] lands;
     [SerializeField] AudioClip waterSplash;
 
@@ -32,7 +34,12 @@ public class PlayerAudioManager : MonoBehaviour
 
     public void PlayJumpSound()
     {
-        PickNPlayOneShotAudio(jumps);
+        PlayOneShotAudio(jump);
+    }
+
+    public void StopJumpSound()
+    {
+        CancelOneShotAudio(jump);
     }
 
     public void PlayCastSound()
@@ -55,13 +62,16 @@ public class PlayerAudioManager : MonoBehaviour
         if(runLoop == null) return;
         UpdateLoopingVolume(1);
         UpdateLoopingPitch(1);
-        loopingAudioSource.resource = runLoop;
-        StartLoopingAudioSource();
+        if(stopRun != null) StopCoroutine(stopRun);
+        StartLoopingAudioSource(runLoop);
     }
 
     public void StopRunSound()
     {
-        StopLoopingAudioSource();
+        if (loopingAudioSource.enabled)
+        {
+            stopRun = StartCoroutine(SmoothStop(loopingAudioSource));
+        }
     }
 
     public void StartWalkSound()
@@ -69,8 +79,7 @@ public class PlayerAudioManager : MonoBehaviour
         if(walkLoop == null) return;
         UpdateLoopingVolume(1);
         UpdateLoopingPitch(1);
-        loopingAudioSource.resource = walkLoop;
-        StartLoopingAudioSource();
+        StartLoopingAudioSource(walkLoop);
     }
 
     public void StopWalkSound()
@@ -83,8 +92,7 @@ public class PlayerAudioManager : MonoBehaviour
         if(wallSlideLoop == null) return;
         UpdateLoopingVolume(0);
         UpdateLoopingPitch(0);
-        loopingAudioSource.resource = wallSlideLoop;
-        StartLoopingAudioSource();
+        StartLoopingAudioSource(wallSlideLoop);
     }
 
     public void StopWallSlideSound()
@@ -98,8 +106,7 @@ public class PlayerAudioManager : MonoBehaviour
         UpdateLoopingVolume(0);
         UpdateLoopingPitch(0);
         loopingAudioSource.pitch = startingReelPitch;
-        loopingAudioSource.resource = reelLoop;
-        StartLoopingAudioSource();
+        StartLoopingAudioSource(reelLoop);
     }
 
     public void StopReelSound()
@@ -156,6 +163,19 @@ public class PlayerAudioManager : MonoBehaviour
         }
     }
 
+    private void CancelOneShotAudio(AudioClip clip)
+    {
+        if(clip == null) return;
+        foreach (AudioSource oneShotAudioSource in oneShotAudioSources)
+        {
+            if (oneShotAudioSource.isPlaying && oneShotAudioSource.resource == clip)
+            {
+                StartCoroutine(SmoothStop(oneShotAudioSource));
+                break;
+            }
+        }
+    }
+
     private void PickNPlayOneShotAudio(AudioClip[] clips, float volume = 1, float pitch = 1)
     {
         if (clips == null || clips.Length < 1) return;
@@ -164,14 +184,35 @@ public class PlayerAudioManager : MonoBehaviour
 
     private void StopLoopingAudioSource()
     {
-        loopingAudioSource.Stop();
-        loopingAudioSource.enabled = false;
+        if(loopingAudioSource.enabled) StartCoroutine(SmoothStop(loopingAudioSource));
     }
 
-    private void StartLoopingAudioSource()
+    private void StartLoopingAudioSource(AudioClip clip)
     {
+        if (stopRun != null)
+        {
+            StopCoroutine(stopRun);
+            stopRun = null;
+        }
         if (loopingAudioSource.isPlaying) loopingAudioSource.Stop();
+        loopingAudioSource.resource = clip;
         loopingAudioSource.Play();
-        loopingAudioSource.enabled = true;
     }
+
+    private Coroutine stopRun;
+    private IEnumerator SmoothStop(AudioSource audioSource, float time = 0.15f)
+    {
+        float t = 0f;
+        float initialVolume = audioSource.volume;
+        while(t < time)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(initialVolume, 0, t / time);
+            yield return null;
+        }
+        if (stopRun != null) stopRun = null;
+        audioSource.Stop();
+        audioSource.volume = 1;
+    }
+
 }

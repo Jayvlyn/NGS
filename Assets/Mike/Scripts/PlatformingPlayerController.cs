@@ -1036,6 +1036,7 @@ public class PlatformingPlayerController : Interactor
 	{
 		if (rb.linearVelocityY > 0) // only reduce when going up
 		{
+			audioManager.StopJumpSound();
 			rb.linearVelocityY *= 0.5f;
 		}
 	}

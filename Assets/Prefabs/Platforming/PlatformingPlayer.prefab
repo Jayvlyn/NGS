@@ -1004,11 +1004,7 @@ MonoBehaviour:
   runLoop: {fileID: 8300000, guid: 2383994963ed9e54ead74138a27a5767, type: 3}
   walkLoop: {fileID: 0}
   wallSlideLoop: {fileID: 8300000, guid: fe0fc9e2437b137408a25955b948f15f, type: 3}
-  jumps:
-  - {fileID: 8300000, guid: 059d3c49d90f669418033cc12ef0bb78, type: 3}
-  - {fileID: 8300000, guid: 1e6e104753fe5674285c87fa1af248bb, type: 3}
-  - {fileID: 8300000, guid: e973c8a363f5f2241a2ac8b11fbdc203, type: 3}
-  - {fileID: 8300000, guid: 0041594e0cc5ce4459a15b88a5de4159, type: 3}
+  jump: {fileID: 8300000, guid: 1e6e104753fe5674285c87fa1af248bb, type: 3}
   lands:
   - {fileID: 8300000, guid: b83c2294dddb89c47b0de8a1afa7740f, type: 3}
   - {fileID: 8300000, guid: 501db99bed6ae9c4ca02e7fe5bd8196d, type: 3}
@@ -1031,7 +1027,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 7210871386916808558, guid: fd8426117eef26d47a4f6f63224f8509, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
