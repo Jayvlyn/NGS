@@ -630,8 +630,7 @@ public class PlatformingPlayerController : Interactor
 				{
 					rb.gravityScale += Time.deltaTime + rb.gravityScale;
 					rb.gravityScale *= wallStickGravityIncreaseMult;
-					audioManager.UpdateLoopingPitch(rb.gravityScale);
-					audioManager.UpdateLoopingVolume(Mathf.Clamp01(rb.gravityScale));
+					audioManager.UpdateWallSlidePitchAndVolume(rb.gravityScale);
 				}
 				else if (rb.gravityScale >= startingGravity)
 				{

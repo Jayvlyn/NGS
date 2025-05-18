@@ -114,12 +114,18 @@ public class PlayerAudioManager : MonoBehaviour
         StopLoopingAudioSource();
     }
 
-    public void UpdateLoopingPitch(float pitch)
+    public void UpdateWallSlidePitchAndVolume(float playerGravityScale)
+    {
+        UpdateLoopingPitch(playerGravityScale);
+        UpdateLoopingVolume(Mathf.Clamp01(playerGravityScale));
+    }
+
+    private void UpdateLoopingPitch(float pitch)
     {
         loopingAudioSource.pitch = pitch;
     }
 
-    public void UpdateLoopingVolume(float volume)
+    private void UpdateLoopingVolume(float volume)
     {
         loopingAudioSource.volume = volume;
     }
