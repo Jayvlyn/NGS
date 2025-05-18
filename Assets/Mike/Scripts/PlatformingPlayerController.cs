@@ -17,6 +17,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private CinemachineTargetGroup ctg;
 	[HideInInspector] public Transform interactedWaterT;
 	[SerializeField] private Animator animator;
+	[SerializeField] private PlayerAudioManager audioManager;
 	[SerializeField] VoidEvent onInventory;
 	private Camera cam;
 
@@ -502,6 +503,7 @@ public class PlatformingPlayerController : Interactor
 				SetTrigger("ToReelWalk");
 				break;
 			case MoveState.WALL_STICKING:
+				audioManager.PlayWallStickSound();
 				FlipX();
 				rb.linearVelocityY = 0;
 				if(touchingIceWall)
@@ -1040,6 +1042,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
+		audioManager.PlayJumpSound();
 		onIce = false;
 		rb.gravityScale = startingGravity;
 		//if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
@@ -1062,6 +1065,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoWallJump()
 	{
+		audioManager.PlayJumpSound();
 		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.WALLJUMPING);
 		if(wallJumpLimit) currentWallJumps--;
