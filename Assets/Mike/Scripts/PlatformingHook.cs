@@ -6,6 +6,7 @@ public class PlatformingHook : MonoBehaviour
 	public Rigidbody2D rb;
 	public Collider2D col;
 	[SerializeField] private PlatformingPlayerController ppc;
+	[SerializeField] private AudioSource audioSource;
 
 	private void Update()
 	{
@@ -16,6 +17,11 @@ public class PlatformingHook : MonoBehaviour
 			transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
 		}
 	}
+
+	public void PlayHookHitSound()
+	{
+		audioSource.Play();
+	}	
 
 	//private void OnTriggerEnter2D(Collider2D collision)
 	//{

@@ -12,7 +12,6 @@ public class PlayerAudioManager : MonoBehaviour
     [SerializeField] float startingReelPitch = 1.0f;
     [SerializeField] float startingSlackPitch = 1.0f;
 
-
     [Header("Movement")]
     [SerializeField] AudioClip runLoop;
     [SerializeField] AudioClip walkLoop; // for hooked movement
@@ -24,8 +23,7 @@ public class PlayerAudioManager : MonoBehaviour
     [Header("Fishing Rod")]
     [SerializeField] AudioClip reelLoop;
     [SerializeField] AudioClip slackLoop;
-    [SerializeField] AudioClip cast;
-    [SerializeField] AudioClip hookHit;
+    [SerializeField] AudioClip[] casts;
 
     private void Start()
     {
@@ -35,25 +33,21 @@ public class PlayerAudioManager : MonoBehaviour
 
     public void PlayJumpSound()
     {
-        if (jumps == null || jumps.Length < 1) return;
-        PlayOneShotAudio(jumps[Random.Range(0, jumps.Length - 1)]);
+        PickNPlayOneShotAudio(jumps);
     }
 
     public void PlayCastSound()
     {
-        if (cast == null) return;
-        PlayOneShotAudio(cast);
+        PickNPlayOneShotAudio(casts);
     }    
 
     public void PlayLandSound()
     {
-        if (lands == null || lands.Length < 1) return;
-        PlayOneShotAudio(lands[Random.Range(0, lands.Length - 1)]);
+        PickNPlayOneShotAudio(lands);
     }
 
     public void PlaySplashSound()
     {
-        if(waterSplash == null) return;
         PlayOneShotAudio(waterSplash);
     }
 
@@ -122,6 +116,7 @@ public class PlayerAudioManager : MonoBehaviour
 
     private void PlayOneShotAudio(AudioClip clip)
     {
+        if (clip == null) return;
         foreach (AudioSource oneShotAudioSource in oneShotAudioSources)
         {
             if (!oneShotAudioSource.isPlaying)
@@ -131,6 +126,12 @@ public class PlayerAudioManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void PickNPlayOneShotAudio(AudioClip[] clips)
+    {
+        if (clips == null || clips.Length < 1) return;
+        PlayOneShotAudio(clips[Random.Range(0, clips.Length - 1)]);
     }
 
     private void StopLoopingAudioSource()

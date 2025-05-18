@@ -703,6 +703,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.CASTING:
+				audioManager.PlayCastSound();
 				OnEnterCastingState();
 				if(onGround) ChangeMoveState(MoveState.GROUND_CASTING);
 				else ChangeMoveState(MoveState.AIR_CASTING);
@@ -717,6 +718,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.HOOKED:
+				hook.PlayHookHitSound();
 				OnEnterHookedState();
 				if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
 				else ChangeMoveState(MoveState.AIR_HOOKED);
