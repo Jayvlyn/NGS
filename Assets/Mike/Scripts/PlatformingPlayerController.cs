@@ -454,6 +454,7 @@ public class PlatformingPlayerController : Interactor
 		if (currentMoveState == MoveState.WALL_STICKING)
 		{ // exiting wall stick
 			rb.gravityScale = startingGravity;
+			audioManager.StopWallSlideSound();
 		}
 
 		//Debug.Log($"Changing from {currentMoveState} to {state}");
@@ -509,6 +510,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 			case MoveState.WALL_STICKING:
 				audioManager.PlayLandSound();
+				audioManager.StartWallSlideSound();
 				FlipX();
 				rb.linearVelocityY = 0;
 				if(touchingIceWall)
@@ -628,6 +630,8 @@ public class PlatformingPlayerController : Interactor
 				{
 					rb.gravityScale += Time.deltaTime + rb.gravityScale;
 					rb.gravityScale *= wallStickGravityIncreaseMult;
+					audioManager.UpdateLoopingPitch(rb.gravityScale);
+					audioManager.UpdateLoopingVolume(Mathf.Clamp01(rb.gravityScale));
 				}
 				else if (rb.gravityScale >= startingGravity)
 				{

@@ -114,6 +114,16 @@ public class PlayerAudioManager : MonoBehaviour
         StopLoopingAudioSource();
     }
 
+    public void UpdateLoopingPitch(float pitch)
+    {
+        loopingAudioSource.pitch = pitch;
+    }
+
+    public void UpdateLoopingVolume(float volume)
+    {
+        loopingAudioSource.volume = volume;
+    }
+
     private void PlayOneShotAudio(AudioClip clip)
     {
         if (clip == null) return;
@@ -146,5 +156,4 @@ public class PlayerAudioManager : MonoBehaviour
         loopingAudioSource.Play();
         loopingAudioSource.enabled = true;
     }
-
 }
