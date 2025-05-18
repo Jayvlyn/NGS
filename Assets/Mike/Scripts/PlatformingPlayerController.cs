@@ -17,6 +17,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private CinemachineTargetGroup ctg;
 	[HideInInspector] public Transform interactedWaterT;
 	[SerializeField] private Animator animator;
+	[SerializeField] private PlayerAudioManager audioManager;
 	[SerializeField] VoidEvent onInventory;
 	private Camera cam;
 
@@ -460,21 +461,26 @@ public class PlatformingPlayerController : Interactor
 		switch (state)
 		{
 			case MoveState.IDLE:
+				audioManager.StopRunSound();
 				SetTrigger("ToIdle");
 				break;
 			case MoveState.RUNNING:
+				audioManager.StartRunSound();
 				SetTrigger("ToRun");
 				break;
 			case MoveState.JUMPING:
+				audioManager.StopRunSound();
 				SetTrigger("ToJump");
 				break;
 			case MoveState.FALLING:
+				audioManager.StopRunSound();
 				SetTrigger("ToFall");
 				break;
 			case MoveState.WALLJUMPING:
 				SetTrigger("ToWallJump");
 				break;
 			case MoveState.SWIMMING:
+				audioManager.StopRunSound();
 				SetTrigger("ToSwim");
 				break;
 			case MoveState.AIR_CASTING:
@@ -502,6 +508,7 @@ public class PlatformingPlayerController : Interactor
 				SetTrigger("ToReelWalk");
 				break;
 			case MoveState.WALL_STICKING:
+				audioManager.PlayLandSound();
 				FlipX();
 				rb.linearVelocityY = 0;
 				if(touchingIceWall)
@@ -696,6 +703,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.CASTING:
+				audioManager.PlayCastSound();
 				OnEnterCastingState();
 				if(onGround) ChangeMoveState(MoveState.GROUND_CASTING);
 				else ChangeMoveState(MoveState.AIR_CASTING);
@@ -710,6 +718,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.HOOKED:
+				hook.PlayHookHitSound();
 				OnEnterHookedState();
 				if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
 				else ChangeMoveState(MoveState.AIR_HOOKED);
@@ -1040,6 +1049,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoJump(bool bHop)
 	{
+		audioManager.PlayJumpSound();
 		onIce = false;
 		rb.gravityScale = startingGravity;
 		//if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
@@ -1062,6 +1072,7 @@ public class PlatformingPlayerController : Interactor
 
 	public void DoWallJump()
 	{
+		audioManager.PlayJumpSound();
 		if (currentRodState != RodState.INACTIVE) ChangeRodState(RodState.RETURNING);
 		ChangeMoveState(MoveState.WALLJUMPING);
 		if(wallJumpLimit) currentWallJumps--;
@@ -1088,6 +1099,7 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
+		audioManager.PlayLandSound();
 		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING || currentMoveState == MoveState.WALL_STICKING)
 		{
 			if(moveHeld) ChangeMoveState(MoveState.RUNNING);
