@@ -36,12 +36,14 @@ public class PathFollower : MonoBehaviour
                 }
             }
             Vector3 position = splineContainer.EvaluatePosition(distance);
-            Vector3 up = splineContainer.EvaluateUpVector(distance);
-			//Debug.Log(up);
-			Vector3 forward = splineContainer.EvaluateTangent(distance);
-
-			result = (position, Quaternion.LookRotation(forward.normalized, up) * Quaternion.Euler(rotatedBy));
-            result.Item2 *= Quaternion.AngleAxis(90, new Vector3(0, 0, 1));
+            //Vector3 up = splineContainer.EvaluateUpVector(distance);
+            //Debug.Log(up);
+            //Vector3 forward = splineContainer.EvaluateTangent(distance);
+            Vector3 relative = (position - transform.position).normalized;
+			result = (position, Quaternion.Euler(0, 0, 
+                Mathf.Rad2Deg * Mathf.Atan2(relative.y, relative.x))
+                * Quaternion.Euler(rotatedBy));
+            //result.Item2 *= Quaternion.AngleAxis(90, new Vector3(0, 0, 1));
 		}
         return result;
     }
