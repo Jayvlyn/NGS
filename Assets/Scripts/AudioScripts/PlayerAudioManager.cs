@@ -22,7 +22,6 @@ public class PlayerAudioManager : MonoBehaviour
 
     [Header("Fishing Rod")]
     [SerializeField] AudioClip reelLoop;
-    [SerializeField] AudioClip slackLoop;
     [SerializeField] AudioClip[] casts;
 
     private void Start()
@@ -96,8 +95,8 @@ public class PlayerAudioManager : MonoBehaviour
     public void StartReelSound()
     {
         if (reelLoop == null) return;
-        UpdateLoopingVolume(1);
-        UpdateLoopingPitch(1);
+        UpdateLoopingVolume(0);
+        UpdateLoopingPitch(0);
         loopingAudioSource.pitch = startingReelPitch;
         loopingAudioSource.resource = reelLoop;
         StartLoopingAudioSource();
@@ -108,25 +107,27 @@ public class PlayerAudioManager : MonoBehaviour
         StopLoopingAudioSource();
     }
 
-    public void StartSlackSound()
+    public bool IsReelSoundPlaying()
     {
-        if (slackLoop == null) return;
-        UpdateLoopingVolume(1);
-        UpdateLoopingPitch(1);
-        loopingAudioSource.pitch = startingSlackPitch;
-        loopingAudioSource.resource = reelLoop;
-        StartLoopingAudioSource();
+        return loopingAudioSource.resource == reelLoop && loopingAudioSource.isPlaying;
     }
 
-    public void StopSlackSound()
-    {
-        StopLoopingAudioSource();
-    }
-
-    public void UpdateWallSlidePitchAndVolume(float playerGravityScale)
+    public void UpdateWallSlideSound(float playerGravityScale)
     {
         UpdateLoopingPitch(playerGravityScale);
         UpdateLoopingVolume(Mathf.Clamp01(playerGravityScale / 2));
+    }
+
+    public void UpdateReelSound(float playerSpeed)
+    {
+        UpdateLoopingPitch(playerSpeed);
+        UpdateLoopingVolume(Mathf.Clamp01(playerSpeed));
+    }
+
+    public void UpdatSlackSound(float playerSpeed)
+    {
+        UpdateLoopingPitch(1 / playerSpeed);
+        UpdateLoopingVolume(1 / Mathf.Clamp01(playerSpeed));
     }
 
     private void UpdateLoopingPitch(float pitch)

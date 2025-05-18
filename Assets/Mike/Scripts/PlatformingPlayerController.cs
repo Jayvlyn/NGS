@@ -270,10 +270,12 @@ public class PlatformingPlayerController : Interactor
 		if (value.isPressed)
 		{
 			reelHeld = true;
+			audioManager.StartReelSound();
 		}
 		else // released
 		{
 			reelHeld = false;
+			audioManager.StopReelSound();
 		}
 	}
 
@@ -630,7 +632,7 @@ public class PlatformingPlayerController : Interactor
 				{
 					rb.gravityScale += Time.deltaTime + rb.gravityScale;
 					rb.gravityScale *= wallStickGravityIncreaseMult;
-					audioManager.UpdateWallSlidePitchAndVolume(rb.gravityScale);
+					audioManager.UpdateWallSlideSound(rb.gravityScale);
 				}
 				else if (rb.gravityScale >= startingGravity)
 				{
@@ -797,6 +799,7 @@ public class PlatformingPlayerController : Interactor
 				{
 					if (slackHeld) // Give Slack
 					{
+						audioManager.UpdatSlackSound(rb.linearVelocity.magnitude);
 						if (distanceJoint.distance < playerStats.platformingLineLength)
 						{
 							distanceJoint.distance += Time.deltaTime * playerStats.platformingReelSpeed;
@@ -809,6 +812,7 @@ public class PlatformingPlayerController : Interactor
 					}
 					else // Reel In
 					{
+						audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
 						if(currentMoveState != MoveState.AIR_REELING || currentMoveState != MoveState.GROUND_REELING)
 						{
 							if(onGround) ChangeMoveState(MoveState.GROUND_REELING);
