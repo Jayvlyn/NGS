@@ -461,21 +461,26 @@ public class PlatformingPlayerController : Interactor
 		switch (state)
 		{
 			case MoveState.IDLE:
+				audioManager.StopRunSound();
 				SetTrigger("ToIdle");
 				break;
 			case MoveState.RUNNING:
+				audioManager.StartRunSound();
 				SetTrigger("ToRun");
 				break;
 			case MoveState.JUMPING:
+				audioManager.StopRunSound();
 				SetTrigger("ToJump");
 				break;
 			case MoveState.FALLING:
+				audioManager.StopRunSound();
 				SetTrigger("ToFall");
 				break;
 			case MoveState.WALLJUMPING:
 				SetTrigger("ToWallJump");
 				break;
 			case MoveState.SWIMMING:
+				audioManager.StopRunSound();
 				SetTrigger("ToSwim");
 				break;
 			case MoveState.AIR_CASTING:
@@ -503,7 +508,7 @@ public class PlatformingPlayerController : Interactor
 				SetTrigger("ToReelWalk");
 				break;
 			case MoveState.WALL_STICKING:
-				audioManager.PlayWallStickSound();
+				audioManager.PlayLandSound();
 				FlipX();
 				rb.linearVelocityY = 0;
 				if(touchingIceWall)
@@ -1092,6 +1097,7 @@ public class PlatformingPlayerController : Interactor
 	private float landTimer = Mathf.Infinity;
 	private void OnLand()
 	{
+		audioManager.PlayLandSound();
 		if (currentMoveState == MoveState.FALLING || currentMoveState == MoveState.JUMPING || currentMoveState == MoveState.WALLJUMPING || currentMoveState == MoveState.WALL_STICKING)
 		{
 			if(moveHeld) ChangeMoveState(MoveState.RUNNING);

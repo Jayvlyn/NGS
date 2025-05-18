@@ -5,7 +5,7 @@ public class PlayerAudioManager : MonoBehaviour
 {
     [Header("Audio Sources")]
     [SerializeField] AudioSource loopingAudioSource;
-    [SerializeField] AudioSource oneShotAudioSource;
+    [SerializeField] AudioSource[] oneShotAudioSources;
 
     [Header("Config")]
     [SerializeField] float startingWallSlidePitch = 1.0f;
@@ -18,7 +18,7 @@ public class PlayerAudioManager : MonoBehaviour
     [SerializeField] AudioClip walkLoop; // for hooked movement
     [SerializeField] AudioClip wallSlideLoop;
     [SerializeField] AudioClip[] jumps;
-    [SerializeField] AudioClip wallStick;
+    [SerializeField] AudioClip[] lands;
     [SerializeField] AudioClip waterSplash;
 
     [Header("Fishing Rod")]
@@ -36,29 +36,25 @@ public class PlayerAudioManager : MonoBehaviour
     public void PlayJumpSound()
     {
         if (jumps == null || jumps.Length < 1) return;
-        oneShotAudioSource.resource = jumps[Random.Range(0, jumps.Length-1)];
-        oneShotAudioSource.Play();
+        PlayOneShotAudio(jumps[Random.Range(0, jumps.Length - 1)]);
     }
 
     public void PlayCastSound()
     {
         if (cast == null) return;
-        oneShotAudioSource.resource = cast;
-        oneShotAudioSource.Play();
+        PlayOneShotAudio(cast);
     }    
 
-    public void PlayWallStickSound()
+    public void PlayLandSound()
     {
-        if (wallStick == null) return;
-        oneShotAudioSource.resource = wallStick;
-        oneShotAudioSource.Play();
+        if (lands == null || lands.Length < 1) return;
+        PlayOneShotAudio(lands[Random.Range(0, lands.Length - 1)]);
     }
 
     public void PlaySplashSound()
     {
         if(waterSplash == null) return;
-        oneShotAudioSource.resource = waterSplash;
-        oneShotAudioSource.Play();
+        PlayOneShotAudio(waterSplash);
     }
 
     public void StartRunSound()
@@ -124,15 +120,29 @@ public class PlayerAudioManager : MonoBehaviour
         StopLoopingAudioSource();
     }
 
-
+    private void PlayOneShotAudio(AudioClip clip)
+    {
+        foreach (AudioSource oneShotAudioSource in oneShotAudioSources)
+        {
+            if (!oneShotAudioSource.isPlaying)
+            {
+                oneShotAudioSource.resource = clip;
+                oneShotAudioSource.Play();
+                break;
+            }
+        }
+    }
 
     private void StopLoopingAudioSource()
     {
+        loopingAudioSource.Stop();
         loopingAudioSource.enabled = false;
     }
 
     private void StartLoopingAudioSource()
     {
+        if (loopingAudioSource.isPlaying) loopingAudioSource.Stop();
+        loopingAudioSource.Play();
         loopingAudioSource.enabled = true;
     }
 
