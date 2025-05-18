@@ -43,7 +43,7 @@ public class PlayerAudioManager : MonoBehaviour
 
     public void PlayLandSound()
     {
-        PickNPlayOneShotAudio(lands);
+        PickNPlayOneShotAudio(lands, 0.5f);
     }
 
     public void PlaySplashSound()
@@ -54,6 +54,8 @@ public class PlayerAudioManager : MonoBehaviour
     public void StartRunSound()
     {
         if(runLoop == null) return;
+        UpdateLoopingVolume(1);
+        UpdateLoopingPitch(1);
         loopingAudioSource.resource = runLoop;
         StartLoopingAudioSource();
     }
@@ -66,6 +68,8 @@ public class PlayerAudioManager : MonoBehaviour
     public void StartWalkSound()
     {
         if(walkLoop == null) return;
+        UpdateLoopingVolume(1);
+        UpdateLoopingPitch(1);
         loopingAudioSource.resource = walkLoop;
         StartLoopingAudioSource();
     }
@@ -78,7 +82,8 @@ public class PlayerAudioManager : MonoBehaviour
     public void StartWallSlideSound()
     {
         if(wallSlideLoop == null) return;
-        loopingAudioSource.pitch = startingWallSlidePitch;
+        UpdateLoopingVolume(0);
+        UpdateLoopingPitch(0);
         loopingAudioSource.resource = wallSlideLoop;
         StartLoopingAudioSource();
     }
@@ -91,6 +96,8 @@ public class PlayerAudioManager : MonoBehaviour
     public void StartReelSound()
     {
         if (reelLoop == null) return;
+        UpdateLoopingVolume(1);
+        UpdateLoopingPitch(1);
         loopingAudioSource.pitch = startingReelPitch;
         loopingAudioSource.resource = reelLoop;
         StartLoopingAudioSource();
@@ -104,6 +111,8 @@ public class PlayerAudioManager : MonoBehaviour
     public void StartSlackSound()
     {
         if (slackLoop == null) return;
+        UpdateLoopingVolume(1);
+        UpdateLoopingPitch(1);
         loopingAudioSource.pitch = startingSlackPitch;
         loopingAudioSource.resource = reelLoop;
         StartLoopingAudioSource();
@@ -117,7 +126,7 @@ public class PlayerAudioManager : MonoBehaviour
     public void UpdateWallSlidePitchAndVolume(float playerGravityScale)
     {
         UpdateLoopingPitch(playerGravityScale);
-        UpdateLoopingVolume(Mathf.Clamp01(playerGravityScale));
+        UpdateLoopingVolume(Mathf.Clamp01(playerGravityScale / 2));
     }
 
     private void UpdateLoopingPitch(float pitch)
@@ -130,13 +139,15 @@ public class PlayerAudioManager : MonoBehaviour
         loopingAudioSource.volume = volume;
     }
 
-    private void PlayOneShotAudio(AudioClip clip)
+    private void PlayOneShotAudio(AudioClip clip, float volume = 1 , float pitch = 1)
     {
         if (clip == null) return;
         foreach (AudioSource oneShotAudioSource in oneShotAudioSources)
         {
             if (!oneShotAudioSource.isPlaying)
             {
+                oneShotAudioSource.volume = volume;
+                oneShotAudioSource.pitch = pitch;
                 oneShotAudioSource.resource = clip;
                 oneShotAudioSource.Play();
                 break;
@@ -144,10 +155,10 @@ public class PlayerAudioManager : MonoBehaviour
         }
     }
 
-    private void PickNPlayOneShotAudio(AudioClip[] clips)
+    private void PickNPlayOneShotAudio(AudioClip[] clips, float volume = 1, float pitch = 1)
     {
         if (clips == null || clips.Length < 1) return;
-        PlayOneShotAudio(clips[Random.Range(0, clips.Length - 1)]);
+        PlayOneShotAudio(clips[Random.Range(0, clips.Length - 1)], volume, pitch);
     }
 
     private void StopLoopingAudioSource()
