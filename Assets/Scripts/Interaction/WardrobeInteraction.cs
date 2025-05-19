@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WardrobeInteraction : InteractableObject
 {
-    [SerializeField] public WardrobeManager wardrobeManager;
+    private WardrobeManager wardrobeManager;
 
     protected override void Start()
     {
