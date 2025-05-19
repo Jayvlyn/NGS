@@ -25,6 +25,10 @@ public class MenuUI : MonoBehaviour
     [SerializeField] Button createBtn;
     [SerializeField] TMP_InputField characterName;
 
+    [Header("MainMenu")]
+    [SerializeField] GameObject Title;
+    [SerializeField] GameObject Bunny;
+
     [Header("Player")]
     public PlayerInput pi;
 
@@ -49,6 +53,9 @@ public class MenuUI : MonoBehaviour
 
         LoadBindingOnStart(true);
         LoadBindingOnStart(false);
+
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", Title));
+        //StartCoroutine(UIAnimations.PlayUIAnim("Bunny", Bunny));
     }
 
     void newGameClicked()
