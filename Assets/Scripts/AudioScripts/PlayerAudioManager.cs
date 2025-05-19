@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerAudioManager : MonoBehaviour
 {
@@ -125,16 +123,28 @@ public class PlayerAudioManager : MonoBehaviour
         UpdateLoopingVolume(Mathf.Clamp01(playerGravityScale / 2));
     }
 
+
+    public int reelLowEnd = 2;
+    public int reelHighEnd = 10;
     public void UpdateReelSound(float playerSpeed)
     {
-        UpdateLoopingPitch(playerSpeed);
-        UpdateLoopingVolume(Mathf.Clamp01(playerSpeed));
+        Debug.Log("PlayerSpeed: " + playerSpeed);
+
+        float t = Mathf.InverseLerp(2, 10, playerSpeed) + 1;
+        Debug.Log("t: " + t);
+        //Debug.Log("t clamped: " + t);
+
+        UpdateLoopingPitch(t);
+        UpdateLoopingVolume(1);
     }
 
     public void UpdatSlackSound(float playerSpeed)
     {
-        UpdateLoopingPitch(1 / playerSpeed);
-        UpdateLoopingVolume(1 / Mathf.Clamp01(playerSpeed));
+        float t = Mathf.InverseLerp(2, 10, playerSpeed);
+        t = Mathf.Clamp01(t);
+
+        UpdateLoopingPitch(1 / t);
+        UpdateLoopingVolume(1);
     }
 
     private void UpdateLoopingPitch(float pitch)
