@@ -138,7 +138,7 @@ public class PopupManager : Singleton<PopupManager>
         return new PopupAppearanceData()
         {
             AppearanceType = AppearanceType.ZoomIn,
-            Time = 0.5f
+            Time = 0.25f
         };
     }
 

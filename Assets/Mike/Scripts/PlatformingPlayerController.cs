@@ -742,6 +742,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 
 			case RodState.FISHCASTING:
+				audioManager.PlayCastSound();
 				OnEnterFishCastingState();
 				if (onGround) ChangeMoveState(MoveState.GROUND_CASTING);
 				else ChangeMoveState(MoveState.AIR_CASTING);
@@ -900,15 +901,15 @@ public class PlatformingPlayerController : Interactor
 
 	private void OnEnterCastingState()
 	{
-		if(!AttemptMouseFish())
+		if (!AttemptMouseFish())
 		{
 			StartCoroutine(RodCast());
-        }
-    }
+		}
+	}
 
 	private bool doPostAnimRotation = false;
 	private IEnumerator RodCast()
-	{
+	{ //HERE2
 		rod.SetActive(true);
 		rodAnimator.enabled = true;
 		doPostAnimRotation = false;
@@ -919,11 +920,19 @@ public class PlatformingPlayerController : Interactor
 			FlipX(); // flip to look in casting direction
 		}
 
+		Vector2 overlapPos = mousePos;
+		float distanceToMouse = Vector2.Distance(rodEnd.position, mousePos);
+		if (distanceToMouse > playerStats.platformingLineLength)
+		{
+			overlapPos = (Vector2)rodEnd.position + dir * playerStats.platformingLineLength;
+		}
+
+		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
+		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
 
 		yield return new WaitForSeconds(0.3f);
-		if (!castHeld) yield break;
+		if (!castHeld && currentRodState != RodState.FISHCASTING) yield break;
 
-		Quaternion cachedRot = rodT.localRotation;
 		Vector3 cachedPos = rodT.localPosition;
 		doPostAnimRotation = true;
 		rodAnimator.enabled = false;
@@ -935,17 +944,6 @@ public class PlatformingPlayerController : Interactor
 		hook.rb.gameObject.SetActive(true);
 
 		lineRenderer.enabled = true;
-
-
-		Vector2 overlapPos = mousePos;
-		float distanceToMouse = Vector2.Distance(rodEnd.position, mousePos);
-		if (distanceToMouse > playerStats.platformingLineLength)
-		{
-			overlapPos = (Vector2)rodEnd.position + dir * playerStats.platformingLineLength;
-		}
-
-		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
-		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
 
 		Vector2 hookPos = Vector2.zero;
 		if (hit != null)
@@ -1059,7 +1057,20 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	public IEnumerator VisualFishCast(float speed = 1)
-	{
+	{ //HERE
+		rod.SetActive(true);
+		rodAnimator.enabled = true;
+		doPostAnimRotation = false;
+		yield return new WaitForSeconds(0.3f);
+
+		Vector3 cachedPos = rodT.localPosition;
+		Quaternion cachedRot = rodT.localRotation;
+		doPostAnimRotation = true;
+		rodAnimator.enabled = false;
+		rodT.localPosition = cachedPos;
+		rodT.localRotation = cachedRot;
+
+
 		float dist = Mathf.Abs(waterMidpoint.x - rodEnd.position.x);
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
 		float t = 0;
