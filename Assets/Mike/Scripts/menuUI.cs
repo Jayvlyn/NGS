@@ -29,9 +29,6 @@ public class MenuUI : MonoBehaviour
     [SerializeField] GameObject Title;
     [SerializeField] GameObject Bunny;
 
-    [Header("Player")]
-    public PlayerInput pi;
-
     private GameSettings gameSettings;
     private ModifySettings modifySettings;
 
@@ -153,27 +150,27 @@ public class MenuUI : MonoBehaviour
         modifySettings.SaveMouseMode();
     }
 
-    public void LoadSaveGame()
-    {
-        Time.timeScale = 1;
-        modifySettings.ApplyData();
+    //public void LoadSaveGame()
+    //{
+    //    Time.timeScale = 1;
+    //    modifySettings.ApplyData();
 
-        int i = 0;
-        foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
-        {
-            print(bind.gameObject.name);
-            if(i > 12) bind.data = gameSettings.bossGameKeys[i-13];
-            else if (i > 8) bind.data = gameSettings.minigameKeys[i-9];
-            else bind.data = gameSettings.platformerKeys[i];
+    //    int i = 0;
+    //    foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
+    //    {
+    //        print(bind.gameObject.name);
+    //        if(i > 12) bind.data = gameSettings.bossGameKeys[i-13];
+    //        else if (i > 8) bind.data = gameSettings.minigameKeys[i-9];
+    //        else bind.data = gameSettings.platformerKeys[i];
 
-            bind.ApplyData();
+    //        bind.ApplyData();
             
-            i++;
-        }
-        Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
-        pi.transform.localPosition = oldPosition;
-        transform.Find("InventoryCollection").gameObject.SetActive(true);
-    }
+    //        i++;
+    //    }
+    //    Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+    //    pi.transform.localPosition = oldPosition;
+    //    transform.Find("InventoryCollection").gameObject.SetActive(true);
+    //}
 
     public void LoadBindingOnStart(bool active)
     {
