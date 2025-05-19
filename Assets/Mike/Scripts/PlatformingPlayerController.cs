@@ -725,7 +725,8 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				hook.PlayHookHitSound();
 				OnEnterHookedState();
-				if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
+				distanceJoint.distance = Vector2.Distance(transform.position, hook.rb.transform.position);
+                if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
 				else ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
 
@@ -782,51 +783,53 @@ public class PlatformingPlayerController : Interactor
 				}
 
 				break;
-			case RodState.HOOKED:
-				float dist = Vector2.Distance(transform.position, hook.rb.transform.position);
-				if (distanceJoint.distance > dist) distanceJoint.distance = dist;
-				if (distanceJoint.distance > playerStats.platformingLineLength)
-				{
-					distanceJoint.distance -= Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
-				}
+            case RodState.HOOKED:
+                {
+                    float dist = Vector2.Distance(transform.position, hook.rb.transform.position);
+                    float maxLen = playerStats.platformingLineLength;
+                    float minLen = 0f;
+                    float currLen = distanceJoint.distance;
 
-				if (dist < detachDistance)
-				{
-					ChangeRodState(RodState.RETURNING);
-				}
-				// Reeling
-				if (reelHeld)
-				{
-					if (slackHeld) // Give Slack
-					{
-						audioManager.UpdatSlackSound(rb.linearVelocity.magnitude);
-						if (distanceJoint.distance < playerStats.platformingLineLength)
-						{
-							distanceJoint.distance += Time.deltaTime * playerStats.platformingReelSpeed;
-							if (Vector2.Distance(transform.position, hook.rb.transform.position) < 0.5)
-							{
-								dir = (transform.position - hook.rb.transform.position).normalized;
-								rb.AddForce(dir * 50, ForceMode2D.Force);
-							}
-						}
-					}
-					else // Reel In
-					{
-						audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
-						if(currentMoveState != MoveState.AIR_REELING || currentMoveState != MoveState.GROUND_REELING)
-						{
-							if(onGround) ChangeMoveState(MoveState.GROUND_REELING);
-							else ChangeMoveState(MoveState.AIR_REELING);
-						}
+                    if (dist <= maxLen && currLen > dist) currLen = dist;
+                    
+                    if (dist < detachDistance)
+                    {
+                        ChangeRodState(RodState.RETURNING);
+                        break;
+                    }
 
-						distanceJoint.distance -= Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
-						dir = (hook.rb.transform.position - transform.position).normalized;
-						rb.AddForce(dir * playerStats.platformingReelSpeed, ForceMode2D.Force);
-					}
-				}
+                    float delta = 0f;
 
-				break;
-			default:
+                    if (reelHeld && !slackHeld || distanceJoint.distance > MaxLineLength) delta = -Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
+                    
+                    else if (reelHeld && slackHeld) delta = Time.deltaTime * playerStats.platformingReelSpeed;
+                    
+                    currLen += delta;
+
+                    if (delta > 0f) currLen = Mathf.Min(currLen, maxLen);
+
+                    else if (delta < 0f) currLen = Mathf.Max(currLen, minLen);
+                    
+                    distanceJoint.distance = currLen;
+
+                    if (delta < 0f)
+                    {
+                        audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
+
+                        if (currentMoveState is not MoveState.GROUND_REELING and not MoveState.AIR_REELING)
+                            ChangeMoveState(onGround ? MoveState.GROUND_REELING : MoveState.AIR_REELING);
+
+                        dir = (hook.rb.transform.position - transform.position).normalized;
+                        rb.AddForce(dir * playerStats.platformingReelSpeed, ForceMode2D.Force);
+                    }
+
+                    else if (delta > 0f)  audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
+                    
+
+                    break;
+                }
+
+            default:
 				break;
 		}
 	}
