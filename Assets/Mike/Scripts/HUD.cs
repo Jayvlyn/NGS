@@ -15,7 +15,6 @@ public class HUD : MonoBehaviour
 
     public void UpdateTime()
     {
-        print(timeCycle.GetTime());
         time.text = timeCycle.CurrentHour.ToString("F2");
     }
 
