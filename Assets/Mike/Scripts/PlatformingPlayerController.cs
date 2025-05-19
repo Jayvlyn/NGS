@@ -406,14 +406,40 @@ public class PlatformingPlayerController : Interactor
 			direction = Mathf.Sign(direction);
 		}
 		Vector2 result = new Vector2(direction, 0);
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
+		float divideBy = 0;
+		RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), Vector2.down, 1, groundLayer); 
         if (hit)
         {
 			result = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
 			Vector2Int psuedo = new Vector2Int((int)(result.x * 100), (int)(result.y * 100));
 			result = new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
+			divideBy++;
         }
-        return result;
+        hit = Physics2D.Raycast(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), Vector2.down, 1, groundLayer);
+        if (hit)
+        {
+            Vector3 next = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
+            if (Mathf.Approximately(0, next.y) && result.y < 0)
+            {
+                result.y = 0;
+            }
+            Vector2Int psuedo = new Vector2Int((int)(next.x * 100), (int)(next.y * 100));
+            result += new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
+            divideBy++;
+        }
+        hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
+        if (hit)
+        {
+            Vector3 next = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
+			if(Mathf.Approximately(0, next.y) && result.y < 0)
+			{
+				result.y = 0;
+			}
+            Vector2Int psuedo = new Vector2Int((int)(next.x * 100), (int)(next.y * 100));
+            result += new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
+            divideBy++;
+        }
+        return result / (divideBy > 0 ? divideBy : 1);
 	}
 
 	#endregion
