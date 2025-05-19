@@ -19,6 +19,8 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private Animator animator;
 	[SerializeField] private PlayerAudioManager audioManager;
 	[SerializeField] VoidEvent onInventory;
+	[SerializeField] private GameObject rod;
+	[SerializeField] private Transform rodEnd;
 	private Camera cam;
 
 	[Header("Stats")]
@@ -299,7 +301,7 @@ public class PlatformingPlayerController : Interactor
 		Collider2D waterCol = interactedWaterT.parent.GetComponent<Collider2D>();
 		waterMidpoint = waterCol.bounds.center;
 
-		Vector3 waterDir = (waterMidpoint - (Vector2)transform.position).normalized;
+		Vector3 waterDir = (waterMidpoint - (Vector2)rodEnd.position).normalized;
 		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
 		{
 			FlipX();
@@ -667,7 +669,8 @@ public class PlatformingPlayerController : Interactor
 	private void FlipX()
 	{
 		spriteT.localScale = new Vector2(spriteT.localScale.x * -1, spriteT.localScale.y);
-		if(currentRodState == RodState.INACTIVE || currentRodState == RodState.FISHCASTING)
+		rod.transform.localScale = new Vector2(rod.transform.localScale.x * -1, rod.transform.localScale.y);
+		if (currentRodState == RodState.INACTIVE || currentRodState == RodState.FISHCASTING)
 			hook.transform.localScale = new Vector2(hook.transform.localScale.x * -1, hook.transform.localScale.y);
 	}
 
@@ -700,6 +703,7 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState) // new rod state
 		{
 			case RodState.INACTIVE:
+				rod.SetActive(false);
 				OnEnterInactiveState();
 				if(currentMoveState == MoveState.WALKING_REELING) // returning
 				{
@@ -741,7 +745,8 @@ public class PlatformingPlayerController : Interactor
 
 	private void UpdateLineRendererEnds(bool playerEnd = true, bool hookEnd = true)
 	{
-		if (playerEnd) lineRenderer.SetPosition(1, transform.position);
+		//if (playerEnd) lineRenderer.SetPosition(1, transform.position);
+		if (playerEnd) lineRenderer.SetPosition(1, rodEnd.position);
 		if (hookEnd) lineRenderer.SetPosition(0, hook.rb.position);
 	}
 
@@ -774,62 +779,72 @@ public class PlatformingPlayerController : Interactor
 			case RodState.RETURNING:
 				//Debug.Log(hookRb.transform.position);
 				hook.rb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
-				Vector2 dir = (transform.position - hook.rb.transform.position).normalized;
+				Vector2 dir = (rodEnd.position - hook.rb.transform.position).normalized;
 				hook.rb.AddForce(dir * playerStats.platformingReelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
 
-				if (Vector2.Distance(hook.rb.gameObject.transform.position, transform.position) <= completeReturnDistance)
+				if (Vector2.Distance(hook.rb.gameObject.transform.position, rodEnd.position) <= completeReturnDistance)
 				{
 					ChangeRodState(RodState.INACTIVE);
 				}
 
 				break;
-            case RodState.HOOKED:
-                {
-                    float dist = Vector2.Distance(transform.position, hook.rb.transform.position);
-                    float maxLen = playerStats.platformingLineLength;
-                    float minLen = 0f;
-                    float currLen = distanceJoint.distance;
+			case RodState.HOOKED:
+				{
+					float dist = Vector2.Distance(rodEnd.position, hook.rb.transform.position);
+					float maxLen = playerStats.platformingLineLength;
+					float minLen = 0f;
+					float currLen = distanceJoint.distance;
 
-                    if (dist <= maxLen && currLen > dist) currLen = dist;
-                    
-                    if (dist < detachDistance)
-                    {
-                        ChangeRodState(RodState.RETURNING);
-                        break;
-                    }
+					//if (dist <= maxLen && currLen > dist) currLen = dist;
 
-                    float delta = 0f;
+					if (dist < detachDistance)
+					{
+						ChangeRodState(RodState.RETURNING);
+						break;
+					}
 
-                    if (reelHeld && !slackHeld || distanceJoint.distance > MaxLineLength) delta = -Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
-                    
-                    else if (reelHeld && slackHeld) delta = Time.deltaTime * playerStats.platformingReelSpeed;
-                    
-                    currLen += delta;
+					float delta = 0f;
 
-                    if (delta > 0f) currLen = Mathf.Min(currLen, maxLen);
+					bool addForce = false;
+					if(reelHeld && !slackHeld)
+					{
+						addForce = true;
+					}
 
-                    else if (delta < 0f) currLen = Mathf.Max(currLen, minLen);
-                    
-                    distanceJoint.distance = currLen;
+					if (reelHeld && !slackHeld || distanceJoint.distance > MaxLineLength) delta = -Time.deltaTime * playerStats.platformingReelSpeed * 0.05f;
 
-                    if (delta < 0f)
-                    {
-                        audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
 
-                        if (currentMoveState is not MoveState.GROUND_REELING and not MoveState.AIR_REELING)
-                            ChangeMoveState(onGround ? MoveState.GROUND_REELING : MoveState.AIR_REELING);
+					else if (reelHeld && slackHeld) delta = Time.deltaTime * playerStats.platformingReelSpeed;
 
-                        dir = (hook.rb.transform.position - transform.position).normalized;
-                        rb.AddForce(dir * playerStats.platformingReelSpeed, ForceMode2D.Force);
-                    }
+					currLen += delta;
 
-                    else if (delta > 0f)  audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
-                    
+					if (delta > 0f) currLen = Mathf.Min(currLen, maxLen);
 
-                    break;
-                }
+					else if (delta < 0f) currLen = Mathf.Max(currLen, minLen);
 
-            default:
+					distanceJoint.distance = currLen;
+
+					if (delta < 0f)
+					{
+						audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
+
+						if (currentMoveState is not MoveState.GROUND_REELING and not MoveState.AIR_REELING)
+							ChangeMoveState(onGround ? MoveState.GROUND_REELING : MoveState.AIR_REELING);
+
+						if (addForce)
+						{
+							dir = (hook.rb.transform.position - rodEnd.position).normalized;
+							rb.AddForce(dir * playerStats.platformingReelSpeed, ForceMode2D.Force);
+						}
+					}
+
+					else if (delta > 0f) audioManager.UpdateReelSound(rb.linearVelocity.magnitude);
+
+
+					break;
+				}
+
+			default:
 				break;
 		}
 	}
@@ -842,8 +857,8 @@ public class PlatformingPlayerController : Interactor
 	private IEnumerator CastHookToPoint(Vector2 point, bool willHook)
 	{
 		float t = 0;
-		hook.rb.transform.position = transform.position;
-		Vector2 initialPosition = transform.position;
+		hook.rb.transform.position = rodEnd.position;
+		Vector2 initialPosition = rodEnd.position;
 		while (t < playerStats.grappleMaxCastSpeed)
 		{
 			Vector2 currentPos;
@@ -871,54 +886,62 @@ public class PlatformingPlayerController : Interactor
 	{
 		if(!AttemptMouseFish())
 		{
-            hook.col.isTrigger = true;
-            hook.rb.bodyType = RigidbodyType2D.Kinematic;
-            hook.rb.gameObject.SetActive(true);
-
-            lineRenderer.enabled = true;
-
-            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
-            if (dir.x * spriteT.localScale.x < 0f)
-            {
-                FlipX(); // flip to look in casting direction
-            }
-
-            Vector2 overlapPos = mousePos;
-            float distanceToMouse = Vector2.Distance(transform.position, mousePos);
-            if (distanceToMouse > playerStats.platformingLineLength)
-            {
-                overlapPos = (Vector2)transform.position + dir * playerStats.platformingLineLength;
-            }
-
-            Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
-            DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
-
-            Vector2 hookPos = Vector2.zero;
-            if (hit != null)
-            {
-                hookPos = hit.ClosestPoint(overlapPos);
-                hook.rb.transform.position = hookPos;
-                hook.rb.transform.parent = null;
-
-                DefineCurveKeys(hookPos);
-
-                if (castHookToPoint != null) StopCoroutine(castHookToPoint);
-                castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
-            }
-            else
-            {
-                hookPos = (Vector2)transform.position + dir * MaxLineLength;
-                hook.rb.transform.position = hookPos;
-
-                DefineCurveKeys(hookPos);
-
-                if (castHookToPoint != null) StopCoroutine(castHookToPoint);
-                castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
-            }
-            //hookRb.AddForce(dir * castTime);
+			StartCoroutine(RodCast());
         }
     }
+
+	private IEnumerator RodCast()
+	{
+		rod.SetActive(true);
+		Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+		Vector2 dir = (mousePos - (Vector2)rodEnd.position).normalized;
+		if (dir.x * spriteT.localScale.x < 0f)
+		{
+			FlipX(); // flip to look in casting direction
+		}
+		yield return new WaitForSeconds(0.3f);
+		hook.col.isTrigger = true;
+		hook.rb.bodyType = RigidbodyType2D.Kinematic;
+		hook.rb.gameObject.SetActive(true);
+
+		lineRenderer.enabled = true;
+
+
+		Vector2 overlapPos = mousePos;
+		float distanceToMouse = Vector2.Distance(rodEnd.position, mousePos);
+		if (distanceToMouse > playerStats.platformingLineLength)
+		{
+			overlapPos = (Vector2)rodEnd.position + dir * playerStats.platformingLineLength;
+		}
+
+		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
+		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
+
+		Vector2 hookPos = Vector2.zero;
+		if (hit != null)
+		{
+			hookPos = hit.ClosestPoint(overlapPos);
+			hook.rb.transform.position = hookPos;
+			hook.rb.transform.parent = null;
+
+			DefineCurveKeys(hookPos);
+
+			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
+			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, true));
+		}
+		else
+		{
+			hookPos = (Vector2)rodEnd.position + dir * MaxLineLength;
+			hook.rb.transform.position = hookPos;
+
+			DefineCurveKeys(hookPos);
+
+			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
+			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
+		}
+		//hookRb.AddForce(dir * castTime);
+
+	}
 
 	private bool AttemptMouseFish()
 	{
@@ -941,8 +964,8 @@ public class PlatformingPlayerController : Interactor
 
     private void DefineCurveKeys(Vector2 hookPos)
 	{
-		float yDiff = hookPos.y - transform.position.y;
-		float distance = Vector2.Distance(hookPos, transform.position);
+		float yDiff = hookPos.y - rodEnd.position.y;
+		float distance = Vector2.Distance(hookPos, rodEnd.position);
 
 		playerStats.grappleMaxCastSpeed = distance * 0.2f;
 
@@ -989,7 +1012,7 @@ public class PlatformingPlayerController : Interactor
 	private void OnEnterInactiveState()
 	{
 		hook.col.isTrigger = true;
-		hook.rb.transform.position = transform.position;
+		hook.rb.transform.position = rodEnd.position;
 		hook.rb.gameObject.SetActive(false);
 		distanceJoint.enabled = false;
 		lineRenderer.enabled = false;
@@ -1007,7 +1030,7 @@ public class PlatformingPlayerController : Interactor
 
 	public IEnumerator VisualFishCast(float speed = 1)
 	{
-		float dist = Mathf.Abs(waterMidpoint.x - transform.position.x);
+		float dist = Mathf.Abs(waterMidpoint.x - rodEnd.position.x);
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
 		float t = 0;
 		while (t < dist)
