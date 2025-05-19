@@ -81,7 +81,7 @@ public class GameUI : Singleton<GameUI>
             inventoryMenu.SetActive(true);
         }
 
-            LoadBindingOnStart(true);
+        LoadBindingOnStart(true);
         LoadBindingOnStart(false);
     }
 

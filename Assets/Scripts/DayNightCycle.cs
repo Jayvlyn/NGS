@@ -26,6 +26,8 @@ public class DayNightCycle : MonoBehaviour
 	[HideInInspector] public float currentTime;
 	public static bool isNight;
 
+	public float saveTime { get; set; }
+
 	private void Start()
 	{
 		currentTime = NoonHour * 60; // start at noon
@@ -73,6 +75,7 @@ public class DayNightCycle : MonoBehaviour
 			GameUI.Instance.SaveTime(false);
         }
 
+		saveTime = currentTime;
 
 		UpdateLightIntensity();
 	}
@@ -113,6 +116,11 @@ public class DayNightCycle : MonoBehaviour
 			sky.color = Color.Lerp(midnightSkyColor, noonSkyColor, t);
 			isNight = false;
 		}
+	}
+
+	public float GetTime()
+	{
+		return saveTime;
 	}
 
 }
