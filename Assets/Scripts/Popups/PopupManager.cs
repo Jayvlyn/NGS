@@ -11,6 +11,7 @@ public class PopupManager : Singleton<PopupManager>
     [SerializeField] private GameObject worldInteractPrefab;
     [SerializeField] private InputActionReference interactAction;
     [SerializeField] private GameObject fishConfirmationPopupPrefab;
+    [SerializeField] private GameObject fishCaughtPopup;
     #region World Statement
     public GameObject CreateWorldStatementPopup(Transform location, string statement = "", float lifetime = 10, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearence = new PopupAppearanceData())
     {
@@ -34,15 +35,7 @@ public class PopupManager : Singleton<PopupManager>
             Destroy(popup.nameText.transform.parent.gameObject);
         }
         go.GetComponent<Canvas>().worldCamera = Camera.current;
-        switch (appearance.AppearanceType)
-        {
-            case AppearanceType.ZoomIn:
-                go.AddComponent<Zoomer>().time = appearance.Time;
-                break;
-            case AppearanceType.FadeIn:
-                go.AddComponent<Fader>().time = appearance.Time;
-                break;
-        }
+        AddAppearance(popup.gameObject, appearance, true);
         popup.closeBehavior = disappearence;
         return go;
     }
@@ -82,31 +75,7 @@ public class PopupManager : Singleton<PopupManager>
             Destroy(popup.nameText.transform.parent.gameObject);
         }
         go.GetComponent<Canvas>().worldCamera = Camera.current;
-        switch(appearance.AppearanceType)
-        {
-            case AppearanceType.ZoomIn:
-                go.AddComponent<Zoomer>().time = appearance.Time;
-                break;
-            case AppearanceType.FadeIn:
-                go.AddComponent<Fader>().time = appearance.Time;
-                break;
-            case AppearanceType.FromBottom:
-            case AppearanceType.FromTop:
-                appearance.Offset *= Screen.height; 
-                Flyer component = go.AddComponent<Flyer>();
-                component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
-                component.offset = appearance.Offset;
-                component.time = appearance.Time;
-                break;
-            case AppearanceType.FromRight:
-            case AppearanceType.FromLeft:
-                appearance.Offset *= Screen.width;
-                component = go.AddComponent<Flyer>();
-                component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
-                component.offset = appearance.Offset;
-                component.time = appearance.Time;
-                break;
-        }
+        AddAppearance(popup.gameObject, appearance);
         popup.closeBehavior = disappearence;
         return go;
     }
@@ -127,12 +96,51 @@ public class PopupManager : Singleton<PopupManager>
     public GameObject CreateWorldInteractionPopup(Transform location)
     {
         GameObject go = Instantiate(worldInteractPrefab, location);
-        go.GetComponent<InteractVoidPopup>().text.text =
+        go.GetComponentInChildren<InteractVoidPopup>().text.text =
             InputControlPath.ToHumanReadableString(interactAction.action.bindings[0].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice);
         return go;
     }
     #endregion World Interaction Popups
+
+    public GameObject CreateFishCaughtPopup(Sprite sprite, string topText = "", string bottomText = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearance = new PopupAppearanceData())
+    {
+        GameObject go = Instantiate(fishCaughtPopup);
+        FishPopup popup = go.GetComponentInChildren<FishPopup>();
+        popup.topText.text = topText;
+        popup.bottomText.text = bottomText;
+        popup.image.sprite = sprite;
+        popup.closeBehavior = disappearance;
+        AddAppearance(popup.gameObject, appearance);
+        return go;
+    }
+
+    public GameObject CreateNewFishTypePopup(Fish fish)
+    {
+        PopupAppearanceData popupData = GetDefaultFishPopupData();
+        return CreateFishCaughtPopup(fish.sprite, "New fish type caught!", fish.fishName, popupData, popupData);
+    }
+
+    public GameObject CreateNewLargestFishPopup(Fish fish)
+    {
+        PopupAppearanceData popupData = GetDefaultFishPopupData();
+        return CreateFishCaughtPopup(fish.sprite, $"New largest {fish.fishName}!", $"{fish.length:F2} cm", popupData, popupData);
+    }
+
+    public GameObject CreateGenericFishPopup(Fish fish)
+    {
+        PopupAppearanceData popupData = GetDefaultFishPopupData();
+        return CreateFishCaughtPopup(fish.sprite, $"Caught a {fish.fishName}.", $"{fish.length:F2} cm", popupData, popupData);
+    }
+
+    private PopupAppearanceData GetDefaultFishPopupData()
+    {
+        return new PopupAppearanceData()
+        {
+            AppearanceType = AppearanceType.ZoomIn,
+            Time = 0.5f
+        };
+    }
 
     public GameObject CreateStatementPopup(PopupData popupData)
     {
@@ -154,5 +162,32 @@ public class PopupManager : Singleton<PopupManager>
         popup.QuestionText.text = $"{(selling ? "Sell" : "Give")} this fish to {receiverName}?";
         return go;
     }
-
+    private void AddAppearance(GameObject go, PopupAppearanceData appearance, bool world = false)
+    {
+        switch (appearance.AppearanceType)
+        {
+            case AppearanceType.ZoomIn:
+                go.AddComponent<Zoomer>().time = appearance.Time;
+                break;
+            case AppearanceType.FadeIn:
+                go.AddComponent<Fader>().time = appearance.Time;
+                break;
+            case AppearanceType.FromBottom:
+            case AppearanceType.FromTop:
+                appearance.Offset *= world ? 1 : Screen.height;
+                Flyer component = go.AddComponent<Flyer>();
+                component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
+                component.offset = appearance.Offset;
+                component.time = appearance.Time;
+                break;
+            case AppearanceType.FromRight:
+            case AppearanceType.FromLeft:
+                appearance.Offset *= world ? 1 : Screen.width;
+                component = go.AddComponent<Flyer>();
+                component.fromDirection = (Direction)(int)(appearance.AppearanceType - 3);
+                component.offset = appearance.Offset;
+                component.time = appearance.Time;
+                break;
+        }
+    }
 }

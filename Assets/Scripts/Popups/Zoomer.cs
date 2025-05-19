@@ -7,7 +7,7 @@ public class Zoomer : PearanceHandler
     private void Start()
     {
         Canvas canvas = gameObject.GetComponent<Canvas>();
-        if (!closing)
+        if (killObject == null)
         {
             if (canvas != null)
             {
@@ -37,7 +37,7 @@ public class Zoomer : PearanceHandler
     private void Update()
     {
         currentTime += Time.deltaTime;
-        if (!closing)
+        if (killObject == null)
         {
             if (currentTime > time)
             {
@@ -54,7 +54,7 @@ public class Zoomer : PearanceHandler
         {
             if (currentTime > time)
             {
-                Destroy(gameObject);
+                Destroy(killObject);
             }
             else
             {

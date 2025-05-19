@@ -14,23 +14,23 @@ public class Fader : PearanceHandler
         images = gameObject.GetComponentsInChildren<Image>();
         foreach (Image image in images)
         {
-            image.color = new Color(image.color.r, image.color.g, image.color.b, closing ? 1 : 0);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, killObject != null ? 1 : 0);
         }
         texts = gameObject.GetComponentsInChildren<TMP_Text>();
         foreach(TMP_Text text in texts)
         {
-            text.color = new Color(text.color.r, text.color.g, text.color.b, closing ? 1 : 0);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, killObject != null ? 1 : 0);
         }
         spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
         foreach(SpriteRenderer spriteRenderer in spriteRenderers)
         {
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, closing ? 1 : 0);
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, killObject != null ? 1 : 0);
         }
         if(images.Length == 0 &&  texts.Length == 0 && spriteRenderers.Length == 0)
         {
-            if(closing)
+            if(killObject != null)
             {
-                Destroy(gameObject);
+                Destroy(killObject);
             }
             else
             {
@@ -44,7 +44,7 @@ public class Fader : PearanceHandler
     void Update()
     {
         currentTime += Time.deltaTime;
-        if (!closing)
+        if (killObject == null)
         {
             if (currentTime > time)
             {
@@ -79,7 +79,7 @@ public class Fader : PearanceHandler
         {
             if (currentTime > time)
             {
-                Destroy(gameObject);
+                Destroy(killObject);
             }
             else
             {

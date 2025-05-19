@@ -1,6 +1,5 @@
 using GameEvents;
 using UnityEngine;
-using static Unity.Cinemachine.CinemachinePathBase;
 
 public abstract class Popup<T> : MonoBehaviour
 {
@@ -9,6 +8,15 @@ public abstract class Popup<T> : MonoBehaviour
     [SerializeField] protected T defaultResponse;
     public PopupAppearanceData closeBehavior;
     protected bool active = true;
+    public GameObject killObject;
+
+    private void Awake()
+    {
+        if (killObject == null)
+        {
+            killObject = gameObject;
+        }
+    }
 
     protected virtual void FixedUpdate()
     {
@@ -31,17 +39,21 @@ public abstract class Popup<T> : MonoBehaviour
                 Event.Raise(result);
             }
             active = false;
+            if(gameObject.TryGetComponent(out PearanceHandler handler))
+            {
+                Destroy(handler);
+            }
             switch(closeBehavior.AppearanceType)
             {
                 case AppearanceType.FadeIn:
                     Fader fader = gameObject.AddComponent<Fader>();
                     fader.time = closeBehavior.Time;
-                    fader.closing = true;
+                    fader.killObject = killObject;
                     break;
                 case AppearanceType.ZoomIn:
                     Zoomer zoomer = gameObject.AddComponent<Zoomer>();
                     zoomer.time = closeBehavior.Time;
-                    zoomer.closing = true;
+                    zoomer.killObject = killObject;
                     break;
                 case AppearanceType.FromBottom:
                 case AppearanceType.FromTop:
@@ -50,7 +62,7 @@ public abstract class Popup<T> : MonoBehaviour
                     component.fromDirection = (Direction)(int)(closeBehavior.AppearanceType - 3);
                     component.offset = closeBehavior.Offset;
                     component.time = closeBehavior.Time;
-                    component.closing = true;
+                    component.killObject = killObject;
                     break;
                 case AppearanceType.FromRight:
                 case AppearanceType.FromLeft:
@@ -59,7 +71,7 @@ public abstract class Popup<T> : MonoBehaviour
                     component.fromDirection = (Direction)(int)(closeBehavior.AppearanceType - 3);
                     component.offset = closeBehavior.Offset;
                     component.time = closeBehavior.Time;
-                    component.closing = true;
+                    component.killObject = killObject;
                     break;
                 default:
                     Destroy(gameObject);

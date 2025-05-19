@@ -21,11 +21,11 @@ public class Flyer : PearanceHandler
                 {
                     case Direction.Up:
                     case Direction.Down:
-                        trans.Item1.localPosition = new Vector3(trans.Item1.localPosition.x, trans.Item2 + (closing ? 0 : offset * (fromDirection == Direction.Up ? -1 : 1)), trans.Item1.localPosition.z);
+                        trans.Item1.localPosition = new Vector3(trans.Item1.localPosition.x, trans.Item2 + (killObject != null ? 0 : offset * (fromDirection == Direction.Up ? -1 : 1)), trans.Item1.localPosition.z);
                         break;
                     case Direction.Left:
                     case Direction.Right:
-                        trans.Item1.localPosition = new Vector3(trans.Item2 + (closing ? 0 : offset * (fromDirection == Direction.Left ? 1 : -1)), trans.Item1.localPosition.y, transform.localPosition.z);
+                        trans.Item1.localPosition = new Vector3(trans.Item2 + (killObject != null ? 0 : offset * (fromDirection == Direction.Left ? 1 : -1)), trans.Item1.localPosition.y, transform.localPosition.z);
                         break;
                 }
             }
@@ -33,9 +33,9 @@ public class Flyer : PearanceHandler
         }
         else
         {
-            if (closing)
+            if (killObject != null)
             {
-                Destroy(gameObject);
+                Destroy(killObject);
             }
             else
             {
@@ -48,7 +48,7 @@ public class Flyer : PearanceHandler
     void Update()
     {
         currentTime += Time.deltaTime;
-        if (!closing)
+        if (killObject == null)
         {
             if (currentTime > time)
             {
