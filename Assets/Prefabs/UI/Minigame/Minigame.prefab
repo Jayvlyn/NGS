@@ -1119,6 +1119,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressBar: {fileID: 4018101964788536591}
   progressBarFill: {fileID: 2016210121068598254}
+  upperThreshold: 0.75
+  lowerThreshold: 0.1
 --- !u!1 &4335490504069933171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,6 +1711,7 @@ MonoBehaviour:
   maxCatchProgress: 20
   wadeSpeed: 0.05
   minigameEvent: {fileID: 11400000, guid: 3d6aa5cb50e93c34ea5a7a59cadb158b, type: 2}
+  caughtFishEvent: {fileID: 11400000, guid: 07942f2af4dc70b4b9a0b1b64e7e139d, type: 2}
   boundsx: 450
   boundsy: 350
   boundsyoffset: 50

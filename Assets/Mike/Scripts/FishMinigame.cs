@@ -18,6 +18,7 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] float wadeSpeed = 0.005f;
 
 	[SerializeField] BoolEvent minigameEvent;
+	[SerializeField] FishEvent caughtFishEvent;
 
     [SerializeField] float boundsx = 500.0f; // X Bounds
     [SerializeField] float boundsy = 300.0f; // Y Bounds
@@ -207,9 +208,10 @@ public class FishMinigame : MonoBehaviour
         {
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
 
+			caughtFishEvent.Raise(hookedFish);
             Inventory.Instance.AddFish(hookedFish);
-            //Debug.Log(Inventory.Instance.ToString());
-            OnFinish();
+			//Debug.Log(Inventory.Instance.ToString());
+			OnFinish();
         }
         else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))
         {
