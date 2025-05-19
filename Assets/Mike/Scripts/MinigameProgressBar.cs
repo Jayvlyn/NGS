@@ -8,7 +8,7 @@ public class MinigameProgressBar : MonoBehaviour
     [SerializeField] Image progressBarFill;
 
     [SerializeField] float upperThreshold = 0.75f;
-    [SerializeField] float lowerThreshold = 0.1f;
+    [SerializeField] float lowerThreshold = 0.2f;
 
     private float flashTime = 0.2f;
     private bool isFlashing = false;
