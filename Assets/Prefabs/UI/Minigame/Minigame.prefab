@@ -1025,6 +1025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6640792873845550199}
   - component: {fileID: 4018101964788536591}
+  - component: {fileID: 1118696676383297682}
   m_Layer: 5
   m_Name: CatchProgress
   m_TagString: Untagged
@@ -1104,6 +1105,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1118696676383297682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3726339547472611959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a4e102b88599d47bd2ce848d5f8d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressBar: {fileID: 4018101964788536591}
+  progressBarFill: {fileID: 2016210121068598254}
 --- !u!1 &4335490504069933171
 GameObject:
   m_ObjectHideFlags: 0

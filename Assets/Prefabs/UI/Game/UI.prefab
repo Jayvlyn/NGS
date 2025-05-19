@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 1
+  saveTime: 0
   loadGame: {fileID: 5479962102087140339}
   settings: {fileID: 3082545194496712927}
   keyBinds: {fileID: 7590457216437857061}
@@ -783,7 +784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296412681974110440, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.0008544922
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
@@ -795,7 +796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524847018943916788, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.00091552734
       objectReference: {fileID: 0}
     - target: {fileID: 2808320876928596218, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -827,7 +828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3651398393776001945, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.0008544922
       objectReference: {fileID: 0}
     - target: {fileID: 3826095420324730859, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Name
@@ -1140,11 +1141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5619628553193683364, guid: e3146a6a9693885498818e22925348f2, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5619628553193683364, guid: e3146a6a9693885498818e22925348f2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5710183225152703863, guid: e3146a6a9693885498818e22925348f2, type: 3}
       propertyPath: maxCatchProgress

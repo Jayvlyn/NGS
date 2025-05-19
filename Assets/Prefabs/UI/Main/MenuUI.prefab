@@ -132,6 +132,8 @@ MonoBehaviour:
   backBtn: {fileID: 53166551536605723}
   createBtn: {fileID: 4875457003121393035}
   characterName: {fileID: 3678557942157317388}
+  Title: {fileID: 1471061653779632104}
+  Bunny: {fileID: 7171747238924979568}
   pi: {fileID: 0}
 --- !u!114 &1182990261383817680
 MonoBehaviour:
@@ -274,6 +276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1471061653779632104 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6676998288420963617, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
+  m_PrefabInstance: {fileID: 5243091937828981449}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2018144233970013871 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6107680621739105382, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
@@ -301,6 +308,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7171747238924979568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3117650151062226873, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
+  m_PrefabInstance: {fileID: 5243091937828981449}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6714028238721566962
 PrefabInstance:
   m_ObjectHideFlags: 0
