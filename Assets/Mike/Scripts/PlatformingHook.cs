@@ -8,11 +8,12 @@ public class PlatformingHook : MonoBehaviour
 	[SerializeField] private PlatformingPlayerController ppc;
 	[SerializeField] private AudioSource audioSource;
 
+
 	private void Update()
 	{
 		if (ppc != null)
 		{
-			Vector2 direction = (ppc.transform.position - transform.position).normalized;
+			Vector2 direction = (ppc.rodEnd.transform.position - transform.position).normalized;
 			float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 			transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
 		}

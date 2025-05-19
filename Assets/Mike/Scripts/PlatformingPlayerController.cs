@@ -20,7 +20,9 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private PlayerAudioManager audioManager;
 	[SerializeField] VoidEvent onInventory;
 	[SerializeField] private GameObject rod;
-	[SerializeField] private Transform rodEnd;
+	[SerializeField] private Transform rodT;
+	public Transform rodEnd;
+	[SerializeField] private Animator rodAnimator;
 	private Camera cam;
 
 	[Header("Stats")]
@@ -237,10 +239,12 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+	private bool castHeld;
 	public void OnCastHook(InputValue value)
 	{
 		if (value.isPressed)
 		{
+			castHeld = true;
 			if (currentRodState == RodState.INACTIVE && !inWater)
 			{
 				ChangeRodState(RodState.CASTING);
@@ -248,6 +252,7 @@ public class PlatformingPlayerController : Interactor
 		}
 		else // released
 		{
+			castHeld = false;
 			if (currentRodState != RodState.INACTIVE && currentRodState != RodState.RETURNING)
 			{
 				ChangeRodState(RodState.RETURNING);
@@ -442,6 +447,7 @@ public class PlatformingPlayerController : Interactor
 		jumpHeld = false;
 		reelHeld = false;
 		slackHeld = false;
+		castHeld = false;
 	}
 
 	#endregion
@@ -703,6 +709,7 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState) // new rod state
 		{
 			case RodState.INACTIVE:
+				rod.transform.localRotation = Quaternion.identity;
 				rod.SetActive(false);
 				OnEnterInactiveState();
 				if(currentMoveState == MoveState.WALKING_REELING) // returning
@@ -756,12 +763,14 @@ public class PlatformingPlayerController : Interactor
 		{
 			case RodState.CASTING:
 				UpdateLineRendererEnds();
+				if (doPostAnimRotation) UpdateRodRot();
 				break;
 			case RodState.RETURNING:
 				UpdateLineRendererEnds();
 				break;
 			case RodState.HOOKED:
 				UpdateLineRendererEnds();
+				UpdateRodRot();
 				break;
 			case RodState.FISHCASTING:
 				UpdateLineRendererEnds();
@@ -769,6 +778,13 @@ public class PlatformingPlayerController : Interactor
 			default:
 				break;
 		}
+	}
+
+	private void UpdateRodRot()
+	{
+		Vector2 direction = (hook.transform.position - rodT.transform.position).normalized;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		rod.transform.localRotation = Quaternion.Euler(0f, 0f, angle - 90);
 	}
 
 	private void ProcessRodStateFixedUpdate()
@@ -890,16 +906,30 @@ public class PlatformingPlayerController : Interactor
         }
     }
 
+	private bool doPostAnimRotation = false;
 	private IEnumerator RodCast()
 	{
 		rod.SetActive(true);
+		rodAnimator.enabled = true;
+		doPostAnimRotation = false;
 		Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 		Vector2 dir = (mousePos - (Vector2)rodEnd.position).normalized;
 		if (dir.x * spriteT.localScale.x < 0f)
 		{
 			FlipX(); // flip to look in casting direction
 		}
+
+
 		yield return new WaitForSeconds(0.3f);
+		if (!castHeld) yield break;
+
+		Quaternion cachedRot = rodT.localRotation;
+		Vector3 cachedPos = rodT.localPosition;
+		doPostAnimRotation = true;
+		rodAnimator.enabled = false;
+		rodT.localPosition = cachedPos;
+		rodT.localRotation = Quaternion.identity;
+
 		hook.col.isTrigger = true;
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
 		hook.rb.gameObject.SetActive(true);
