@@ -5,20 +5,22 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private TMP_Text money;
     [SerializeField] private TMP_Text time;
+    [SerializeField] private DayNightCycle timeCycle;
 
 
     public void UpdateMoney()
     {
-        money.text = "x" + Inventory.Instance.GetData().Item2.ToString("F2");
+        money.text = "x" + Inventory.Instance.GetData().Item2.ToString("F0");
     }
 
-    public void UpdateTime(float change)
+    public void UpdateTime()
     {
-        time.text = change.ToString();
+        time.text = timeCycle.CurrentHour.ToString("F2");
     }
 
     private void FixedUpdate()
     {
         UpdateMoney();
+        UpdateTime();
     }
 }

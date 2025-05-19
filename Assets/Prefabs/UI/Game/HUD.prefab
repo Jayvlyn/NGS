@@ -440,6 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   money: {fileID: 7868071473235764066}
   time: {fileID: 3155977066425048292}
+  timeCycle: {fileID: 1361135252734289113, guid: 06f9126edc987d048b915b3ecc44bd52, type: 3}
 --- !u!1 &8159834745487657301
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6402799625821cf4bbcd84c822eb76ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6656ead697791844a8f69cb6cc3e1f91, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
