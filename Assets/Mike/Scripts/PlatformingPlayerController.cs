@@ -133,7 +133,7 @@ public class PlatformingPlayerController : Interactor
 
 	public override void Start()
 	{
-		//Time.timeScale = 0.2f;
+		//Time.timeScale = 0.1f;
 		base.Start();
 
 		if(BossFishController.caughtBoss) Inventory.Instance.AddFish(BossFishController.bossFish);
@@ -556,7 +556,7 @@ public class PlatformingPlayerController : Interactor
 			case MoveState.JUMPING:
 				if (isFalling()) ChangeMoveState(MoveState.FALLING);
 				isTouchingLeftWall();
-				if(jumpTime - jumpTimer > 0.3f)
+				if(jumpTime - jumpTimer > 0.15f)
 				{
 					touchingLeft = isTouchingLeftWall();
 					touchingRight = isTouchingRightWall();
@@ -930,17 +930,13 @@ public class PlatformingPlayerController : Interactor
 		Collider2D hit = Physics2D.OverlapCircle(overlapPos, aimAssistRadius, grappleableLayer);
 		DebugDrawCircle(overlapPos, aimAssistRadius, Color.green, 1.5f);
 
-		yield return new WaitForSeconds(0.3f);
+		yield return new WaitForSeconds(0.15f);
 		if (!castHeld && currentRodState != RodState.FISHCASTING) yield break;
 
-		Vector3 cachedPos = rodT.localPosition;
-		doPostAnimRotation = true;
-		rodAnimator.enabled = false;
-		rodT.localPosition = cachedPos;
-		rodT.localRotation = Quaternion.identity;
 
 		hook.col.isTrigger = true;
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
+		hook.rb.transform.position = rodEnd.position;
 		hook.rb.gameObject.SetActive(true);
 
 		lineRenderer.enabled = true;
@@ -967,6 +963,13 @@ public class PlatformingPlayerController : Interactor
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
 			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
 		}
+
+		yield return new WaitForSeconds(0.2f);
+		Vector3 cachedPos = rodT.localPosition;
+		rodAnimator.enabled = false;
+		rodT.localPosition = cachedPos;
+		rodT.localRotation = Quaternion.identity;
+		doPostAnimRotation = true;
 		//hookRb.AddForce(dir * castTime);
 
 	}
