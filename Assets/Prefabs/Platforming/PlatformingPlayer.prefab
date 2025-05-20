@@ -630,20 +630,20 @@ MonoBehaviour:
   detachDistance: 0.1
   grappleableLayer:
     serializedVersion: 2
-    m_Bits: 209408
+    m_Bits: 12800
   groundLayer:
     serializedVersion: 2
     m_Bits: 201216
   iceLayer:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 196608
   groundCheckT: {fileID: 6125027497295351764}
   groundCheckSize: {x: 0.08, y: -0.01}
   slopeCheckDistance: 0.11
   slopeModifier: 1
   wallLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 135168
   rightCheckT: {fileID: 1577787648814511174}
   rightCheckSize: {x: 0.02, y: 0.17}
   leftCheckT: {fileID: 6428020383112335711}
