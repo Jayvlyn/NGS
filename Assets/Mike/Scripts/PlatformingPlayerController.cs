@@ -355,17 +355,13 @@ public class PlatformingPlayerController : Interactor
 				slope.y *= 2f;
                 rb.AddForce(2 * slope);
             }
-			else
-			{
-				Debug.Log("Not");
-			}
         }
     }
 
 	private Vector2 GetMovement(float speed)
 	{
 		Vector2 movement = GetSlope(moveInput);
-		Debug.Log(movement);
+		//Debug.Log(movement);
 		movement *= speed;
 		if(movement.y != 0)
 		{
