@@ -30,6 +30,8 @@ public class SceneLoader : MonoBehaviour
     public static void LoadScene(string sceneName)
     {
         sceneToLoad = sceneName;
+        if (sceneName == "MainMenu" || sceneName == "BossfightScene") GameUI.loadScreens = false;
+        else GameUI.loadScreens = true;
         SceneManager.LoadScene("LoadingScene");
     }
 }

@@ -5,7 +5,13 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private TMP_Text money;
     [SerializeField] private TMP_Text time;
-    [SerializeField] private DayNightCycle timeCycle;
+
+    private float timeValue;
+
+    private void Start()
+    {
+        timeValue = GameUI.Instance.gameSettings.position.currentTime;
+    }
 
 
     public void UpdateMoney()
@@ -15,7 +21,7 @@ public class HUD : MonoBehaviour
 
     public void UpdateTime()
     {
-        time.text = timeCycle.CurrentHour.ToString("F2");
+        time.text = GameUI.Instance.gameSettings.position.currentTime.ToString("F2");
     }
 
     private void FixedUpdate()
