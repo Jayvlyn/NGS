@@ -128,10 +128,10 @@ public class PlayerAudioManager : MonoBehaviour
     public int reelHighEnd = 10;
     public void UpdateReelSound(float playerSpeed)
     {
-        Debug.Log("PlayerSpeed: " + playerSpeed);
+        //Debug.Log("PlayerSpeed: " + playerSpeed);
 
         float t = Mathf.InverseLerp(2, 10, playerSpeed) + 1;
-        Debug.Log("t: " + t);
+        //Debug.Log("t: " + t);
         //Debug.Log("t clamped: " + t);
 
         UpdateLoopingPitch(t);
