@@ -332,35 +332,44 @@ public class PlatformingPlayerController : Interactor
 			{ // changing dir on ground
 				speed *= changeDirSpeedMult;
 			}
-
+			//Debug.Log(speed);
 			// move when not moving max speed
 			if (isUnderMaxMoveSpeed() && !isWallBlockingMoveDir())
 			{
 				//Vector2 dir = new Vector2(moveInput, 0);
-				rb.AddForce(GetMovement(speed), ForceMode2D.Force);
+				Vector2 movement = GetMovement(speed);
+				if(onIce && movement.y != 0)
+				{
+					movement *= 0.1f;
+				}
+                rb.AddForce(movement, ForceMode2D.Force);
 			}
 		}
-		else if(onIce)
-		{
-			Vector2 slopeA = GetSlope(-1);
-			if(Mathf.Abs(slopeA.x) > 0.707f)
-			{
-				Vector2 slopeB = GetSlope(1);
+        if (onIce)
+        {
+            Vector2 slopeA = GetSlope(-1);
+            Vector2 slopeB = GetSlope(1);
+            if (slopeA.y < 0 || slopeB.y < 0)
+            {
 				Vector2 slope = slopeA.y < 0 ? slopeA : slopeB;
-				slope = rb.gravityScale * 8 * new Vector2(Mathf.Sign(slope.x) * -slope.y, 0);
-				rb.AddForce(slope);
+				slope.y *= 2f;
+                rb.AddForce(2 * slope);
+            }
+			else
+			{
+				Debug.Log("Not");
 			}
-
-		}
-	}
+        }
+    }
 
 	private Vector2 GetMovement(float speed)
 	{
 		Vector2 movement = GetSlope(moveInput);
+		Debug.Log(movement);
 		movement *= speed;
 		if(movement.y != 0)
 		{
-			movement += -1f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
+			movement += -1.5f * rb.gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
         }
 		return movement;
 	}
@@ -414,30 +423,34 @@ public class PlatformingPlayerController : Interactor
 			result = new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
 			divideBy++;
         }
-        hit = Physics2D.Raycast(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), Vector2.down, 1, groundLayer);
+        hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
         if (hit)
         {
             Vector3 next = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
-            if (Mathf.Approximately(0, next.y) && result.y < 0)
+            if (Mathf.Abs(next.y) < 0.1f && result.y < 0)
             {
-                result.y = 0;
+				result = Vector3.zero;
+				divideBy = 1;
             }
             Vector2Int psuedo = new Vector2Int((int)(next.x * 100), (int)(next.y * 100));
             result += new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
             divideBy++;
         }
-        hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
+        hit = Physics2D.Raycast(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), Vector2.down, 1, groundLayer);
+		Debug.DrawLine(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2 - 1), Color.black, 1);
         if (hit)
         {
             Vector3 next = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
-			if(Mathf.Approximately(0, next.y) && result.y < 0)
+			if(Mathf.Abs(next.y) < 0.1f && result.y < 0)
 			{
-				result.y = 0;
+				result = Vector3.zero;
+				divideBy = 1;
 			}
             Vector2Int psuedo = new Vector2Int((int)(next.x * 100), (int)(next.y * 100));
             result += new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
             divideBy++;
         }
+		//Debug.Log(result);
         return result / (divideBy > 0 ? divideBy : 1);
 	}
 
@@ -1346,7 +1359,7 @@ public class PlatformingPlayerController : Interactor
 		if(Physics2D.OverlapBox(groundCheckT.position, groundCheckSize, 0, iceLayer))
 		{
 			onIce = true;
-			if(GetSlope().y == 0)
+			if(true/*GetSlope().y == 0*/)
 			{
 				rb.gravityScale = 0;
 			}
