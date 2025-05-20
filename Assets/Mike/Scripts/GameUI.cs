@@ -1,15 +1,12 @@
-using System.Collections;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameUI : Singleton<GameUI>
 {
     [HideInInspector] public static bool gameStart = true;
-    [HideInInspector] public bool saveTime = false;
+    [HideInInspector] public static bool loadScreens = true;
 
     [Header("Panels")]
     [SerializeField] GameObject loadGame;
@@ -17,7 +14,10 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
     [SerializeField] GameObject inventoryMenu;
+    [SerializeField] GameObject HUD;
 
+    [Header("")]
+    [SerializeField] DayNightCycle timeCycle;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button keyBindBtn;
@@ -44,14 +44,14 @@ public class GameUI : Singleton<GameUI>
             if (btn.name == "ResumeBtn") btn.onClick.AddListener(() => pauseClicked());
             else if (btn.name == "QuitBtn")
             {
-                btn.onClick.AddListener(() => SaveTime());
+                //btn.onClick.AddListener(() => SaveTime());
                 btn.onClick.AddListener(() => AutoSave());
                 btn.onClick.AddListener(() => quitClicked());
             }
             else if (btn.name == "SettingsBtn") btn.onClick.AddListener(() => settingsClicked());
             else
             {
-                btn.onClick.AddListener(() => SaveTime());
+                //btn.onClick.AddListener(() => SaveTime());
                 btn.onClick.AddListener(() => AutoSave());
                 btn.onClick.AddListener(() => MainMenuClicked());
             }
@@ -61,16 +61,17 @@ public class GameUI : Singleton<GameUI>
 
         gameSettings = modifySettings.settings;
 
-        //if(gameStart) LoadSaveGame();
+        HUD.SetActive(loadScreens);
 
         if (pi != null)
         {
             SavePosition(gameStart);
             LoadPosition();
             gameStart = false;
+            loadScreens = false;
         }
 
-        if(SaveLoadManager.selected != -1)
+        if (SaveLoadManager.selected != -1)
         {
             loadGame.SetActive(true);
             loadGame.GetComponent<SaveLoadManager>().Load();
@@ -103,7 +104,7 @@ public class GameUI : Singleton<GameUI>
     {
         pauseClicked();
         gameStart = true;
-        //SceneManager.LoadScene("MainMenu");
+        HUD.SetActive(loadScreens);
         Inventory.Instance.RestInventory();
         SceneLoader.LoadScene("MainMenu");
     }
@@ -135,26 +136,14 @@ public class GameUI : Singleton<GameUI>
 
     void backClicked()
     {
-        if (keyBinds.activeSelf)
-        {
-            StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", keyBinds, true));
-        }
-        else
-        {
-            StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", settings, true));
-        }
+        if (keyBinds.activeSelf) StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", keyBinds, true));
+        else StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", settings, true));
     }
 
     void saveClicked()
     {
-        if (keyBinds.activeSelf)
-        {
-            SaveKeyBinds();
-        }
-        else
-        {
-            modifySettings.SaveSettings();
-        }
+        if (keyBinds.activeSelf) SaveKeyBinds();
+        else modifySettings.SaveSettings();
     }
 
 
@@ -205,7 +194,7 @@ public class GameUI : Singleton<GameUI>
 
             i++;
         }
-        Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
         inventoryMenu.gameObject.SetActive(true);
     }
@@ -231,7 +220,7 @@ public class GameUI : Singleton<GameUI>
     {
         if (reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
         else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
-        SaveTime();
+        //SaveTime();
     }
 
     public void LoadBindingOnStart(bool active)
@@ -257,8 +246,8 @@ public class GameUI : Singleton<GameUI>
         }
     }
 
-    public void SaveTime(bool state = true)
+    public void SaveTime(float time)
     {
-        saveTime = state;
+        gameSettings.position.currentTime = time;
     }
 }

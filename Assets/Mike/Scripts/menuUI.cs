@@ -108,9 +108,8 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterName.text.Remove(0);
-            //SceneManager.LoadScene("GameScene");
             SceneLoader.LoadScene("GameScene");
-            //play loading screen while switching to game
+            //GameUI.gameStart = true;
         }
         else
         {
@@ -149,28 +148,6 @@ public class MenuUI : MonoBehaviour
 
         modifySettings.SaveMouseMode();
     }
-
-    //public void LoadSaveGame()
-    //{
-    //    Time.timeScale = 1;
-    //    modifySettings.ApplyData();
-
-    //    int i = 0;
-    //    foreach (var bind in keyBinds.GetComponentsInChildren<KeyRebinder>(includeInactive: true))
-    //    {
-    //        print(bind.gameObject.name);
-    //        if(i > 12) bind.data = gameSettings.bossGameKeys[i-13];
-    //        else if (i > 8) bind.data = gameSettings.minigameKeys[i-9];
-    //        else bind.data = gameSettings.platformerKeys[i];
-
-    //        bind.ApplyData();
-            
-    //        i++;
-    //    }
-    //    Vector3 oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
-    //    pi.transform.localPosition = oldPosition;
-    //    transform.Find("InventoryCollection").gameObject.SetActive(true);
-    //}
 
     public void LoadBindingOnStart(bool active)
     {

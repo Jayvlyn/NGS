@@ -770,7 +770,6 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				hook.PlayHookHitSound();
 				OnEnterHookedState();
-				distanceJoint.distance = Vector2.Distance(transform.position, hook.rb.transform.position);
                 if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
 				else ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
@@ -847,7 +846,7 @@ public class PlatformingPlayerController : Interactor
 					float minLen = 0f;
 					float currLen = distanceJoint.distance;
 
-					//if (dist <= maxLen && currLen > dist) currLen = dist;
+					if (dist < currLen - 0.5f) currLen = dist + 0.5f;
 
 					if (dist < detachDistance)
 					{
@@ -1056,6 +1055,7 @@ public class PlatformingPlayerController : Interactor
 	{
 		currentWallJumps = totalWallJumps;
 		distanceJoint.connectedAnchor = hook.rb.gameObject.transform.position;
+		distanceJoint.distance = Vector2.Distance(rodEnd.transform.position, hook.rb.transform.position);
 		distanceJoint.enabled = true;
 
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
