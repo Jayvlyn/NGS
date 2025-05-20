@@ -4,10 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Forcer : MonoBehaviour
 {
-    [SerializeField] private Vector2 force;
-    [SerializeField] private float movementModifier;
-    [SerializeField] private bool checkForFalling;
-    [SerializeField] private bool destroyOnFall;
+    public Vector2 force;
+    public float movementModifier = 0;
+    public bool checkForFalling = false;
+    public bool destroyOnFall = false;
     [SerializeField] private Transform fallCheckPosition;
     [SerializeField] private LayerMask fallCheckLayers;
     [SerializeField] private Rigidbody2D body;
@@ -60,6 +60,9 @@ public class Forcer : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        collision.attachedRigidbody?.AddForce(force * Time.deltaTime);
+        if (collision != null && collision.attachedRigidbody != null)
+        {
+            collision.attachedRigidbody.AddForce(force * Time.deltaTime, ForceMode2D.Force);
+        }
     }
 }
