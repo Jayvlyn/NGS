@@ -2,39 +2,51 @@ using UnityEngine;
 
 public class Parallax : MonoBehaviour
 {
-    [SerializeField] float startposx;
-    [SerializeField] float startposy;
-    [SerializeField] float lengthx;
-    [SerializeField] float lengthy;
-    [SerializeField] GameObject cam;
-    [SerializeField] float parallaxEffectx; // The effect of the parallax, 0.1f is a good value 0 will move with the camera 1 will not 
-    [SerializeField] float parallaxEffecty; // The effect of the parallax, 0.1f is a good value 0 will move with the camera 1 will not 
-    [SerializeField] bool dontGoBelowZero;
+    [SerializeField] private GameObject cam;
+    [SerializeField] private float parallaxEffectx = 0.1f;
+    [SerializeField] private float parallaxEffecty = 0.1f;
+
+    [SerializeField] private bool loopY;
+    [SerializeField] private bool dontGoBelowZero = true;
+
+    private float startposx, startposy;
+    private float lengthx, lengthy;
+
     void Start()
     {
+        if (cam == null)
+        {
+            Debug.LogWarning("Camera reference is missing!", this);
+            enabled = false;
+            return;
+        }
+
         startposx = transform.position.x;
         startposy = transform.position.y;
         lengthx = GetComponent<SpriteRenderer>().bounds.size.x;
         lengthy = GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
-    void LateUpdate() // Late update removes jitter
+    void LateUpdate()
     {
-        float distancex = (cam.transform.position.x * parallaxEffectx);
-        float distancey = (cam.transform.position.y * parallaxEffecty);
-        float movementx = (cam.transform.position.x * (1 - parallaxEffectx));
-        float movementy = (cam.transform.position.y * (1 - parallaxEffecty));
+        float distancex = cam.transform.position.x * parallaxEffectx;
+        float distancey = cam.transform.position.y * parallaxEffecty;
 
         float newY = startposy + distancey;
-        if ((dontGoBelowZero && newY < 0) || parallaxEffecty == -1) newY = 0;
-        
+        if (dontGoBelowZero && newY < 0)
+            newY = 0;
+
         transform.position = new Vector3(startposx + distancex, newY, transform.position.z);
 
-        if (movementx > startposx + lengthx) startposx += lengthx;
-        else if (movementx < startposx - lengthx) startposx -= lengthx;
+        float camDisplacementX = cam.transform.position.x * (1 - parallaxEffectx);
+        if (camDisplacementX > startposx + lengthx) startposx += lengthx;
+        else if (camDisplacementX < startposx - lengthx) startposx -= lengthx;
 
-        //if (movementy > startposy + lengthy) startposy += lengthy;
-       // else if (movementy < startposy - lengthy) startposy -= lengthy;
-        
+        if (loopY)
+        {
+            float camDisplacementY = cam.transform.position.y * (1 - parallaxEffecty);
+            if (camDisplacementY > startposy + lengthy) startposy += lengthy;
+            else if (camDisplacementY < startposy - lengthy) startposy -= lengthy;
+        }
     }
 }
