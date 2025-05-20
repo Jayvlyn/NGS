@@ -797,15 +797,15 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState)
 		{
 			case RodState.CASTING:
-				UpdateLineRendererEnds();
 				if (doPostAnimRotation) UpdateRodRot();
+				UpdateLineRendererEnds();
 				break;
 			case RodState.RETURNING:
 				UpdateLineRendererEnds();
 				break;
 			case RodState.HOOKED:
-				UpdateLineRendererEnds();
 				UpdateRodRot();
+				UpdateLineRendererEnds();
 				break;
 			case RodState.FISHCASTING:
 				UpdateLineRendererEnds();
@@ -815,11 +815,12 @@ public class PlatformingPlayerController : Interactor
 		}
 	}
 
+
 	private void UpdateRodRot()
 	{
 		Vector2 direction = (hook.transform.position - rodT.transform.position).normalized;
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-		rod.transform.localRotation = Quaternion.Euler(0f, 0f, angle - 90);
+		rodT.transform.localRotation = Quaternion.Euler(0f, 0f, (angle - 90) * Mathf.Sign(rod.transform.localScale.x));
 	}
 
 	private void ProcessRodStateFixedUpdate()

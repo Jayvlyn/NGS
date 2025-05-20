@@ -278,6 +278,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclesToSpawn:
   - obj: {fileID: 6200299212229735857, guid: 40a739e46484d3d4aac69ee11a73718e, type: 3}
+    cost: 2
+  - obj: {fileID: 6200299212229735857, guid: 16e5cda3b7e13024689d1192c3d0eab7, type: 3}
+    cost: 2
+  - obj: {fileID: 6200299212229735857, guid: afb6c30f00aa5df48a6b2adf50adb841, type: 3}
+    cost: 4
+  - obj: {fileID: 6200299212229735857, guid: c35b15d682d9722409e39d6af05d7999, type: 3}
+    cost: 1
+  - obj: {fileID: 6200299212229735857, guid: c6ea44f79e97f2647a17b4419f737159, type: 3}
+    cost: 1
+  - obj: {fileID: 6200299212229735857, guid: 99454ba7ad1329944a06de1929377d06, type: 3}
+    cost: 1
+  - obj: {fileID: 6200299212229735857, guid: 723bd12486d86ad42909eb029e7295d3, type: 3}
     cost: 1
   spawnPoints:
   - {fileID: 3073856836558847304}
@@ -627,7 +639,7 @@ MonoBehaviour:
   hookParent: {fileID: 7434094983016572641}
   hookResistanceVal: 25
   hookDirection: 0
-  verticalSpeed: 4
+  verticalSpeed: 75
   externalDecayRate: 3
   minY: 0.14
   maxY: 0.87
