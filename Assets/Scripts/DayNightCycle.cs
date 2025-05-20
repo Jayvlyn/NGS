@@ -26,12 +26,12 @@ public class DayNightCycle : MonoBehaviour
 	[HideInInspector] public float currentTime;
 	public static bool isNight;
 
-	public float saveTime { get; set; }
+    [HideInInspector] public bool saveTime = false;
 
 	private void Start()
 	{
 		currentTime = NoonHour * 60; // start at noon
-		if (GameUI.Instance.saveTime) currentTime = GameUI.Instance.gameSettings.position.currentTime;
+		//if(saveTime) currentTime = GameUI.Instance.gameSettings.position.currentTime;
 	}
 
 	bool clockPaused = false;
@@ -69,13 +69,12 @@ public class DayNightCycle : MonoBehaviour
 			currentTime = MidnightHour * 60;
 		}
 
-		if (GameUI.Instance.saveTime)
-		{
-            GameUI.Instance.gameSettings.position.currentTime = currentTime;
-			GameUI.Instance.SaveTime(false);
-        }
-
-		saveTime = currentTime;
+        GameUI.Instance.SaveTime(currentTime);
+		//if (saveTime)
+		//{
+		//	GameUI.Instance.gameSettings.position.currentTime = currentTime;
+		//	//GameUI.Instance.SaveTime(false);
+		//}
 
 		UpdateLightIntensity();
 	}
@@ -118,9 +117,9 @@ public class DayNightCycle : MonoBehaviour
 		}
 	}
 
-	public float GetTime()
+	public void GetTime(float time)
 	{
-		return saveTime;
+		//GameUI.
 	}
 
 }
