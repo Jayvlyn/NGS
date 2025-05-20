@@ -1562,7 +1562,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1724124193659654616}
   - component: {fileID: 4049051634079741616}
-  - component: {fileID: 1642127537369625440}
   - component: {fileID: 8042429355443943740}
   m_Layer: 10
   m_Name: FishingRod
@@ -1579,14 +1578,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6408415931085488032}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.29789478, w: 0.9545987}
-  m_LocalPosition: {x: 0.31699985, y: -0.1699999, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6099977527351933664}
   m_Father: {fileID: 8311612956499813532}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -34.662}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4049051634079741616
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1642,29 +1641,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1642127537369625440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6408415931085488032}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282c747bfc1af5b4382fc1f85978829b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snapshots:
-  - position: {x: -4.5928802, y: -2.04472, z: 0}
-    rotation: {x: -0, y: -0, z: 0.3804265, w: 0.9248112}
-  - position: {x: -4.6252003, y: -2.02424, z: 0}
-    rotation: {x: -0, y: -0, z: 0.5592077, w: 0.82902765}
-  - position: {x: -4.62456, y: -2.01656, z: 0}
-    rotation: {x: -0, y: -0, z: 0.38023287, w: 0.92489076}
-  - position: {x: -4.60408, y: -2.0450401, z: 0}
-    rotation: {x: -0, y: -0, z: 0.06969518, w: 0.9975684}
-  - position: {x: -4.60856, y: -2.0444, z: 0}
-    rotation: {x: -0, y: -0, z: -0.29789478, w: 0.9545987}
 --- !u!95 &8042429355443943740
 Animator:
   serializedVersion: 7

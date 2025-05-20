@@ -133,7 +133,6 @@ public class PlatformingPlayerController : Interactor
 
 	public override void Start()
 	{
-		//Time.timeScale = 0.1f;
 		base.Start();
 
 		if(BossFishController.caughtBoss) Inventory.Instance.AddFish(BossFishController.bossFish);
@@ -959,7 +958,6 @@ public class PlatformingPlayerController : Interactor
 		yield return new WaitForSeconds(0.15f);
 		if (!castHeld && currentRodState != RodState.FISHCASTING) yield break;
 
-
 		hook.col.isTrigger = true;
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
 		hook.rb.transform.position = rodEnd.position;
@@ -989,15 +987,13 @@ public class PlatformingPlayerController : Interactor
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
 			castHookToPoint = StartCoroutine(CastHookToPoint(hookPos, false));
 		}
-
-		yield return new WaitForSeconds(0.2f);
+		
+		yield return new WaitForSeconds(0.15f);
 		Vector3 cachedPos = rodT.localPosition;
 		rodAnimator.enabled = false;
 		rodT.localPosition = cachedPos;
 		rodT.localRotation = Quaternion.identity;
 		doPostAnimRotation = true;
-		//hookRb.AddForce(dir * castTime);
-
 	}
 
 	private bool AttemptMouseFish()
