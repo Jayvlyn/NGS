@@ -7,7 +7,7 @@ public class WardrobeInteraction : InteractableObject
     protected override void Start()
     {
         base.Start();
-        wardrobeManager = FindFirstObjectByType<WardrobeManager>();
+        wardrobeManager = FindFirstObjectByType<WardrobeManager>(FindObjectsInactive.Include);
     }
 
     protected override void Interact(InteractionPair pair)
