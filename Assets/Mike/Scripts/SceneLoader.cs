@@ -27,11 +27,14 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    public static void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName, bool GameSceneSwitch = false)
     {
         sceneToLoad = sceneName;
         if (sceneName == "MainMenu" || sceneName == "BossfightScene") GameUI.loadScreens = false;
         else GameUI.loadScreens = true;
+
+        if (GameSceneSwitch) GameUI.gameStart = true;
+
         SceneManager.LoadScene("LoadingScene");
     }
 }

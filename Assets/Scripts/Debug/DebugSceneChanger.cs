@@ -7,15 +7,15 @@ public class DebugSceneChanger : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			SceneLoader.LoadScene("GameScene");
+			SceneLoader.LoadScene("GameScene", true);
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			SceneLoader.LoadScene("Desert");
+			SceneLoader.LoadScene("Desert", true);
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
-			SceneLoader.LoadScene("Snow");
+			SceneLoader.LoadScene("Snow", true);
 		}
 	}
 //#endif
