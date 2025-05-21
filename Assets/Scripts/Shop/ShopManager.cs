@@ -161,7 +161,7 @@ public class ShopManager : Singleton<ShopManager>
                 go.GetComponentInChildren<TMP_Text>().text = 
                     $"{currentFish[current].length:F2} cm long " +
                     $"{currentFish[current].fishName}: " +
-                    $"{currentShop.GetFishPrice(currentFish[current]):F2} Gold";
+                    $"{currentShop.GetFishPrice(currentFish[current]):F0} Carrots";
                 go.GetComponentsInChildren<Image>()[1].sprite = currentFish[current].sprite;
                 Fish fish = currentFish[current];
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(fish); });

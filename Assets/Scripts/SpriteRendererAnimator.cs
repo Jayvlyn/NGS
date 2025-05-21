@@ -7,12 +7,21 @@ public class SpriteRendererAnimator : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
 	[SerializeField] Sprite[] sprites;
 	[SerializeField] float frameInterval = 0.3f;
-	float swapTimer;
+	[SerializeField] bool randomizeStart = false;
+    float swapTimer;
 	int index = 0;
 
 	private void Start()
 	{
-		swapTimer = frameInterval;
+		if (randomizeStart)
+        {
+            index = Random.Range(0, sprites.Length);
+        }
+        else
+        {
+            index = 0;
+        }
+        swapTimer = frameInterval;
 		spriteRenderer.sprite = sprites[index];
 	}
 
