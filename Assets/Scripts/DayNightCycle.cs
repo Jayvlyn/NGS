@@ -33,13 +33,15 @@ public class DayNightCycle : MonoBehaviour
 	{
 		currentTime = NoonHour * 60; // start at noon
 		if(settings == null) settings = GameUI.Instance.gameSettings;
+		if(!GameUI.loadScreens) currentTime = settings.position.currentTime;
 	}
 
 	bool clockPaused = false;
 
 	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Period)) // toggle pause
+    {
+
+        if (Input.GetKeyDown(KeyCode.Period)) // toggle pause
 		{
 			clockPaused = !clockPaused;
 		}

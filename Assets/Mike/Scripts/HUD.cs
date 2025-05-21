@@ -9,6 +9,8 @@ public class HUD : MonoBehaviour
     [Header("Game Settings")]
     [SerializeField] public GameSettings settings;
 
+    private float timer = 0;
+
     public void UpdateMoney()
     {
         money.text = "x" + Inventory.Instance.GetData().Item2.ToString("F0");
@@ -21,11 +23,8 @@ public class HUD : MonoBehaviour
         int hourInt = Mathf.FloorToInt(hours);
         int minutes = Mathf.FloorToInt((hours - hourInt) * 60);
 
-        //int minutes = Mathf.FloorToInt(settings.position.currentTime / 60);
-        //int seconds = Mathf.FloorToInt(settings.position.currentTime % 60);
-
         string formattedTime = string.Format("{0:00}:{1:00}", hourInt, minutes);
-        time.text = formattedTime;
+        if(minutes % 10 == 0 || minutes == 0) time.text = formattedTime;
     }
 
     private void FixedUpdate()

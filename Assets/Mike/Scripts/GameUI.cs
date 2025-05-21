@@ -14,7 +14,7 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject pause;
     [SerializeField] GameObject inventoryMenu;
-    [SerializeField] GameObject HUD;
+    [SerializeField] public GameObject HUD;
 
     [Header("")]
     [SerializeField] DayNightCycle timeCycle;
@@ -60,6 +60,7 @@ public class GameUI : Singleton<GameUI>
         gameSettings = modifySettings.settings;
 
         HUD.SetActive(loadScreens);
+        //if(!GameUI.loadScreens) currentTime = settings.position.currentTime;
 
         if (pi != null)
         {
@@ -103,6 +104,7 @@ public class GameUI : Singleton<GameUI>
         pauseClicked();
         gameStart = true;
         HUD.SetActive(loadScreens);
+        loadGame.SetActive(false);
         Inventory.Instance.RestInventory();
         SceneLoader.LoadScene("MainMenu");
     }
@@ -195,6 +197,8 @@ public class GameUI : Singleton<GameUI>
         oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
         inventoryMenu.gameObject.SetActive(true);
+        timeCycle.currentTime = gameSettings.position.currentTime;
+        if (loadGame.activeSelf) loadGame.SetActive(false);
     }
 
     public void AutoSave()
