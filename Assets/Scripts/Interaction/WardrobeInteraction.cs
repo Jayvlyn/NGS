@@ -12,7 +12,8 @@ public class WardrobeInteraction : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-        if(pair.obj.Id == Id)
+        wardrobeManager = FindFirstObjectByType<WardrobeManager>(FindObjectsInactive.Include);
+        if (pair.obj.Id == Id)
         {
             wardrobeManager.OpenWardrobe();
         }
