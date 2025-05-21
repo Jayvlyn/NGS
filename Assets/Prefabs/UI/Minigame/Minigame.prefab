@@ -1717,10 +1717,11 @@ MonoBehaviour:
   - {fileID: 6359135106052094085}
   - {fileID: 7966567603141623890}
   - {fileID: 8824765375641320670}
-  swimSpeed: 3
-  panicMulti: 1.5
+  swimSpeed: 1.5
+  panicMulti: 2.5
   catchMulti: 10
-  maxCatchProgress: 20
+  depleteMulti: 5
+  maxCatchProgress: 30
   wadeSpeed: 0.05
   minigameEvent: {fileID: 11400000, guid: 3d6aa5cb50e93c34ea5a7a59cadb158b, type: 2}
   caughtFishEvent: {fileID: 11400000, guid: 07942f2af4dc70b4b9a0b1b64e7e139d, type: 2}
@@ -1731,6 +1732,7 @@ MonoBehaviour:
   hookT: {fileID: 6829940017232708715}
   fishT: {fileID: 7057209646435027259}
   isCaught: 0
+  startCatchProgress: 10
   rotator: {fileID: 7112920172083344224}
 --- !u!50 &5906862279221811559
 Rigidbody2D:

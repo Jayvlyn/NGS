@@ -14,6 +14,7 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
     [SerializeField] float catchMulti = 1.0f; // Multiplied Directly to catchProgress increment per update
+    [SerializeField] float depleteMulti = 1.0f; // Multiplied Directly to catchProgress increment per update
     [SerializeField] float maxCatchProgress = 100f; // Max catch progress.
     [SerializeField] float wadeSpeed = 0.005f;
 
@@ -38,7 +39,8 @@ public class FishMinigame : MonoBehaviour
 
     public bool isCaught = false;
 
-    private float catchProgress = 20f; // 100 is win-condition.
+    [SerializeField] private float startCatchProgress = 10f;
+    private float catchProgress; // 100 is win-condition.
     private Vector2 velocity = new Vector3(1, 0, 0);
     private bool hooked;
 
@@ -61,7 +63,8 @@ public class FishMinigame : MonoBehaviour
 		hooked = false;
         isCaught = false;
 
-		catchProgBar.value = 25.0f;
+        catchProgress = startCatchProgress;
+        catchProgBar.value = catchProgress;
 
 		fishImage.sprite = hookedFish.sprite;
         UpdateDesiredAngle();
@@ -70,7 +73,7 @@ public class FishMinigame : MonoBehaviour
 
 	private void OnDisable()
 	{
-		catchProgress = 20f;
+        catchProgress = startCatchProgress;
         bobberT.localPosition = initialBobberPos;
         hookT.localPosition = initialHookPos;
         fishT.localPosition = initialFishPos;
@@ -192,7 +195,7 @@ public class FishMinigame : MonoBehaviour
         }
         else if(catchProgBar.value > 0)
         {
-            catchProgress -= 0.01f * catchMulti;
+            catchProgress -= 0.01f * depleteMulti;
             catchProgBar.value = catchProgress / maxCatchProgress;
         }
 
