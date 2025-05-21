@@ -55,12 +55,17 @@ public class ShopManager : Singleton<ShopManager>
         selectFishWindow.enabled = true;
         if (pastSelectTiles.Count == 0)
         {
-            for(int current = 0; current < currentShop.GetAvailableFish().Count; current++)
+            for(int current = 0, offset = 0; current < currentShop.GetAvailableFish().Count; current++)
             {
                 (string, Sprite) data = currentShop.GetAvailableFish()[current];
+                if(Inventory.Instance.GetFishData(data.Item1).currentFish.Count == 0)
+                {
+                    offset++;
+                    continue;
+                }
                 GameObject go = Instantiate(selectFishUIPrefab, selectFishDisplayArea);
-                int row = current / expectedSelectFishColumns;
-                int column = current % expectedSelectFishColumns;
+                int row = (current - offset) / expectedSelectFishColumns;
+                int column = (current - offset) % expectedSelectFishColumns;
                 go.transform.localPosition = 
                     new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f, 
                     selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);

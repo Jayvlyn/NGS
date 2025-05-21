@@ -12,6 +12,7 @@ public class Forcer : MonoBehaviour
     [SerializeField] private LayerMask fallCheckLayers;
     [SerializeField] private float fallCheckDistance;
     [SerializeField] private Rigidbody2D body;
+    [SerializeField] private bool awayFromCenter = false;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class Forcer : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(checkForFalling && IsAboutToFall())
         {
@@ -51,19 +52,35 @@ public class Forcer : MonoBehaviour
 
     private void Move()
     {
-        body.AddForce(force * movementModifier * Time.deltaTime);
+        Vector3 change = (new Vector3(force.x, force.y) * movementModifier * Time.fixedDeltaTime);
+        Debug.Log(change);
+        body.MovePosition(body.transform.position + change);
     }
 
     private bool IsAboutToFall()
     {
-        return !Physics2D.Raycast(fallCheckPosition.position, Vector2.down, fallCheckDistance, fallCheckLayers);
+        if(Physics2D.Raycast(fallCheckPosition.position, Vector2.down, fallCheckDistance, fallCheckLayers))
+        {
+            return false;
+        }
+        return true;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision != null && collision.attachedRigidbody != null)
+        if (collision != null && collision.attachedRigidbody != null && collision.attachedRigidbody != body)
         {
-            collision.attachedRigidbody.AddForce(force * Time.deltaTime, ForceMode2D.Force);
+            if(awayFromCenter)
+            {
+                Vector2 resultingForce = Vector2.zero;
+                resultingForce.x = Mathf.Abs(force.x) * Mathf.Sign(collision.transform.position.x - transform.position.x);
+                resultingForce.y = Mathf.Abs(force.y) * Mathf.Sign(collision.transform.position.y - transform.position.y);
+                collision.attachedRigidbody.AddForce(resultingForce * Time.deltaTime, ForceMode2D.Force);
+            }
+            else
+            {
+                collision.attachedRigidbody.AddForce(force * Time.deltaTime, ForceMode2D.Force);
+            }
         }
     }
 
@@ -71,7 +88,7 @@ public class Forcer : MonoBehaviour
     {
         if(fallCheckPosition != null && fallCheckDistance > 0)
         {
-            Gizmos.color = Color.yellow;
+            Gizmos.color = Color.black;
             Gizmos.DrawLine(fallCheckPosition.position, new Vector3(fallCheckPosition.position.x, fallCheckPosition.position.y - fallCheckDistance, fallCheckPosition.position.z));
         }
     }

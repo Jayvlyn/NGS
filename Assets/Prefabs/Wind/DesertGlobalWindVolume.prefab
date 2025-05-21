@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1140291262257251893}
   - component: {fileID: 5527192439292386058}
   - component: {fileID: 3133460468422660101}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: DesertGlobalWindVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,4 +183,5 @@ MonoBehaviour:
   fallCheckLayers:
     serializedVersion: 2
     m_Bits: 0
+  fallCheckDistance: 0
   body: {fileID: 0}
