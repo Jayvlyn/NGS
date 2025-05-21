@@ -395,16 +395,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1432530980680913282, guid: 67dcf2153b4554b4695aae62a10b6b1b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 640
+      objectReference: {fileID: 0}
+    - target: {fileID: 1432530980680913282, guid: 67dcf2153b4554b4695aae62a10b6b1b, type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1432530980680913282, guid: 67dcf2153b4554b4695aae62a10b6b1b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1432530980680913282, guid: 67dcf2153b4554b4695aae62a10b6b1b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1471061653779632104, guid: 67dcf2153b4554b4695aae62a10b6b1b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1713936898772505159, guid: 67dcf2153b4554b4695aae62a10b6b1b, type: 3}
       propertyPath: unityEventResponse.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName

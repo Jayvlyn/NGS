@@ -51,8 +51,8 @@ public class MenuUI : MonoBehaviour
         LoadBindingOnStart(true);
         LoadBindingOnStart(false);
 
-        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", Title));
-        //StartCoroutine(UIAnimations.PlayUIAnim("Bunny", Bunny));
+        StartCoroutine(UIAnimations.PlayUIAnim("Bunny", Bunny));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", Title, delay:1.7f));
     }
 
     void newGameClicked()

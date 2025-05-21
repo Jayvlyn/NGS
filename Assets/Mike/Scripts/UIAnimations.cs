@@ -3,8 +3,9 @@ using UnityEngine;
 
 public static class UIAnimations
 {
-    public static IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false)
+    public static IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false, float delay = 0)
     {
+        yield return new WaitForSecondsRealtime(delay);
         var anim = menu.GetComponent<Animator>();
 
         if (anim.GetBool(name)) anim.SetBool(name, false);
