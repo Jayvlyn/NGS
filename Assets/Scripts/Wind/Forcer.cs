@@ -10,6 +10,7 @@ public class Forcer : MonoBehaviour
     public bool destroyOnFall = false;
     [SerializeField] private Transform fallCheckPosition;
     [SerializeField] private LayerMask fallCheckLayers;
+    [SerializeField] private float fallCheckDistance;
     [SerializeField] private Rigidbody2D body;
 
     private void Start()
@@ -31,7 +32,7 @@ public class Forcer : MonoBehaviour
             else
             {
                 force *= -1;
-                transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 if(IsAboutToFall())
                 {
                     movementModifier = 0;
@@ -55,7 +56,7 @@ public class Forcer : MonoBehaviour
 
     private bool IsAboutToFall()
     {
-        return !Physics2D.Raycast(fallCheckPosition.position, Vector2.down, fallCheckPosition.position.y - transform.position.y, fallCheckLayers);
+        return !Physics2D.Raycast(fallCheckPosition.position, Vector2.down, fallCheckDistance, fallCheckLayers);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -63,6 +64,15 @@ public class Forcer : MonoBehaviour
         if (collision != null && collision.attachedRigidbody != null)
         {
             collision.attachedRigidbody.AddForce(force * Time.deltaTime, ForceMode2D.Force);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(fallCheckPosition != null && fallCheckDistance > 0)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(fallCheckPosition.position, new Vector3(fallCheckPosition.position.x, fallCheckPosition.position.y - fallCheckDistance, fallCheckPosition.position.z));
         }
     }
 }
