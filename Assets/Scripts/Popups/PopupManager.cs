@@ -12,6 +12,9 @@ public class PopupManager : Singleton<PopupManager>
     [SerializeField] private InputActionReference interactAction;
     [SerializeField] private GameObject fishConfirmationPopupPrefab;
     [SerializeField] private GameObject fishCaughtPopup;
+    [SerializeField] private Color genericFishPopupColor = Color.white;
+    [SerializeField] private Color newLargestFishPopupColor = Color.white;
+    [SerializeField] private Color newTypeFishPopupColor = Color.white;
     #region World Statement
     public GameObject CreateWorldStatementPopup(Transform location, string statement = "", float lifetime = 10, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearence = new PopupAppearanceData())
     {
@@ -103,7 +106,7 @@ public class PopupManager : Singleton<PopupManager>
     }
     #endregion World Interaction Popups
 
-    public GameObject CreateFishCaughtPopup(Sprite sprite, string topText = "", string bottomText = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearance = new PopupAppearanceData())
+    public GameObject CreateFishCaughtPopup(Sprite sprite, Color fxColor, string topText = "", string bottomText = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearance = new PopupAppearanceData())
     {
         GameObject go = Instantiate(fishCaughtPopup);
         FishPopup popup = go.GetComponentInChildren<FishPopup>();
@@ -111,6 +114,7 @@ public class PopupManager : Singleton<PopupManager>
         popup.bottomText.text = bottomText;
         popup.image.sprite = sprite;
         popup.closeBehavior = disappearance;
+        popup.effectImg.color = fxColor;
         AddAppearance(popup.gameObject, appearance);
         return go;
     }
@@ -118,19 +122,19 @@ public class PopupManager : Singleton<PopupManager>
     public GameObject CreateNewFishTypePopup(Fish fish)
     {
         PopupAppearanceData popupData = GetDefaultFishPopupData();
-        return CreateFishCaughtPopup(fish.sprite, "New fish type caught!", fish.fishName, popupData, popupData);
+        return CreateFishCaughtPopup(fish.sprite, newTypeFishPopupColor,"New fish type caught!", fish.fishName, popupData, popupData);
     }
 
     public GameObject CreateNewLargestFishPopup(Fish fish)
     {
         PopupAppearanceData popupData = GetDefaultFishPopupData();
-        return CreateFishCaughtPopup(fish.sprite, $"New largest {fish.fishName}!", $"{fish.length:F2} cm", popupData, popupData);
+        return CreateFishCaughtPopup(fish.sprite, newLargestFishPopupColor, $"New largest {fish.fishName}!", $"{fish.length:F2} cm", popupData, popupData);
     }
 
     public GameObject CreateGenericFishPopup(Fish fish)
     {
         PopupAppearanceData popupData = GetDefaultFishPopupData();
-        return CreateFishCaughtPopup(fish.sprite, $"Caught a {fish.fishName}.", $"{fish.length:F2} cm", popupData, popupData);
+        return CreateFishCaughtPopup(fish.sprite, genericFishPopupColor, $"Caught a {fish.fishName}.", $"{fish.length:F2} cm", popupData, popupData);
     }
 
     private PopupAppearanceData GetDefaultFishPopupData()
