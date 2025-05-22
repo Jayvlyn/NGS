@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class UIAnimations
 {
-    public static IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false, float delay = 0)
+    public static IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false, float delay = 0, bool turnOff = false)
     {
         yield return new WaitForSecondsRealtime(delay);
         var anim = menu.GetComponent<Animator>();
@@ -22,5 +22,7 @@ public static class UIAnimations
             if (!anim.GetBool(name)) menu.SetActive(false);
         }
         else yield return new WaitForSecondsRealtime(1);
+
+        if (turnOff) anim.enabled = false;
     }
 }

@@ -49,6 +49,9 @@ public class ShopManager : Singleton<ShopManager>
     //Testing only, remove later
     [SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
 
+    [SerializeField] GameObject purchasePrefab;
+    [SerializeField] RectTransform purchaseDestination;
+
     public void SelectSell()
     {
         mainMenuWindow.enabled = false;
