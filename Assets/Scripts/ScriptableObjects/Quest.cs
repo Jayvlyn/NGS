@@ -1,3 +1,4 @@
+using GameEvents;
 using System;
 using UnityEngine;
 
@@ -14,5 +15,6 @@ public class Quest : ScriptableObject
     public float minLength;
     public string destinationName;
     public int remainingCompletions;
+    public VoidEvent onCompleteEvent;
     [HideInInspector] public bool disabled;
 }
