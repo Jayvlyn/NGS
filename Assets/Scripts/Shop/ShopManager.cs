@@ -83,6 +83,7 @@ public class ShopManager : Singleton<ShopManager>
     public void Close()
     {
         mainMenuWindow.enabled = false;
+        QuestManager.Instance.UpdateQuests();
         state = ShopState.Closed;
     }
 

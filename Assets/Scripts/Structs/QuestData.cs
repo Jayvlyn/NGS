@@ -2,9 +2,8 @@ using UnityEngine;
 [System.Serializable]
 public struct QuestData
 {
-    public Fish Fish;
-    public string QuestDescription;
-    public string RepeatDescription;
-    public float MinLength;
-    public float Reward;
+    public Quest quest;
+    public string[] dialogues;
+    public string completionDialogue;
+    public bool loop;
 }

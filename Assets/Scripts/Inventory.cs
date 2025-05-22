@@ -108,4 +108,18 @@ public class Inventory : Singleton<Inventory>
 
         return str;
     }
+
+    public Fish GetLowestViable(string fishType, float minLength)
+    {
+        FishData data = GetFishData(fishType);
+        Fish fish = null;
+        foreach(Fish checkFish in data.currentFish)
+        {
+            if(checkFish.length >= minLength && (checkFish == null || checkFish.length < fish.length))
+            {
+                fish = checkFish;
+            }
+        }
+        return fish;
+    }
 }

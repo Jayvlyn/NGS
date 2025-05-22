@@ -1,35 +1,57 @@
+using UnityEditor;
 using UnityEngine;
 
 public class Landmark : InteractableObject
 {
-    [SerializeField] protected Transform dialoguePopupLocation;
-    [SerializeField] protected string[] landmarkDescriptions;
-    [SerializeField] protected bool loops = false;
-    [SerializeField] protected string landmarkName;
-    [SerializeField] protected bool screenPopup;
-    [SerializeField] protected float lifetime = 30;
-    [SerializeField] protected PopupAppearanceData appearanceData;
-    [SerializeField] protected PopupAppearanceData closingData;
-    protected int current = 0;
+    public Transform dialoguePopupLocation;
+    [SerializeField] protected string[] questDescriptions;
+    [SerializeField] protected bool questDescriptionsLoop = false;
+    public string landmarkName;
+    protected int currentStandard = 0;
+    protected int currentQuest = 0;
+    public BasicLandmarkData baseData;
 
+    protected GameObject currentPopup = null;
     protected override void Interact(InteractionPair pair)
     {
         if(pair.obj.Id == Id)
         {
-            if(screenPopup)
+            if(QuestManager.Instance.HasQuestFor(landmarkName) && questDescriptions.Length > 0)
             {
-                PopupManager.Instance.CreateScreenStatementPopup(landmarkDescriptions[current], lifetime, landmarkName, appearanceData, closingData);
+                DoQuestPopup();
             }
-            else
+            else if(baseData.landmarkDescriptions.Length > 0)
             {
+                DoStandardPopup();
+            }
+        }
+    }
 
-                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, landmarkDescriptions[current], lifetime, landmarkName, appearanceData, closingData);
-            }
-            current++;
-            if(current == landmarkDescriptions.Length)
-            {
-                current = loops ? 0 : current - 1;
-            }
+    protected void DoStandardPopup()
+    {
+        DoPopup(baseData.landmarkDescriptions[currentStandard]);
+        currentStandard++;
+        if (currentStandard == baseData.landmarkDescriptions.Length)
+        {
+            currentStandard = baseData.standardDescriptionsLoop ? 0 : currentStandard - 1;
+        }
+    }
+
+    protected void DoQuestPopup()
+    {
+        DoPopup(questDescriptions[currentQuest]);
+        currentQuest++;
+        if (currentQuest == questDescriptions.Length)
+        {
+            currentQuest = questDescriptionsLoop ? 0 : currentQuest - 1;
+        }
+    }
+
+    protected void DoPopup(string description)
+    {
+        if (currentPopup == null)
+        {
+                currentPopup = baseData.screenPopup ? PopupManager.Instance.CreateScreenStatementPopup(description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData) : PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData);
         }
     }
 }

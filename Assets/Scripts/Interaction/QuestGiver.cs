@@ -1,13 +1,14 @@
 using GameEvents;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UI;
 [RequireComponent (typeof(BoolListener))]
 public class QuestGiver : InteractableObject
 {
-    protected bool completedAQuest = false;
+    [SerializeField] protected bool completedAQuest = false;
     [SerializeField] protected int currentQuestIndex = -1;
-    [SerializeField] protected QuestData[] potentialQuests;
+    [SerializeField] protected List<QuestData> potentialQuests;
     [SerializeField] protected bool givesCosmetic = true;
     [SerializeField] protected string questGiverName = "";
     //True if you have not initiated an interaction with this object yet
@@ -16,6 +17,8 @@ public class QuestGiver : InteractableObject
     [SerializeField] protected BoolListener listener;
     [SerializeField] protected Transform dialoguePopupTransform;
     [SerializeField] protected PopupAppearanceData appearanceData;
+    [SerializeField] protected BasicLandmarkData dataForNoMoreQuests;
+    private int dialogueIndex;
 
     private Fish lowestViable = null;
 
@@ -31,39 +34,38 @@ public class QuestGiver : InteractableObject
 
     protected override void Interact(InteractionPair pair)
     {
-        if(pair.obj.Id == Id && potentialQuests.Length > 0 && canInteract)
+        if(pair.obj.Id == Id && potentialQuests.Count > 0 && canInteract)
         {
-            bool firstTimeDescribing = false;
             if(currentQuestIndex != -1)
             {
-                lowestViable = null;
-                if(Inventory.Instance.GetFishData(potentialQuests[currentQuestIndex].Fish.fishName).currentFish != null)
+                if (potentialQuests[currentQuestIndex].quest.completeable)
                 {
-                    foreach(Fish fish in Inventory.Instance.GetFishData(potentialQuests[currentQuestIndex].Fish.fishName).currentFish)
+                    if (potentialQuests[currentQuestIndex].quest.fishQuest)
                     {
-                        if(fish.length >= potentialQuests[currentQuestIndex].MinLength && (lowestViable == null || lowestViable.length > fish.length))
-                        {
-                            lowestViable = fish;
-                        }
+                        currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
+                        canInteract = false;
                     }
-                }
-                if(lowestViable != null)
-                {
-                    currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
-                    canInteract = false;
+                    else
+                    {
+                        CompleteQuest();
+                    }
                 }
             }
             else
             {
-                currentQuestIndex = Random.Range(0, potentialQuests.Length);
-                firstTimeDescribing = true;
+                currentQuestIndex = Random.Range(0, potentialQuests.Count);
+                QuestManager.Instance.AddQuest(potentialQuests[currentQuestIndex].quest);
             }
-            if(canInteract)
+            if(canInteract && currentPopup == null)
             {
-                PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
-                    firstTimeDescribing || potentialQuests[currentQuestIndex].RepeatDescription == string.Empty ?
-                    potentialQuests[currentQuestIndex].QuestDescription :
-                    potentialQuests[currentQuestIndex].RepeatDescription, questGiverName, appearanceData);
+                currentPopup = PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
+                    potentialQuests[currentQuestIndex].dialogues[dialogueIndex], 
+                    questGiverName, appearanceData);
+                dialogueIndex++;
+                if(dialogueIndex == potentialQuests[currentQuestIndex].dialogues.Length)
+                {
+                    dialogueIndex = potentialQuests[currentQuestIndex].loop ? 0 : dialogueIndex - 1;
+                }
             }
         }
     }
@@ -74,30 +76,56 @@ public class QuestGiver : InteractableObject
         {
             if(complete)
             {
-                Inventory.Instance.RemoveFish(lowestViable);
-                lowestViable = null;
-                if(completedAQuest)
-                {
-                    Inventory.Instance.AddMoney(potentialQuests[currentQuestIndex].Reward);
-                    currentQuestIndex = -1;
-
-                }
-                else
-                {
-                    if (givesCosmetic)
-                    {
-                        completedAQuest = true;
-                        //TODO: Attach system to add cosmetics
-                    }
-                    else
-                    {
-                        Destroy(gameObject);
-                    }
-                }
+                CompleteQuest();
             }
             Destroy(currentPopup);
             canInteract = true;
         }
+    }
+
+    public void CompleteQuest()
+    {
+        if (potentialQuests[currentQuestIndex].quest.fishQuest)
+        {
+            Inventory.Instance.RemoveFish(lowestViable);
+            lowestViable = null;
+        }
+        QuestManager.Instance.CompleteQuest(potentialQuests[currentQuestIndex].quest);
+        if(!completedAQuest)
+        {
+            if (givesCosmetic)
+            {
+                completedAQuest = true;
+                //TODO: Attach system to add cosmetics
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+        if(currentPopup != null && currentPopup.TryGetComponent(out DialogueVoidPopup pop))
+        {
+            pop.ClosePopup();
+        }
+        currentPopup = PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform, potentialQuests[currentQuestIndex].completionDialogue, questGiverName, appearanceData);
+        if (potentialQuests[currentQuestIndex].quest.disabled)
+        {
+            potentialQuests.RemoveAt(currentQuestIndex);
+            if(potentialQuests.Count == 0 )
+            {
+                Landmark landmark = gameObject.AddComponent<Landmark>();
+                landmark.baseData = dataForNoMoreQuests;
+                landmark.landmarkName = questGiverName;
+                landmark.dialoguePopupLocation = dialoguePopupTransform;
+                landmark.popupLocation = popupLocation;
+                landmark.interactEvent = interactEvent;
+                landmark.enterInteractionRangeEvent = enterInteractionRangeEvent;
+                landmark.exitInteractionRangeEvent = exitInteractionRangeEvent;
+                Destroy(this);
+            }
+        }
+        currentQuestIndex = -1;
+        dialogueIndex = 0;
     }
 
 }

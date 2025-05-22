@@ -6,10 +6,10 @@ public class InteractableObject : MonoBehaviour
     public int Id {  get; private set; }
     private static int count = 0;
     public InteractionType interactionType;
-    [SerializeField] protected InteractionEvent enterInteractionRangeEvent;
-    [SerializeField] protected InteractionEvent exitInteractionRangeEvent;
-    [SerializeField] protected InteractionEvent interactEvent;
-    [SerializeField] protected Transform popupLocation;
+    public InteractionEvent enterInteractionRangeEvent;
+    public InteractionEvent exitInteractionRangeEvent;
+    public InteractionEvent interactEvent;
+    public Transform popupLocation;
     protected Dictionary<int, GameObject> currentPopups = new();
     protected virtual void Start()
     {
