@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Quest", menuName = "Scriptable Objects/Quest")]
 public class Quest : ScriptableObject
 {
-    public string name;
+    public string questName;
     public string description;
     public bool completeable;
     public bool fishQuest = true;
