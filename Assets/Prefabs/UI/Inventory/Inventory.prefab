@@ -2062,14 +2062,14 @@ MonoBehaviour:
   questPrefab: {fileID: 2484664046842512985, guid: 96efaf2dbb46eda40af916d54c830947, type: 3}
   questUI: {fileID: 7730092378750258099}
   currentQuestUIElements: []
-  questToAdd:
-  - Fish: {fileID: 0}
-    QuestDescription: dsaddsdsadsa
-    RepeatDescription: dsadsadsadsada
-    MinLength: 0
-    Reward: 10
+  questToAdd: []
   questToRemove: []
-  randomRotationRange: 10
+  randomRotationRange: 15
+  stickyNoteColors:
+  - {r: 1, g: 0.99215686, b: 0.6117647, a: 1}
+  - {r: 0.7372549, g: 1, b: 0.6117647, a: 1}
+  - {r: 0.6117647, g: 0.92941177, b: 1, a: 1}
+  - {r: 1, g: 0.6117647, b: 0.9764706, a: 1}
 --- !u!1 &7856747758763776659
 GameObject:
   m_ObjectHideFlags: 0
