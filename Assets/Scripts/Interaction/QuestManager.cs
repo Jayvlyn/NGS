@@ -37,7 +37,7 @@ public class QuestManager : Singleton<QuestManager>
                 quest.disabled = true;
             }
         }
-        Inventory.Instance.AddMoney(quest.reward);
+        Inventory.Instance.AddMoney(quest.reward.carrots);
         RemoveQuest(quest);
     }
 

@@ -9,7 +9,7 @@ public class Quest : ScriptableObject
     public string description;
     public bool completeable;
     public bool fishQuest = true;
-    public float reward;
+    public Reward reward;
     public Fish fish;
     public float minLength;
     public string destinationName;
