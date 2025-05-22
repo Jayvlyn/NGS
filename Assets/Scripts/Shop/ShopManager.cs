@@ -49,8 +49,9 @@ public class ShopManager : Singleton<ShopManager>
     //Testing only, remove later
     [SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
 
-    [SerializeField] GameObject purchasePrefab;
-    [SerializeField] RectTransform purchaseDestination;
+    [Header("Particle System")]
+    public GameObject sellEffectPrefab; // assign your particle system prefab
+    public Transform spawnPoint; // item location
 
     public void SelectSell()
     {
@@ -125,7 +126,9 @@ public class ShopManager : Singleton<ShopManager>
     public void SellFish(Fish fish)
     {
         Inventory.Instance.RemoveFish(fish);
-        Inventory.Instance.AddMoney(currentShop.GetFishPrice(fish));
+        double price = currentShop.GetFishPrice(fish);
+        PurchasedFish(price);
+        Inventory.Instance.AddMoney(price);
         if (fish.fishName == previousFishType)
         {
             while (pastFishTiles.Count > 0)
@@ -324,5 +327,13 @@ public class ShopManager : Singleton<ShopManager>
     {
         //testing only, remove later
         //Open(testingShopData);
+    }
+
+    public void PurchasedFish(double cost)
+    {
+        int value = (int)Mathf.Floor((float)cost);
+        GameObject effect = Instantiate(sellEffectPrefab, spawnPoint.position, Quaternion.identity);
+        var ps = effect.GetComponent<ParticleSystem>();
+        ps.Emit(value);
     }
 }
