@@ -30,6 +30,7 @@ public class QuestManager : Singleton<QuestManager>
 
     public void CompleteQuest(Quest quest)
     {
+        if(quest.onCompleteEvent != null) quest.onCompleteEvent.Raise();
         ResetQuest(quest);
         if(quest.remainingCompletions != -1)
         {
