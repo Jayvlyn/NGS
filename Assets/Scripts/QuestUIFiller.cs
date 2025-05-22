@@ -9,8 +9,8 @@ public class QuestUIFiller : MonoBehaviour
     [SerializeField] GameObject questPrefab;
     [SerializeField] GameObject questUI;
     [SerializeField] List<GameObject> currentQuestUIElements;
-    [SerializeField] List<QuestData> questToAdd;
-    [SerializeField] List<QuestData> questToRemove;
+    [SerializeField] List<Quest> questToAdd;
+    [SerializeField] List<Quest> questToRemove;
     [SerializeField] float randomRotationRange = 10f;
     [SerializeField] List<Color> stickyNoteColors;
 
@@ -23,7 +23,7 @@ public class QuestUIFiller : MonoBehaviour
             //when inventory is set active then add the UI elements 
             if (questToAdd.Count > 0 && this.isActiveAndEnabled)
             {
-                foreach (QuestData quest in questToAdd)
+                foreach (Quest quest in questToAdd)
                 {
                     addQuestToUI(quest);
 
@@ -32,7 +32,7 @@ public class QuestUIFiller : MonoBehaviour
             }
             if (questToRemove.Count > 0 && this.isActiveAndEnabled)
             {
-                foreach (QuestData quest in questToRemove)
+                foreach (Quest quest in questToRemove)
                 {
                     removeQuestFromUI(quest);
                 }
@@ -41,7 +41,7 @@ public class QuestUIFiller : MonoBehaviour
         }
     }
 
-    void addQuestToUI(QuestData quest)
+    void addQuestToUI(Quest quest)
     { 
         GameObject newPrefab = Instantiate<GameObject>(questPrefab, this.transform);
         float randomRotation = Random.Range(-randomRotationRange, randomRotationRange);
@@ -49,10 +49,10 @@ public class QuestUIFiller : MonoBehaviour
         stickyNote.gameObject.transform.rotation = Quaternion.Euler(0, 0, randomRotation);
         stickyNote.color = stickyNoteColors[Random.Range(0, stickyNoteColors.Count)];
        // stickyNote.GetComponentsInChildren<TMP_Text>()[2].text = quest.name;
-        stickyNote.GetComponentsInChildren<TMP_Text>()[1].text = quest.QuestDescription;
-        stickyNote.GetComponentsInChildren<TMP_Text>()[0].text = quest.Reward.ToString();
+        stickyNote.GetComponentsInChildren<TMP_Text>()[1].text = quest.description;
+        stickyNote.GetComponentsInChildren<TMP_Text>()[0].text = quest.reward.ToString();
     }
-    void removeQuestFromUI(QuestData quest)
+    void removeQuestFromUI(Quest quest)
     { 
     
     }
