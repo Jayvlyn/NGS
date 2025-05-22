@@ -150,6 +150,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{
+		//Debug.Log(currentMoveState);
+
 		onGround = isGrounded();
 
 		ProcessUpdateTimers();
@@ -506,6 +508,11 @@ public class PlatformingPlayerController : Interactor
 		switch (state)
 		{
 			case MoveState.IDLE:
+				if (moveInput != 0)
+				{
+					ChangeMoveState(MoveState.RUNNING);
+					break;
+				}
 				audioManager.StopRunSound();
 				SetTrigger("ToIdle");
 				break;
