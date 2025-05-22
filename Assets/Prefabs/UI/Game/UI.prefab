@@ -143,6 +143,7 @@ MonoBehaviour:
   pauseAction: {fileID: -7459436573456147142, guid: 097c45eb17bad3640a9c78e2eec485f5, type: 3}
   pi: {fileID: 0}
   inventoryUIFiller: {fileID: 8269974427274400706}
+  questUIFiller: {fileID: 4480311761162491176}
   collection: {fileID: 8917379044987710725}
   gameSettings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
 --- !u!114 &8170412535288247596
@@ -828,15 +829,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296412681974110440, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1077.4363
+      value: 0.00030517578
       objectReference: {fileID: 0}
     - target: {fileID: 2296412681974110440, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9926979
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -844,11 +845,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524847018943916788, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1077.4363
+      value: 0.00030517578
       objectReference: {fileID: 0}
     - target: {fileID: 2524847018943916788, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 2808320876928596218, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -876,11 +877,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3651398393776001945, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1077.4363
+      value: 0.00030517578
       objectReference: {fileID: 0}
     - target: {fileID: 3651398393776001945, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 3826095420324730859, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Name
@@ -1000,7 +1001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6607133016978666353, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9948973
       objectReference: {fileID: 0}
     - target: {fileID: 6607133016978666353, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -1036,7 +1037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8600408161581948292, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9926979
       objectReference: {fileID: 0}
     - target: {fileID: 8600408161581948292, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -1921,6 +1922,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19888b377e4d6244a90bd97ea62cf71e, type: 3}
+--- !u!114 &4480311761162491176 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5180469018835336534, guid: 19888b377e4d6244a90bd97ea62cf71e, type: 3}
+  m_PrefabInstance: {fileID: 8775821253488470142}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c7368559fd5c347ad027cc40559ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5584226391238323431 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3798455057567958169, guid: 19888b377e4d6244a90bd97ea62cf71e, type: 3}

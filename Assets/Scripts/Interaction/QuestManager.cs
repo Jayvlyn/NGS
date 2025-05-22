@@ -9,11 +9,13 @@ public class QuestManager : Singleton<QuestManager>
     public void AddQuest(Quest quest)
     {
         activeQuests.Add(quest);
+        GameUI.Instance.questUIFiller.addQuestToList(quest);
     }
 
     public void RemoveQuest(Quest quest)
     {
         activeQuests.Remove(quest);
+        GameUI.Instance.questUIFiller.removeQuestFromList(quest);
     }
 
     public Quest[] GetQuests()
@@ -28,6 +30,7 @@ public class QuestManager : Singleton<QuestManager>
 
     public void CompleteQuest(Quest quest)
     {
+        if(quest.onCompleteEvent != null) quest.onCompleteEvent.Raise();
         ResetQuest(quest);
         if(quest.remainingCompletions != -1)
         {

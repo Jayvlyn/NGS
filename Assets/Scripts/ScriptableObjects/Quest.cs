@@ -1,3 +1,4 @@
+using GameEvents;
 using System;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Quest", menuName = "Scriptable Objects/Quest")]
 public class Quest : ScriptableObject
 {
-    public string name;
+    public string questName;
     public string description;
     public bool completeable;
     public bool fishQuest = true;
@@ -14,5 +15,6 @@ public class Quest : ScriptableObject
     public float minLength;
     public string destinationName;
     public int remainingCompletions;
+    public VoidEvent onCompleteEvent;
     [HideInInspector] public bool disabled;
 }

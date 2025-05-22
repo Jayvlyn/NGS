@@ -28,6 +28,7 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] InputActionReference pauseAction;
     [SerializeField] public PlayerInput pi;
     [SerializeField] public InventoryUIFiller inventoryUIFiller;
+    [SerializeField] public QuestUIFiller questUIFiller;
     [SerializeField] public Collection collection;
     [HideInInspector] public GameSettings gameSettings;
     private ModifySettings modifySettings;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,19 +41,26 @@ public class QuestUIFiller : MonoBehaviour
             }
         }
     }
-
-    void addQuestToUI(Quest quest)
-    { 
+    public void addQuestToList(Quest quest)
+    {
+        questToAdd.Add(quest);
+    }
+    public void removeQuestFromList(Quest quest)
+    {
+        questToRemove.Add(quest);
+    }
+    private void addQuestToUI(Quest quest)
+    {
         GameObject newPrefab = Instantiate<GameObject>(questPrefab, this.transform);
         float randomRotation = Random.Range(-randomRotationRange, randomRotationRange);
         Image stickyNote = newPrefab.GetComponentsInChildren<Image>()[0];
         stickyNote.gameObject.transform.rotation = Quaternion.Euler(0, 0, randomRotation);
         stickyNote.color = stickyNoteColors[Random.Range(0, stickyNoteColors.Count)];
-       // stickyNote.GetComponentsInChildren<TMP_Text>()[2].text = quest.name;
+        stickyNote.GetComponentsInChildren<TMP_Text>()[2].text = quest.questName;
         stickyNote.GetComponentsInChildren<TMP_Text>()[1].text = quest.description;
-        stickyNote.GetComponentsInChildren<TMP_Text>()[0].text = quest.reward.ToString();
+        stickyNote.GetComponentsInChildren<TMP_Text>()[0].text = quest.reward.GetReward();
     }
-    void removeQuestFromUI(Quest quest)
+    private void removeQuestFromUI(Quest quest)
     { 
     
     }
