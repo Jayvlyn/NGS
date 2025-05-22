@@ -1008,6 +1008,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7605497490435062890, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 6455086265569054813}
+    - target: {fileID: 7605497490435062890, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: testingShopData
       value: 
       objectReference: {fileID: 0}
@@ -1289,6 +1293,11 @@ RectTransform:
 --- !u!1 &4028160128885130947 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7197711936439043313, guid: ef82c5eec4be66f4fbe4ce2084aed892, type: 3}
+  m_PrefabInstance: {fileID: 6054402046610555442}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &6455086265569054813 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 977453018731631215, guid: ef82c5eec4be66f4fbe4ce2084aed892, type: 3}
   m_PrefabInstance: {fileID: 6054402046610555442}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7254595339074423755
