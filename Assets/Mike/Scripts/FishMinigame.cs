@@ -38,6 +38,7 @@ public class FishMinigame : MonoBehaviour
     private float goalAngle = 0;
 
     public bool isCaught = false;
+    private bool isFinishing = false;
 
     [SerializeField] private float startCatchProgress = 10f;
     private float catchProgress; // 100 is win-condition.
@@ -62,6 +63,7 @@ public class FishMinigame : MonoBehaviour
 		//currentWadeSpeed = wadeSpeed;
 		hooked = false;
         isCaught = false;
+        isFinishing = false;
 
         catchProgress = startCatchProgress;
         catchProgBar.value = catchProgress;
@@ -88,7 +90,7 @@ public class FishMinigame : MonoBehaviour
 
 	private void Update()
 	{
-        if(!isCaught) CheckIfComplete();
+        if(!isCaught && !isFinishing) CheckIfComplete();
 	}
 
 	void MoveFish()
@@ -209,6 +211,7 @@ public class FishMinigame : MonoBehaviour
     {
         if (catchProgress >= maxCatchProgress)
         {
+            isFinishing = true;
             isCaught = true; // Leave minigame WITH reward (Raise Win Event Here)
 
 			caughtFishEvent.Raise(hookedFish);
@@ -218,6 +221,7 @@ public class FishMinigame : MonoBehaviour
         }
         else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))
         {
+            isFinishing = true;
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
 
             OnFinish();
