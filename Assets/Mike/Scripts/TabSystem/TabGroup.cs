@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -83,6 +84,15 @@ public class TabGroup : MonoBehaviour
             if (selectedTab != null && selectedTab == btn) continue;
             if (!twoTabs) btn.background.sprite = tabIdle;
         }
+    }
+
+    public void moveTextUp(TMP_Text text)
+    {
+        text.transform.localPosition = new Vector3(text.transform.localPosition.x, text.transform.localPosition.y + 15, text.transform.localPosition.z);
+    }
+    public void moveTextDown(TMP_Text text)
+    {
+        text.transform.localPosition = new Vector3(text.transform.localPosition.x, text.transform.localPosition.y - 15, text.transform.localPosition.z);
     }
 
 }
