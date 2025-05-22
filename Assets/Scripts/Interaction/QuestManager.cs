@@ -29,7 +29,14 @@ public class QuestManager : Singleton<QuestManager>
     public void CompleteQuest(Quest quest)
     {
         ResetQuest(quest);
-        quest.disabled = quest.disableUponComplete;
+        if(quest.remainingCompletions != -1)
+        {
+            quest.remainingCompletions--;
+            if(quest.remainingCompletions == 0)
+            {
+                quest.disabled = true;
+            }
+        }
         Inventory.Instance.AddMoney(quest.reward);
         RemoveQuest(quest);
     }

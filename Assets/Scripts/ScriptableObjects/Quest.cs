@@ -13,6 +13,6 @@ public class Quest : ScriptableObject
     public Fish fish;
     public float minLength;
     public string destinationName;
-    public bool disableUponComplete;
+    public int remainingCompletions;
     [HideInInspector] public bool disabled;
 }
