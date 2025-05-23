@@ -29,7 +29,7 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {
@@ -41,7 +41,7 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public virtual void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {

@@ -16,6 +16,7 @@ public class QuestGiver : InteractableObject
     public string questGiverName = "";
     //True if you have not initiated an interaction with this object yet
     protected bool canInteract = true;
+    protected bool nextCanInteract = false;
 
     [SerializeField] protected BoolListener listener;
     [SerializeField] protected Transform dialoguePopupTransform;
@@ -26,6 +27,8 @@ public class QuestGiver : InteractableObject
     private Fish lowestViable = null;
 
     protected GameObject currentPopup = null;
+
+    private Collider2D colliderStorage;
     protected override void Start()
     {
         base.Start();
@@ -35,10 +38,17 @@ public class QuestGiver : InteractableObject
         }
     }
 
+    public override void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+        colliderStorage = collision;
+    }
+
     protected override void Interact(InteractionPair pair)
     {
         if(pair.obj.Id == Id && potentialQuests.Count > 0 && canInteract)
         {
+            nextCanInteract = canInteract;
             if(currentQuestIndex != -1)
             {
                 if (potentialQuests[currentQuestIndex].quest.completeable)
@@ -46,13 +56,14 @@ public class QuestGiver : InteractableObject
                     if (potentialQuests[currentQuestIndex].quest.fishQuest)
                     {
                         currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
-                        canInteract = false;
+                        nextCanInteract = false;
                     }
                     else
                     {
-                        canInteract = false;
                         CompleteQuest();
+                        nextCanInteract = true;
                     }
+                    canInteract = false;
                 }
             }
             else
@@ -83,6 +94,7 @@ public class QuestGiver : InteractableObject
                     dialogueIndex = potentialQuests[currentQuestIndex].loop ? 0 : dialogueIndex - 1;
                 }
             }
+            canInteract = nextCanInteract;
         }
     }
 
@@ -133,6 +145,10 @@ public class QuestGiver : InteractableObject
                 landmark.interactEvent = interactEvent;
                 landmark.enterInteractionRangeEvent = enterInteractionRangeEvent;
                 landmark.exitInteractionRangeEvent = exitInteractionRangeEvent;
+                landmark.interactionType = InteractionType.Landmark;
+                landmark.currentPopup = currentPopup;
+                landmark.OnTriggerEnter2D(colliderStorage);
+                OnTriggerExit2D(colliderStorage);
                 Destroy(this);
             }
             else if(questLine)

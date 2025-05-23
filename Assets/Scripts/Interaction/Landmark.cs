@@ -11,7 +11,7 @@ public class Landmark : InteractableObject
     protected int currentQuest = 0;
     public BasicLandmarkData baseData;
 
-    protected GameObject currentPopup = null;
+    public GameObject currentPopup = null;
     protected override void Interact(InteractionPair pair)
     {
         if(pair.obj.Id == Id)
