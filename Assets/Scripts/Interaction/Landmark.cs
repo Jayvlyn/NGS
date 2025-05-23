@@ -49,13 +49,10 @@ public class Landmark : InteractableObject
 
     protected void DoPopup(string description)
     {
-        if (currentPopup == null)
-        {
-            currentPopup = baseData.screenPopup ? PopupManager.Instance.CreateScreenStatementPopup(description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData) : PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData);
-        }
-        else
+        if (currentPopup != null)
         {
             currentPopup.GetComponent<VoidPopup>().ClosePopup();
         }
+        currentPopup = baseData.screenPopup ? PopupManager.Instance.CreateScreenStatementPopup(description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData) : PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData);
     }
 }

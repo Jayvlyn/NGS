@@ -38,5 +38,21 @@ public class MapManager : Singleton<MapManager>
         }
     }
 
+    public List<(int, int)> GetVisibleTiles()
+    {
+        switch(gameSettings.position.currentLocation)
+        {
+            case "Desert":
+                return loadedDesertTiles;
+            case "Snow":
+                return loadedSnowTiles;
+            default:
+                return loadedForestTiles;
+        }
+    }
 
+    private void Start()
+    {
+        MapDisplay.Instance.Display();
+    }
 }

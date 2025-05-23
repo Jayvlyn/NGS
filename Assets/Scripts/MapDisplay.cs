@@ -5,6 +5,7 @@ public class MapDisplay : Singleton<MapDisplay>
 {
     [SerializeField] Tilemap[] importMaps;
     [SerializeField] Tilemap exportMap;
+    [SerializeField] TileBase blockerTile;
     [SerializeField] float minZoom;
     [SerializeField] float maxZoom;
 
@@ -46,15 +47,21 @@ public class MapDisplay : Singleton<MapDisplay>
         {
             for(int y = bounds.yMin; y < bounds.yMax; y++)
             {
-                bool notFound = true;
-                foreach(Tilemap tilemap in importMaps)
+                if (true || MapManager.Instance.GetVisibleTiles().Contains((x, y)))
                 {
-                    if(tilemap.GetTile(new Vector3Int(x, y)) != null)
+                    foreach (Tilemap tilemap in importMaps)
                     {
-                        exportMap.SetTile(new Vector3Int(x, y), tilemap.GetTile(new Vector3Int(x, y)));
-                        notFound = false;
-                        break;
+                        if (tilemap.GetTile(new Vector3Int(x, y)) != null)
+                        {
+                            exportMap.SetTile(new Vector3Int(x, y), tilemap.GetTile(new Vector3Int(x, y)));
+                            exportMap.SetTransformMatrix(new Vector3Int(x, y), tilemap.GetTransformMatrix(new Vector3Int(x, y)));
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    exportMap.SetTile(new Vector3Int(x, y), blockerTile);
                 }
             }
         }
