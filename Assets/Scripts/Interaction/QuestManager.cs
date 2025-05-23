@@ -6,7 +6,13 @@ public class QuestManager : Singleton<QuestManager>
 {
     private List<Quest> activeQuests = new List<Quest>();
     [SerializeField] protected InteractionEvent interactionEvent;
-    public void AddQuest(Quest quest)
+
+	private void Start()
+	{
+		interactionEvent.Subscribe(UpdateQuests);
+	}
+
+	public void AddQuest(Quest quest)
     {
         activeQuests.Add(quest);
         GameUI.Instance.questUIFiller.addQuestToList(quest);
