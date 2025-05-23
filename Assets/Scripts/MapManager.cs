@@ -55,4 +55,12 @@ public class MapManager : Singleton<MapManager>
     {
         MapDisplay.Instance.Display();
     }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            MapDisplay.Instance.Display();
+        }
+    }
 }

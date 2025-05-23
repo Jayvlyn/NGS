@@ -50,6 +50,7 @@ public class QuestGiver : InteractableObject
                     }
                     else
                     {
+                        canInteract = false;
                         CompleteQuest();
                     }
                 }
