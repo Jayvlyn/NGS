@@ -56,15 +56,22 @@ public class QuestGiver : InteractableObject
                 currentQuestIndex = Random.Range(0, potentialQuests.Count);
                 QuestManager.Instance.AddQuest(potentialQuests[currentQuestIndex].quest);
             }
-            if(canInteract && currentPopup == null)
+            if(canInteract)
             {
-                currentPopup = PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
-                    potentialQuests[currentQuestIndex].dialogues[dialogueIndex], 
-                    questGiverName, appearanceData);
-                dialogueIndex++;
-                if(dialogueIndex == potentialQuests[currentQuestIndex].dialogues.Length)
+                if (currentPopup != null && currentPopup.TryGetComponent(out VoidPopup popup))
                 {
-                    dialogueIndex = potentialQuests[currentQuestIndex].loop ? 0 : dialogueIndex - 1;
+                    popup.ClosePopup();
+                }
+                else
+                {
+                    currentPopup = PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
+                        potentialQuests[currentQuestIndex].dialogues[dialogueIndex],
+                        questGiverName, appearanceData);
+                    dialogueIndex++;
+                    if (dialogueIndex == potentialQuests[currentQuestIndex].dialogues.Length)
+                    {
+                        dialogueIndex = potentialQuests[currentQuestIndex].loop ? 0 : dialogueIndex - 1;
+                    }
                 }
             }
         }
