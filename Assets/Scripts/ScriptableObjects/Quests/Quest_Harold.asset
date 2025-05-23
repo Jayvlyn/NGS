@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
+  m_Name: Quest_Harold
+  m_EditorClassIdentifier: 
+  questName: Harold's Dedication
+  description: 'Harold''s wife hasn''t seem him in weeks, apparently its because
+    hes been trying to catch a porsch '
+  completeable: 0
+  fishQuest: 1
+  reward:
+    flannelName: 
+    carrots: 3
+  fish: {fileID: 11400000, guid: be345bcbf133dbc48a1d1f48ec50d62b, type: 2}
+  minLength: 0
+  destinationName: 
+  remainingCompletions: 1
+  onCompleteEvent: {fileID: 0}
+  disabled: 0

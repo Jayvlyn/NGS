@@ -11,7 +11,7 @@ public class Landmark : InteractableObject
     protected int currentQuest = 0;
     public BasicLandmarkData baseData;
 
-    protected GameObject currentPopup = null;
+    public GameObject currentPopup = null;
     protected override void Interact(InteractionPair pair)
     {
         if(pair.obj.Id == Id)
@@ -49,13 +49,10 @@ public class Landmark : InteractableObject
 
     protected void DoPopup(string description)
     {
-        if (currentPopup == null)
-        {
-            currentPopup = baseData.screenPopup ? PopupManager.Instance.CreateScreenStatementPopup(description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData) : PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData);
-        }
-        else
+        if (currentPopup != null)
         {
             currentPopup.GetComponent<VoidPopup>().ClosePopup();
         }
+        currentPopup = baseData.screenPopup ? PopupManager.Instance.CreateScreenStatementPopup(description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData) : PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupLocation, description, baseData.lifetime, landmarkName, baseData.appearanceData, baseData.closingData);
     }
 }

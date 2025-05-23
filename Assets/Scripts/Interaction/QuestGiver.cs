@@ -8,11 +8,15 @@ public class QuestGiver : InteractableObject
 {
     [SerializeField] protected bool completedAQuest = false;
     [SerializeField] protected int currentQuestIndex = -1;
+    [SerializeField] protected bool questLine = false;
+    [SerializeField] protected bool loopAfterComplete;
+    protected int currentOrder = 0;
     [SerializeField] protected List<QuestData> potentialQuests;
     [SerializeField] protected bool givesCosmetic = true;
-    [SerializeField] protected string questGiverName = "";
+    public string questGiverName = "";
     //True if you have not initiated an interaction with this object yet
     protected bool canInteract = true;
+    protected bool nextCanInteract = false;
 
     [SerializeField] protected BoolListener listener;
     [SerializeField] protected Transform dialoguePopupTransform;
@@ -23,6 +27,8 @@ public class QuestGiver : InteractableObject
     private Fish lowestViable = null;
 
     protected GameObject currentPopup = null;
+
+    private Collider2D colliderStorage;
     protected override void Start()
     {
         base.Start();
@@ -32,10 +38,17 @@ public class QuestGiver : InteractableObject
         }
     }
 
+    public override void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+        colliderStorage = collision;
+    }
+
     protected override void Interact(InteractionPair pair)
     {
         if(pair.obj.Id == Id && potentialQuests.Count > 0 && canInteract)
         {
+            nextCanInteract = canInteract;
             if(currentQuestIndex != -1)
             {
                 if (potentialQuests[currentQuestIndex].quest.completeable)
@@ -43,17 +56,27 @@ public class QuestGiver : InteractableObject
                     if (potentialQuests[currentQuestIndex].quest.fishQuest)
                     {
                         currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
-                        canInteract = false;
+                        nextCanInteract = false;
                     }
                     else
                     {
                         CompleteQuest();
+                        nextCanInteract = true;
                     }
+                    canInteract = false;
                 }
             }
             else
             {
-                currentQuestIndex = Random.Range(0, potentialQuests.Count);
+                if (questLine)
+                {
+                    currentQuestIndex = currentOrder;
+                    currentOrder++;
+                }
+                else
+                {
+                    currentQuestIndex = Random.Range(0, potentialQuests.Count);
+                }
                 QuestManager.Instance.AddQuest(potentialQuests[currentQuestIndex].quest);
             }
             if(canInteract)
@@ -62,18 +85,16 @@ public class QuestGiver : InteractableObject
                 {
                     popup.ClosePopup();
                 }
-                else
+                currentPopup = PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
+                    potentialQuests[currentQuestIndex].dialogues[dialogueIndex],
+                    questGiverName, appearanceData);
+                dialogueIndex++;
+                if (dialogueIndex == potentialQuests[currentQuestIndex].dialogues.Length)
                 {
-                    currentPopup = PopupManager.Instance.CreateWorldStatementPopup(dialoguePopupTransform,
-                        potentialQuests[currentQuestIndex].dialogues[dialogueIndex],
-                        questGiverName, appearanceData);
-                    dialogueIndex++;
-                    if (dialogueIndex == potentialQuests[currentQuestIndex].dialogues.Length)
-                    {
-                        dialogueIndex = potentialQuests[currentQuestIndex].loop ? 0 : dialogueIndex - 1;
-                    }
+                    dialogueIndex = potentialQuests[currentQuestIndex].loop ? 0 : dialogueIndex - 1;
                 }
             }
+            canInteract = nextCanInteract;
         }
     }
 
@@ -105,10 +126,6 @@ public class QuestGiver : InteractableObject
                 completedAQuest = true;
                 //TODO: Attach system to add cosmetics
             }
-            else
-            {
-                Destroy(gameObject);
-            }
         }
         if(currentPopup != null && currentPopup.TryGetComponent(out DialogueVoidPopup pop))
         {
@@ -128,11 +145,24 @@ public class QuestGiver : InteractableObject
                 landmark.interactEvent = interactEvent;
                 landmark.enterInteractionRangeEvent = enterInteractionRangeEvent;
                 landmark.exitInteractionRangeEvent = exitInteractionRangeEvent;
+                landmark.interactionType = InteractionType.Landmark;
+                landmark.currentPopup = currentPopup;
+                landmark.OnTriggerEnter2D(colliderStorage);
+                OnTriggerExit2D(colliderStorage);
                 Destroy(this);
+            }
+            else if(questLine)
+            {
+                currentOrder--;
             }
         }
         currentQuestIndex = -1;
         dialogueIndex = 0;
+
+        if (questLine && currentOrder == potentialQuests.Count)
+        {
+            currentOrder = loopAfterComplete ? 0 : currentOrder - 1;
+        }
     }
 
 }
