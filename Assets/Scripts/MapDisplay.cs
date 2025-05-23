@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D;
 
 public class MapDisplay : Singleton<MapDisplay>
 {
     [SerializeField] Tilemap[] importMaps;
-    [SerializeField] Tilemap exportMap;
+    [SerializeField] Tilemap[] exportMaps;
     [SerializeField] TileBase blockerTile;
     [SerializeField] float minZoom;
     [SerializeField] float maxZoom;
+    [SerializeField] GameObject[] ponds;
 
     public Vector3Int WorldToCell(Vector3 world, int mapIndex = 0)
     {
@@ -47,40 +49,51 @@ public class MapDisplay : Singleton<MapDisplay>
         {
             for(int y = bounds.yMin; y < bounds.yMax; y++)
             {
-                if (true || MapManager.Instance.GetVisibleTiles().Contains((x, y)))
+                if (MapManager.Instance.GetVisibleTiles().Contains((x, y)))
                 {
-                    foreach (Tilemap tilemap in importMaps)
+                    for(int i = 0; i < importMaps.Length; i++)
                     {
-                        if (tilemap.GetTile(new Vector3Int(x, y)) != null)
+                        if (importMaps[i].GetTile(new Vector3Int(x, y)) != null)
                         {
-                            exportMap.SetTile(new Vector3Int(x, y), tilemap.GetTile(new Vector3Int(x, y)));
-                            exportMap.SetTransformMatrix(new Vector3Int(x, y), tilemap.GetTransformMatrix(new Vector3Int(x, y)));
-                            break;
+                            exportMaps[i].SetTile(new Vector3Int(x, y), importMaps[i].GetTile(new Vector3Int(x, y)));
+                            exportMaps[i].SetTransformMatrix(new Vector3Int(x, y), importMaps[i].GetTransformMatrix(new Vector3Int(x, y)));
                         }
                     }
                 }
                 else
                 {
-                    exportMap.SetTile(new Vector3Int(x, y), blockerTile);
+                    exportMaps[0].SetTile(new Vector3Int(x, y), blockerTile);
                 }
             }
+        }
+        foreach(GameObject pond in ponds)
+        {
+            GameObject go = Instantiate(pond);
+            go.transform.position = pond.transform.position + transform.position;
+            go.GetComponent<SpriteShapeRenderer>().sortingOrder = -1;
         }
     }
 
     public void ZoomIn()
     {
-        Vector3 result = exportMap.transform.localScale;
-        result.x = Mathf.Clamp(result.x + 0.05f, minZoom, maxZoom);
-        result.y = Mathf.Clamp(result.y + 0.05f, minZoom, maxZoom);
-        exportMap.transform.localScale = result;
+        foreach (Tilemap exportMap in exportMaps)
+        {
+            Vector3 result = exportMap.transform.localScale;
+            result.x = Mathf.Clamp(result.x + 0.05f, minZoom, maxZoom);
+            result.y = Mathf.Clamp(result.y + 0.05f, minZoom, maxZoom);
+            exportMap.transform.localScale = result;
+        }
     }
 
     public void ZoomOut()
     {
-        Vector3 result = exportMap.transform.localScale;
-        result.x = Mathf.Clamp(result.x + 0.05f, minZoom, maxZoom);
-        result.y = Mathf.Clamp(result.y + 0.05f, minZoom, maxZoom);
-        exportMap.transform.localScale = result;
+        foreach (Tilemap exportMap in exportMaps)
+        {
+            Vector3 result = exportMap.transform.localScale;
+            result.x = Mathf.Clamp(result.x + 0.05f, minZoom, maxZoom);
+            result.y = Mathf.Clamp(result.y + 0.05f, minZoom, maxZoom);
+            exportMap.transform.localScale = result;
+        }
     }
 
     public void ChangePos()
