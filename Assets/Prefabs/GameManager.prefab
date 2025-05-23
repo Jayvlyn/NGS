@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1680383979366978541}
   - component: {fileID: 1361135252734289113}
   - component: {fileID: 329008290237429391}
+  - component: {fileID: 2690830784610742455}
+  - component: {fileID: 1318606272049748182}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -90,3 +92,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce729e9f94cda1d428617ec0a9aae704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2690830784610742455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253092266663696018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0195bc870639a54a98b34996c1a41ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 07942f2af4dc70b4b9a0b1b64e7e139d, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1318606272049748182}
+        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
+        m_MethodName: UpdateQuests
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1318606272049748182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253092266663696018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af48c010c3c1b4c4b8783234e771847a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overrideOthers: 0
+  interactionEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}

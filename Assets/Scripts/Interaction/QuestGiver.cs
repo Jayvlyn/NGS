@@ -114,10 +114,6 @@ public class QuestGiver : InteractableObject
                 completedAQuest = true;
                 //TODO: Attach system to add cosmetics
             }
-            else
-            {
-                Destroy(gameObject);
-            }
         }
         if(currentPopup != null && currentPopup.TryGetComponent(out DialogueVoidPopup pop))
         {

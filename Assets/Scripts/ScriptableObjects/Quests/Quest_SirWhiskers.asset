@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
   m_Name: Quest_SirWhiskers
   m_EditorClassIdentifier: 
-  questName: 
-  description: 
+  questName: A BIG feline problem
+  description: Sir Whiskers says I need to get him a big grouper so he'll have the
+    energy to move.
   completeable: 0
   fishQuest: 1
   reward:
     flannelName: 
     carrots: 0
-  fish: {fileID: 0}
+  fish: {fileID: 11400000, guid: 23f76c18ab82b7546a441b7cbafac792, type: 2}
   minLength: 0
   destinationName: 
-  remainingCompletions: 0
+  remainingCompletions: 1
   onCompleteEvent: {fileID: 0}
   disabled: 0
