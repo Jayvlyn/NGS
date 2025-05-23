@@ -8,7 +8,9 @@ public class QuestGiver : InteractableObject
 {
     [SerializeField] protected bool completedAQuest = false;
     [SerializeField] protected int currentQuestIndex = -1;
-    [SerializeField] protected int orderTracker = -2;
+    [SerializeField] protected bool questLine = false;
+    [SerializeField] protected bool loopAfterComplete;
+    protected int currentOrder = 0;
     [SerializeField] protected List<QuestData> potentialQuests;
     [SerializeField] protected bool givesCosmetic = true;
     public string questGiverName = "";
@@ -54,14 +56,14 @@ public class QuestGiver : InteractableObject
             }
             else
             {
-                if (orderTracker == -2)
+                if (questLine)
                 {
-                    currentQuestIndex = Random.Range(0, potentialQuests.Count);
+                    currentQuestIndex = currentOrder;
+                    currentOrder++;
                 }
                 else
                 {
-                    orderTracker++;
-                    currentQuestIndex = orderTracker;
+                    currentQuestIndex = Random.Range(0, potentialQuests.Count);
                 }
                 QuestManager.Instance.AddQuest(potentialQuests[currentQuestIndex].quest);
             }
@@ -136,13 +138,18 @@ public class QuestGiver : InteractableObject
                 landmark.exitInteractionRangeEvent = exitInteractionRangeEvent;
                 Destroy(this);
             }
-            else if(orderTracker != -2)
+            else if(questLine)
             {
-                orderTracker--;
+                currentOrder--;
             }
         }
         currentQuestIndex = -1;
         dialogueIndex = 0;
+
+        if (questLine && currentOrder == potentialQuests.Count)
+        {
+            currentOrder = loopAfterComplete ? 0 : currentOrder - 1;
+        }
     }
 
 }
