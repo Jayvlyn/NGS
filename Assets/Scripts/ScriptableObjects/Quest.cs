@@ -8,7 +8,7 @@ public class Quest : ScriptableObject
 {
     public string questName;
     public string description;
-    public bool completeable;
+	[HideInInspector] public bool completeable;
     public bool fishQuest = true;
     public Reward reward;
     public Fish fish;
