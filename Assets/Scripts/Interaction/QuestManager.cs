@@ -52,13 +52,18 @@ public class QuestManager : Singleton<QuestManager>
 
     public void UpdateQuests(InteractionPair pair)
     {
-        if (pair.obj is Landmark landmark)
+        foreach (Quest quest in activeQuests)
         {
-            foreach (Quest quest in activeQuests)
+            if (!quest.completeable && !quest.fishQuest)
             {
-                if (!quest.completeable && !quest.fishQuest)
+
+                if (pair.obj is Landmark landmark)
                 {
                     quest.completeable = quest.destinationName == landmark.landmarkName;
+                }
+                else if (pair.obj is QuestGiver giver)
+                {
+                    quest.completeable = quest.destinationName == giver.questGiverName;
                 }
             }
         }

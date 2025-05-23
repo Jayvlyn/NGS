@@ -10,7 +10,7 @@ public class QuestGiver : InteractableObject
     [SerializeField] protected int currentQuestIndex = -1;
     [SerializeField] protected List<QuestData> potentialQuests;
     [SerializeField] protected bool givesCosmetic = true;
-    [SerializeField] protected string questGiverName = "";
+    public string questGiverName = "";
     //True if you have not initiated an interaction with this object yet
     protected bool canInteract = true;
 
