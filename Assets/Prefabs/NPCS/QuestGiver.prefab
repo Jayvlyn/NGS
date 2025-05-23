@@ -113,6 +113,7 @@ MonoBehaviour:
   - {fileID: 1465298303, guid: 208b361a6d9585748b49fc8c7454fea7, type: 3}
   - {fileID: 1103471581, guid: 208b361a6d9585748b49fc8c7454fea7, type: 3}
   frameInterval: 0.3
+  randomizeStart: 0
 --- !u!58 &6648219011723558388
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -194,21 +195,34 @@ MonoBehaviour:
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
   popupLocation: {fileID: 4803806919307801988}
+  completedAQuest: 0
   currentQuestIndex: -1
   potentialQuests:
-  - Fish: {fileID: 11400000, guid: e45989468457dd24889577c08263722a, type: 2}
-    QuestDescription: I love Pish so much, I wish I could have one of my own.
-    RepeatDescription: Get me a pish now.
-    MinLength: 0
-    Reward: 5
-  givesCosmetic: 1
+  - quest: {fileID: 0}
+    dialogues: []
+    completionDialogue: 
+    loop: 0
+  givesCosmetic: 0
   questGiverName: Harold
   listener: {fileID: 197042263118172794}
   dialoguePopupTransform: {fileID: 1979042755753686425}
   appearanceData:
     AppearanceType: 2
-    Time: 0.2
+    Time: 0.15
     Offset: 0
+  dataForNoMoreQuests:
+    landmarkDescriptions: []
+    screenPopup: 0
+    lifetime: 3
+    standardDescriptionsLoop: 0
+    appearanceData:
+      AppearanceType: 2
+      Time: 0.15
+      Offset: 0
+    closingData:
+      AppearanceType: 2
+      Time: 0.15
+      Offset: 0
 --- !u!1 &5545068092425398251
 GameObject:
   m_ObjectHideFlags: 0

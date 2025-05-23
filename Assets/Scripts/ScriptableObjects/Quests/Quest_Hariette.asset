@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
   m_Name: Quest_Hariette
   m_EditorClassIdentifier: 
-  questName: Harold NEEDS a pish
-  description: Harold seems to really need a pish, I should get that to him soon.
+  questName: Lost Hare
+  description: Hariette wants me to go find her husband Harold
   completeable: 0
-  fishQuest: 1
+  fishQuest: 0
   reward:
     flannelName: 
-    carrots: 3
-  fish: {fileID: 11400000, guid: e45989468457dd24889577c08263722a, type: 2}
+    carrots: 10
+  fish: {fileID: 0}
   minLength: 0
-  destinationName: 
+  destinationName: Harold
   remainingCompletions: 1
   onCompleteEvent: {fileID: 0}
   disabled: 0
