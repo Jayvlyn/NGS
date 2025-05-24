@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2985737567153675730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1617585877740654810}
+  - component: {fileID: 5050152188380495605}
+  m_Layer: 5
+  m_Name: CarrotPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1617585877740654810
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985737567153675730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 631786084649413801}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5050152188380495605
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985737567153675730}
+  m_CullTransparentMesh: 1
 --- !u!1 &4978729502493784343
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,6 +63,7 @@ GameObject:
   - component: {fileID: 3646171408298210129}
   - component: {fileID: 7770542936600282333}
   - component: {fileID: 5041693359459944431}
+  - component: {fileID: 2271294216086206238}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -47,6 +92,7 @@ RectTransform:
   - {fileID: 5331822633241638838}
   - {fileID: 340067646362023192}
   - {fileID: 916430017271917205}
+  - {fileID: 1617585877740654810}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -324,6 +370,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497b8e265f8955146a724dff5bea1f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2271294216086206238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4978729502493784343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2c24588d88f97459bb5037dd1b71b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePrefab: {fileID: 8200388401663611479, guid: bb126d65331578447b5238ef61d54220, type: 3}
+  targetUI: {fileID: 8558297877657894712, guid: 464be1f7b0cd21b43931603ec3310d4d, type: 3}
+  speed: 400
+  lifetime: 1.5
 --- !u!1001 &1536643110086690574
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -833,11 +895,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296412681974110440, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
+      value: 0.00088500977
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 0.9926979
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -849,7 +911,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524847018943916788, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
+      value: 0.00088500977
       objectReference: {fileID: 0}
     - target: {fileID: 2808320876928596218, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -881,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3651398393776001945, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
+      value: 0.00088500977
       objectReference: {fileID: 0}
     - target: {fileID: 3826095420324730859, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Name
@@ -1001,16 +1063,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6607133016978666353, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 0.9948973
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6607133016978666353, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7605497490435062890, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
-      propertyPath: spawnPoint
+      propertyPath: carrotParticles
       value: 
-      objectReference: {fileID: 6455086265569054813}
+      objectReference: {fileID: 2271294216086206238}
     - target: {fileID: 7605497490435062890, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: testingShopData
       value: 
@@ -1041,7 +1103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8600408161581948292, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 0.9926979
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8600408161581948292, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -1293,11 +1355,6 @@ RectTransform:
 --- !u!1 &4028160128885130947 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7197711936439043313, guid: ef82c5eec4be66f4fbe4ce2084aed892, type: 3}
-  m_PrefabInstance: {fileID: 6054402046610555442}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &6455086265569054813 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 977453018731631215, guid: ef82c5eec4be66f4fbe4ce2084aed892, type: 3}
   m_PrefabInstance: {fileID: 6054402046610555442}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7254595339074423755

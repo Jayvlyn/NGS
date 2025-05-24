@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ParticleHoming : MonoBehaviour
 {
-    public RectTransform uiTarget; // Drag your money icon UI here
+    public RectTransform uiTarget;
     private ParticleSystem ps;
     private ParticleSystem.Particle[] particles;
     public float speed = 10f;
@@ -11,7 +11,6 @@ public class ParticleHoming : MonoBehaviour
     {
         ps = GetComponent<ParticleSystem>();
         particles = new ParticleSystem.Particle[ps.main.maxParticles];
-        //uiTarget = transform.Find("money").GetComponent<RectTransform>();
     }
 
     void LateUpdate()
@@ -32,18 +31,11 @@ public class ParticleHoming : MonoBehaviour
         ps.SetParticles(particles, count);
     }
 
-    //Vector3 GetUIWorldPosition(RectTransform uiElement)
-    //{
-    //    Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, uiElement.position);
-    //    screenPos.z = 10f; // Make sure it’s in front of the camera
-    //    return Camera.main.ScreenToWorldPoint(screenPos);
-    //}
-
     Vector3 GetUIWorldPosition(RectTransform uiElement)
     {
         // This assumes the canvas is in Screen Space - Overlay
-        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, uiElement.localPosition);
-        screenPos.z = 10f; // Set depth in front of the camera
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, uiElement.position);
+        screenPos.y *= 1.7f;
         return Camera.main.ScreenToWorldPoint(screenPos);
     }
 }

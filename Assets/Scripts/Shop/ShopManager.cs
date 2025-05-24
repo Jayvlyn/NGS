@@ -50,8 +50,7 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
 
     [Header("Particle System")]
-    public GameObject sellEffectPrefab; // assign your particle system prefab
-    public Transform spawnPoint; // item location
+    public UIParticleFX carrotParticles;
 
     public void SelectSell()
     {
@@ -332,8 +331,7 @@ public class ShopManager : Singleton<ShopManager>
     public void PurchasedFish(double cost)
     {
         int value = (int)Mathf.Floor((float)cost);
-        GameObject effect = Instantiate(sellEffectPrefab, spawnPoint.position, Quaternion.identity);
-        var ps = effect.GetComponent<ParticleSystem>();
-        ps.Emit(value);
+        Vector3 screenPos = Input.mousePosition;
+        carrotParticles.SpawnParticles(value, screenPos);
     }
 }

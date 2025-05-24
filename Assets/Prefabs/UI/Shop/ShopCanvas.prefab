@@ -121,7 +121,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8034440824602453163}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99983114
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1619,7 +1619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: -0.000061035156, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3642250110359647784
@@ -1913,8 +1913,7 @@ MonoBehaviour:
   sellAllExcludeLargest: {fileID: 2514713323591026204}
   sellAllOfTypeExcludeLargest: {fileID: 5044972738760853456}
   testingShopData: {fileID: 0}
-  sellEffectPrefab: {fileID: 4329443669673291831, guid: 48a2c419a34473a42a28affe102ec84a, type: 3}
-  spawnPoint: {fileID: 8558297877657894712, guid: 464be1f7b0cd21b43931603ec3310d4d, type: 3}
+  carrotParticles: {fileID: 2271294216086206238, guid: e1ea6b40b5b3458439369d653286a940, type: 3}
 --- !u!222 &7332812074090778183
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4214,7 +4213,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 9114673529944518310}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99975836
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4252,7 +4251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: -0.000061035156, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &7800156117136551213
@@ -4602,7 +4601,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6575380303291481660}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99975836
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
