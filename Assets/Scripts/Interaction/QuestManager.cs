@@ -7,15 +7,19 @@ public class QuestManager : Singleton<QuestManager>
     private List<Quest> activeQuests = new List<Quest>();
     [SerializeField] protected InteractionEvent interactionEvent;
 
-	private void Start()
+    private UIParticleFX particleSys;
+
+    private void Start()
 	{
 		interactionEvent.Subscribe(UpdateQuests);
-	}
+        particleSys = GameUI.Instance.GetComponent<UIParticleFX>();
+    }
 
 	public void AddQuest(Quest quest)
     {
         activeQuests.Add(quest);
         GameUI.Instance.questUIFiller.addQuestToList(quest);
+        UpdateQuests();
     }
 
     public void RemoveQuest(Quest quest)
@@ -46,7 +50,10 @@ public class QuestManager : Singleton<QuestManager>
                 quest.disabled = true;
             }
         }
-        Inventory.Instance.AddMoney(quest.reward.carrots);
+        int reward = (int)quest.reward.carrots;
+        if (reward > 0) SpawnRewardCarrots(reward);
+        else if (reward < 0) SpawnRewardCarrots(reward, true);
+        Inventory.Instance.AddMoney(reward);
         RemoveQuest(quest);
     }
 
@@ -89,5 +96,12 @@ public class QuestManager : Singleton<QuestManager>
             }
         }
         return false;
+    }
+
+    public void SpawnRewardCarrots(int cost, bool notReward = false)
+    {
+        Vector3 screenPos = Input.mousePosition;
+        if(notReward) screenPos = GameUI.Instance.pi.transform.position;
+        particleSys.SpawnParticles(cost, screenPos, true);
     }
 }
