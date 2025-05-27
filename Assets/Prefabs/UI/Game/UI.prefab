@@ -384,7 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 8200388401663611479, guid: bb126d65331578447b5238ef61d54220, type: 3}
   targetUI: {fileID: 8558297877657894712, guid: 464be1f7b0cd21b43931603ec3310d4d, type: 3}
-  speed: 400
+  speed: 800
   lifetime: 1.5
 --- !u!1001 &1536643110086690574
 PrefabInstance:
@@ -895,11 +895,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296412681974110440, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00088500977
+      value: 0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9999963
       objectReference: {fileID: 0}
     - target: {fileID: 2454960065695278600, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -911,7 +911,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524847018943916788, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00088500977
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2808320876928596218, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -943,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3651398393776001945, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00088500977
+      value: 0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 3826095420324730859, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Name
@@ -1063,7 +1063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6607133016978666353, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9999974
       objectReference: {fileID: 0}
     - target: {fileID: 6607133016978666353, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value
@@ -1103,7 +1103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8600408161581948292, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9999963
       objectReference: {fileID: 0}
     - target: {fileID: 8600408161581948292, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_Value

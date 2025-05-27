@@ -125,7 +125,7 @@ public class ShopManager : Singleton<ShopManager>
     public void SellFish(Fish fish)
     {
         Inventory.Instance.RemoveFish(fish);
-        double price = currentShop.GetFishPrice(fish);
+        var price = currentShop.GetFishPrice(fish);
         PurchasedFish(price);
         Inventory.Instance.AddMoney(price);
         if (fish.fishName == previousFishType)
@@ -172,7 +172,7 @@ public class ShopManager : Singleton<ShopManager>
                 go.GetComponentInChildren<TMP_Text>().text = 
                     $"{currentFish[current].length:F2} cm long " +
                     $"{currentFish[current].fishName}: " +
-                    $"{currentShop.GetFishPrice(currentFish[current]):F0} Carrots";
+                    $"{currentShop.GetFishPrice(currentFish[current])} Carrots";
                 go.GetComponentsInChildren<Image>()[1].sprite = currentFish[current].sprite;
                 Fish fish = currentFish[current];
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(fish); });
@@ -328,10 +328,9 @@ public class ShopManager : Singleton<ShopManager>
         //Open(testingShopData);
     }
 
-    public void PurchasedFish(double cost)
+    public void PurchasedFish(int cost)
     {
-        int value = (int)Mathf.Floor((float)cost);
         Vector3 screenPos = Input.mousePosition;
-        carrotParticles.SpawnParticles(value, screenPos);
+        carrotParticles.SpawnParticles(cost, screenPos);
     }
 }
