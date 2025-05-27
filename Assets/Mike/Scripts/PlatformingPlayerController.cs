@@ -1,6 +1,7 @@
 using GameEvents;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -149,8 +150,9 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	public void Update()
-	{
-		//Debug.Log(currentMoveState);
+	{ //DEBUGS
+		Debug.Log("Move State " + currentMoveState);
+		Debug.Log("Rod State " + currentRodState);
 
 		onGround = isGrounded();
 
@@ -248,7 +250,10 @@ public class PlatformingPlayerController : Interactor
 			castHeld = true;
 			if (currentRodState == RodState.INACTIVE && !inWater)
 			{
-				ChangeRodState(RodState.CASTING);
+				if(!AttemptMouseFish())
+				{
+					ChangeRodState(RodState.CASTING);
+				}
 			}
 		}
 		else // released
@@ -327,7 +332,7 @@ public class PlatformingPlayerController : Interactor
 			if (!onGround) speed *= airControlMod;
 			else if (inWater) speed *= airControlMod * 0.5f;
 			else if (onIce) speed *= iceMoveMod;
-			else if (currentRodState == RodState.HOOKED && onGround) speed *= 0.5f;
+			else if ((currentRodState == RodState.HOOKED && onGround) || currentMoveState == MoveState.WALKING_CASTING) speed *= 0.5f;
 
 
 			if (onGround && (rb.linearVelocityX * moveInput < 0)) // when velocity * input results in negative, they are opposite
@@ -491,7 +496,7 @@ public class PlatformingPlayerController : Interactor
 	#region MOVE STATE
 	public enum MoveState
 	{
-		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING, WALKING_REELING, WALL_STICKING
+		IDLE, RUNNING, JUMPING, FALLING, WALLJUMPING, SWIMMING, AIR_CASTING, GROUND_CASTING, AIR_REELING, GROUND_REELING, GROUND_HOOKED, AIR_HOOKED, GROUND_HOOKED_WALKING, WALKING_REELING, WALL_STICKING, WALKING_CASTING
 	}
 	public MoveState currentMoveState = MoveState.IDLE;
 
@@ -541,6 +546,9 @@ public class PlatformingPlayerController : Interactor
 			case MoveState.GROUND_CASTING:
 				SetTrigger("ToGroundCast");
 				break;
+			case MoveState.WALKING_CASTING:
+				//SetTrigger("ToWalkCast");
+				break;
 			case MoveState.AIR_REELING:
 				SetTrigger("ToAirReel");
 				break;
@@ -548,6 +556,11 @@ public class PlatformingPlayerController : Interactor
 				SetTrigger("ToGroundReel");
 				break;
 			case MoveState.GROUND_HOOKED:
+				if(moveInput != 0)
+				{
+					ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
+					break;
+				}
 				SetTrigger("ToGroundHooked");
 				break;
 			case MoveState.AIR_HOOKED:
@@ -638,6 +651,9 @@ public class PlatformingPlayerController : Interactor
 				break;
 			case MoveState.GROUND_CASTING:
 				if(currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.GROUND_REELING);
+				break;
+			case MoveState.WALKING_CASTING:
+				if (currentRodState == RodState.RETURNING) ChangeMoveState(MoveState.WALKING_REELING);
 				break;
 			case MoveState.AIR_REELING:
 				if (!reelHeld && currentRodState == RodState.HOOKED) ChangeMoveState(MoveState.AIR_HOOKED);
@@ -738,6 +754,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void ChangeRodState(RodState state)
 	{
+
+
 		if(currentRodState == RodState.CASTING)
 		{
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
@@ -762,7 +780,17 @@ public class PlatformingPlayerController : Interactor
 			case RodState.CASTING:
 				audioManager.PlayCastSound();
 				OnEnterCastingState();
-				if(onGround) ChangeMoveState(MoveState.GROUND_CASTING);
+				if (onGround)
+				{
+					if(currentMoveState == MoveState.RUNNING)
+					{
+						ChangeMoveState(MoveState.WALKING_CASTING);
+					}
+					else
+					{
+						ChangeMoveState(MoveState.GROUND_CASTING);
+					}
+				}
 				else ChangeMoveState(MoveState.AIR_CASTING);
 
 				break;
@@ -777,7 +805,18 @@ public class PlatformingPlayerController : Interactor
 			case RodState.HOOKED:
 				hook.PlayHookHitSound();
 				OnEnterHookedState();
-                if (onGround) ChangeMoveState(MoveState.GROUND_HOOKED);
+				if (onGround)
+				{
+					if (currentMoveState == MoveState.WALKING_CASTING)
+					{
+						ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
+					}
+					else
+					{
+						ChangeMoveState(MoveState.GROUND_HOOKED);
+					}
+
+				}
 				else ChangeMoveState(MoveState.AIR_HOOKED);
 				break;
 
@@ -942,10 +981,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void OnEnterCastingState()
 	{
-		if (!AttemptMouseFish())
-		{
-			StartCoroutine(RodCast());
-		}
+		StartCoroutine(RodCast());
 	}
 
 	private bool doPostAnimRotation = false;
