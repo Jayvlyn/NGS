@@ -1,6 +1,7 @@
 using GameEvents;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -149,8 +150,9 @@ public class PlatformingPlayerController : Interactor
 	}
 
 	public void Update()
-	{
-		Debug.Log(currentMoveState);
+	{ //DEBUGS
+		Debug.Log("Move State " + currentMoveState);
+		Debug.Log("Rod State " + currentRodState);
 
 		onGround = isGrounded();
 
@@ -248,7 +250,10 @@ public class PlatformingPlayerController : Interactor
 			castHeld = true;
 			if (currentRodState == RodState.INACTIVE && !inWater)
 			{
-				ChangeRodState(RodState.CASTING);
+				if(!AttemptMouseFish())
+				{
+					ChangeRodState(RodState.CASTING);
+				}
 			}
 		}
 		else // released
@@ -749,6 +754,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void ChangeRodState(RodState state)
 	{
+
+
 		if(currentRodState == RodState.CASTING)
 		{
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
@@ -974,10 +981,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void OnEnterCastingState()
 	{
-		if (!AttemptMouseFish())
-		{
-			StartCoroutine(RodCast());
-		}
+		StartCoroutine(RodCast());
 	}
 
 	private bool doPostAnimRotation = false;
