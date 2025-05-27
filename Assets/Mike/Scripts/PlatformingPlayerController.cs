@@ -1014,10 +1014,10 @@ public class PlatformingPlayerController : Interactor
 
 	private bool AttemptMouseFish()
 	{
-		foreach(Collider2D col in Physics2D.OverlapCircleAll(cam.ScreenToWorldPoint(Input.mousePosition), aimAssistRadius))
+		foreach(Collider2D col in Physics2D.OverlapCircleAll(cam.ScreenToWorldPoint(Input.mousePosition), 0.5f))
 		{
 			Transform tr = col.gameObject.transform;
-			while(tr.parent != null)
+			while(tr.parent != null && tr.gameObject.GetComponentInChildren<InteractableObject>() == null)
 			{
 				tr = tr.parent;
 			}
