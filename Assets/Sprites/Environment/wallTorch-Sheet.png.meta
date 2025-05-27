@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: fbb50e5d4f3715941bf70118dd84cdca
+guid: 50d335399782702488b7ff2a81ecc89c
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 3246034206382941637
-    second: HookOutline_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,9 +43,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -72,9 +69,9 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,12 +123,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HookOutline_0
+      name: wallTorch-Sheet_0
       rect:
         serializedVersion: 2
-        x: 5
+        x: 0
         y: 0
-        width: 23
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -139,10 +136,76 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5c5e83899ea3c0d20800000000000000
-      internalID: 3246034206382941637
+      spriteID: 608c9a324491a6a47ad4278e21057642
+      internalID: -835216525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wallTorch-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f14113b93f442746806ab6ddc9d7a83
+      internalID: 1616134242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wallTorch-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b70e91c14e2ad54c92f586d239c5387
+      internalID: 1100766234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wallTorch-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 006379e494ac3934bb8c12d533288362
+      internalID: -1470572795
       vertices: []
       indices: 
       edges: []
@@ -161,7 +224,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HookOutline_0: 3246034206382941637
+      wallTorch-Sheet_0: -835216525
+      wallTorch-Sheet_1: 1616134242
+      wallTorch-Sheet_2: 1100766234
+      wallTorch-Sheet_3: -1470572795
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
