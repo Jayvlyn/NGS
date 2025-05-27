@@ -28,7 +28,7 @@ public class ShopData : InteractableObject
         }
     }
 
-    public double GetFishPrice(Fish fish)
+    public int GetFishPrice(Fish fish)
     {
         double price = 0;
         foreach (FishSellData fishPrice in fishData)
@@ -39,7 +39,7 @@ public class ShopData : InteractableObject
                 break;
             }
         }
-        return price;
+        return (int)price;
     }
 
     public List<UpgradeData> GetUpgrades()
