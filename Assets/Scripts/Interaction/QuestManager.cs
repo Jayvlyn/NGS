@@ -16,6 +16,7 @@ public class QuestManager : Singleton<QuestManager>
     {
         activeQuests.Add(quest);
         GameUI.Instance.questUIFiller.addQuestToList(quest);
+        UpdateQuests();
     }
 
     public void RemoveQuest(Quest quest)

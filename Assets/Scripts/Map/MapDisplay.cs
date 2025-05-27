@@ -39,16 +39,6 @@ public class MapDisplay : Singleton<MapDisplay>
         open = true;
     }
 
-    public void ZoomIn()
-    {
-        foreach (Tilemap exportMap in exportMaps)
-        {
-            Vector3 result = exportMap.transform.localScale;
-            result.x = Mathf.Clamp(result.x + 0.05f, minZoom, maxZoom);
-            result.y = Mathf.Clamp(result.y + 0.05f, minZoom, maxZoom);
-            exportMap.transform.localScale = result;
-        }
-    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -62,6 +52,12 @@ public class MapDisplay : Singleton<MapDisplay>
                 Display();
             }
         }
+
+        if(Input.mouseScrollDelta.y != 0)
+        {
+            Zoom(Input.mouseScrollDelta.y);
+        }
+
     }
     public void Close()
     {
@@ -77,20 +73,19 @@ public class MapDisplay : Singleton<MapDisplay>
         open = false;
     }
 
-    public void ZoomOut()
+    public void Zoom(float rate = 1)
     {
         foreach (Tilemap exportMap in exportMaps)
         {
-            Vector3 result = exportMap.transform.localScale;
-            result.x = Mathf.Clamp(result.x + 0.05f, minZoom, maxZoom);
-            result.y = Mathf.Clamp(result.y + 0.05f, minZoom, maxZoom);
-            exportMap.transform.localScale = result;
+            Vector3 newScale = exportMap.transform.localScale;
+            newScale.x = Mathf.Clamp((newScale.x + 0.05f) * rate, minZoom, maxZoom);
+            newScale.y = Mathf.Clamp((newScale.y + 0.05f) * rate, minZoom, maxZoom);
+            exportMap.transform.localScale = newScale;
         }
-    }
-
-    public void ChangePos()
-    {
-
+        Vector3 result = blockerMap.transform.localScale;
+        result.x = Mathf.Clamp((result.x + 0.05f) * rate, minZoom, maxZoom);
+        result.y = Mathf.Clamp((result.y + 0.05f) * rate, minZoom, maxZoom);
+        blockerMap.transform.localScale = result;
     }
 
     public void RevealTile((int, int) location)

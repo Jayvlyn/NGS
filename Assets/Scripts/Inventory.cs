@@ -113,11 +113,14 @@ public class Inventory : Singleton<Inventory>
     {
         FishData data = GetFishData(fishType);
         Fish fish = null;
-        foreach(Fish checkFish in data.currentFish)
+        if (data.amountCaught != 0)
         {
-            if(checkFish.length >= minLength && (checkFish == null || checkFish.length < fish.length))
+            foreach (Fish checkFish in data.currentFish)
             {
-                fish = checkFish;
+                if (checkFish.length >= minLength && (fish == null || checkFish.length < fish.length))
+                {
+                    fish = checkFish;
+                }
             }
         }
         return fish;
