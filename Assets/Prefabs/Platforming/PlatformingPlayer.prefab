@@ -477,7 +477,6 @@ GameObject:
   - component: {fileID: 1504072084019602566}
   - component: {fileID: 1876301516158393029}
   - component: {fileID: 6697260024632076331}
-  - component: {fileID: 3667505915911299188}
   - component: {fileID: 7615559541854810132}
   - component: {fileID: 5759430930305698805}
   - component: {fileID: 3392849022341565167}
@@ -485,6 +484,7 @@ GameObject:
   - component: {fileID: 2728255714175658757}
   - component: {fileID: 3329801921633553327}
   - component: {fileID: 7324270297224361524}
+  - component: {fileID: 6835394303227306288}
   m_Layer: 10
   m_Name: PlatformingPlayer
   m_TagString: Player
@@ -593,7 +593,7 @@ MonoBehaviour:
   hook: {fileID: 4151659692587053803}
   spriteT: {fileID: 3381539768182715777}
   ctg: {fileID: 5759864753188917299}
-  interactedWaterT: {fileID: 0}
+  interactedWater: {fileID: 0}
   animator: {fileID: 3214544822688978555}
   audioManager: {fileID: 3392849022341565167}
   onInventory: {fileID: 11400000, guid: ac10dd990a231554bb79c5f2ba2b6e6c, type: 2}
@@ -917,34 +917,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
         m_MethodName: OnDoneFishing
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3667505915911299188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6207578353081954013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb56c99a5c42175478e7b555a67e0106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 43a0113537bcec04e8cadf952de9826f, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 189020837219235779}
-        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
-        m_MethodName: OnFishCast
-        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1442,6 +1414,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6835394303227306288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee67ff530a76f4148a79959966ab62f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 4f70d6611abd2964487d332b7ddab0f9, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 189020837219235779}
+        m_TargetAssemblyTypeName: PlatformingPlayerController, Assembly-CSharp
+        m_MethodName: OnFishCast
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6343699967925498643
 GameObject:
   m_ObjectHideFlags: 0

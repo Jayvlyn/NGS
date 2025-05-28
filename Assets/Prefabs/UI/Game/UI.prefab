@@ -59,11 +59,11 @@ GameObject:
   - component: {fileID: 7324148279713424173}
   - component: {fileID: 8170412535288247596}
   - component: {fileID: 8761768832387112577}
-  - component: {fileID: 2493262815641104504}
   - component: {fileID: 3646171408298210129}
   - component: {fileID: 7770542936600282333}
   - component: {fileID: 5041693359459944431}
   - component: {fileID: 2271294216086206238}
+  - component: {fileID: 7284972002691508958}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -262,46 +262,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2493262815641104504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978729502493784343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb56c99a5c42175478e7b555a67e0106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 6334f1fb75aed4649ba69128dfa5d70b, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7324148279713424173}
-        m_TargetAssemblyTypeName: GameUI, Assembly-CSharp
-        m_MethodName: LoadMinigame
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 5177473489628720442}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 4688026229569220851}
-        m_TargetAssemblyTypeName: CastSystem, Assembly-CSharp
-        m_MethodName: SetWaterT
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &3646171408298210129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +346,46 @@ MonoBehaviour:
   targetUI: {fileID: 8558297877657894712, guid: 464be1f7b0cd21b43931603ec3310d4d, type: 3}
   speed: 800
   lifetime: 1.5
+--- !u!114 &7284972002691508958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4978729502493784343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee67ff530a76f4148a79959966ab62f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 7ed96f045d937c34bb9ef80433c8e6fe, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7324148279713424173}
+        m_TargetAssemblyTypeName: GameUI, Assembly-CSharp
+        m_MethodName: LoadMinigame
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5177473489628720442}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4688026229569220851}
+        m_TargetAssemblyTypeName: CastSystem, Assembly-CSharp
+        m_MethodName: SetWater
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1536643110086690574
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -812,32 +812,12 @@ PrefabInstance:
       value: SpawnObstacles, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
-      propertyPath: bestOutcome.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
       propertyPath: worstOutcome.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SpawnObstacles, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
       propertyPath: normalOutcome.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SpawnObstacles, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
-      propertyPath: worstOutcome.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
-      propertyPath: worstOutcome.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
-      propertyPath: normalOutcome.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
-      propertyPath: normalOutcome.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8367696358218679836, guid: 64880dc1312565846b93cab8957f03c1, type: 3}
       propertyPath: bestOutcome.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

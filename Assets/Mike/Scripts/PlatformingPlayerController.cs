@@ -16,7 +16,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private PlatformingHook hook;
 	[SerializeField] private Transform spriteT;
 	[SerializeField] private CinemachineTargetGroup ctg;
-	[HideInInspector] public Transform interactedWaterT;
+	[HideInInspector] public Water interactedWater;
 	[SerializeField] private Animator animator;
 	[SerializeField] private PlayerAudioManager audioManager;
 	[SerializeField] VoidEvent onInventory;
@@ -305,11 +305,11 @@ public class PlatformingPlayerController : Interactor
 		TryInteract();
 	}
 
-	public void OnFishCast(Transform waterT)
+	public void OnFishCast(Water water)
 	{
-		interactedWaterT = waterT;
+		interactedWater = water;
 
-		Collider2D waterCol = interactedWaterT.parent.GetComponent<Collider2D>();
+		Collider2D waterCol = interactedWater.transform.parent.GetComponent<Collider2D>();
 		waterMidpoint = waterCol.bounds.center;
 
 		Vector3 waterDir = (waterMidpoint - (Vector2)rodEnd.position).normalized;
@@ -768,6 +768,11 @@ public class PlatformingPlayerController : Interactor
 		switch (currentRodState) // new rod state
 		{
 			case RodState.INACTIVE:
+				if(interactedWater != null)
+				{
+					interactedWater.QuitFishing();
+					interactedWater = null;
+				}
 				rod.transform.localRotation = Quaternion.identity;
 				rod.SetActive(false);
 				OnEnterInactiveState();
