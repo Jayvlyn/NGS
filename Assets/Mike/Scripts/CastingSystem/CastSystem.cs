@@ -39,7 +39,7 @@ public class CastSystem : MonoBehaviour
 	private void OnDisable()
 	{
         moving = false;
-        GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
+        //GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 	}
 
 	void Update()

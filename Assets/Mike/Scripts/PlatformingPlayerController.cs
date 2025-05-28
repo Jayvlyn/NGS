@@ -302,7 +302,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void OnInteract()
 	{
-		TryInteract();
+		if(!inWater && rb.linearVelocity.magnitude < 0.2f) 
+			TryInteract();
 	}
 
 	public void OnFishCast(Water water)
