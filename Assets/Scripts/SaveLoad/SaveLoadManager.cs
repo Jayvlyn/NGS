@@ -201,6 +201,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             saveList.Remove(saveList[selected]);
             File.Delete(path);
+            //UIAnimations.PlayUIAnim("",);
             UpdateDisplay();
         }
         selected = -1;

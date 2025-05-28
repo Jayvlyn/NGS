@@ -12,7 +12,7 @@ public class UIParticleFX : MonoBehaviour
 
     private List<GameObject> pool = new List<GameObject>();
 
-    public void SpawnParticles(int count, Vector3 screenPosition)
+    public void SpawnParticles(int count, Vector3 screenPosition, bool quest = false)
     {
         for (int i = 0; i < count; i++)
         {
@@ -26,17 +26,22 @@ public class UIParticleFX : MonoBehaviour
             print(screenPosition);
 
             go.SetActive(true);
-            StartCoroutine(MoveToTarget(rt));
+            StartCoroutine(MoveToTarget(rt, quest));
         }
     }
 
-    IEnumerator MoveToTarget(RectTransform particle)
+    IEnumerator MoveToTarget(RectTransform particle, bool quest)
     {
         float timer = 0f;
 
         while (timer < lifetime && Vector3.Distance(particle.position, targetUI.position) > 10f)
         {
             Vector3 dir = (targetUI.position - particle.position).normalized;
+            if (quest)
+            {
+                dir.y *= 2f;
+                timer += Time.deltaTime * 0.8f;
+            }
             particle.position += dir * speed * Time.deltaTime;
             timer += Time.deltaTime;
             yield return null;
