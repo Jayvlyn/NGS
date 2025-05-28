@@ -192,6 +192,11 @@ public class PlatformingPlayerController : Interactor
 
 	#region INPUTS
 
+	public void EnablePlayerMovement()
+	{
+		GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
+	}
+
 	public void OnMove(InputValue value)
 	{
 		moveInput = value.Get<float>();
