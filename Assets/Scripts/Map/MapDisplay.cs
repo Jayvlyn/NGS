@@ -14,6 +14,8 @@ public class MapDisplay : Singleton<MapDisplay>
     [SerializeField] float maxZoom;
     [SerializeField] GameObject[] ponds;
     [SerializeField] CinemachineCamera cam;
+    [SerializeField] CinemachinePositionComposer composer;
+    [SerializeField] CinemachineConfiner2D confiner;
     private bool open = false;
     private GameObject[] createdObjects;
     private float size;
@@ -27,8 +29,11 @@ public class MapDisplay : Singleton<MapDisplay>
     }
     public void Display()
     {
-        cam.enabled = false;
-        Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0);
+        //Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0);
+        cam.transform.rotation = Quaternion.Euler(180, 0, 0);
+        //cam.get
+        composer.enabled = false;
+        confiner.enabled = true;
         createdObjects = new GameObject[ponds.Length];
         for(int i = 0; i < ponds.Length; i++)
         {
@@ -36,12 +41,13 @@ public class MapDisplay : Singleton<MapDisplay>
             createdObjects[i].transform.position = ponds[i].transform.position + transform.position;
             //go.GetComponent<SpriteShapeRenderer>().sortingOrder = -1;
         }
-        size = Camera.main.orthographicSize;
-        Matrix4x4 mat = Camera.main.projectionMatrix;
-        Matrix4x4 next = Matrix4x4.Scale(new Vector3(-1, 1, 1));
-        mat *= next;
-        Camera.main.projectionMatrix = mat;
-        Camera.main.orthographicSize *= -1;
+        size = cam.Lens.OrthographicSize;
+        Camera.main.ResetProjectionMatrix();
+        Camera.main.projectionMatrix *= Matrix4x4.Scale(new Vector3(1, -1, 1));
+        //Matrix4x4 mat = Camera.main.projectionMatrix;
+        //Matrix4x4 next = Matrix4x4.Scale(new Vector3(-1, 1, 1));
+        //mat *= next;
+        //Camera.main.projectionMatrix = mat;
         open = true;
     }
 
@@ -58,40 +64,66 @@ public class MapDisplay : Singleton<MapDisplay>
                 Display();
             }
         }
-
-        if(Input.mouseScrollDelta.y != 0)
+        if (open)
         {
-            Zoom(Input.mouseScrollDelta.y);
-        }
+            cam.transform.position = Camera.main.transform.position;
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                Zoom(-Input.mouseScrollDelta.y);
+            }
 
-        Vector3 movement = Vector3.zero;
+            Vector3 movement = Vector3.zero;
 
-        if(Input.GetKey(KeyCode.W))
-        {
-            movement.y -= Time.deltaTime * Camera.main.orthographicSize;
+            if (Input.GetKey(KeyCode.W))
+            {
+                movement.y += Time.deltaTime * Camera.main.orthographicSize;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                movement.y -= Time.deltaTime * Camera.main.orthographicSize;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                movement.x += Time.deltaTime * Camera.main.orthographicSize;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                movement.x -= Time.deltaTime * Camera.main.orthographicSize;
+            }
+            if (Input.GetKey(KeyCode.Minus))
+            {
+                Zoom(Time.deltaTime * 20);
+            }
+            if (Input.GetKey(KeyCode.Equals))
+            {
+                Zoom(-Time.deltaTime * 20);
+            }
+            if(Input.mousePosition.x < Screen.width * 0.1f)
+            {
+                movement.x -= Time.deltaTime * Camera.main.orthographicSize;
+            }
+            else if(Input.mousePosition.x > Screen.width * 0.9f)
+            {
+                movement.x += Time.deltaTime * Camera.main.orthographicSize;
+            }
+            if(Input.mousePosition.y < Screen.height * 0.1f)
+            {
+                movement.y -= Time.deltaTime * Camera.main.orthographicSize;
+            }
+            else if(Input.mousePosition.y > Screen.height * 0.9f)
+            {
+                movement.y += Time.deltaTime * Camera.main.orthographicSize;
+            }
+            cam.transform.position += movement;
         }
-        if(Input.GetKey(KeyCode.S))
-        {
-            movement.y += Time.deltaTime * Camera.main.orthographicSize;
-
-        }
-        if(Input.GetKey(KeyCode.D))
-        {
-            movement.x -= Time.deltaTime * Camera.main.orthographicSize;
-
-        }
-        if( Input.GetKey(KeyCode.A))
-        {
-            movement.x += Time.deltaTime * Camera.main.orthographicSize;
-        }
-
-        Camera.main.transform.position += movement;
     }
     public void Close()
     {
-        Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0); 
+        //Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0); 
+        confiner.enabled = false;
+        cam.transform.rotation = Quaternion.identity;
         Camera.main.ResetProjectionMatrix();
-        cam.enabled = true;
+        composer.enabled = true;
         foreach(GameObject go in createdObjects)
         {
             if(go != null)
@@ -99,28 +131,15 @@ public class MapDisplay : Singleton<MapDisplay>
                 Destroy(go);
             }
         }
-        Camera.main.orthographicSize = size;
+        cam.Lens.OrthographicSize = size;
         open = false;
     }
 
     public void Zoom(float rate = 1)
     {
-        if (Camera.main.orthographicSize + rate * 0.05f < -1 / minZoom)
-        {
-            MatrixZoom(-1 / minZoom - Camera.main.orthographicSize);
-        }
-        else if(Camera.main.orthographicSize + rate * 0.05f > -1 / maxZoom)
-        {
-
-        }
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + rate * 0.05f, -1 / minZoom, -1 / maxZoom);
-    }
-
-    public void MatrixZoom(float rate)
-    {
-        Matrix4x4 mat = Camera.main.projectionMatrix;
-        mat *= Matrix4x4.Scale(new Vector3(1 + rate * 0.05f, 1 + rate * 0.05f, 1));
-        Camera.main.projectionMatrix = mat;
+        cam.Lens.OrthographicSize = Mathf.Clamp(cam.Lens.OrthographicSize * (1 + rate * 0.05f), 1 / maxZoom, 1 / minZoom);
+        Camera.main.ResetProjectionMatrix();
+        Camera.main.projectionMatrix *= Matrix4x4.Scale(new Vector3(1, -1, 1));
     }
 
     public void RevealTile((int, int) location)
