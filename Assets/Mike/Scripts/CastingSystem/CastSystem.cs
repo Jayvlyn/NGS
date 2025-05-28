@@ -52,8 +52,9 @@ public class CastSystem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+				GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
                 ResetCast();
-            }
+			}
             else if (Input.anyKeyDown)
             {
                 CheckCast(castBar.value);
