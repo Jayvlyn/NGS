@@ -200,7 +200,7 @@ public class PlatformingPlayerController : Interactor
 			moveHeld = true;
 			if (currentMoveState == MoveState.WALL_STICKING) ChangeMoveState(MoveState.FALLING);
 			else if (currentMoveState == MoveState.IDLE) ChangeMoveState(MoveState.RUNNING);
-			else if (currentMoveState == MoveState.GROUND_HOOKED || currentMoveState == MoveState.GROUND_CASTING) ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
+			else if (currentMoveState == MoveState.GROUND_HOOKED) ChangeMoveState(MoveState.GROUND_HOOKED_WALKING);
 			else if (currentMoveState == MoveState.GROUND_REELING) ChangeMoveState(MoveState.WALKING_REELING);
 
 			if(moveInput * spriteT.localScale.x < 0)
@@ -379,6 +379,35 @@ public class PlatformingPlayerController : Interactor
 
 	private Vector2 GetSlope(float direction = 0)
 	{
+		//Vector2 result = new Vector2(magnitude, 0);
+		//float absMagnitude;
+		//bool forMovement = true;
+		//if(magnitude == 0)
+		//{
+		//          absMagnitude = magnitude == 0 ? 1 : Mathf.Abs(magnitude);
+		//	magnitude = 1;
+		//	forMovement = false;
+		//      }
+		//else
+		//{
+		//	absMagnitude = Mathf.Abs(magnitude);
+		//}
+		//Vector2 from = forMovement ? new Vector2(transform.position.x, transform.position.y + slopeCheckDistance * absMagnitude * 4f + 0.01f) : new Vector2(transform.position.x - slopeCheckDistance, transform.position.y + slopeCheckDistance * 4 + 0.01f);
+		////Vector2 to = from + (Vector2.down * (slopeCheckDistance * 12f + 0.05f));
+		//      RaycastHit2D hit = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 12f + 0.05f, groundLayer);
+		//      //Debug.DrawLine(from, to, hit ? Color.green : Color.red, 2);
+		//      if (hit)
+		//{
+		//	from = new Vector2(transform.position.x + slopeCheckDistance * magnitude, transform.position.y + slopeCheckDistance * absMagnitude * 4f + 0.01f);
+		//	//to = from + (Vector2.down * (slopeCheckDistance * 12f + 0.05f));
+		//	RaycastHit2D hit2 = Physics2D.Raycast(from, Vector2.down, slopeCheckDistance * 12f + 0.05f, groundLayer);
+		//	//Debug.DrawLine(from, to, hit2 ? Color.green : Color.red, 2);
+		//          if (hit2)
+		//          {
+		//              result = hit2.point - hit.point;
+		//              result = absMagnitude * result.normalized;
+		//          }
+		//      }
 		if(direction == 0)
 		{
 			direction = isFacingLeft() ? -1 : 1;
@@ -518,7 +547,7 @@ public class PlatformingPlayerController : Interactor
 				SetTrigger("ToGroundCast");
 				break;
 			case MoveState.WALKING_CASTING:
-				SetTrigger("ToCastWalk");
+				//SetTrigger("ToWalkCast");
 				break;
 			case MoveState.AIR_REELING:
 				SetTrigger("ToAirReel");
@@ -710,7 +739,7 @@ public class PlatformingPlayerController : Interactor
 
 	private void LookAtHook()
 	{
-		Vector2 direction = ((Vector2)hook.transform.position - (Vector2)transform.position).normalized;
+		Vector2 direction = ((Vector2)hook.rb.transform.position - (Vector2)transform.position).normalized;
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.Euler(0f, 0f, angle);
 	}
@@ -725,6 +754,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void ChangeRodState(RodState state)
 	{
+
+
 		if(currentRodState == RodState.CASTING)
 		{
 			if (castHookToPoint != null) StopCoroutine(castHookToPoint);
@@ -850,10 +881,10 @@ public class PlatformingPlayerController : Interactor
 			case RodState.RETURNING:
 				//Debug.Log(hookRb.transform.position);
 				hook.rb.linearVelocity *= hookReturnFriction; // dampen so it doesnt constantly fly past player trying to return
-				Vector2 dir = (rodEnd.position - hook.transform.position).normalized;
+				Vector2 dir = (rodEnd.position - hook.rb.transform.position).normalized;
 				hook.rb.AddForce(dir * playerStats.platformingReelSpeed * hookReturnSpeedMod, ForceMode2D.Force);
 
-				if (Vector2.Distance(hook.gameObject.transform.position, rodEnd.position) <= completeReturnDistance)
+				if (Vector2.Distance(hook.rb.gameObject.transform.position, rodEnd.position) <= completeReturnDistance)
 				{
 					ChangeRodState(RodState.INACTIVE);
 				}
@@ -861,7 +892,7 @@ public class PlatformingPlayerController : Interactor
 				break;
 			case RodState.HOOKED:
 				{
-					float dist = Vector2.Distance(rodEnd.position, hook.transform.position);
+					float dist = Vector2.Distance(rodEnd.position, hook.rb.transform.position);
 					float maxLen = playerStats.platformingLineLength;
 					float minLen = 0f;
 					float currLen = distanceJoint.distance;
@@ -904,7 +935,7 @@ public class PlatformingPlayerController : Interactor
 
 						if (addForce)
 						{
-							dir = (hook.transform.position - rodEnd.position).normalized;
+							dir = (hook.rb.transform.position - rodEnd.position).normalized;
 							rb.AddForce(dir * playerStats.platformingReelSpeed, ForceMode2D.Force);
 						}
 					}
@@ -928,14 +959,14 @@ public class PlatformingPlayerController : Interactor
 	private IEnumerator CastHookToPoint(Vector2 point, bool willHook)
 	{
 		float t = 0;
-		hook.transform.position = rodEnd.position;
+		hook.rb.transform.position = rodEnd.position;
 		Vector2 initialPosition = rodEnd.position;
 		while (t < playerStats.grappleMaxCastSpeed)
 		{
 			Vector2 currentPos;
 			currentPos.x = Mathf.Lerp(initialPosition.x, point.x, t / playerStats.grappleMaxCastSpeed);
 			currentPos.y = initialPosition.y + grappleCastCurve.Evaluate(t / playerStats.grappleMaxCastSpeed);
-			hook.transform.position = currentPos;
+			hook.rb.transform.position = currentPos;
 
 			float modifier = 2;
 
@@ -945,7 +976,7 @@ public class PlatformingPlayerController : Interactor
 			t += Time.deltaTime * modifier;
 			yield return null;
 		}
-		hook.transform.position = point;
+		hook.rb.transform.position = point;
 
 		if(willHook)ChangeRodState(RodState.HOOKED);
 		else ChangeRodState(RodState.RETURNING);
@@ -955,8 +986,6 @@ public class PlatformingPlayerController : Interactor
 
 	private void OnEnterCastingState()
 	{
-		hook.transform.parent = null;
-		hook.transform.position = transform.position;
 		StartCoroutine(RodCast());
 	}
 
@@ -988,7 +1017,7 @@ public class PlatformingPlayerController : Interactor
 
 		hook.col.isTrigger = true;
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
-		hook.transform.position = rodEnd.position;
+		hook.rb.transform.position = rodEnd.position;
 		hook.rb.gameObject.SetActive(true);
 
 		lineRenderer.enabled = true;
@@ -997,8 +1026,8 @@ public class PlatformingPlayerController : Interactor
 		if (hit != null)
 		{
 			hookPos = hit.ClosestPoint(overlapPos);
-			hook.transform.position = hookPos;
-			hook.transform.parent = null;
+			hook.rb.transform.position = hookPos;
+			hook.rb.transform.parent = null;
 
 			DefineCurveKeys(hookPos);
 
@@ -1008,7 +1037,7 @@ public class PlatformingPlayerController : Interactor
 		else
 		{
 			hookPos = (Vector2)rodEnd.position + dir * MaxLineLength;
-			hook.transform.position = hookPos;
+			hook.rb.transform.position = hookPos;
 
 			DefineCurveKeys(hookPos);
 
@@ -1073,8 +1102,8 @@ public class PlatformingPlayerController : Interactor
 	private void OnEnterHookedState()
 	{
 		currentWallJumps = totalWallJumps;
-		distanceJoint.connectedAnchor = hook.transform.position;
-		distanceJoint.distance = Vector2.Distance(rodEnd.transform.position, hook.transform.position);
+		distanceJoint.connectedAnchor = hook.rb.gameObject.transform.position;
+		distanceJoint.distance = Vector2.Distance(rodEnd.transform.position, hook.rb.transform.position);
 		distanceJoint.enabled = true;
 
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
@@ -1088,14 +1117,14 @@ public class PlatformingPlayerController : Interactor
 		hook.col.isTrigger = true;
 		distanceJoint.enabled = false;
 		hook.rb.bodyType = RigidbodyType2D.Dynamic;
-		//hook.transform.parent = transform;
+		hook.rb.transform.parent = transform;
 	}
 
 	private void OnEnterInactiveState()
 	{
 		hook.col.isTrigger = true;
-		hook.transform.position = rodEnd.position;
-		hook.gameObject.SetActive(false);
+		hook.rb.transform.position = rodEnd.position;
+		hook.rb.gameObject.SetActive(false);
 		distanceJoint.enabled = false;
 		lineRenderer.enabled = false;
 	}
@@ -1103,9 +1132,7 @@ public class PlatformingPlayerController : Interactor
 	private void OnEnterFishCastingState()
 	{
 		hook.col.isTrigger = false;
-		hook.transform.parent = null;
-		hook.transform.position = transform.position;
-		hook.gameObject.SetActive(true);
+		hook.rb.gameObject.SetActive(true);
 
 		lineRenderer.enabled = true;
 
@@ -1135,7 +1162,7 @@ public class PlatformingPlayerController : Interactor
 			Vector2 pos;
 			pos.x = (t / dist) * Mathf.Sign(spriteT.localScale.x);
 			pos.y = fishCastCurve.Evaluate(t / dist);
-			hook.transform.position = (Vector2)this.transform.position + pos;
+			hook.rb.transform.position = (Vector2)this.transform.position + pos;
 
 			t += Time.deltaTime * speed;
 			yield return null;
