@@ -51,6 +51,7 @@ MonoBehaviour:
   platformPrefab: {fileID: 6452791670045513104, guid: cef87c3959f07144d868c1450f944520, type: 3}
   currentPlatform: {fileID: 7673586216400833250}
   shakeTime: 5
+  resetUponExit: 1
   shakeAggression: 0.01
   fallSpeed: 3
   fallTime: 5
@@ -59,6 +60,7 @@ MonoBehaviour:
     AppearanceType: 2
     Time: 0.1
     Offset: 0
+  fallEvent: {fileID: 11400000, guid: 0cbad18356ad4e242be91422c89bdc77, type: 2}
 --- !u!61 &2352843127281438761
 BoxCollider2D:
   m_ObjectHideFlags: 0
