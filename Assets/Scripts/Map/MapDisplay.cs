@@ -29,6 +29,7 @@ public class MapDisplay : Singleton<MapDisplay>
     }
     public void Display()
     {
+        GameUI.Instance.pi.SwitchCurrentActionMap("RebindKeys");
         //Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0);
         cam.transform.rotation = Quaternion.Euler(180, 0, 0);
         //cam.get
@@ -119,6 +120,7 @@ public class MapDisplay : Singleton<MapDisplay>
     }
     public void Close()
     {
+        GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
         //Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0); 
         confiner.enabled = false;
         cam.transform.rotation = Quaternion.identity;
