@@ -176,20 +176,25 @@ MonoBehaviour:
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
   popupLocation: {fileID: 6162254240416479447}
   dialoguePopupLocation: {fileID: 8991809366365859052}
-  landmarkDescriptions:
-  - Enter Sign Text Here
-  loops: 1
+  questDescriptions: []
+  questDescriptionsLoop: 0
   landmarkName: Sign
-  screenPopup: 0
-  lifetime: 5
-  appearanceData:
-    AppearanceType: 2
-    Time: 0.15
-    Offset: 0
-  closingData:
-    AppearanceType: 2
-    Time: 0.15
-    Offset: 0
+  baseData:
+    landmarkDescriptions:
+    - Do you trust me?
+    - 'Fall straight down\n|\nv '
+    screenPopup: 0
+    lifetime: 3
+    standardDescriptionsLoop: 0
+    appearanceData:
+      AppearanceType: 2
+      Time: 0.15
+      Offset: 0
+    closingData:
+      AppearanceType: 2
+      Time: 0.15
+      Offset: 0
+  currentPopup: {fileID: 0}
 --- !u!1 &8584280737549363209
 GameObject:
   m_ObjectHideFlags: 0
