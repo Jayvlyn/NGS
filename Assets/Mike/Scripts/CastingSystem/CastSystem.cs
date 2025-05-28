@@ -44,11 +44,11 @@ public class CastSystem : MonoBehaviour
 
 	void Update()
     {
-        if(startDelay > 0)
+        if (startDelay > 0)
         {
             startDelay -= Time.deltaTime;
         }
-        else
+        else if (moving)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
