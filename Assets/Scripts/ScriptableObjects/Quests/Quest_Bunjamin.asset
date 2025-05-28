@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
+  m_Name: Quest_Bunjamin
+  m_EditorClassIdentifier: 
+  questName: Bunjamin needs his carrish fix.
+  description: Bunjamin hasn't had a carrish in forever. I can find one for him.
+  completeable: 0
+  fishQuest: 1
+  reward:
+    flannelName: 
+    carrots: 5
+  fish: {fileID: 11400000, guid: abf8523fefd10d34aa2475466c8a6512, type: 2}
+  minLength: 0
+  destinationName: 
+  remainingCompletions: 1
+  onCompleteEvent: {fileID: 0}
+  disabled: 0
