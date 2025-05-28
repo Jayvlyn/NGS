@@ -15,6 +15,7 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] GameObject pause;
     [SerializeField] GameObject inventoryMenu;
     [SerializeField] public GameObject HUD;
+    [SerializeField] GameObject saveReaction;
 
     [Header("")]
     [SerializeField] DayNightCycle timeCycle;
@@ -143,6 +144,7 @@ public class GameUI : Singleton<GameUI>
 
     void saveClicked()
     {
+        StartCoroutine(UIAnimations.PlaySigleAnim("Fade", saveReaction));
         if (keyBinds.activeSelf) SaveKeyBinds();
         else modifySettings.SaveSettings();
     }

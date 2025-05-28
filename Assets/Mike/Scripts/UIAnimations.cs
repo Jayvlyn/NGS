@@ -25,4 +25,18 @@ public static class UIAnimations
 
         if (turnOff) anim.enabled = false;
     }
+
+    public static IEnumerator PlaySigleAnim(string name, GameObject menu, float time = 0)
+    {
+        menu.SetActive(true);
+
+        var anim = menu.GetComponent<Animator>();
+        anim.SetBool(name, true);
+
+        yield return new WaitForSecondsRealtime(anim.GetCurrentAnimatorStateInfo(0).length);
+        anim.SetBool(name, false);
+        yield return new WaitForSecondsRealtime(anim.GetCurrentAnimatorStateInfo(0).length);
+
+        menu.SetActive(false);
+    }
 }

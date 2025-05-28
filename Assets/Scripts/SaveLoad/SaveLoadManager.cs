@@ -1,8 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SaveLoadManager : MonoBehaviour
@@ -15,6 +15,7 @@ public class SaveLoadManager : MonoBehaviour
     private readonly List<SaveData> saveList = new();
     [HideInInspector] public static int selected = -1;
     private string id = "";
+    private GridLayoutGroup layout;
     public bool Save(string name, bool newGame = true)
     {
         if(newGame) foreach (var save in saveList) if (save.id.ToLower() == name.ToLower()) return false;
@@ -99,7 +100,8 @@ public class SaveLoadManager : MonoBehaviour
 
     private void UpdateDisplay()
     {
-        while(options.Count > 0)
+        if(!layout.enabled) layout.enabled = true;
+        while (options.Count > 0)
         {
             Destroy(options[0]);
             options.RemoveAt(0);
@@ -126,10 +128,6 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadSelected()
     {
-        //var sceneIndex = SceneManager.GetActiveScene().buildIndex+1;
-        //if (sceneIndex % SceneManager.sceneCountInBuildSettings == 0) sceneIndex = 1;
-        //SceneManager.LoadScene("GameScene");
-        //GameUI.gameStart = true;
         SceneLoader.LoadScene(saveList[selected].position.currentLocation);
     }
 
@@ -201,14 +199,16 @@ public class SaveLoadManager : MonoBehaviour
         {
             saveList.Remove(saveList[selected]);
             File.Delete(path);
-            //UIAnimations.PlayUIAnim("",);
-            UpdateDisplay();
+            layout.enabled = false;
+            StartCoroutine(UpdateLoad(options[selected].GetComponent<Animator>(), this));
+            
         }
         selected = -1;
     }
 
     private void OnEnable()
     {
+        if(layout == null) layout = content.GetComponent<GridLayoutGroup>();
         if (saveList.Count == 0)
         {
             string path = Path.Combine(Application.dataPath, "Saves");
@@ -223,5 +223,12 @@ public class SaveLoadManager : MonoBehaviour
             }
         }
         UpdateDisplay();
+    }
+
+    public static IEnumerator UpdateLoad(Animator anim, SaveLoadManager self)
+    {
+        anim.enabled = true;
+        yield return new WaitForSecondsRealtime(anim.GetCurrentAnimatorStateInfo(0).length);
+        self.UpdateDisplay();
     }
 }

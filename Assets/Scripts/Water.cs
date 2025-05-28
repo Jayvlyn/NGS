@@ -8,7 +8,7 @@ public class Water : InteractableObject
     
     [SerializeField] FishEvent onBite;
     [SerializeField] FishEvent onBossBite;
-    [SerializeField] TransformEvent onCast;
+    [SerializeField] WaterEvent onCast;
     [SerializeField] VoidEvent onQuitFishing;
 
     //list of fish the pond has 
@@ -156,7 +156,7 @@ public class Water : InteractableObject
             {
                 player = pair.actor.transform;
                 startPos = player.position;
-                onCast.Raise(transform);            
+                onCast.Raise(this);            
             }
         }
     }

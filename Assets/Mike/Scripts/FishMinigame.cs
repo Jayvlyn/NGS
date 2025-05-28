@@ -221,7 +221,8 @@ public class FishMinigame : MonoBehaviour
         }
         else if (catchProgress <= 0.0f || Input.GetKeyDown(KeyCode.Escape))
         {
-            isFinishing = true;
+			GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
+			isFinishing = true;
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
 
             OnFinish();
@@ -231,7 +232,6 @@ public class FishMinigame : MonoBehaviour
 	private void OnFinish()
 	{
 		minigameEvent.Raise(isCaught);
-		GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
         GameUI.Instance.LoadMinigame(GameUI.Instance.transform.Find("Minigame").gameObject);
         //minigameUI.SetActive(false);
     }
