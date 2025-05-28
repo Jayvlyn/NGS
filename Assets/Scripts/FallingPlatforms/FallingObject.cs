@@ -10,6 +10,7 @@ public class FallingObject : MonoBehaviour
     [SerializeField] private GameObject platformPrefab;
     [SerializeField] private GameObject currentPlatform;
     [SerializeField] private float shakeTime;
+    [SerializeField] private bool resetUponExit = true;
     private float currentTime = -1;
     [SerializeField] private float shakeAggression;
     [SerializeField] private float fallSpeed;
@@ -41,7 +42,12 @@ public class FallingObject : MonoBehaviour
                     faller.velocity = new Vector3(0, -fallSpeed);
                     faller.lifetime = fallTime;
                     currentTime = fallTime;
-                    fallEvent.Raise(Id);
+                    BoxCollider2D box = currentPlatform.GetComponentInChildren<BoxCollider2D>();
+                    if(box != null)
+                    {
+                        box.gameObject.AddComponent<OneWayPlatform>().colliderToDisable = box;
+                    }
+                    fallEvent?.Raise(Id);
                 }
                 else if(currentPlatform != null)
                 {
@@ -95,7 +101,7 @@ public class FallingObject : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         currentInsideCount--;
-        if (imageObject != null)
+        if (currentInsideCount == 0 && resetUponExit && imageObject != null)
         {
             Shaker shaker = imageObject.GetComponent<Shaker>();
             if (currentInsideCount == 0 && shaker != null)

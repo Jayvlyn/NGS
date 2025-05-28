@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CastSystem : MonoBehaviour
 {
-    [SerializeField] TransformEvent onCastFinished;
+    [SerializeField] WaterEvent onCastFinished;
 
 	[Header("Pop-up & cast bar")]
     [SerializeField] GameObject castScreen;
@@ -23,7 +23,7 @@ public class CastSystem : MonoBehaviour
     private float startDelay;
     private bool moving = false;
 
-    private Transform waterT;
+    private Water water;
 
     [SerializeField] AnimationCurve speedCurve;
 
@@ -39,21 +39,22 @@ public class CastSystem : MonoBehaviour
 	private void OnDisable()
 	{
         moving = false;
-        GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
+        //GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 	}
 
 	void Update()
     {
-        if(startDelay > 0)
+        if (startDelay > 0)
         {
             startDelay -= Time.deltaTime;
         }
-        else
+        else if (moving)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+				GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
                 ResetCast();
-            }
+			}
             else if (Input.anyKeyDown)
             {
                 CheckCast(castBar.value);
@@ -73,7 +74,7 @@ public class CastSystem : MonoBehaviour
         else if (value >= 0.31f && value <= 0.69f) normalOutcome.Invoke();
         else worstOutcome.Invoke();
 
-        onCastFinished.Raise(waterT);
+        onCastFinished.Raise(water);
 
         ResetCast();
     }
@@ -119,9 +120,9 @@ public class CastSystem : MonoBehaviour
 		castBar.value = 0;
 	}
 
-    public void SetWaterT(Transform waterT)
+    public void SetWater(Water water)
     {
-        this.waterT = waterT;
+        this.water = water;
     }
 
 }
