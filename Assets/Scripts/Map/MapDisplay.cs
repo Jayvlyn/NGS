@@ -16,7 +16,7 @@ public class MapDisplay : Singleton<MapDisplay>
     [SerializeField] CinemachineCamera cam;
     private bool open = false;
     private GameObject[] createdObjects;
-
+    private float size;
     public Vector3Int WorldToCell(Vector3 world, int mapIndex = 0)
     {
         if(mapIndex > -1 && mapIndex < importMaps.Length && importMaps[mapIndex] != null)
@@ -36,6 +36,12 @@ public class MapDisplay : Singleton<MapDisplay>
             createdObjects[i].transform.position = ponds[i].transform.position + transform.position;
             //go.GetComponent<SpriteShapeRenderer>().sortingOrder = -1;
         }
+        size = Camera.main.orthographicSize;
+        Matrix4x4 mat = Camera.main.projectionMatrix;
+        Matrix4x4 next = Matrix4x4.Scale(new Vector3(-1, 1, 1));
+        mat *= next;
+        Camera.main.projectionMatrix = mat;
+        Camera.main.orthographicSize *= -1;
         open = true;
     }
 
@@ -58,10 +64,33 @@ public class MapDisplay : Singleton<MapDisplay>
             Zoom(Input.mouseScrollDelta.y);
         }
 
+        Vector3 movement = Vector3.zero;
+
+        if(Input.GetKey(KeyCode.W))
+        {
+            movement.y -= Time.deltaTime * Camera.main.orthographicSize;
+        }
+        if(Input.GetKey(KeyCode.S))
+        {
+            movement.y += Time.deltaTime * Camera.main.orthographicSize;
+
+        }
+        if(Input.GetKey(KeyCode.D))
+        {
+            movement.x -= Time.deltaTime * Camera.main.orthographicSize;
+
+        }
+        if( Input.GetKey(KeyCode.A))
+        {
+            movement.x += Time.deltaTime * Camera.main.orthographicSize;
+        }
+
+        Camera.main.transform.position += movement;
     }
     public void Close()
     {
-        Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0);
+        Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(0, 180, 0); 
+        Camera.main.ResetProjectionMatrix();
         cam.enabled = true;
         foreach(GameObject go in createdObjects)
         {
@@ -70,22 +99,28 @@ public class MapDisplay : Singleton<MapDisplay>
                 Destroy(go);
             }
         }
+        Camera.main.orthographicSize = size;
         open = false;
     }
 
     public void Zoom(float rate = 1)
     {
-        foreach (Tilemap exportMap in exportMaps)
+        if (Camera.main.orthographicSize + rate * 0.05f < -1 / minZoom)
         {
-            Vector3 newScale = exportMap.transform.localScale;
-            newScale.x = Mathf.Clamp((newScale.x + 0.05f) * rate, minZoom, maxZoom);
-            newScale.y = Mathf.Clamp((newScale.y + 0.05f) * rate, minZoom, maxZoom);
-            exportMap.transform.localScale = newScale;
+            MatrixZoom(-1 / minZoom - Camera.main.orthographicSize);
         }
-        Vector3 result = blockerMap.transform.localScale;
-        result.x = Mathf.Clamp((result.x + 0.05f) * rate, minZoom, maxZoom);
-        result.y = Mathf.Clamp((result.y + 0.05f) * rate, minZoom, maxZoom);
-        blockerMap.transform.localScale = result;
+        else if(Camera.main.orthographicSize + rate * 0.05f > -1 / maxZoom)
+        {
+
+        }
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + rate * 0.05f, -1 / minZoom, -1 / maxZoom);
+    }
+
+    public void MatrixZoom(float rate)
+    {
+        Matrix4x4 mat = Camera.main.projectionMatrix;
+        mat *= Matrix4x4.Scale(new Vector3(1 + rate * 0.05f, 1 + rate * 0.05f, 1));
+        Camera.main.projectionMatrix = mat;
     }
 
     public void RevealTile((int, int) location)
