@@ -13,6 +13,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] GameObject loadMenu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
+    [SerializeField] GameObject saveReaction;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button newGameBtn;
@@ -92,6 +93,7 @@ public class MenuUI : MonoBehaviour
 
     void saveClicked()
     {
+        StartCoroutine(UIAnimations.PlaySigleAnim("Fade", saveReaction));
         if (keyBinds.activeSelf) SaveKeyBinds();
         else modifySettings.SaveSettings();
     }

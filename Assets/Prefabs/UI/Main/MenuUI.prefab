@@ -123,6 +123,7 @@ MonoBehaviour:
   loadMenu: {fileID: 4370046324416509360}
   settings: {fileID: 2072952512989364131}
   keyBinds: {fileID: 6869472987305718873}
+  saveReaction: {fileID: 2970671356195823655}
   newGameBtn: {fileID: 6548503683531043436}
   loadGameBtn: {fileID: 2018144233970013871}
   settingsBtn: {fileID: 1078509291071643832}
@@ -641,6 +642,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2970671356195823655 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8364579546263595221, guid: ce0812a678cedfc469302b5389afcf5c, type: 3}
+  m_PrefabInstance: {fileID: 6714028238721566962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6869472987305718873 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 177962920818212011, guid: ce0812a678cedfc469302b5389afcf5c, type: 3}
