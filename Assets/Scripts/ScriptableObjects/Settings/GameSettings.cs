@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameSettings : ScriptableObject
 {
     public string id;
+    public string flannel;
 
     public float masterVolume;
     public float musicVolume;
