@@ -12,7 +12,9 @@ public class Water : InteractableObject
     [SerializeField] VoidEvent onQuitFishing;
 
     //list of fish the pond has 
-    [SerializeField] List<Fish> ListOfFish = new List<Fish>();
+    [SerializeField] List<Fish> AnyTimeFish = new List<Fish>();
+    [SerializeField] List<Fish> NightFish = new List<Fish>();
+    [SerializeField] List<Fish> DayFish = new List<Fish>();
 
     //rarity values so 0 is legendary and 3 is uncommon, whatever is left from between the index 3 and the value 100 is common. 
     //good values to start with are 3, 7, 25, 55 
@@ -90,7 +92,20 @@ public class Water : InteractableObject
     //generates a fish from the list with a random rarity.
     Fish GenerateFish()
     {
-        Fish fish = Instantiate(ListOfFish[Random.Range(0, ListOfFish.Count)]);
+        List<Fish> selectedList;
+
+        int pick = Random.Range(0, 2);
+        if(pick == 0)
+        {
+            selectedList = AnyTimeFish;
+        }
+        else
+        {
+            if (DayNightCycle.isNight) selectedList = NightFish;
+            else selectedList = DayFish;
+        }
+
+        Fish fish = Instantiate(selectedList[Random.Range(0, selectedList.Count)]);
         fish.rarity = GenerateRarity();
         fish.length = GenerateLength(fish);
         return fish;
