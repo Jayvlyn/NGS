@@ -251,4 +251,9 @@ public class GameUI : Singleton<GameUI>
                 break;
         }
     }
+
+    public void SaveFlanel(string name)
+    {
+        gameSettings.flannel = name;
+    }
 }

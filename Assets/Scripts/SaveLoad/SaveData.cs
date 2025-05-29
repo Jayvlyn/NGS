@@ -14,6 +14,7 @@ public class SaveData
     public int screenResolution;
     public double money;
     public string id;
+    public string flannel;
 
     public SaveData(string id)
     {

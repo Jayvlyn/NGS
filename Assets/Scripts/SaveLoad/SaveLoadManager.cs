@@ -87,6 +87,8 @@ public class SaveLoadManager : MonoBehaviour
         data.volumeData.music = gameSettings.musicVolume;
         data.volumeData.sfx = gameSettings.sfxVolume;
 
+        data.flannel = gameSettings.flannel;
+
         string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
         {

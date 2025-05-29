@@ -395,7 +395,7 @@ public class PlatformingPlayerController : Interactor
 		}
 		Vector2 result = new Vector2(direction, 0);
 		float divideBy = 0;
-		RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), Vector2.down, 1, groundLayer); 
+		RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + slopeCheckDistance * direction, transform.position.y), Vector2.down, 1, groundLayer); 
         if (hit)
         {
 			result = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
@@ -416,8 +416,8 @@ public class PlatformingPlayerController : Interactor
             result += new Vector2(psuedo.x * 0.01f, psuedo.y * 0.01f);
             divideBy++;
         }
-        hit = Physics2D.Raycast(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), Vector2.down, 1, groundLayer);
-		Debug.DrawLine(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2), new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2 - 1), Color.black, 1);
+        hit = Physics2D.Raycast(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y), Vector2.down, 1, groundLayer);
+		Debug.DrawLine(new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y), new Vector3(transform.position.x - slopeCheckDistance * direction, transform.position.y + slopeCheckDistance * 2 - 1), Color.black, 1);
         if (hit)
         {
             Vector3 next = Quaternion.Euler(0, 0, direction * -90) * hit.normal;
@@ -1346,14 +1346,14 @@ public class PlatformingPlayerController : Interactor
 				{
                     //regenerates jump if you were on a steep slope and no longer are, or disables it if inverse
                     Vector2 slope = GetSlope();
-                    if (Mathf.Abs(slope.x) >= Mathf.Abs(slope.y))
+                    if (Mathf.Abs(slope.x) < Mathf.Abs(slope.y) || Mathf.Abs(slope.x) < Mathf.Abs(slope.y) * 2)
+                    {
+                        currentJumps = 0;
+                    }
+					else
                     {
                         currentJumps = totalJumps;
                     }
-					else
-					{
-						currentJumps = 0;
-					}
                 }
 				return true; // set onGround to true;
 			}
