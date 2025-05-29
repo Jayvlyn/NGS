@@ -49,6 +49,8 @@ public class MenuUI : MonoBehaviour
 
 		gameSettings = modifySettings.settings;
 
+        modifySettings.SaveMouseMode();
+
         LoadBindingOnStart(true);
         LoadBindingOnStart(false);
 
