@@ -10,7 +10,7 @@ public class InteractableObject : MonoBehaviour
     public InteractionEvent exitInteractionRangeEvent;
     public InteractionEvent interactEvent;
     public Transform popupLocation;
-    protected Dictionary<int, GameObject> currentPopups = new();
+    //protected Dictionary<int, GameObject> currentPopups = new();
     protected virtual void Start()
     {
         Id = count;
@@ -34,10 +34,10 @@ public class InteractableObject : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {
             enterInteractionRangeEvent.Trigger(new InteractionPair(this, actor));
-            if(!currentPopups.ContainsKey(actor.Id))
-            {
-                currentPopups.Add(actor.Id, PopupManager.Instance.CreateWorldInteractionPopup(popupLocation));
-            }
+            //if(!currentPopups.ContainsKey(actor.Id))
+            //{
+            //    currentPopups.Add(actor.Id, PopupManager.Instance.CreateWorldInteractionPopup(popupLocation));
+            //}
         }
     }
 
@@ -46,11 +46,11 @@ public class InteractableObject : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {
             exitInteractionRangeEvent.Trigger(new InteractionPair(this, actor));
-            if (currentPopups.ContainsKey(actor.Id))
-            {
-                Destroy(currentPopups[actor.Id]);
-                currentPopups.Remove(actor.Id);
-            }
+            //if (currentPopups.ContainsKey(actor.Id))
+            //{
+            //    Destroy(currentPopups[actor.Id]);
+            //    currentPopups.Remove(actor.Id);
+            //}
         }
     }
 }

@@ -15,6 +15,10 @@ public class PopupManager : Singleton<PopupManager>
     [SerializeField] private Color genericFishPopupColor = Color.white;
     [SerializeField] private Color newLargestFishPopupColor = Color.white;
     [SerializeField] private Color newTypeFishPopupColor = Color.white;
+    [SerializeField] private InteractionEvent enterRangeEvent;
+    [SerializeField] private InteractionEvent exitRangeEvent;
+    private Dictionary<int, (int, GameObject)> activePopups = new();
+    private int current = -1;
     #region World Statement
     public GameObject CreateWorldStatementPopup(Transform location, string statement = "", float lifetime = 10, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearence = new PopupAppearanceData())
     {
@@ -104,8 +108,45 @@ public class PopupManager : Singleton<PopupManager>
             InputControlPath.HumanReadableStringOptions.OmitDevice);
         return go;
     }
-    #endregion World Interaction Popups
 
+    public void EnterInteractionRange(InteractionPair pair)
+    {
+        (int, GameObject) result;
+        result.Item2 = CreateWorldInteractionPopup(pair.obj.popupLocation);
+        result.Item1 = current;
+        if(current != -1)
+        {
+            activePopups[current].Item2.GetComponentInChildren<Canvas>().enabled = false;
+        }
+        current = pair.obj.Id;
+        activePopups.Add(current, result);
+    }
+
+    public void ExitInteractionRange(InteractionPair pair)
+    {
+        if (current == pair.obj.Id)
+        {
+            Destroy(activePopups[current].Item2);
+            current = activePopups[current].Item1;
+        }
+        else
+        {
+            int next = current;
+            while (activePopups[next].Item1 != pair.obj.Id)
+            {
+                next = activePopups[next].Item1;
+            }
+            Destroy(activePopups[pair.obj.Id].Item2);
+            activePopups[next] = (activePopups[pair.obj.Id].Item1, activePopups[next].Item2);
+        }
+        activePopups.Remove(pair.obj.Id);
+        if(current != -1)
+        {
+            activePopups[current].Item2.GetComponentInChildren<Canvas>().enabled = true;
+        }
+    }
+    #endregion World Interaction Popups
+    #region Fish Popups
     public GameObject CreateFishCaughtPopup(Sprite sprite, Color fxColor, string topText = "", string bottomText = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearance = new PopupAppearanceData())
     {
         GameObject go = Instantiate(fishCaughtPopup);
@@ -166,6 +207,7 @@ public class PopupManager : Singleton<PopupManager>
         popup.QuestionText.text = $"{(selling ? "Sell" : "Give")} this fish to {receiverName}?";
         return go;
     }
+    #endregion Fish Popups
     private void AddAppearance(GameObject go, PopupAppearanceData appearance, bool world = false)
     {
         switch (appearance.AppearanceType)
@@ -193,5 +235,11 @@ public class PopupManager : Singleton<PopupManager>
                 component.time = appearance.Time;
                 break;
         }
+    }
+
+    private void Start()
+    {
+        enterRangeEvent.Subscribe(EnterInteractionRange);
+        exitRangeEvent.Subscribe(ExitInteractionRange);
     }
 }
