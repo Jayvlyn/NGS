@@ -1,17 +1,26 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SmallFishVisualizer : MonoBehaviour
 {
     public Transform left;
     public Transform right;
-    public float fishSpawnrate = 0.5f;
+    public float minSpawnrate = 0.2f;
+    public float maxSpawnrate = 1f;
     public float heightVariation = 0.2f;
     private float spawnTimer = 0;
     public GameObject fishPrefab;
 
     private List<GameObject> leftFish = new List<GameObject>();
     private List<GameObject> rightFish = new List<GameObject>();
+
+    private float fishSpawnrate;
+
+	private void Start()
+	{
+		fishSpawnrate = Random.Range(minSpawnrate, maxSpawnrate);
+	}
 
 	private void Update()
 	{
@@ -25,22 +34,26 @@ public class SmallFishVisualizer : MonoBehaviour
             SpawnFish();
         }
 
-        foreach (GameObject obj in leftFish)
+
+        for (int i = leftFish.Count - 1; i >= 0; i--)
         {
-            if (obj.transform.position.x > right.transform.position.x)
-            {
-                leftFish.Remove(obj);
-                Destroy(obj);
-            }
-        }
-        foreach (GameObject obj in rightFish)
+            GameObject obj = leftFish[i];
+			if (obj.transform.position.x > right.transform.position.x)
+			{
+				leftFish.Remove(obj);
+				Destroy(obj);
+			}
+		}        
+        for (int i = rightFish.Count - 1; i >= 0; i--)
         {
+            GameObject obj = rightFish[i];
 			if (obj.transform.position.x < left.transform.position.x)
 			{
 				rightFish.Remove(obj);
 				Destroy(obj);
 			}
 		}
+
 	}
 
 	private void SpawnFish()

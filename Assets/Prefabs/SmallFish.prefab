@@ -100,6 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c746341cd79a14da6d74e4453d82f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.66
-  waveAmplitude: 35.5
-  waveFrequency: 2.7
+  minMoveSpeed: 0.3
+  maxMoveSpeed: 1.3
+  minWaveAmplitude: 15
+  maxWaveAmplitude: 20
+  minWaveFrequency: 2
+  maxWaveFrequency: 4

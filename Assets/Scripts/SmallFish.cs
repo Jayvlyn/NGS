@@ -2,11 +2,26 @@ using UnityEngine;
 
 public class SmallFish : MonoBehaviour
 {
-	public float moveSpeed = 2f;
-	public float waveAmplitude = 15f; // degrees
-	public float waveFrequency = 2f;  // waves per second
+	public float minMoveSpeed = 2f;
+	public float maxMoveSpeed = 4f;
+	public float minWaveAmplitude = 15f; // degrees
+	public float maxWaveAmplitude = 20f; // degrees
+	public float minWaveFrequency = 2f;  // waves per second
+	public float maxWaveFrequency = 4f;  // waves per second
 
 	private float time;
+
+
+	private float moveSpeed;
+	private float waveAmplitude;
+	private float waveFrequency;
+
+	private void Start()
+	{
+		moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
+		waveAmplitude = Random.Range(minWaveAmplitude, maxWaveAmplitude);
+		waveFrequency = Random.Range(minWaveFrequency, maxWaveFrequency);
+	}
 
 	void Update()
 	{
