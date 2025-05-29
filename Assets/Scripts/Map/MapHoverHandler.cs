@@ -14,10 +14,10 @@ public class MapHoverHandler : MonoBehaviour
         if (canOpenNew)
         {
             Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
-            if(MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
-            {
-                AddPopupToScreen();
-            }
+            //if(MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
+            //{
+            //    AddPopupToScreen();
+            //}
         }
     }
 
@@ -39,33 +39,33 @@ public class MapHoverHandler : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(canOpenNew)
-        {
-            Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
-            if (MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
-            {
-                AddPopupToScreen();
-            }
-        }
-        else if(isOpen)
-        {
-            Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
-            if (!MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
-            {
-                RemovePopupFromScreen();
-            }
-        }
+        //if(canOpenNew)
+        //{
+        //    Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
+        //    if (MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
+        //    {
+        //        AddPopupToScreen();
+        //    }
+        //}
+        //else if(isOpen)
+        //{
+        //    Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
+        //    if (!MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
+        //    {
+        //        RemovePopupFromScreen();
+        //    }
+        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(isOpen)
-        {
-            Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
-            if (!MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
-            {
-                RemovePopupFromScreen();
-            }
-        }
+        //if(isOpen)
+        //{
+        //    Vector3Int pos = MapDisplay.Instance.WorldToCell(collision.transform.position);
+        //    if (!MapManager.Instance.GetVisibleTiles().Contains((pos.x, pos.y)))
+        //    {
+        //        RemovePopupFromScreen();
+        //    }
+        //}
     }
 }

@@ -151,8 +151,8 @@ public class PlatformingPlayerController : Interactor
 
 	public void Update()
 	{ //DEBUGS
-		Debug.Log("Move State " + currentMoveState);
-		Debug.Log("Rod State " + currentRodState);
+		//Debug.Log("Move State " + currentMoveState);
+		//Debug.Log("Rod State " + currentRodState);
 
 		onGround = isGrounded();
 

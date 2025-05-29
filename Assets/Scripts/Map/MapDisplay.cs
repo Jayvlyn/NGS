@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
+using UnityEngine.UIElements;
 
 public class MapDisplay : Singleton<MapDisplay>
 {
@@ -142,9 +143,10 @@ public class MapDisplay : Singleton<MapDisplay>
         cam.Lens.OrthographicSize = Mathf.Clamp(cam.Lens.OrthographicSize * (1 + rate * 0.05f), 1 / maxZoom, 1 / minZoom);
         Camera.main.ResetProjectionMatrix();
         Camera.main.projectionMatrix *= Matrix4x4.Scale(new Vector3(1, -1, 1));
+        confiner.InvalidateBoundingShapeCache();
     }
 
-    public void RevealTile((int, int) location)
+    public void RevealTile(ComparableTuple<int, int> location)
     {
         blockerMap.SetTile(new Vector3Int(location.Item1, location.Item2), null);
     }
@@ -188,7 +190,7 @@ public class MapDisplay : Singleton<MapDisplay>
                         exportMaps[i].SetTransformMatrix(new Vector3Int(x, y), importMaps[i].GetTransformMatrix(new Vector3Int(x, y)));
                     }
                 }
-                if(!MapManager.Instance.GetVisibleTiles().Contains((x, y)))
+                if(!MapManager.Instance.GetVisibleTiles().Contains(new ComparableTuple<int, int>(x, y)))
                 {
                     blockerMap.SetTile(new Vector3Int(x, y), blockerTile);
                 }

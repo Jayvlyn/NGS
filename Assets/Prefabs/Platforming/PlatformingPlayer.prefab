@@ -486,6 +486,7 @@ GameObject:
   - component: {fileID: 7324270297224361524}
   - component: {fileID: 6835394303227306288}
   - component: {fileID: 1295646196171691682}
+  - component: {fileID: 6116629257700305018}
   m_Layer: 10
   m_Name: PlatformingPlayer
   m_TagString: Player
@@ -1471,6 +1472,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6116629257700305018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207578353081954013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a84e4ba5f2c6b4d85bf35172f4af30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifetime: -1
 --- !u!1 &6343699967925498643
 GameObject:
   m_ObjectHideFlags: 0
