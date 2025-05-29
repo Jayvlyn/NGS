@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class HookBehavior : MonoBehaviour
@@ -17,8 +18,9 @@ public class HookBehavior : MonoBehaviour
 
     [SerializeField] private float minY = -20f;
     [SerializeField] private float maxY = 5f;
+	public GameSettings settings;
 
-    void Start()
+	void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0; // Prevent falling
@@ -37,17 +39,30 @@ public class HookBehavior : MonoBehaviour
         verticalInput = input;
     }
 
+    public static float MAX_DIST = 1000;
+    public static float NORMALIZE_UPPER_END = 3;
     void MoveHook()
     {
         float horizontalMove = 0f;
+        float vertSpeedMod = 1;
+        float horiSpeedMod = 1;
+
+        if (settings.toggleData.isMouseModeMinigame)
+        {
+            float yDist = Mathf.Clamp(Mathf.Abs(Input.mousePosition.y - transform.position.y), 0, MAX_DIST);
+            float xDist = Mathf.Clamp(Mathf.Abs(Input.mousePosition.x - transform.position.x), 0, MAX_DIST*0.5f);
+
+			vertSpeedMod += (yDist / MAX_DIST) * NORMALIZE_UPPER_END;
+            horiSpeedMod += (xDist / MAX_DIST*0.5f) * NORMALIZE_UPPER_END;
+        }
 
         if (hookDirection != 0)
         {
             float distanceToBobber = Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y));
-            horizontalMove = (distanceToBobber / hookResistanceVal) * hookDirection;
+            horizontalMove = (distanceToBobber / hookResistanceVal * horiSpeedMod) * hookDirection;
         }
 
-        float verticalMove = verticalInput * verticalSpeed / hookResistanceVal;
+        float verticalMove = verticalInput * verticalSpeed / hookResistanceVal * vertSpeedMod;
 
         Vector2 controlMovement = new Vector2(horizontalMove, verticalMove);
         Vector2 finalMove = controlMovement + externalVelocity * Time.fixedDeltaTime;

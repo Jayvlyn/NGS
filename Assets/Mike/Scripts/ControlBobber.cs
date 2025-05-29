@@ -17,7 +17,6 @@ public class ControlBobber : MonoBehaviour
 
 	private HookBehavior hookBehavior;
 
-	[SerializeField] private GameSettings settings;
 	[SerializeField] private Canvas gameCanvas;
 
 	private float bobberInput;
@@ -35,7 +34,7 @@ public class ControlBobber : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (settings.toggleData.isMouseModeMinigame)
+		if (hookBehavior.settings.toggleData.isMouseModeMinigame)
 		{
 			HandleMouseInput();
 		}
@@ -71,6 +70,19 @@ public class ControlBobber : MonoBehaviour
 	private void HandleBobberMovement()
 	{
 		float moveSpeed = baseMoveSpeed;
+
+		float horiSpeedMod = 1;
+
+		if (hookBehavior.settings.toggleData.isMouseModeMinigame)
+		{
+			// hookBehavior.hookParent = bobber
+			float dist = Mathf.Abs(Input.mousePosition.x - hookBehavior.hookParent.position.x);
+			dist = Mathf.Clamp(dist, 0, HookBehavior.MAX_DIST);
+			horiSpeedMod += dist / HookBehavior.MAX_DIST * HookBehavior.NORMALIZE_UPPER_END;
+		}
+
+		moveSpeed *= horiSpeedMod;
+
 
 		// Move bobber horizontally
 		if (bobberInput < 0 && bobberRb.transform.localPosition.x >= -sideLength)
