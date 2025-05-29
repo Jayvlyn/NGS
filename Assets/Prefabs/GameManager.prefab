@@ -58,6 +58,8 @@ MonoBehaviour:
   genericFishPopupColor: {r: 0.8209341, g: 1, b: 0.63207537, a: 1}
   newLargestFishPopupColor: {r: 0.17924517, g: 0.7485825, b: 1, a: 1}
   newTypeFishPopupColor: {r: 1, g: 0.849893, b: 0.216981, a: 1}
+  enterRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
+  exitRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
 --- !u!114 &1361135252734289113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,4 +136,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overrideOthers: 0
   interactionEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
-  carrotParticles: {fileID: 0}
