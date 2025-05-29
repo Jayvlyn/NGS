@@ -180,6 +180,8 @@ MonoBehaviour:
   settings: {fileID: 3082545194496712927}
   keyBinds: {fileID: 7590457216437857061}
   pause: {fileID: 3592515580254396421}
+  Shop: {fileID: 2003519344819970244}
+  cast: {fileID: 5177473489628720442}
   inventoryMenu: {fileID: 5584226391238323431}
   HUD: {fileID: 4028160128885130947}
   saveReaction: {fileID: 2250124216291655515}
@@ -1110,6 +1112,11 @@ PrefabInstance:
 --- !u!224 &916430017271917205 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4108094080629753409, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
+  m_PrefabInstance: {fileID: 3870054371105254612}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2003519344819970244 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3348672375514401808, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
   m_PrefabInstance: {fileID: 3870054371105254612}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5884496525681842103

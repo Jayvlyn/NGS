@@ -12,7 +12,8 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] GameObject loadGame;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
-    [SerializeField] GameObject pause;
+    [SerializeField] public GameObject pause;
+    [SerializeField] GameObject Shop;
     [SerializeField] GameObject inventoryMenu;
     [SerializeField] public GameObject HUD;
     [SerializeField] GameObject saveReaction;
@@ -89,7 +90,7 @@ public class GameUI : Singleton<GameUI>
 
     void Update()
     {
-        if (pauseAction.action.triggered) pauseClicked();
+        if (pauseAction.action.triggered && !Shop.activeSelf) pauseClicked();
     }
 
     private void FixedUpdate()
@@ -213,6 +214,7 @@ public class GameUI : Singleton<GameUI>
 
     public void LoadMinigame(GameObject go)
     {
+        if (pause.activeSelf) return;
         StartCoroutine(UIAnimations.PlayUIAnim("SlideUp", go, go.activeSelf));
     }
 

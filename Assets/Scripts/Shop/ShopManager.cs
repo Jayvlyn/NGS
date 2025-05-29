@@ -183,6 +183,7 @@ public class ShopManager : Singleton<ShopManager>
 
     public void Open(ShopData shopData)
     {
+        if(GameUI.Instance.pause.activeSelf) return;
         if (currentShop != null)
         {
             if (currentShop.Id != shopData.Id)
