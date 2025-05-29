@@ -24,15 +24,15 @@ public class ShopManager : Singleton<ShopManager>
     private ShopData currentShop;
 
     [SerializeField, Tooltip("Main shop menu where you can select if you want to buy upgrades or sell fish")]
-    private Canvas mainMenuWindow;
-    [SerializeField, Tooltip("Canvas where the types of fish you can sell at the attached shop will be listed")]
-    private Canvas selectFishWindow;
+    private GameObject mainMenuWindow;
+    [SerializeField, Tooltip("Window where the types of fish you can sell at the attached shop will be listed")]
+    private GameObject selectFishWindow;
     [SerializeField] private RectTransform selectFishDisplayArea;
-    [SerializeField, Tooltip("Canvas where fish you can sell will be placed")]
-    private Canvas sellFishWindow;
+    [SerializeField, Tooltip("Window where fish you can sell will be placed")]
+    private GameObject sellFishWindow;
     [SerializeField] private RectTransform sellFishDisplayArea;
-    [SerializeField, Tooltip("Canvas containing all of the different upgrades that can be bought at the attached shop")]
-    private Canvas buyUpgradeWindow;
+    [SerializeField, Tooltip("Window containing all of the different upgrades that can be bought at the attached shop")]
+    private GameObject buyUpgradeWindow;
     [SerializeField] private RectTransform buyUpgradeDisplayArea;
 
     private ShopState state = ShopState.Closed;
@@ -54,8 +54,7 @@ public class ShopManager : Singleton<ShopManager>
 
     public void SelectSell()
     {
-        mainMenuWindow.enabled = false;
-        selectFishWindow.enabled = true;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow));
         if (pastSelectTiles.Count == 0)
         {
             for(int current = 0, offset = 0; current < currentShop.GetAvailableFish().Count; current++)
@@ -82,7 +81,7 @@ public class ShopManager : Singleton<ShopManager>
 
     public void Close()
     {
-        mainMenuWindow.enabled = false;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
         QuestManager.Instance.UpdateQuests();
         state = ShopState.Closed;
     }
@@ -211,44 +210,39 @@ public class ShopManager : Singleton<ShopManager>
         {
             currentShop = shopData;
         }
-        mainMenuWindow.enabled = true;
         state = ShopState.MainMenu;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow));
     }
 
     public void SelectFish(string selectedFish)
     {
         state = ShopState.SellFish;
-        sellFishWindow.enabled = true;
-        selectFishWindow.enabled = false;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", sellFishWindow));
         GenerateFishTiles(selectedFish);
     }
 
     public void CloseFish()
     {
-        sellFishWindow.enabled = false;
-        selectFishWindow.enabled = true;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", sellFishWindow, true));
         state = ShopState.SelectFish;
     }
 
     public void CloseSelect()
     {
-        selectFishWindow.enabled = false;
-        mainMenuWindow.enabled = true;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow, true));
         state = ShopState.MainMenu;
     }
 
     public void CloseUpgrade()
     {
-        buyUpgradeWindow.enabled = false;
-        mainMenuWindow.enabled = true;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyUpgradeWindow, true));
         state = ShopState.MainMenu;
     }
 
     public void OpenUpgrade()
     {
         state = ShopState.BuyUpgrade;
-        buyUpgradeWindow.enabled = true;
-        mainMenuWindow.enabled = false;
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyUpgradeWindow));
         if (pastUpgradeTiles.Count == 0)
         {
             for (int current = 0; current < currentShop.GetUpgrades().Count; current++)
