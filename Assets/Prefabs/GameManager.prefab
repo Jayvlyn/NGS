@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8479422722082589988}
   - component: {fileID: 1680383979366978541}
-  - component: {fileID: 1361135252734289113}
   - component: {fileID: 329008290237429391}
   - component: {fileID: 2690830784610742455}
   - component: {fileID: 1318606272049748182}
@@ -60,28 +59,6 @@ MonoBehaviour:
   newTypeFishPopupColor: {r: 1, g: 0.849893, b: 0.216981, a: 1}
   enterRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
   exitRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
---- !u!114 &1361135252734289113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253092266663696018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53a846bd14d53c74eb011f9858275d75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalLight: {fileID: 0}
-  sky: {fileID: 0}
-  dayHours: 2
-  nightHours: 2
-  middayIntensity: 1
-  midnightIntensity: 0.2
-  noonSkyColor: {r: 0.654902, g: 0.88235295, b: 0.8666667, a: 1}
-  midnightSkyColor: {r: 0.14901961, g: 0.12941177, b: 0.25882354, a: 1}
-  currentTime: 0
-  settings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
 --- !u!114 &329008290237429391
 MonoBehaviour:
   m_ObjectHideFlags: 0

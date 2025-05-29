@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class DayNightCycle : MonoBehaviour
+public class DayNightCycle : Singleton<DayNightCycle>
 {
 	[Header("References")]
 	public Light2D globalLight;
@@ -21,7 +21,9 @@ public class DayNightCycle : MonoBehaviour
 	public float midnightIntensity = 0.13f;
 	public float DawnIntensity => (middayIntensity + midnightIntensity) * 0.5f;
 	public Color noonSkyColor = Color.white;
+	public Color noonLightColor = Color.white;
 	public Color midnightSkyColor = Color.white;
+	public Color midnightLightColor = Color.white;
 
 	[HideInInspector] public float currentTime;
 	public static bool isNight;
@@ -90,6 +92,7 @@ public class DayNightCycle : MonoBehaviour
 		if (CurrentHour >= sunriseEnd && CurrentHour < sunsetStart) // Full daylight period
 		{
 			globalLight.intensity = middayIntensity;
+			globalLight.color = noonLightColor;
 			sky.color = noonSkyColor;
 			isNight = false;
 		}
@@ -98,12 +101,14 @@ public class DayNightCycle : MonoBehaviour
 			t = (CurrentHour - sunsetStart) / (sunsetEnd - sunsetStart);
 			globalLight.intensity = Mathf.Lerp(middayIntensity, midnightIntensity, t);
 			sky.color = Color.Lerp(noonSkyColor, midnightSkyColor, t);
+			globalLight.color = Color.Lerp(noonLightColor, midnightLightColor, t);
 			isNight = t >= 0.5f;
 		}
 		else if (CurrentHour >= sunsetEnd || CurrentHour < sunriseStart) // Full nighttime period
 		{
 			globalLight.intensity = midnightIntensity;
 			sky.color = midnightSkyColor;
+			globalLight.color = midnightLightColor;
 			isNight = true;
 		}
 		else if (CurrentHour >= sunriseStart && CurrentHour < sunriseEnd) // Sunrise transition
@@ -111,6 +116,7 @@ public class DayNightCycle : MonoBehaviour
 			t = (CurrentHour - sunriseStart) / (sunriseEnd - sunriseStart);
 			globalLight.intensity = Mathf.Lerp(midnightIntensity, middayIntensity, t);
 			sky.color = Color.Lerp(midnightSkyColor, noonSkyColor, t);
+			globalLight.color = Color.Lerp(midnightLightColor, noonLightColor, t);
 			isNight = false;
 		}
 	}
