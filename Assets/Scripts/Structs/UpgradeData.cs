@@ -2,13 +2,15 @@ using System;
 using UnityEngine;
 [Serializable]
 [CreateAssetMenu(fileName = "Upgrade", menuName = "Scriptable Objects/Upgrade")]
-public class UpgradeData
+public class UpgradeData : ScriptableObject
 {
     public int Id;
-    public string name;
+    public string upgradeName;
     public double currentCost;
     public double costIncrease;
     public bool isMultiplicativeIncrease;
     public Sprite sprite;
     public double maxCostBeforeDelete;
+
+    
 }

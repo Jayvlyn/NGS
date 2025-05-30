@@ -48,4 +48,18 @@ public class PlayerStats : ScriptableObject
                 
         }
     }
+
+    public void CopyFrom(PlayerStats stats)
+    {
+        castMaxSpeed = stats.castMaxSpeed;
+        fishSizeModifier = stats.fishSizeModifier;
+        biteSpeed = stats.biteSpeed;
+        catchSpeed = stats.catchSpeed;
+        hookStrength = stats.hookStrength;
+        bossLineLength = stats.bossLineLength;
+        bossReelSpeed = stats.bossReelSpeed;
+        grappleMaxCastSpeed = stats.grappleMaxCastSpeed;
+        platformingLineLength = stats.platformingLineLength;
+        platformingReelSpeed = stats.platformingReelSpeed;
+    }
 }

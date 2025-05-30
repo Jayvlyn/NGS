@@ -50,8 +50,10 @@ public class ShopManager : Singleton<ShopManager>
     private bool fishTilesOutOfDate = true;
 
     [SerializeField] public static List<UpgradeData>upgrades;
-    [SerializeField] public static List<UpgradeData> baseUpgrades;
+    [SerializeField] public static UpgradeData[] baseUpgrades;
+    [SerializeField] private UpgradeData[] defaultUpgrades;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerStats baseStats;
 
 
     //Testing only, remove later
@@ -286,8 +288,8 @@ public class ShopManager : Singleton<ShopManager>
                 new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f,
                 buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
             go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
-            go.GetComponentInChildren<TMP_Text>().text = $"{data.name}: {(data.currentCost):2F} Gold";
-            go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
+            go.GetComponentInChildren<TMP_Text>().text = $"{data.upgradeName}: {(data.currentCost):F2} Carrots";
+            go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(current); });
             pastUpgradeTiles.Add(go);
         }
     }
@@ -345,6 +347,21 @@ public class ShopManager : Singleton<ShopManager>
     {
         //testing only, remove later
         //Open(testingShopData);
+
+        if(upgrades == null)
+        {
+            upgrades = new();
+            if (baseUpgrades == null)
+            {
+                baseUpgrades = new UpgradeData[defaultUpgrades.Length];
+                for(int i = 0; i < baseUpgrades.Length; i++)
+                {
+                    baseUpgrades[i] = Instantiate(defaultUpgrades[i]);
+                }
+            }
+            ResetUpgrades();
+        }
+        ResetStats();
     }
 
     public void ResetUpgrades()
@@ -352,8 +369,13 @@ public class ShopManager : Singleton<ShopManager>
         upgrades.Clear();
         foreach(UpgradeData upgrade in baseUpgrades)
         {
-            upgrades.Add(upgrade);
+            upgrades.Add(Instantiate(upgrade));
         }
+    }
+
+    public void ResetStats()
+    {
+        playerStats.CopyFrom(baseStats);
     }
 
     public void PurchasedFish(int cost)
