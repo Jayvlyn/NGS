@@ -18,9 +18,6 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] public GameObject HUD;
     [SerializeField] GameObject saveReaction;
 
-    [Header("")]
-    [SerializeField] DayNightCycle timeCycle;
-
     [Header("Buttons&Inputs")]
     [SerializeField] Button keyBindBtn;
     [SerializeField] Button saveBtn;
@@ -35,6 +32,7 @@ public class GameUI : Singleton<GameUI>
     [HideInInspector] public GameSettings gameSettings;
     private ModifySettings modifySettings;
     private Vector3 oldPosition;
+    public Material playerOutfit;
 
 
     void Start()
@@ -62,8 +60,9 @@ public class GameUI : Singleton<GameUI>
 
         gameSettings = modifySettings.settings;
 
+        if (loadScreens) DayNightCycle.Instance.currentTime = gameSettings.position.currentTime;
+
         HUD.SetActive(loadScreens);
-        //if(!GameUI.loadScreens) currentTime = settings.position.currentTime;
 
         if (pi != null)
         {
@@ -86,6 +85,8 @@ public class GameUI : Singleton<GameUI>
 
         LoadBindingOnStart(true);
         LoadBindingOnStart(false);
+
+        LoadFlannel();
     }
 
     void Update()
@@ -201,13 +202,14 @@ public class GameUI : Singleton<GameUI>
         oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
         inventoryMenu.gameObject.SetActive(true);
-        timeCycle.currentTime = gameSettings.position.currentTime;
+        DayNightCycle.Instance.currentTime = gameSettings.position.currentTime;
         if (loadGame.activeSelf) loadGame.SetActive(false);
     }
 
     public void AutoSave()
     {
         loadGame.SetActive(true);
+        gameSettings.position.currentTime = DayNightCycle.Instance.currentTime;
         loadGame.GetComponent<SaveLoadManager>().autoSave();
         loadGame.SetActive(false);
     }
@@ -252,8 +254,7 @@ public class GameUI : Singleton<GameUI>
         }
     }
 
-    public void SaveFlanel(string name)
-    {
-        gameSettings.flannel = name;
-    }
+    public void SaveFlannel(string name) => gameSettings.flannel = name;
+
+    private void LoadFlannel() => playerOutfit.SetTexture("_Swap", Resources.Load<Texture>($"flannels/{gameSettings.flannel}"));
 }

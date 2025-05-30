@@ -27,6 +27,7 @@ public class SaveLoadManager : MonoBehaviour
         data.platformerKeybinds = gameSettings.platformerKeys;
         data.minigameKeybinds = gameSettings.minigameKeys;
         data.bossGameKeybinds = gameSettings.bossGameKeys;
+        data.flannel = gameSettings.flannel;
         id = data.id;
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
@@ -181,6 +182,7 @@ public class SaveLoadManager : MonoBehaviour
             gameSettings.screenResolution = save.screenResolution;
 
             //load player
+            gameSettings.flannel = save.flannel;
             gameSettings.position = save.position;
             gameSettings.id = save.id;
             id = save.id;

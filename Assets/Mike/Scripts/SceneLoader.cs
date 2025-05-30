@@ -12,6 +12,7 @@ public class SceneLoader : MonoBehaviour
     void Start()
     {
         settings.position.currentLocation = sceneToLoad;
+        //settings.position.currentTime = DayNightCycle.Instance.currentTime;
         StartCoroutine(LoadAsync());
     }
 

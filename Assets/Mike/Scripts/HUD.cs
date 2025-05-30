@@ -25,7 +25,7 @@ public class HUD : MonoBehaviour
 
         if (hourInt >= 24) hourInt = 0;
         string formattedTime = string.Format("{0:00}:{1:00}", hourInt, minutes);
-        if(minutes % 10 == 0 || minutes == 0) time.text = formattedTime;
+        if(minutes % 10 == 0) time.text = formattedTime;
     }
 
     private void FixedUpdate()

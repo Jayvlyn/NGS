@@ -17,7 +17,7 @@ public class WardrobeManager : MonoBehaviour
 
     public void ConfirmbuttonPressed()
     {
-        GameUI.Instance.SaveFlanel(WardrobeTextures[CurrentIndex].name);
+        GameUI.Instance.SaveFlannel(WardrobeTextures[CurrentIndex].name);
         WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[CurrentIndex]);
         CloseWardrobe();
     }
