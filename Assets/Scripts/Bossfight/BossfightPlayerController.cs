@@ -13,6 +13,7 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private bool immortalForTesting = false;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float desiredDistance = 2.5f;
+    [SerializeField] private float rotationSpeed = 180f;
 
     [SerializeField] GameSettings settings;
 
@@ -24,7 +25,7 @@ public class BossfightPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float currentDistance = Vector3.Distance(boss.transform.position, transform.position);
+        float currentDistance = Vector2.Distance(boss.transform.position, transform.position);
         if (holdingReel)
         {
             desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.bossReelSpeed;
@@ -38,7 +39,7 @@ public class BossfightPlayerController : MonoBehaviour
         {
             AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
         }
-        currentDistance = Vector3.Distance(boss.transform.position, transform.position);
+        currentDistance = Vector2.Distance(boss.transform.position, transform.position);
         if(currentDistance >= deathDistance && !immortalForTesting)
         {
             SceneLoader.LoadScene("GameScene");
@@ -46,7 +47,7 @@ public class BossfightPlayerController : MonoBehaviour
         if (GetMovement().magnitude > 0.1f)
         {
             //body.MovePosition(transform.position + movement);
-            AttemptMovement(movementSpeed * Time.deltaTime * GetMovement().normalized);
+            AttemptMovement(movementSpeed * Time.deltaTime * GetMovement());
             currentDistance = Vector3.Distance(boss.transform.position, transform.position);
             desiredDistance = Mathf.Max(Mathf.Min(deathDistance, currentDistance, desiredDistance), radius * 5);
         }
@@ -55,43 +56,29 @@ public class BossfightPlayerController : MonoBehaviour
             BossFishController.caughtBoss = true;
             SceneLoader.LoadScene("GameScene");
         }
-        transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
-        transform.rotation *= Quaternion.Euler(0, 0, -90);
 
-        //if (holdingReel)
-        //{
-        //    //joint.distance -= reelSpeed * Time.deltaTime * Mathf.Pow(joint.distance * 0.2f, 2);
-        //}
-        //if (holdingSlack || activeBlockers.Count > 0)
-        //{
-        //    //joint.distance = currentDistance;
-        //    if(/*joint.distance >= deathDistance)*/true)
-        //    {
-        //        if(activeBlockers.Count > 0)
-        //        {
-        //            SceneManager.LoadScene("GameScene");
-        //        }
-        //        else
-        //        {
-        //            //joint.distance = deathDistance;
-        //        }
-        //    }
-        //}
-        //body.linearVelocity = Vector3.zero;
-        //body.angularVelocity = 0;
-    }
+
+		//transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
+		//transform.rotation *= Quaternion.Euler(0, 0, -90);
+
+		Vector3 direction = (boss.transform.position - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.FromToRotation(Vector3.right, direction);// * Quaternion.Euler(0, 0, -90);
+		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+	}
 
     private Vector2 GetMovement()
     {
         Vector2 result;
         if(settings.toggleData.isMouseModeBossgame)
         {
-            result = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            result = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 2;
         }
         else
         {
             result = moveInput.normalized;
         }
+        Debug.Log(result);
         return result;
     }
 
