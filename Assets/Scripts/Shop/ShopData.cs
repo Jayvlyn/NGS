@@ -11,7 +11,7 @@ public class ShopData : InteractableObject
     {
         if(pair.obj.Id == Id)
         {
-            ShopManager.Instance.Open(this);
+            ShopManager.Instance.Open();
         }
     }
 
