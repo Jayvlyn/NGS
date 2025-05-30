@@ -13,4 +13,5 @@ public class Fish : ScriptableObject
     public float maxLength;
     public string description;
     public bool isBoss;
+    public float costPerCM;
 }

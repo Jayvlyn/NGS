@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private Vector2 buyUpgradeUIPrefabSizeData;
     [SerializeField] private int expectedBuyUpgradeColumns = 3;
 
-    private ShopData currentShop;
+    //private ShopData currentShop;
 
     [SerializeField, Tooltip("Main shop menu where you can select if you want to buy upgrades or sell fish")]
     private GameObject mainMenuWindow;
@@ -45,9 +46,16 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private Toggle sellAllOfTypeExcludeLargest;
     private bool overrideSellAllOfType = false;
 
+    private bool selectTilesOutOfDate = true;
+    private bool fishTilesOutOfDate = true;
+
+    [SerializeField] public static List<UpgradeData>upgrades;
+    [SerializeField] public static List<UpgradeData> baseUpgrades;
+    [SerializeField] private PlayerStats playerStats;
+
 
     //Testing only, remove later
-    [SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
+    //[SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
 
     [Header("Particle System")]
     public UIParticleFX carrotParticles;
@@ -55,27 +63,10 @@ public class ShopManager : Singleton<ShopManager>
     public void SelectSell()
     {
         StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow));
-        if (pastSelectTiles.Count == 0)
+        if (pastSelectTiles.Count == 0 || selectTilesOutOfDate)
         {
-            for(int current = 0, offset = 0; current < currentShop.GetAvailableFish().Count; current++)
-            {
-                (string, Sprite) data = currentShop.GetAvailableFish()[current];
-                if(Inventory.Instance.GetFishData(data.Item1).currentFish.Count == 0)
-                {
-                    offset++;
-                    continue;
-                }
-                GameObject go = Instantiate(selectFishUIPrefab, selectFishDisplayArea);
-                int row = (current - offset) / expectedSelectFishColumns;
-                int column = (current - offset) % expectedSelectFishColumns;
-                go.transform.localPosition = 
-                    new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f, 
-                    selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);
-                go.GetComponentsInChildren<Image>()[1].sprite = data.Item2;
-                go.GetComponentInChildren<TMP_Text>().text = data.Item1;
-                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SelectFish(data.Item1); });
-                pastSelectTiles.Add(go);
-            }
+            GenerateSelectTiles();
+            selectTilesOutOfDate = false;
         }
     }
 
@@ -91,15 +82,14 @@ public class ShopManager : Singleton<ShopManager>
         overrideSellAllOfType = true;
         foreach (string fishType in Inventory.Instance.GetData().Item1.Keys)
         {
-            if(currentShop.BuysFish(fishType))
-            {
-                SellAllOfType(fishType);
-            }
+            SellAllOfType(fishType, false);
         }
+        DestroySelectTiles();
+        GenerateSelectTiles();
         overrideSellAllOfType = false;
     }
 
-    public void SellAllOfType(string type)
+    public void SellAllOfType(string type, bool refresh = true)
     {
         if(type == string.Empty && previousFishType != string.Empty)
         {
@@ -111,53 +101,47 @@ public class ShopManager : Singleton<ShopManager>
             {
                 int removeAt = Inventory.Instance.GetData().Item1[type].currentFish[0].length >
                     Inventory.Instance.GetData().Item1[type].currentFish[1].length ? 1 : 0;
-                SellFish(Inventory.Instance.GetData().Item1[type].currentFish[removeAt]);
+                SellFish(Inventory.Instance.GetData().Item1[type].currentFish[removeAt], false);
             }
             if ((!overrideSellAllOfType && !sellAllOfTypeExcludeLargest.isOn) || 
                 (!sellAllExcludeLargest.isOn && overrideSellAllOfType))
             {
-                SellFish(Inventory.Instance.GetData().Item1[type].currentFish[0]);
+                SellFish(Inventory.Instance.GetData().Item1[type].currentFish[0], false);
+            }
+            if(refresh)
+            {
+                previousFishType = string.Empty;
+                GenerateFishTiles(type);
             }
         }
     }
 
-    public void SellFish(Fish fish)
+    public void SellFish(Fish fish, bool refreshAfterwards = true)
     {
         Inventory.Instance.RemoveFish(fish);
-        var price = currentShop.GetFishPrice(fish);
+        var price = GetFishPrice(fish);
         PurchasedFish(price);
         Inventory.Instance.AddMoney(price);
-        if (fish.fishName == previousFishType)
+        if (refreshAfterwards)
         {
-            while (pastFishTiles.Count > 0)
+            fishTilesOutOfDate = true;
+            GenerateFishTiles(previousFishType);
+            if(Inventory.Instance.GetFishData(fish.fishName).currentFish.Count == 0)
             {
-                Destroy(pastFishTiles[0]);
-                pastFishTiles.RemoveAt(0);
-            }
-            if(state == ShopState.SellFish)
-            {
-                string str = previousFishType;
-                previousFishType = string.Empty;
-                GenerateFishTiles(str);
-            }
-            else
-            {
-                previousFishType = string.Empty;
+                CloseFish();
+                DestroySelectTiles();
+                GenerateSelectTiles();
             }
         }
     }
 
     private void GenerateFishTiles(string fishType)
     {
-        if(previousFishType != fishType)
+        if(previousFishType != fishType || fishTilesOutOfDate)
         {
             if(previousFishType != string.Empty)
             {
-                while(pastFishTiles.Count > 0)
-                {
-                    Destroy(pastFishTiles[0]);
-                    pastFishTiles.RemoveAt(0);
-                }
+                DestroyFishTiles();
             }
             List<Fish> currentFish = Inventory.Instance.GetFishData(fishType).currentFish;
             for (int current = 0; current < currentFish.Count; current++)
@@ -171,7 +155,7 @@ public class ShopManager : Singleton<ShopManager>
                 go.GetComponentInChildren<TMP_Text>().text = 
                     $"{currentFish[current].length:F2} cm long " +
                     $"{currentFish[current].fishName}: " +
-                    $"{currentShop.GetFishPrice(currentFish[current])} Carrots";
+                    $"{GetFishPrice(currentFish[current])} Carrots";
                 go.GetComponentsInChildren<Image>()[1].sprite = currentFish[current].sprite;
                 Fish fish = currentFish[current];
                 go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SellFish(fish); });
@@ -181,36 +165,9 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
-    public void Open(ShopData shopData)
+    public void Open()
     {
         if(GameUI.Instance.pause.activeSelf) return;
-        if (currentShop != null)
-        {
-            if (currentShop.Id != shopData.Id)
-            {
-                currentShop = shopData;
-                while (pastSelectTiles.Count > 0)
-                {
-                    Destroy(pastSelectTiles[0]);
-                    pastSelectTiles.RemoveAt(0);
-                }
-                while (pastFishTiles.Count > 0)
-                {
-                    Destroy(pastFishTiles[0]);
-                    pastFishTiles.RemoveAt(0);
-                }
-                previousFishType = string.Empty;
-                while (pastUpgradeTiles.Count > 0)
-                {
-                    Destroy(pastUpgradeTiles[0]);
-                    pastUpgradeTiles.RemoveAt(0);
-                }
-            }
-        }
-        else
-        {
-            currentShop = shopData;
-        }
         state = ShopState.MainMenu;
         StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow));
     }
@@ -246,26 +203,93 @@ public class ShopManager : Singleton<ShopManager>
         StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyUpgradeWindow));
         if (pastUpgradeTiles.Count == 0)
         {
-            for (int current = 0; current < currentShop.GetUpgrades().Count; current++)
-            {
-                UpgradeData data = currentShop.GetUpgrades()[current];
-                int column = current % expectedBuyUpgradeColumns;
-                int row = current / expectedBuyUpgradeColumns;
-                GameObject go = Instantiate(buyUpgradeUIPrefab, buyUpgradeDisplayArea);
-                go.transform.localPosition =
-                    new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f, 
-                    buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
-                go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
-                go.GetComponentInChildren<TMP_Text>().text = $"{data.name}: {(data.currentCost):2F} Gold";
-                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
-                pastUpgradeTiles.Add(go);
-            }
+            GenerateUpgradeTiles();
         }
     }
 
     public void BuyUpgrade(int id)
     {
-        currentShop.PurchaseUpgrade(id);
+        if (Inventory.Instance.CanAfford(upgrades[id].currentCost))
+        {
+            Inventory.Instance.AddMoney(-upgrades[id].currentCost);
+            upgrades[id].currentCost = upgrades[id].isMultiplicativeIncrease ? upgrades[id].currentCost * upgrades[id].costIncrease : upgrades[id].currentCost + upgrades[id].costIncrease;
+            playerStats.Upgrade(upgrades[id]);
+            if(upgrades[id].currentCost > upgrades[id].maxCostBeforeDelete)
+            {
+                upgrades.RemoveAt(id);
+            }
+            DestroyUpgradeTiles();
+            GenerateUpgradeTiles();
+        }
+    }
+
+    private void DestroyUpgradeTiles()
+    {
+        while (pastUpgradeTiles.Count > 0)
+        {
+            Destroy(pastUpgradeTiles[0]);
+            pastUpgradeTiles.RemoveAt(0);
+        }
+    }
+
+    private void DestroyFishTiles()
+    {
+        while (pastFishTiles.Count > 0)
+        {
+            Destroy(pastFishTiles[0]);
+            pastFishTiles.RemoveAt(0);
+        }
+    }
+
+    private void DestroySelectTiles()
+    {
+        while (pastSelectTiles.Count > 0)
+        {
+            Destroy(pastSelectTiles[0]);
+            pastSelectTiles.RemoveAt(0);
+        }
+    }
+
+    private void GenerateSelectTiles()
+    {
+        var keyArr = Inventory.Instance.GetData().Item1.Keys.ToArray();
+        for (int current = 0, offset = 0; current < keyArr.Length; current++)
+        {
+            string fishName = keyArr[current];
+            if (Inventory.Instance.GetFishData(fishName).currentFish.Count == 0)
+            {
+                offset++;
+                continue;
+            }
+            GameObject go = Instantiate(selectFishUIPrefab, selectFishDisplayArea);
+            int row = (current - offset) / expectedSelectFishColumns;
+            int column = (current - offset) % expectedSelectFishColumns;
+            go.transform.localPosition =
+                new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f,
+                selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);
+            go.GetComponentsInChildren<Image>()[1].sprite = Inventory.Instance.GetFishData(fishName).currentFish[0].sprite;
+            go.GetComponentInChildren<TMP_Text>().text = fishName;
+            go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SelectFish(fishName); });
+            pastSelectTiles.Add(go);
+        }
+    }
+
+    private void GenerateUpgradeTiles()
+    {
+        for (int current = 0; current < upgrades.Count; current++)
+        {
+            UpgradeData data = upgrades[current];
+            int column = current % expectedBuyUpgradeColumns;
+            int row = current / expectedBuyUpgradeColumns;
+            GameObject go = Instantiate(buyUpgradeUIPrefab, buyUpgradeDisplayArea);
+            go.transform.localPosition =
+                new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f,
+                buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
+            go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
+            go.GetComponentInChildren<TMP_Text>().text = $"{data.name}: {(data.currentCost):2F} Gold";
+            go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
+            pastUpgradeTiles.Add(go);
+        }
     }
 
     public void Update()
@@ -323,9 +347,31 @@ public class ShopManager : Singleton<ShopManager>
         //Open(testingShopData);
     }
 
+    public void ResetUpgrades()
+    {
+        upgrades.Clear();
+        foreach(UpgradeData upgrade in baseUpgrades)
+        {
+            upgrades.Add(upgrade);
+        }
+    }
+
     public void PurchasedFish(int cost)
     {
         Vector3 screenPos = Input.mousePosition;
         carrotParticles.SpawnParticles(cost, screenPos);
+    }
+    public int GetFishPrice(Fish fish)
+    {
+        return (int)(fish.length * fish.costPerCM);
+    }
+
+    public void CaughtFishHandling(Fish fish)
+    {
+        selectTilesOutOfDate = true;
+        if(fish.fishName == previousFishType)
+        {
+            fishTilesOutOfDate = true;
+        }
     }
 }
