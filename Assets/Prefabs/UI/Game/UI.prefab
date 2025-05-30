@@ -185,6 +185,7 @@ MonoBehaviour:
   inventoryMenu: {fileID: 5584226391238323431}
   HUD: {fileID: 4028160128885130947}
   saveReaction: {fileID: 2250124216291655515}
+  timeCycle: {fileID: 0}
   keyBindBtn: {fileID: 4045676307745926912}
   saveBtn: {fileID: 2939974596260278045}
   backBtn: {fileID: 3944906313169765735}
@@ -194,7 +195,6 @@ MonoBehaviour:
   questUIFiller: {fileID: 4480311761162491176}
   collection: {fileID: 8917379044987710725}
   gameSettings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
-  playerOutfit: {fileID: 2100000, guid: 890908e392ede0c409c910cd8a5209de, type: 2}
 --- !u!114 &8170412535288247596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +312,18 @@ MonoBehaviour:
       - m_Target: {fileID: 5041693359459944431}
         m_TargetAssemblyTypeName: CatchFishHandler, Assembly-CSharp
         m_MethodName: DisplayCatch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6645367318994784446}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: CaughtFishHandling
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1119,6 +1131,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3348672375514401808, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
   m_PrefabInstance: {fileID: 3870054371105254612}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6645367318994784446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7605497490435062890, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
+  m_PrefabInstance: {fileID: 3870054371105254612}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99bc449a41fac88449d1855c14f1400c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5884496525681842103
 PrefabInstance:
   m_ObjectHideFlags: 0
