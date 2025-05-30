@@ -6,6 +6,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 {
     private static T instance;
     [SerializeField] protected bool overrideOthers = false;
+    [SerializeField] protected bool destroyOnLoad = false;
 
     public static T Instance
     {
@@ -30,13 +31,19 @@ public class Singleton<T> : MonoBehaviour where T : Component
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(this.gameObject);
+            if(!destroyOnLoad)
+            {
+                DontDestroyOnLoad(this.gameObject);
+            }
         }
         else if(overrideOthers)
         {
             Destroy(instance.gameObject);
             instance = this as T;
-            DontDestroyOnLoad(this.gameObject);
+            if (!destroyOnLoad)
+            {
+                DontDestroyOnLoad(this.gameObject);
+            }
         }
         else
         {
