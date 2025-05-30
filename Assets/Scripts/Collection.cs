@@ -12,13 +12,12 @@ public class Collection : MonoBehaviour
     [SerializeField] public GameObject collectionScrollView;
     [SerializeField] public List<Fish> fishList;
     [SerializeField] public List<FishData> fishDataList;
-    [SerializeField] public List<Fish> allFishToBeLoaded;
+    [SerializeField] public AllFish allFish;
     [SerializeField] public Sprite starSpriteEmpty;
 
     private void Start()
     {
-
-        foreach (Fish f in allFishToBeLoaded)
+        foreach (Fish f in allFish.list)
         { 
             AddFishToCollection(f, Inventory.Instance.GetFishData(f.fishName));
 

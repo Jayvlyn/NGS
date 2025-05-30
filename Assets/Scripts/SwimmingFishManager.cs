@@ -2,15 +2,7 @@ using UnityEngine;
 
 public class SwimmingFishManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	[SerializeField] private SwimmingFish fishPrefab;
+	//[SerializeField] private 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
