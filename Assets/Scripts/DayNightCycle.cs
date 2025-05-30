@@ -5,7 +5,7 @@ public class DayNightCycle : Singleton<DayNightCycle>
 {
 	[Header("References")]
 	public Light2D globalLight;
-	public SpriteRenderer sky;
+	private SpriteRenderer sky;
 
 	// game hour = minute
 	[Header("Time Settings")]
@@ -36,6 +36,7 @@ public class DayNightCycle : Singleton<DayNightCycle>
 		currentTime = NoonHour * 60; // start at noon
 		if(settings == null) settings = GameUI.Instance.gameSettings;
 		if(!GameUI.loadScreens) currentTime = settings.position.currentTime;
+		sky = GameObject.FindGameObjectWithTag("Sky").GetComponent<SpriteRenderer>();
 	}
 
 	bool clockPaused = false;
