@@ -11,7 +11,6 @@ public class SmallFish : MonoBehaviour
 
 	private float time;
 
-
 	private float moveSpeed;
 	private float waveAmplitude;
 	private float waveFrequency;
