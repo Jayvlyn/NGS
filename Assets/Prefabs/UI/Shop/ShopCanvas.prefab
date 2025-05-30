@@ -1845,7 +1845,17 @@ MonoBehaviour:
   buyUpgradeDisplayArea: {fileID: 2524847018943916788}
   sellAllExcludeLargest: {fileID: 2514713323591026204}
   sellAllOfTypeExcludeLargest: {fileID: 5044972738760853456}
-  playerStats: {fileID: 0}
+  defaultUpgrades:
+  - {fileID: 11400000, guid: 3d68b731588a43044b6690b2954d19c1, type: 2}
+  - {fileID: 11400000, guid: 5be2a663a94b1b54baec229cb672dbb9, type: 2}
+  - {fileID: 11400000, guid: fe71ebbdcc7369d4ba074967577b3a65, type: 2}
+  - {fileID: 11400000, guid: 114eb28640ee8684699871008700e070, type: 2}
+  - {fileID: 11400000, guid: d6f778fe69235694aa63441da37cc018, type: 2}
+  - {fileID: 11400000, guid: 45474d2cf84447f46b8d2136f81c1b08, type: 2}
+  - {fileID: 11400000, guid: 0d723c654916db5449497f7bb8351086, type: 2}
+  - {fileID: 11400000, guid: d88d9b00fa126f042a7c652b1ec97e1a, type: 2}
+  playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
+  baseStats: {fileID: 11400000, guid: 3f1741189c6646847a08a2eea840b084, type: 2}
   carrotParticles: {fileID: 2271294216086206238, guid: e1ea6b40b5b3458439369d653286a940, type: 3}
 --- !u!222 &7332812074090778183
 CanvasRenderer:
