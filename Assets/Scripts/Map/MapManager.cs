@@ -32,7 +32,7 @@ public class MapManager : Singleton<MapManager>
         }
         //Debug.Log($"totalAdded: {totalAdded}");
         //Debug.Log($"totalAttempted: {totalAttempted}");
-        Debug.Log($"Total Discovered Tiles: {currentList.Count}");
+        //Debug.Log($"Total Discovered Tiles: {currentList.Count}");
     }
 
     public List<ComparableTuple<int, int>> GetVisibleTiles()
