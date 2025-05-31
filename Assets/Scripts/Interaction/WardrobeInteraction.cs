@@ -13,7 +13,7 @@ public class WardrobeInteraction : InteractableObject
     protected override void Interact(InteractionPair pair)
     {
         wardrobeManager = FindFirstObjectByType<WardrobeManager>(FindObjectsInactive.Include);
-        if (pair.obj.Id == Id)
+        if (pair.obj.Id == Id && !GameUI.Instance.pause.activeSelf)
         {
             wardrobeManager.OpenWardrobe();
         }

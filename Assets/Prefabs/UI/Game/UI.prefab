@@ -185,6 +185,7 @@ MonoBehaviour:
   inventoryMenu: {fileID: 5584226391238323431}
   HUD: {fileID: 4028160128885130947}
   saveReaction: {fileID: 2250124216291655515}
+  wardrobe: {fileID: 5731246213073072042}
   keyBindBtn: {fileID: 4045676307745926912}
   saveBtn: {fileID: 2939974596260278045}
   backBtn: {fileID: 3944906313169765735}
@@ -624,6 +625,11 @@ PrefabInstance:
 --- !u!224 &340067646362023192 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3408312359055864414, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+  m_PrefabInstance: {fileID: 3167415581915465542}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5731246213073072042 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7241103892574775532, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
   m_PrefabInstance: {fileID: 3167415581915465542}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3832335153638389487

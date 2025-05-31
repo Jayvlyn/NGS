@@ -17,6 +17,7 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] GameObject inventoryMenu;
     [SerializeField] public GameObject HUD;
     [SerializeField] GameObject saveReaction;
+    [SerializeField] GameObject wardrobe;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button keyBindBtn;
@@ -91,7 +92,7 @@ public class GameUI : Singleton<GameUI>
 
     void Update()
     {
-        if (pauseAction.action.triggered && !Shop.activeSelf) pauseClicked();
+        if (pauseAction.action.triggered && !Shop.activeSelf && !wardrobe.activeSelf) pauseClicked();
     }
 
     private void FixedUpdate()
