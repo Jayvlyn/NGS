@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 329008290237429391}
   - component: {fileID: 2690830784610742455}
   - component: {fileID: 1318606272049748182}
-  - component: {fileID: 3375098372690831092}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -49,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 1
-  destroyOnLoad: 0
   worldSpeechPrefab: {fileID: 7648253767280735602, guid: c86280a75bd271b498a83aa63ae5d96c, type: 3}
   screenSpeechPrefab: {fileID: 7648253767280735602, guid: d7b13a04c3ae7694e823c668118520d5, type: 3}
   worldInteractPrefab: {fileID: 539206074670402225, guid: 5429218388f96f8418b3bb7603e27746, type: 3}
@@ -114,25 +112,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 0
-  destroyOnLoad: 0
   interactionEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
---- !u!114 &3375098372690831092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253092266663696018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b9bdbb15d68e44d8662647cce0ca5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overrideOthers: 0
-  destroyOnLoad: 1
-  loadedForestTiles: []
-  loadedDesertTiles: []
-  loadedSnowTiles: []
-  horizontalView: 11
-  verticalView: 6
-  gameSettings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
