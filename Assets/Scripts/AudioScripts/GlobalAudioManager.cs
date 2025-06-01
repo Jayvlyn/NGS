@@ -4,8 +4,8 @@ using UnityEngine;
 public class GlobalAudioManager : Singleton<GlobalAudioManager>
 {
     [Header("Audio Sources")]
-    [SerializeField] AudioSource loopingAudioSource;
-    [SerializeField] AudioSource[] oneShotAudioSources;
+    public AudioSource loopingAudioSource;
+    public AudioSource[] oneShotAudioSources;
 
     public void UpdateLoopingPitch(float pitch)
     {

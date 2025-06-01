@@ -1,8 +1,10 @@
 using GameEvents;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class CastSystem : MonoBehaviour
 {
@@ -16,6 +18,12 @@ public class CastSystem : MonoBehaviour
     [SerializeField] UnityEvent bestOutcome;
     [SerializeField] UnityEvent normalOutcome;
     [SerializeField] UnityEvent worstOutcome;
+
+    [Header("Audio")]
+    [SerializeField] AudioClip castBarTone;
+    [SerializeField] AudioClip bestHit;
+    [SerializeField] AudioClip normalHit;
+    [SerializeField] AudioClip badHit;
 
     private float increment = 0;
     private float increase = 0;
@@ -34,11 +42,13 @@ public class CastSystem : MonoBehaviour
 		increase = 0;
         startDelay = 0.2f;
         moving = true;
+        GlobalAudioManager.Instance.StartLoopingAudioSource(castBarTone);
 	}
 
 	private void OnDisable()
 	{
         moving = false;
+        GlobalAudioManager.Instance.StopLoopingAudioSource();
         //GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 	}
 
@@ -65,14 +75,32 @@ public class CastSystem : MonoBehaviour
 
         Rebound(castBar.value);
 
-        castBar.value += increment * (Time.deltaTime * (speed + increase));
+        float minPitch = 0.8f;
+        float maxPitch = 1.2f;
+        float foldedValue = 1f - Mathf.Abs(castBar.value - 0.5f) * 2f;
+        GlobalAudioManager.Instance.UpdateLoopingPitch(Mathf.Lerp(minPitch, maxPitch, foldedValue));
+
+        if(moving) castBar.value += increment * (Time.deltaTime * (speed + increase));
     }
 
     private void CheckCast(float value)
     {
-        if (value >= 0.48f && value <= 0.52f) bestOutcome.Invoke();
-        else if (value >= 0.31f && value <= 0.69f) normalOutcome.Invoke();
-        else worstOutcome.Invoke();
+        GlobalAudioManager.Instance.StopLoopingAudioSource();
+        if (value >= 0.48f && value <= 0.52f)
+        {
+            GlobalAudioManager.Instance.PlayOneShotAudio(bestHit);
+            bestOutcome.Invoke();
+        }
+        else if (value >= 0.31f && value <= 0.69f)
+        {
+            GlobalAudioManager.Instance.PlayOneShotAudio(normalHit);
+            normalOutcome.Invoke();
+        }
+        else
+        {
+            GlobalAudioManager.Instance.PlayOneShotAudio(badHit);
+            worstOutcome.Invoke();
+        }
 
         onCastFinished.Raise(water);
 
