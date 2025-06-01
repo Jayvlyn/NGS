@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1fba0eb921c7a4cb92a29f98d31289, type: 3}
   m_Name: LineLength
   m_EditorClassIdentifier: 
-  Id: 0
-  upgradeName: 
-  currentCost: 0
-  costIncrease: 0
-  isMultiplicativeIncrease: 0
+  Id: 5
+  upgradeName: Line Length
+  currentCost: 50
+  costIncrease: 1.25
+  isMultiplicativeIncrease: 1
   sprite: {fileID: 0}
-  maxCostBeforeDelete: 0
+  maxCostBeforeDelete: 10000

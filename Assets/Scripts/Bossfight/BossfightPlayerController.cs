@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -14,7 +15,8 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float desiredDistance = 2.5f;
     [SerializeField] private float rotationSpeed = 180f;
-
+    [SerializeField] private Transform debugMousePosition;
+    [SerializeField] private RectTransform debugMouseScreenPosition;
     [SerializeField] GameSettings settings;
 
     private void Start()
@@ -70,15 +72,25 @@ public class BossfightPlayerController : MonoBehaviour
     private Vector2 GetMovement()
     {
         Vector2 result;
+        //Screen position of mouse, for some reason it puts it as halfway across the screen if you do not subtract it, this results in accurate screen position
+        Vector3 mousePosition = new Vector3(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y / 2);
+        mousePosition.z = 10;
+        //FOR SOME REASON DOES NOT ACTUALLY GET THE WORLD POINT, REGARDLESS OF WHAT PLANE IT GOES FOR
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        //move tracker of where it is recognizing the world position
+        debugMousePosition.position = new Vector3(mousePosition.x, mousePosition.y);
+        //move tracker of where it is recognizing the screen position
+        debugMouseScreenPosition.localPosition = new Vector3(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2);
+        //Print all positions
+        Debug.Log($"Mouse Screen position: {new Vector3(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2)}, Mouse position: {mousePosition}, Player position: {transform.position}");
         if(settings.toggleData.isMouseModeBossgame)
         {
-            result = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 2;
+            result = (mousePosition - transform.position).normalized;
         }
         else
         {
             result = moveInput.normalized;
         }
-        Debug.Log(result);
         return result;
     }
 
