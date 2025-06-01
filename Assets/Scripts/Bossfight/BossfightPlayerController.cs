@@ -69,29 +69,45 @@ public class BossfightPlayerController : MonoBehaviour
 
 	}
 
+    public CinemachineCamera vCam;
     private Vector2 GetMovement()
     {
-        Vector2 result;
-        //Screen position of mouse, for some reason it puts it as halfway across the screen if you do not subtract it, this results in accurate screen position
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y / 2);
-        mousePosition.z = 10;
-        //FOR SOME REASON DOES NOT ACTUALLY GET THE WORLD POINT, REGARDLESS OF WHAT PLANE IT GOES FOR
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        //move tracker of where it is recognizing the world position
-        debugMousePosition.position = new Vector3(mousePosition.x, mousePosition.y);
-        //move tracker of where it is recognizing the screen position
-        debugMouseScreenPosition.localPosition = new Vector3(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2);
-        //Print all positions
-        Debug.Log($"Mouse Screen position: {new Vector3(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2)}, Mouse position: {mousePosition}, Player position: {transform.position}");
-        if(settings.toggleData.isMouseModeBossgame)
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Get the current camera state from Cinemachine
+        var cameraState = vCam.State;
+
+        // Use the actual camera transform & orthographic size from Cinemachine state
+        Vector3 camPos = cameraState.GetFinalPosition();
+        Quaternion camRot = cameraState.GetFinalOrientation();
+        float orthoSize = cameraState.Lens.OrthographicSize;
+
+        // Calculate world position manually based on Cinemachine camera position and orthographic size:
+        // For orthographic camera:
+        // Screen space coords (0 to Screen.width, 0 to Screen.height)
+        // map to world space based on camera pos, ortho size, and screen size
+
+        // Normalize mouse screen position between -1 and 1 (centered)
+        float normalizedX = (mousePosition.x / Screen.width) * 2 - 1;
+        float normalizedY = (mousePosition.y / Screen.height) * 2 - 1;
+
+        // Calculate world space offset
+        float worldX = camPos.x + normalizedX * orthoSize * Camera.main.aspect;
+        float worldY = camPos.y + normalizedY * orthoSize;
+
+        Vector3 mouseWorldPosition = new Vector3(worldX, worldY, 0);
+
+        debugMousePosition.position = mouseWorldPosition;
+        debugMouseScreenPosition.localPosition = new Vector3(mousePosition.x - Screen.width / 2, mousePosition.y - Screen.height / 2, 0);
+
+        if (settings.toggleData.isMouseModeBossgame)
         {
-            result = (mousePosition - transform.position).normalized;
+            return (mouseWorldPosition - transform.position).normalized;
         }
         else
         {
-            result = moveInput.normalized;
+            return moveInput.normalized;
         }
-        return result;
     }
 
 
