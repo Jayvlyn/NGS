@@ -138,7 +138,7 @@ public class PlayerAudioManager : MonoBehaviour
         UpdateLoopingVolume(1);
     }
 
-    public void UpdatSlackSound(float playerSpeed)
+    public void UpdateSlackSound(float playerSpeed)
     {
         float t = Mathf.InverseLerp(2, 10, playerSpeed);
         t = Mathf.Clamp01(t);
