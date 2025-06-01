@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -123,23 +123,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fishmock_0
+      name: Polar_Bear-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 5
-        width: 32
-        height: 27
+        y: 0
+        width: 128
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 204842e089ab87a90800000000000000
-      internalID: -7315892432428301310
+      spriteID: fc7d139c03ef7f54a96448c3e92d7dd5
+      internalID: -655204553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Polar_Bear-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 296ef032918ca774485255669aa7e319
+      internalID: 1199108254
       vertices: []
       indices: 
       edges: []
@@ -158,7 +180,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fishmock_0: -7315892432428301310
+      Polar_Bear-Sheet_0: -655204553
+      Polar_Bear-Sheet_1: 1199108254
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
