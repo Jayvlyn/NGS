@@ -15,6 +15,9 @@ public class PopupManager : Singleton<PopupManager>
     [SerializeField] private Color genericFishPopupColor = Color.white;
     [SerializeField] private Color newLargestFishPopupColor = Color.white;
     [SerializeField] private Color newTypeFishPopupColor = Color.white;
+    [SerializeField] private AudioClip newTypeAudio;
+    [SerializeField] private AudioClip newLargestAudio;
+    [SerializeField] private AudioClip genericAudio;
     [SerializeField] private InteractionEvent enterRangeEvent;
     [SerializeField] private InteractionEvent exitRangeEvent;
     private Dictionary<int, (int, GameObject)> activePopups = new();
@@ -163,18 +166,21 @@ public class PopupManager : Singleton<PopupManager>
     public GameObject CreateNewFishTypePopup(Fish fish)
     {
         PopupAppearanceData popupData = GetDefaultFishPopupData();
+        GlobalAudioManager.Instance.PlayOneShotAudio(newTypeAudio);
         return CreateFishCaughtPopup(fish.sprite, newTypeFishPopupColor,"New fish type caught!", fish.fishName, popupData, popupData);
     }
 
     public GameObject CreateNewLargestFishPopup(Fish fish)
     {
         PopupAppearanceData popupData = GetDefaultFishPopupData();
+        GlobalAudioManager.Instance.PlayOneShotAudio(newLargestAudio);
         return CreateFishCaughtPopup(fish.sprite, newLargestFishPopupColor, $"New largest {fish.fishName}!", $"{fish.length:F2} cm", popupData, popupData);
     }
 
     public GameObject CreateGenericFishPopup(Fish fish)
     {
         PopupAppearanceData popupData = GetDefaultFishPopupData();
+        GlobalAudioManager.Instance.PlayOneShotAudio(genericAudio);
         return CreateFishCaughtPopup(fish.sprite, genericFishPopupColor, $"Caught a {fish.fishName}.", $"{fish.length:F2} cm", popupData, popupData);
     }
 
