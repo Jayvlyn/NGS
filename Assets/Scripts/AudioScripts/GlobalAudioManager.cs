@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GlobalAudioManager : MonoBehaviour
+public class GlobalAudioManager : Singleton<GlobalAudioManager>
 {
     [Header("Audio Sources")]
     [SerializeField] AudioSource loopingAudioSource;
