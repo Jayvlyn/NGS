@@ -113,7 +113,7 @@ public class FishMinigame : MonoBehaviour
         {
             UpdateDesiredAngle();
         }
-        velocity = panicModifier * swimSpeed * (Quaternion.Euler(0, 0, swimAngle) * Vector3.right);
+        velocity = panicModifier * swimSpeed * Screen.width/1000 * (Quaternion.Euler(0, 0, swimAngle) * Vector3.right);
         rotator.BaseRotation = Quaternion.Euler(0, 0, swimAngle);
         rb.MovePosition(new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y));
         

@@ -81,7 +81,7 @@ public class ControlBobber : MonoBehaviour
 			horiSpeedMod += dist / HookBehavior.MAX_DIST * HookBehavior.NORMALIZE_UPPER_END;
 		}
 
-		moveSpeed *= horiSpeedMod;
+		moveSpeed *= horiSpeedMod * Screen.width/1000;
 
 
 		// Move bobber horizontally

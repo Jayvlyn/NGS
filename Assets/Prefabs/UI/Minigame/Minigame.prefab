@@ -689,9 +689,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookParent: {fileID: 7434094983016572641}
-  hookResistanceVal: 25
+  hookResistanceVal: 15
   hookDirection: 0
-  verticalSpeed: 75
+  verticalSpeed: 55
   externalDecayRate: 3
   minY: 0.14
   maxY: 0.87
@@ -1771,7 +1771,7 @@ MonoBehaviour:
   - {fileID: 7966567603141623890}
   - {fileID: 8824765375641320670}
   swimSpeed: 1.5
-  panicMulti: 2.5
+  panicMulti: 2.3
   catchMulti: 10
   depleteMulti: 5
   maxCatchProgress: 30

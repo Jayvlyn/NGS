@@ -59,10 +59,10 @@ public class HookBehavior : MonoBehaviour
         if (hookDirection != 0)
         {
             float distanceToBobber = Vector2.Distance(transform.position, new Vector2(hookParent.position.x, transform.position.y));
-            horizontalMove = (distanceToBobber / hookResistanceVal * horiSpeedMod) * hookDirection;
+            horizontalMove = (distanceToBobber / hookResistanceVal * horiSpeedMod) * hookDirection * Screen.width/1000;
         }
 
-        float verticalMove = verticalInput * verticalSpeed / hookResistanceVal * vertSpeedMod;
+        float verticalMove = verticalInput * verticalSpeed / hookResistanceVal * vertSpeedMod * Screen.height/1000;
 
         Vector2 controlMovement = new Vector2(horizontalMove, verticalMove);
         Vector2 finalMove = controlMovement + externalVelocity * Time.fixedDeltaTime;

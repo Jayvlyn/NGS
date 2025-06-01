@@ -861,7 +861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pi: {fileID: 5430223865702074187}
-  baseMoveSpeed: 5
+  baseMoveSpeed: 2.3
   reelSpeed: 6
   hookRb: {fileID: 0}
   bobberRb: {fileID: 0}
@@ -869,7 +869,6 @@ MonoBehaviour:
   maxLength: 1000
   sideLength: 500
   depthLength: 340
-  settings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
   gameCanvas: {fileID: 0}
 --- !u!114 &1876301516158393029
 MonoBehaviour:
@@ -1485,6 +1484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: -1
+  updateDelay: 0.25
 --- !u!1 &6343699967925498643
 GameObject:
   m_ObjectHideFlags: 0
