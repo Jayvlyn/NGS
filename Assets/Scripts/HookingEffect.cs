@@ -10,6 +10,7 @@ public class HookingEffect : MonoBehaviour
     private float t;
     private Vector3 initialScale;
     private Vector3 targetScale;
+    [SerializeField] AudioClip reelAudio;
 
     public enum State
     {
@@ -26,11 +27,17 @@ public class HookingEffect : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, initialOffset);
 	}
 
-	public void ChangeState(State state)
+    private void OnDisable()
+    {
+        if (reelAudio != null) GlobalAudioManager.Instance.StopLoopingAudioSource();    
+    }
+
+    public void ChangeState(State state)
     {
         switch (state)
         {
             case State.GROWING_IN:
+                if(reelAudio!=null && currentState == State.OFF) GlobalAudioManager.Instance.StartLoopingAudioSource(reelAudio);
                 t = 0;
                 initialScale = transform.localScale;
                 break;
@@ -41,6 +48,7 @@ public class HookingEffect : MonoBehaviour
                 break;
 
             case State.OFF:
+                if (reelAudio != null) GlobalAudioManager.Instance.StopLoopingAudioSource();
                 transform.localScale = Vector3.zero;
                 break;
 
@@ -56,13 +64,16 @@ public class HookingEffect : MonoBehaviour
 		{
 			case State.GROWING_IN:
                 ProcessGrowingInState();
-				break;
+                if (reelAudio != null) GlobalAudioManager.Instance.UpdateLoopingPitch(Mathf.Lerp(0.8f, 1.2f, transform.localScale.x));
+                break;
 			case State.SHRINKING_OUT:
                 ProcessShrinkingOutState();
-				break;
+                if (reelAudio != null) GlobalAudioManager.Instance.UpdateLoopingPitch(Mathf.Lerp(0.8f, 1.2f, transform.localScale.x));
+                break;
 			case State.OFF:
 				break;
 			case State.ON:
+                if (reelAudio != null) GlobalAudioManager.Instance.UpdateLoopingPitch(Mathf.Lerp(0.8f, 1.2f, transform.localScale.x));
                 transform.Rotate(Vector3.forward, rotateSpeed * Time.deltaTime);
                 transform.localScale = targetScale;
 				break;

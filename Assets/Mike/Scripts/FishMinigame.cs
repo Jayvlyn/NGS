@@ -25,6 +25,8 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] float boundsy = 300.0f; // Y Bounds
     [SerializeField] float boundsyoffset = 150.0f; // Y Bounds offset
 
+    [SerializeField] AudioClip failAudio;
+
     [SerializeField] Transform bobberT;
     [SerializeField] Transform hookT;
     [SerializeField] Transform fishT;
@@ -58,6 +60,7 @@ public class FishMinigame : MonoBehaviour
 	private void OnEnable()
 	{
 		GameUI.Instance.pi.SwitchCurrentActionMap("Minigame");
+
 		//currentYBias = 0.0f;
 		//currentSpeed = swimSpeed;
 		//currentWadeSpeed = wadeSpeed;
@@ -91,6 +94,7 @@ public class FishMinigame : MonoBehaviour
 	private void Update()
 	{
         if(!isCaught && !isFinishing) CheckIfComplete();
+
 	}
 
 	void MoveFish()
@@ -224,6 +228,7 @@ public class FishMinigame : MonoBehaviour
 			GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
 			isFinishing = true;
             isCaught = false; // Leave minigame without reward (Raise Loss Event Here)
+            GlobalAudioManager.Instance.PlayOneShotAudio(failAudio);
 
             OnFinish();
         }
@@ -249,7 +254,7 @@ public class FishMinigame : MonoBehaviour
         if(collision.tag == "Hook")
         {
             hooked = true;
-            foreach(HookingEffect hookingEffect in hookingEffects)
+            foreach (HookingEffect hookingEffect in hookingEffects)
             {
                 hookingEffect.OnHooked();
             }
@@ -264,7 +269,7 @@ public class FishMinigame : MonoBehaviour
         if(collision.tag == "Hook")
         {
             hooked = false;
-			foreach (HookingEffect hookingEffect in hookingEffects)
+            foreach (HookingEffect hookingEffect in hookingEffects)
 			{
 				hookingEffect.OnUnhooked();
 			}

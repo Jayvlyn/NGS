@@ -961,6 +961,7 @@ MonoBehaviour:
   rotateSpeed: 100
   initialOffset: 45
   scaleScaler: 1
+  reelAudio: {fileID: 8300000, guid: 4fb627540444200488fdf0f13c2b7013, type: 3}
   currentState: 2
 --- !u!114 &8495543118719128678
 MonoBehaviour:
@@ -1304,6 +1305,7 @@ MonoBehaviour:
   rotateSpeed: 100
   initialOffset: 70
   scaleScaler: 1
+  reelAudio: {fileID: 0}
   currentState: 2
 --- !u!114 &7371623786842164173
 MonoBehaviour:
@@ -1576,6 +1578,7 @@ MonoBehaviour:
   rotateSpeed: 100
   initialOffset: 0
   scaleScaler: 1
+  reelAudio: {fileID: 0}
   currentState: 2
 --- !u!114 &2826505689502451708
 MonoBehaviour:
@@ -1781,6 +1784,7 @@ MonoBehaviour:
   boundsx: 450
   boundsy: 350
   boundsyoffset: 50
+  failAudio: {fileID: 8300000, guid: c8f31f90b650eb74099e48d82eb2efe4, type: 3}
   bobberT: {fileID: 7434094983016572641}
   hookT: {fileID: 6829940017232708715}
   fishT: {fileID: 7057209646435027259}

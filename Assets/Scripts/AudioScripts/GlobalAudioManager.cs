@@ -59,9 +59,15 @@ public class GlobalAudioManager : Singleton<GlobalAudioManager>
 
     public void StartLoopingAudioSource(AudioClip clip)
     {
+        if (loopingAudioSource.isPlaying && loopingAudioSource.resource == clip) return;
         if (loopingAudioSource.isPlaying) loopingAudioSource.Stop();
         loopingAudioSource.resource = clip;
         loopingAudioSource.Play();
+    }
+
+    public bool IsLoopingSourcePlaying()
+    {
+        return loopingAudioSource.isPlaying;
     }
 
     public IEnumerator SmoothStop(AudioSource audioSource, float time = 0.15f)
