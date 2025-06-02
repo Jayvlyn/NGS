@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Drawing.Printing;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class SceneLoader : MonoBehaviour
 
     void Start()
     {
-        settings.position.currentLocation = sceneToLoad;
+        print(settings.position.currentLocation);
+        if (sceneToLoad != "MainMenu" && sceneToLoad != "BossfightScene") settings.position.currentLocation = sceneToLoad;
         //settings.position.currentTime = DayNightCycle.Instance.currentTime;
         StartCoroutine(LoadAsync());
     }
