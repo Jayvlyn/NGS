@@ -201,7 +201,10 @@ public class MapDisplay : Singleton<MapDisplay>
         BoundsInt bounds = importMaps[0].cellBounds;
         foreach (Tilemap tilemap in exportMaps)
         {
-            Destroy(tilemap.gameObject);
+            if (tilemap != null)
+            {
+                Destroy(tilemap.gameObject);
+            }
         }
         exportMaps = new Tilemap[importMaps.Length];
         for(int i = 0; i < importMaps.Length; i++)
