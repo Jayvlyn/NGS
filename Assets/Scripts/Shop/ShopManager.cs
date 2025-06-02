@@ -49,7 +49,7 @@ public class ShopManager : Singleton<ShopManager>
     private bool selectTilesOutOfDate = true;
     private bool fishTilesOutOfDate = true;
 
-    [SerializeField] public static List<UpgradeData>upgrades;
+    [SerializeField] public static List<UpgradeData> upgrades;
     [SerializeField] public static UpgradeData[] baseUpgrades;
     [SerializeField] private UpgradeData[] defaultUpgrades;
     [SerializeField] private PlayerStats playerStats;
@@ -74,9 +74,12 @@ public class ShopManager : Singleton<ShopManager>
 
     public void Close()
     {
-        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
-        QuestManager.Instance.UpdateQuests();
-        state = ShopState.Closed;
+        if (state != ShopState.Closed)
+        { 
+            StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
+            QuestManager.Instance.UpdateQuests();
+            state = ShopState.Closed;
+        }
     }
 
     public void SellAll()
