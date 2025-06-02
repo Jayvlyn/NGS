@@ -36,7 +36,8 @@ public class BossfightPlayerController : MonoBehaviour
             AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
         }
         currentDistance = Vector2.Distance(boss.transform.position, transform.position);
-        if(currentDistance >= deathDistance && !immortalForTesting)
+        desiredDistance = currentDistance;
+        if (currentDistance >= deathDistance && !immortalForTesting)
         {
             SceneLoader.LoadScene(settings.position.currentLocation);
         }
