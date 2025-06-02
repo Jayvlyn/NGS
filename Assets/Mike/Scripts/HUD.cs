@@ -9,7 +9,7 @@ public class HUD : MonoBehaviour
     [Header("Game Settings")]
     [SerializeField] public GameSettings settings;
 
-    private float timer = 0;
+    private string lastFormattedTime = "";
 
     public void UpdateMoney()
     {
@@ -20,12 +20,19 @@ public class HUD : MonoBehaviour
     {
         float hoursInDay = 24f;
         float hours = (settings.position.currentTime / 250f) * hoursInDay;
+        hours %= hoursInDay;
+
         int hourInt = Mathf.FloorToInt(hours);
         int minutes = Mathf.FloorToInt((hours - hourInt) * 60);
 
-        if (hourInt >= 24) hourInt = 0;
+        if (minutes % 10 != 0) return;
+
         string formattedTime = string.Format("{0:00}:{1:00}", hourInt, minutes);
-        if(minutes % 10 == 0) time.text = formattedTime;
+
+        if (formattedTime == lastFormattedTime) return;
+
+        lastFormattedTime = formattedTime;
+        time.text = formattedTime;
     }
 
     private void FixedUpdate()
