@@ -97,9 +97,6 @@ public class BossfightPlayerController : MonoBehaviour
 
         Vector3 mouseWorldPosition = new Vector3(worldX, worldY, 0);
 
-        debugMousePosition.position = mouseWorldPosition;
-        debugMouseScreenPosition.localPosition = new Vector3(mousePosition.x - Screen.width / 2, mousePosition.y - Screen.height / 2, 0);
-
         if (settings.toggleData.isMouseModeBossgame)
         {
             return (mouseWorldPosition - transform.position).normalized;

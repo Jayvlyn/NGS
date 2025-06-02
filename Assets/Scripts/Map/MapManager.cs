@@ -47,6 +47,7 @@ public class MapManager : Singleton<MapManager>
 
     private void Start()
     {
+        //if (gameSettings == null) gameSettings = GameUI.Instance.gameSettings;
         //MapDisplay.Instance.Display();
     }
 

@@ -1,9 +1,6 @@
-using System.Collections;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour

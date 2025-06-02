@@ -11,7 +11,8 @@ public class SceneLoader : MonoBehaviour
 
     void Start()
     {
-        settings.position.currentLocation = sceneToLoad;
+        if (sceneToLoad != "MainMenu" && sceneToLoad != "BossfightScene") settings.position.currentLocation = sceneToLoad;
+        //print(settings.position.currentLocation);
         //settings.position.currentTime = DayNightCycle.Instance.currentTime;
         StartCoroutine(LoadAsync());
     }
