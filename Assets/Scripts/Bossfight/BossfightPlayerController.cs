@@ -181,23 +181,23 @@ public class BossfightPlayerController : MonoBehaviour
         if(hit)
         {
             transform.position += movement.normalized * (hit.distance - 0.01f);
-            //desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
-            //float dot = Vector3.Dot(movement.normalized, hit.normal.normalized);
-            //if (dot < angleTolerance && dot > angleTolerance)
-            //{
-            //    Vector3 AMovement = Quaternion.AngleAxis(90, new Vector3(0, 0, 1)) * hit.normal.normalized;
-            //    Vector3 BMovement = Quaternion.AngleAxis(-90, new Vector3(0, 0, 1)) * hit.normal.normalized;
-            //    float ADot = Vector3.Dot(movement.normalized, AMovement);
-            //    float BDot = Vector3.Dot(movement.normalized, BMovement);
-            //    if (ADot > BDot)
-            //    {
-            //        AttemptMovement(AMovement * (movement.magnitude - hit.distance + 0.01f) * ADot, false);
-            //    }
-            //    else
-            //    {
-            //        AttemptMovement(BMovement * (movement.magnitude - hit.distance + 0.01f) * BDot, false);
-            //    }
-            //}
+            desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
+            float dot = Vector3.Dot(movement.normalized, hit.normal.normalized);
+            if (dot < angleTolerance && dot > angleTolerance)
+            {
+                Vector3 AMovement = Quaternion.AngleAxis(90, new Vector3(0, 0, 1)) * hit.normal.normalized;
+                Vector3 BMovement = Quaternion.AngleAxis(-90, new Vector3(0, 0, 1)) * hit.normal.normalized;
+                float ADot = Vector3.Dot(movement.normalized, AMovement);
+                float BDot = Vector3.Dot(movement.normalized, BMovement);
+                if (ADot > BDot)
+                {
+                    AttemptMovement(AMovement * (movement.magnitude - hit.distance + 0.01f) * ADot, false);
+                }
+                else
+                {
+                    AttemptMovement(BMovement * (movement.magnitude - hit.distance + 0.01f) * BDot, false);
+                }
+            }
         }
         else
         {
