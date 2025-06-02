@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 [CustomEditor(typeof(MapDisplay))]
 public class MapDisplayGeneratorButton : Editor
@@ -9,7 +10,12 @@ public class MapDisplayGeneratorButton : Editor
 
         if(GUILayout.Button("Regenerate Map Data"))
         {
-            ((MapDisplay)target).GenerateMap();
+            foreach(GameObject go in ((MapDisplay)target).GenerateMap())
+            {
+                DestroyImmediate(go);
+            }
+            EditorSceneManager.MarkSceneDirty(((MapDisplay)target).gameObject.scene);
+            EditorUtility.SetDirty(target);
         }
     }
 }

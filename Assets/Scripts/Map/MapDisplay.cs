@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 using UnityEngine.UIElements;
@@ -192,18 +194,19 @@ public class MapDisplay : Singleton<MapDisplay>
 
 
 
-    public void GenerateMap()
+    public GameObject[] GenerateMap()
     {
         if(exportMaps == null)
         {
             exportMaps = new Tilemap[0];
         }
+        GameObject[] results = new GameObject[exportMaps.Length];
         BoundsInt bounds = importMaps[0].cellBounds;
-        foreach (Tilemap tilemap in exportMaps)
+        for(int i = 0; i < results.Length; i++)
         {
-            if (tilemap != null)
+            if (exportMaps[i] != null)
             {
-                Destroy(tilemap.gameObject);
+                results[i] = exportMaps[i].gameObject;
             }
         }
         exportMaps = new Tilemap[importMaps.Length];
@@ -258,5 +261,7 @@ public class MapDisplay : Singleton<MapDisplay>
                 }
             }
         }
+
+        return results;
     }
 }
