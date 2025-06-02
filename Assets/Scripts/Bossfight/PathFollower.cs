@@ -10,6 +10,7 @@ public class PathFollower : MonoBehaviour
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] Vector3 rotatedBy = Vector3.zero;
     [SerializeField] BossfightLevelSection guide;
+    public GameSettings settings;
 
     [SerializeField, Range(0, 1)]float distance = 0; //distance along spline, 0-1]
     public float Length { get { return splineContainer.CalculateLength(); } }
@@ -28,7 +29,8 @@ public class PathFollower : MonoBehaviour
                 if(guide == null)
                 {
                     distance = 1;
-                }
+					SceneLoader.LoadScene(settings.position.currentLocation);
+				}
                 else
                 {
                     splineContainer = guide.Spline;
