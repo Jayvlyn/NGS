@@ -7,7 +7,13 @@ public class ShopData : InteractableObject
     [SerializeField] private List<UpgradeData> upgradeData;
     [SerializeField] private PlayerStats playerStats;
 
-    protected override void Interact(InteractionPair pair)
+	private void Start()
+	{
+        base.Start();
+        exitInteractionRangeEvent.Subscribe(OnExitInteractRange);
+	}
+
+	protected override void Interact(InteractionPair pair)
     {
         if(pair.obj.Id == Id)
         {
@@ -85,5 +91,13 @@ public class ShopData : InteractableObject
             }
         }
         return result;
+    }
+
+    private void OnExitInteractRange(InteractionPair pair)
+    {
+        if (pair.obj.Id == Id)
+        {
+            ShopManager.Instance.Close();
+        }
     }
 }

@@ -44,7 +44,7 @@ public class BossfightPlayerController : MonoBehaviour
         currentDistance = Vector2.Distance(boss.transform.position, transform.position);
         if(currentDistance >= deathDistance && !immortalForTesting)
         {
-            SceneLoader.LoadScene("GameScene");
+            SceneLoader.LoadScene(settings.position.currentLocation);
         }
         if (GetMovement().magnitude > 0.1f)
         {
@@ -56,7 +56,7 @@ public class BossfightPlayerController : MonoBehaviour
         if(currentDistance < radius * 2)
         {
             BossFishController.caughtBoss = true;
-            SceneLoader.LoadScene("GameScene");
+            SceneLoader.LoadScene(settings.position.currentLocation);
         }
 
 
