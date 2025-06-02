@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -110,13 +111,15 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterName.text.Remove(0);
+            gameSettings.position.currentTime = 0;
             SceneLoader.LoadScene("GameScene");
             //GameUI.gameStart = true;
         }
         else
         {
             characterName.text.Remove(0);
-            characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
+            StartCoroutine(errorMsgPopup());
+            //characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
         }
     }
 
@@ -172,5 +175,12 @@ public class MenuUI : MonoBehaviour
                 tg.objectsToSwap[1].SetActive(active);
                 break;
         }
+    }
+
+    IEnumerator errorMsgPopup()
+    {
+        characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
+        yield return new WaitForSeconds(2);
+        characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(false);
     }
 }

@@ -52,7 +52,6 @@ public class QuestManager : Singleton<QuestManager>
         }
         int reward = (int)quest.reward.carrots;
         if (reward > 0) SpawnRewardCarrots(reward);
-        else if (reward < 0) SpawnRewardCarrots(reward, true);
         Inventory.Instance.AddMoney(reward);
         RemoveQuest(quest);
     }
@@ -98,10 +97,9 @@ public class QuestManager : Singleton<QuestManager>
         return false;
     }
 
-    public void SpawnRewardCarrots(int cost, bool notReward = false)
+    public void SpawnRewardCarrots(int cost)
     {
         Vector3 screenPos = Input.mousePosition;
-        if(notReward) screenPos = GameUI.Instance.pi.transform.position;
         particleSys.SpawnParticles(cost, screenPos, true);
     }
 }
