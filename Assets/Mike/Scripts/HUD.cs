@@ -19,7 +19,9 @@ public class HUD : MonoBehaviour
     public void UpdateTime()
     {
         float hoursInDay = 24f;
-        float hours = (settings.position.currentTime / 250f) * hoursInDay;
+        float currentTime = settings.position.currentTime;
+        if(currentTime >= 600f) DayNightCycle.Instance.currentTime = 0;
+        float hours = (currentTime / 600f) * hoursInDay;
         hours %= hoursInDay;
 
         int hourInt = Mathf.FloorToInt(hours);
