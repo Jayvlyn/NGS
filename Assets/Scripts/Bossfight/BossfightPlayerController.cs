@@ -15,8 +15,6 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float desiredDistance = 2.5f;
     [SerializeField] private float rotationSpeed = 180f;
-    [SerializeField] private Transform debugMousePosition;
-    [SerializeField] private RectTransform debugMouseScreenPosition;
     [SerializeField] GameSettings settings;
 
     private void Start()
@@ -53,7 +51,7 @@ public class BossfightPlayerController : MonoBehaviour
             currentDistance = Vector3.Distance(boss.transform.position, transform.position);
             desiredDistance = Mathf.Max(Mathf.Min(deathDistance, currentDistance, desiredDistance), radius * 5);
         }
-        if(currentDistance < radius * 2)
+        if(currentDistance < radius * 4)
         {
             BossFishController.caughtBoss = true;
             SceneLoader.LoadScene(settings.position.currentLocation);

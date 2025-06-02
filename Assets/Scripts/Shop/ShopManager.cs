@@ -75,14 +75,29 @@ public class ShopManager : Singleton<ShopManager>
     public void Close()
     {
         if (state != ShopState.Closed)
-        { 
-            StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
+        {
+			switch (state)
+			{
+				case ShopState.MainMenu:
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
+					break;
+				case ShopState.SelectFish:
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow, true));
+					break;
+				case ShopState.SellFish:
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", sellFishWindow, true));
+					break;
+				case ShopState.BuyUpgrade:
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyUpgradeWindow, true));
+					break;
+			}
+
             QuestManager.Instance.UpdateQuests();
             state = ShopState.Closed;
-        }
-    }
+		}
+	}
 
-    public void SellAll()
+	public void SellAll()
     {
         overrideSellAllOfType = true;
         foreach (string fishType in Inventory.Instance.GetData().Item1.Keys)
