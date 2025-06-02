@@ -62,15 +62,7 @@ public class ShopManager : Singleton<ShopManager>
     [Header("Particle System")]
     public UIParticleFX carrotParticles;
 
-    public void SelectSell()
-    {
-        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow));
-        if (pastSelectTiles.Count == 0 || selectTilesOutOfDate)
-        {
-            GenerateSelectTiles();
-            selectTilesOutOfDate = false;
-        }
-    }
+
 
     public void Close()
     {
@@ -83,12 +75,16 @@ public class ShopManager : Singleton<ShopManager>
 					break;
 				case ShopState.SelectFish:
 			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow, true));
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
 					break;
 				case ShopState.SellFish:
 			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", sellFishWindow, true));
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow, true));
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
 					break;
 				case ShopState.BuyUpgrade:
 			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyUpgradeWindow, true));
+			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
 					break;
 			}
 
@@ -192,7 +188,18 @@ public class ShopManager : Singleton<ShopManager>
         StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow));
     }
 
-    public void SelectFish(string selectedFish)
+	public void SelectSell()
+	{
+		StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", selectFishWindow));
+        state = ShopState.SelectFish;
+		if (pastSelectTiles.Count == 0 || selectTilesOutOfDate)
+		{
+			GenerateSelectTiles();
+			selectTilesOutOfDate = false;
+		}
+	}
+
+	public void SelectFish(string selectedFish)
     {
         state = ShopState.SellFish;
         StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", sellFishWindow));
