@@ -31,11 +31,7 @@ public class BossfightPlayerController : MonoBehaviour
             desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.bossReelSpeed;
             desiredDistance = Mathf.Max(desiredDistance, radius * 5);
         }
-        if (holdingSlack)
-        {
-            desiredDistance = Mathf.Min(deathDistance, currentDistance);
-        }
-        else if(currentDistance > desiredDistance)
+        if(currentDistance > desiredDistance && !holdingSlack)
         {
             AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
         }
@@ -138,6 +134,7 @@ public class BossfightPlayerController : MonoBehaviour
 		else
 		{
             holdingSlack = false;
+            desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
 			//joint.enabled = activeBlockers.Count == 0;
 		}
 	}
@@ -183,7 +180,7 @@ public class BossfightPlayerController : MonoBehaviour
         if(hit)
         {
             transform.position += movement.normalized * (hit.distance - 0.01f);
-            desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
+            //desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
             float dot = Vector3.Dot(movement.normalized, hit.normal.normalized);
             if (dot < angleTolerance && dot > angleTolerance)
             {
@@ -193,11 +190,11 @@ public class BossfightPlayerController : MonoBehaviour
                 float BDot = Vector3.Dot(movement.normalized, BMovement);
                 if (ADot > BDot)
                 {
-                    AttemptMovement(AMovement * (movement.magnitude - hit.distance + 0.01f) * ADot);
+                    AttemptMovement(AMovement * (movement.magnitude - hit.distance + 0.01f - radius) * ADot);
                 }
                 else
                 {
-                    AttemptMovement(BMovement * (movement.magnitude - hit.distance + 0.01f) * BDot);
+                    AttemptMovement(BMovement * (movement.magnitude - hit.distance + 0.01f - radius) * BDot);
                 }
             }
         }
