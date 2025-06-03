@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 8479422722082589988}
   - component: {fileID: 1680383979366978541}
   - component: {fileID: 329008290237429391}
-  - component: {fileID: 2690830784610742455}
-  - component: {fileID: 1318606272049748182}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideOthers: 1
+  destroyOnLoad: 0
   worldSpeechPrefab: {fileID: 7648253767280735602, guid: c86280a75bd271b498a83aa63ae5d96c, type: 3}
   screenSpeechPrefab: {fileID: 7648253767280735602, guid: d7b13a04c3ae7694e823c668118520d5, type: 3}
   worldInteractPrefab: {fileID: 539206074670402225, guid: 5429218388f96f8418b3bb7603e27746, type: 3}
@@ -57,6 +56,9 @@ MonoBehaviour:
   genericFishPopupColor: {r: 0.8209341, g: 1, b: 0.63207537, a: 1}
   newLargestFishPopupColor: {r: 0.17924517, g: 0.7485825, b: 1, a: 1}
   newTypeFishPopupColor: {r: 1, g: 0.849893, b: 0.216981, a: 1}
+  newTypeAudio: {fileID: 8300000, guid: 9bd2171e2ed9213499c3b8f0b0959e70, type: 3}
+  newLargestAudio: {fileID: 8300000, guid: 15bcfbe7b0cb395489befd13cba9083d, type: 3}
+  genericAudio: {fileID: 8300000, guid: 067662a651852d9409c4901f5898847d, type: 3}
   enterRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
   exitRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
 --- !u!114 &329008290237429391
@@ -71,45 +73,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce729e9f94cda1d428617ec0a9aae704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2690830784610742455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253092266663696018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0195bc870639a54a98b34996c1a41ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 07942f2af4dc70b4b9a0b1b64e7e139d, type: 2}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318606272049748182}
-        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
-        m_MethodName: UpdateQuests
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1318606272049748182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253092266663696018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af48c010c3c1b4c4b8783234e771847a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overrideOthers: 0
-  interactionEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
