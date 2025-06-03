@@ -63,7 +63,7 @@ public class ShopManager : Singleton<ShopManager>
     public UIParticleFX carrotParticles;
 
     private float widthModifier = 1;
-    private float heighModifier = 1;
+    private float heightModifier = 1;
 
     public void Close()
     {
