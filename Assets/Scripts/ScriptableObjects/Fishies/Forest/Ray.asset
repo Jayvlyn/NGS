@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9b0da295ca2f224aa57726f5bd1c52d, type: 3}
-  m_Name: Pish Prime
+  m_Name: Ray
   m_EditorClassIdentifier: 
-  fishName: Pish Prime
-  sprite: {fileID: 21300000, guid: a6d39e076c70b7949837f7c71f668545, type: 3}
+  fishName: Ray
+  sprite: {fileID: 21300000, guid: 83892fcdf8b406547903e790b07093e9, type: 3}
   rarity: 0
-  length: 0
-  minLength: 200
-  maxLength: 300
-  description: Stared at them for too long.
-  isBoss: 1
-  costPerCM: 1
+  length: 0.135397
+  minLength: 5
+  maxLength: 100
+  description: I lathered my hook in maple syrup for this.
+  isBoss: 0
+  costPerCM: 0.2
