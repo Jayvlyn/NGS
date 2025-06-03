@@ -62,7 +62,8 @@ public class ShopManager : Singleton<ShopManager>
     [Header("Particle System")]
     public UIParticleFX carrotParticles;
 
-
+    private float widthModifier = 1;
+    private float heighModifier = 1;
 
     public void Close()
     {
@@ -236,12 +237,21 @@ public class ShopManager : Singleton<ShopManager>
 
     public void BuyUpgrade(int id)
     {
-        if (Inventory.Instance.CanAfford(upgrades[id].currentCost))
+        UpgradeData upgrade = null;
+        foreach(UpgradeData data in upgrades)
         {
-            Inventory.Instance.AddMoney(-upgrades[id].currentCost);
-            upgrades[id].currentCost = upgrades[id].isMultiplicativeIncrease ? upgrades[id].currentCost * upgrades[id].costIncrease : upgrades[id].currentCost + upgrades[id].costIncrease;
-            playerStats.Upgrade(upgrades[id]);
-            if(upgrades[id].currentCost > upgrades[id].maxCostBeforeDelete)
+            if(data.Id == id)
+            {
+                upgrade = data;
+                break;
+            }
+        }
+        if (upgrade != null && Inventory.Instance.CanAfford(upgrade.currentCost))
+        {
+            Inventory.Instance.AddMoney(-upgrade.currentCost);
+            upgrade.currentCost = upgrade.isMultiplicativeIncrease ? upgrade.currentCost * upgrade.costIncrease : upgrade.currentCost + upgrade.costIncrease;
+            playerStats.Upgrade(upgrade);
+            if(upgrade.currentCost > upgrade.maxCostBeforeDelete)
             {
                 upgrades.RemoveAt(id);
             }
@@ -292,8 +302,8 @@ public class ShopManager : Singleton<ShopManager>
             int row = (current - offset) / expectedSelectFishColumns;
             int column = (current - offset) % expectedSelectFishColumns;
             go.transform.localPosition =
-                new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f,
-                selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);
+                new Vector3((selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f) * widthModifier,
+                (selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row) * heighModifier);
             go.GetComponentsInChildren<Image>()[1].sprite = Inventory.Instance.GetFishData(fishName).currentFish[0].sprite;
             go.GetComponentInChildren<TMP_Text>().text = fishName;
             go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SelectFish(fishName); });
@@ -309,12 +319,16 @@ public class ShopManager : Singleton<ShopManager>
             int column = current % expectedBuyUpgradeColumns;
             int row = current / expectedBuyUpgradeColumns;
             GameObject go = Instantiate(buyUpgradeUIPrefab, buyUpgradeDisplayArea);
+            RectTransform trans = go.GetComponent<RectTransform>();
+            Vector2 size = trans.offsetMax - trans.offsetMin;
+            trans.offsetMax += (buyUpgradeUIPrefabSizeData - size) / 2f;
+            trans.offsetMin -= (buyUpgradeUIPrefabSizeData - size) / 2f;
             go.transform.localPosition =
                 new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f,
                 buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
             go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
             go.GetComponentInChildren<TMP_Text>().text = $"{data.upgradeName}: {(data.currentCost):F2} Carrots";
-            go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(current); });
+            go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
             pastUpgradeTiles.Add(go);
         }
     }
@@ -370,9 +384,6 @@ public class ShopManager : Singleton<ShopManager>
 
     private void Start()
     {
-        //testing only, remove later
-        //Open(testingShopData);
-
         if(upgrades == null)
         {
             upgrades = new();
@@ -387,6 +398,8 @@ public class ShopManager : Singleton<ShopManager>
             ResetUpgrades();
         }
         ResetStats();
+        widthModifier = Screen.width / 1920;
+        heightModifier = Screen.height / 1080;
     }
 
     public void ResetUpgrades()
@@ -421,4 +434,5 @@ public class ShopManager : Singleton<ShopManager>
             fishTilesOutOfDate = true;
         }
     }
+
 }

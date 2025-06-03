@@ -14,6 +14,7 @@ public class PlayerStats : ScriptableObject
     public float grappleMaxCastSpeed = 0.2f;
     public float platformingLineLength = 3.3f;
     public float platformingReelSpeed = 70;
+    public float obstacleCount = 1;
 
     public void Upgrade(UpgradeData upgradeData)
     {
@@ -45,6 +46,9 @@ public class PlayerStats : ScriptableObject
             case 7:
                 grappleMaxCastSpeed += 0.02f;
                 break;
+            case 8:
+                obstacleCount *= 0.95f;
+                break;
                 
         }
     }
@@ -58,8 +62,9 @@ public class PlayerStats : ScriptableObject
         hookStrength = stats.hookStrength;
         bossLineLength = stats.bossLineLength;
         bossReelSpeed = stats.bossReelSpeed;
-        grappleMaxCastSpeed = stats.grappleMaxCastSpeed;
+        //grappleMaxCastSpeed = stats.grappleMaxCastSpeed;
         platformingLineLength = stats.platformingLineLength;
         platformingReelSpeed = stats.platformingReelSpeed;
+        obstacleCount = stats.obstacleCount;
     }
 }

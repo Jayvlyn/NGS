@@ -5,12 +5,13 @@ public class SpawnObstacles : MonoBehaviour
 {
     [SerializeField] List<WeightedObject> obstaclesToSpawn;
     [SerializeField] List<Transform> spawnPoints;
+    [SerializeField] PlayerStats playerStats;
     public int min { get; set; }
     public int max { get; set; }
 
     private void OnEnable()
     {
-        int spawnAmount = Random.Range(min, max);
+        int spawnAmount = (int)(Random.Range(min, max) * playerStats.obstacleCount);
         for (int i = 0; i < spawnAmount;)
         {
             i += Spawn(spawnAmount - i);
