@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,13 +13,14 @@ public class WardrobeManager : MonoBehaviour
 
     public string[] WardrobeNames;
     public Material WardrobeMaterial;
-
+    public List<int> unlockedFlannels = new();
+    public List<int> shopFlannels = new();
     public int CurrentIndex = 0;
 
     public void ConfirmbuttonPressed()
     {
-        GameUI.Instance.SaveFlannel(WardrobeTextures[CurrentIndex].name);
-        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[CurrentIndex]);
+        GameUI.Instance.SaveFlannel(WardrobeTextures[unlockedFlannels[CurrentIndex]].name);
+        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[unlockedFlannels[CurrentIndex]]);
         CloseWardrobe();
     }
     public void OpenWardrobe()
@@ -32,15 +34,23 @@ public class WardrobeManager : MonoBehaviour
     public void IterateWardrobe(int direction)
     {
         CurrentIndex += direction;
-        if (CurrentIndex >= WardrobeTextures.Length)
+        if (CurrentIndex >= unlockedFlannels.Count)
         {
             CurrentIndex = 0;
         }
         if (CurrentIndex < 0)
         {
-            CurrentIndex = WardrobeTextures.Length - 1;
+            CurrentIndex = unlockedFlannels.Count - 1;
         }
-        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[CurrentIndex]);
-        WardrobeName.text = WardrobeNames[CurrentIndex];
+        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[unlockedFlannels[CurrentIndex]]);
+        WardrobeName.text = WardrobeNames[unlockedFlannels[CurrentIndex]];
+    }
+
+    public void UnlockFlannel(int index)
+    {
+        if(!unlockedFlannels.Contains(index))
+        {
+            unlockedFlannels.Add(index);
+        }
     }
 }
