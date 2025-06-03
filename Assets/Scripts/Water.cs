@@ -27,7 +27,7 @@ public class Water : InteractableObject
     private float fishingWaitTimer = 1f;
     private float randomWaitAddon = 0f;
     //max time to wait for a fish to bite.
-    [SerializeField] float maxFishingTime = 15f;
+    [SerializeField] PlayerStats stats;
     [SerializeField] float maxDistFromStart = 2f;
     private Vector2 startPos;
 
@@ -183,7 +183,7 @@ public class Water : InteractableObject
         {
             //Debug.Log("cast complete");
             fishing = true;
-            randomWaitAddon = Random.Range(0, maxFishingTime - 1.0f);
+            randomWaitAddon = stats.biteSpeed;
             fishingWaitTimer = 1f + randomWaitAddon;
         }
 	}
