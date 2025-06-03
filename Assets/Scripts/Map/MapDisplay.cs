@@ -21,6 +21,7 @@ public class MapDisplay : Singleton<MapDisplay>
     [SerializeField] CinemachinePositionComposer composer;
     [SerializeField] CinemachineConfiner2D confiner;
     [SerializeField] Material mapMaterial;
+    [SerializeField] GameObject[] disableObjects;
     private bool open = false;
     private GameObject[] createdObjects;
     private float size;
@@ -54,12 +55,16 @@ public class MapDisplay : Singleton<MapDisplay>
         //Matrix4x4 next = Matrix4x4.Scale(new Vector3(-1, 1, 1));
         //mat *= next;
         //Camera.main.projectionMatrix = mat;
+        foreach (GameObject go in disableObjects)
+        {
+            go.SetActive(false);
+        }
         open = true;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             if (open)
             {
@@ -137,6 +142,10 @@ public class MapDisplay : Singleton<MapDisplay>
             {
                 Destroy(go);
             }
+        }
+        foreach(GameObject go in disableObjects)
+        {
+            go.SetActive(true);
         }
         cam.Lens.OrthographicSize = size;
         open = false;
