@@ -43,6 +43,7 @@ public class CastSystem : MonoBehaviour
         startDelay = 0.2f;
         moving = true;
         GlobalAudioManager.Instance.StartLoopingAudioSource(castBarTone);
+        GlobalAudioManager.Instance.UpdateLoopingVolume(0.5f);
 	}
 
 	private void OnDisable()
