@@ -55,6 +55,9 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerStats baseStats;
 
+    [SerializeField] private WardrobeManager wardrobeManager;
+    [SerializeField] private GameObject buyFlannelWindow;
+    [SerializeField] private RectTransform buyFlannelDisplayArea;
 
     //Testing only, remove later
     //[SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
@@ -429,6 +432,11 @@ public class ShopManager : Singleton<ShopManager>
         {
             fishTilesOutOfDate = true;
         }
+    }
+
+    public void OpenBuyFlannels()
+    {
+
     }
 
 }

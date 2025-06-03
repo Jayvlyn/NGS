@@ -6,5 +6,6 @@ public enum ShopState
     MainMenu,
     SelectFish,
     SellFish,
-    BuyUpgrade
+    BuyUpgrade,
+    BuyFlannel
 }
