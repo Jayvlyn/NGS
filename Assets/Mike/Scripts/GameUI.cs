@@ -93,7 +93,7 @@ public class GameUI : Singleton<GameUI>
     void Update()
     {
         if (pauseAction.action.triggered && !Shop.activeSelf && !wardrobe.activeSelf) pauseClicked();
-        if (Input.GetKeyDown(KeyCode.V)) Fade.Instance.StartFade(8,2);
+        //if (Input.GetKeyDown(KeyCode.V)) Fade.Instance.StartFade(8,2);
     }
 
     private void FixedUpdate()
