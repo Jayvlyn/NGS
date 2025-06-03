@@ -107,11 +107,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 40
   rotateSpeed: 50
-  image: {fileID: 21300000, guid: d4396d575019ea548980d6f8b702bccd, type: 3}
   imageObject: {fileID: 7871500671596667619}
   spawnOnDestroy: {fileID: 0}
+  randomInitialRotation: 1
   speedPenalty: 2.5
   explosionForce: 0
+  playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
 --- !u!1 &7871500671596667619
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ public class PlayerStats : ScriptableObject
                 catchSpeed += 0.1f;
                 break;
             case 4:
-                hookStrength *= 0.95f;
+                hookStrength *= 0.975f;
                 break;
             case 5:
                 bossLineLength += 0.1f;

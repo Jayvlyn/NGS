@@ -110,8 +110,10 @@ MonoBehaviour:
   rotateSpeed: 25
   imageObject: {fileID: 7871500671596667619}
   spawnOnDestroy: {fileID: 0}
+  randomInitialRotation: 1
   speedPenalty: 2
   explosionForce: 0
+  playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
 --- !u!60 &2624237397985757796
 PolygonCollider2D:
   m_ObjectHideFlags: 0

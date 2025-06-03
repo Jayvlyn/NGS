@@ -17,7 +17,7 @@ public class MinigameObstacle : MonoBehaviour
     [Header("Minigame effects")]
     [SerializeField] float speedPenalty;
     [SerializeField] float explosionForce;
-
+    [SerializeField] PlayerStats playerStats;
 
     void Start()
     {
@@ -114,7 +114,7 @@ public class MinigameObstacle : MonoBehaviour
                     ExplodeObstacle(hb);
                 }
             }
-            if(speedPenalty > 0) hb.ChangeSpeed(hb.hookResistanceVal * speedPenalty);
+            if(speedPenalty > 0) hb.ChangeSpeed(hb.hookResistanceVal * speedPenalty * playerStats.hookStrength);
         }
     }
 
@@ -137,7 +137,7 @@ public class MinigameObstacle : MonoBehaviour
         // do particle effect
         // do forces
         Vector2 explosionDir = (hb.transform.position - transform.position).normalized;
-        Vector2 forceVector = explosionDir * explosionForce;
+        Vector2 forceVector = explosionDir * explosionForce * playerStats.hookStrength;
         hb.ApplyImpulse(forceVector);
 
         if(spawnOnDestroy != null) Instantiate(spawnOnDestroy, transform.position, transform.rotation, transform.parent);
