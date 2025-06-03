@@ -303,7 +303,7 @@ public class ShopManager : Singleton<ShopManager>
             int column = (current - offset) % expectedSelectFishColumns;
             go.transform.localPosition =
                 new Vector3((selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f) * widthModifier,
-                (selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row) * heighModifier);
+                (selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row) * heightModifier);
             go.GetComponentsInChildren<Image>()[1].sprite = Inventory.Instance.GetFishData(fishName).currentFish[0].sprite;
             go.GetComponentInChildren<TMP_Text>().text = fishName;
             go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SelectFish(fishName); });
