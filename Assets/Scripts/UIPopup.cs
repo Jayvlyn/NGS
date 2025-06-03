@@ -14,8 +14,6 @@ public class UIPopup : MonoBehaviour
     [SerializeField] private float resolutionScaleFactor = 0.2f;
     float referenceWidth = 1920f;
     float referenceHeight = 1080f;
-    [SerializeField] public float TitleSize = 24f; 
-    [SerializeField] public float subTextSize = 14f; 
 
 
     private Canvas popupCanvas;
@@ -67,8 +65,9 @@ public class UIPopup : MonoBehaviour
     public void DisplayInfo(Fish fish)
     {
         StringBuilder builder = new StringBuilder();
-        builder.Append("<size="+TitleSize+">").Append(fish.fishName).Append("</size>").AppendLine();
-        builder.Append("<size="+subTextSize+">").Append("Length: "+fish.length.ToString("0.00")+"cm").Append("</size>");
+        builder.Append(fish.fishName).AppendLine();
+        builder.Append("Length: "+fish.length.ToString("0.00")+"cm").AppendLine();
+        builder.Append(fish.description.ToString());
 
         infoText.text = builder.ToString();     
 
