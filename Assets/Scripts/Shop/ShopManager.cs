@@ -62,8 +62,6 @@ public class ShopManager : Singleton<ShopManager>
     [Header("Particle System")]
     public UIParticleFX carrotParticles;
 
-    private float widthModifier = 1;
-    private float heightModifier = 1;
 
     public void Close()
     {
@@ -302,8 +300,8 @@ public class ShopManager : Singleton<ShopManager>
             int row = (current - offset) / expectedSelectFishColumns;
             int column = (current - offset) % expectedSelectFishColumns;
             go.transform.localPosition =
-                new Vector3((selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f) * widthModifier,
-                (selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row) * heightModifier);
+                new Vector3(selectFishUIPrefabMarginData.x * (column + 1) + selectFishUIPrefabSizeData.x * column - 7.5f,
+                selectFishUIPrefabMarginData.y * -(row + 1) + selectFishUIPrefabSizeData.y * -row);
             go.GetComponentsInChildren<Image>()[1].sprite = Inventory.Instance.GetFishData(fishName).currentFish[0].sprite;
             go.GetComponentInChildren<TMP_Text>().text = fishName;
             go.GetComponentInChildren<Button>().onClick.AddListener(delegate { SelectFish(fishName); });
@@ -398,8 +396,6 @@ public class ShopManager : Singleton<ShopManager>
             ResetUpgrades();
         }
         ResetStats();
-        widthModifier = Screen.width / 1920;
-        heightModifier = Screen.height / 1080;
     }
 
     public void ResetUpgrades()
