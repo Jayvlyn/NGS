@@ -10,6 +10,7 @@ public class Water : InteractableObject
     [SerializeField] FishEvent onBossBite;
     [SerializeField] WaterEvent onCast;
     [SerializeField] VoidEvent onQuitFishing;
+    [SerializeField] private PlayerStats playerStats;
 
     //list of fish the pond has 
     [SerializeField] List<Fish> AnyTimeFish = new List<Fish>();
@@ -113,7 +114,7 @@ public class Water : InteractableObject
     //returns a random rarity based on the rarity values set in the inspector. 
     private Rarity GenerateRarity()
     {
-        int n = Random.Range(0, 100);
+        int n = (int)(Random.Range(0, 100) / playerStats.fishSizeModifier);
         //Debug.Log("Rarity: " + n);
         if (n >= 0 && n < rarityValues[0] + randomWaitAddon/3f)
         {
@@ -159,7 +160,7 @@ public class Water : InteractableObject
 				length = Random.Range(Mathf.Lerp(fish.minLength, fish.maxLength, .8f), fish.maxLength);
 				break;
 		}
-
+        length *= playerStats.fishSizeModifier;
 		return Mathf.Round(length * 10f) / 10f; // cut off after one decimal (4.123214415 -> 4.1)
 	}
 

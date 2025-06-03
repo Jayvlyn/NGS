@@ -10,6 +10,7 @@ public class FishMinigame : MonoBehaviour
     [SerializeField] Image fishImage;
     [SerializeField] GameObject minigameUI;
     [SerializeField] HookingEffect[] hookingEffects;
+    [SerializeField] PlayerStats playerStats;
 
     [SerializeField] float swimSpeed = 5.0f;
     [SerializeField] float panicMulti = 1.0f;
@@ -196,12 +197,12 @@ public class FishMinigame : MonoBehaviour
     {
         if (hooked)
         {
-            catchProgress += 0.01f * catchMulti;
+            catchProgress += 0.01f * catchMulti * playerStats.catchSpeed;
             catchProgBar.value = catchProgress / maxCatchProgress;
         }
         else if(catchProgBar.value > 0)
         {
-            catchProgress -= 0.01f * depleteMulti;
+            catchProgress -= 0.01f * depleteMulti / playerStats.catchSpeed;
             catchProgBar.value = catchProgress / maxCatchProgress;
         }
 
