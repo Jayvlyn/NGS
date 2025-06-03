@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 7063790950080558274}
   - component: {fileID: 7971708289345694609}
   - component: {fileID: 6388223198273254741}
-  - component: {fileID: 7577610302316546811}
+  - component: {fileID: 4492970012686048539}
   - component: {fileID: 2398592493966897265}
   m_Layer: 5
   m_Name: Hook
@@ -739,8 +739,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &7577610302316546811
-BoxCollider2D:
+--- !u!58 &4492970012686048539
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -773,18 +773,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -62}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 100, y: 88}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: -65.01732}
+  m_Radius: 34.8145
 --- !u!223 &2398592493966897265
 Canvas:
   m_ObjectHideFlags: 0
