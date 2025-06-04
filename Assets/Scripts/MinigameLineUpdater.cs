@@ -4,36 +4,38 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class MinigameLineUpdater : MonoBehaviour
 {
-	public RectTransform startPoint;
-	public RectTransform endPoint;
+    public RectTransform startPoint;
+    public RectTransform endPoint;
 
-	private RectTransform lineRect;
+    private RectTransform lineRect;
 
-	void Awake()
-	{
-		lineRect = GetComponent<RectTransform>();
-	}
+    void Awake()
+    {
+        lineRect = GetComponent<RectTransform>();
+    }
 
-	void Update()
-	{
-		if (startPoint == null || endPoint == null || lineRect == null)
-			return;
+    void Update()
+    {
+        if (startPoint == null || endPoint == null || lineRect == null)
+            return;
 
-		Vector3 startWorldPos = startPoint.position;
-		Vector3 endWorldPos = endPoint.position;
+        // Convert start/end world positions to local positions relative to the line's parent
+        Vector3 localStart = lineRect.parent.InverseTransformPoint(startPoint.position);
+        Vector3 localEnd = lineRect.parent.InverseTransformPoint(endPoint.position);
 
-		// Set position to midpoint
-		lineRect.position = (startWorldPos + endWorldPos) / 2f;
+        // Midpoint for line position
+        Vector3 localMidpoint = (localStart + localEnd) * 0.5f;
+        lineRect.localPosition = localMidpoint;
 
-		// Calculate angle and apply rotation
-		Vector3 direction = endWorldPos - startWorldPos;
-		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-		lineRect.rotation = Quaternion.Euler(0, 0, angle + 90);
+        // Direction and angle
+        Vector3 direction = localEnd - localStart;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        lineRect.localRotation = Quaternion.Euler(0, 0, angle+90);
 
-		// Set height (length) to match distance, keep width as is
-		float distance = direction.magnitude;
-		Vector2 sizeDelta = lineRect.sizeDelta;
-		sizeDelta.y = distance;
-		lineRect.sizeDelta = sizeDelta;
-	}
+        // Set line length (height) and preserve its width
+        float distance = direction.magnitude;
+        Vector2 sizeDelta = lineRect.sizeDelta;
+        sizeDelta.y = distance;
+        lineRect.sizeDelta = sizeDelta;
+    }
 }
