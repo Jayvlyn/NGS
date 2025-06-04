@@ -17,6 +17,7 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 180f;
     [SerializeField] GameSettings settings;
     [SerializeField] AudioClip waterLoop;
+    [SerializeField] PlayerAudioManager playerAudioManager;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class BossfightPlayerController : MonoBehaviour
     void Update()
     {
         float currentDistance = Vector2.Distance(boss.transform.position, transform.position);
+        playerAudioManager.UpdateReelSound(1/currentDistance);
         if (holdingReel)
         {
             desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.bossReelSpeed;
@@ -119,10 +121,13 @@ public class BossfightPlayerController : MonoBehaviour
         if (value.isPressed)
         {
             holdingReel = true;
+            playerAudioManager.StartReelSound();
+
         }
         else
         {
             holdingReel = false;
+            if(!holdingSlack)playerAudioManager.StopReelSound();
         }
     }
 
@@ -132,14 +137,16 @@ public class BossfightPlayerController : MonoBehaviour
 		if (value.isPressed)
 		{
             holdingSlack = true;
-			//joint.enabled = false;
-		}
+            playerAudioManager.StartReelSound();
+            //joint.enabled = false;
+        }
 		else
 		{
             holdingSlack = false;
             desiredDistance = Vector3.Distance(transform.position, boss.transform.position);
-			//joint.enabled = activeBlockers.Count == 0;
-		}
+            if(!holdingReel)playerAudioManager.StopReelSound();
+            //joint.enabled = activeBlockers.Count == 0;
+        }
 	}
 
 	#endregion

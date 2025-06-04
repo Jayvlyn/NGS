@@ -180,7 +180,7 @@ public class PlayerAudioManager : MonoBehaviour
         {
             if (oneShotAudioSource.isPlaying && oneShotAudioSource.resource == clip)
             {
-                StartCoroutine(SmoothStop(oneShotAudioSource));
+                smoothStop = StartCoroutine(SmoothStop(oneShotAudioSource));
                 break;
             }
         }
@@ -194,7 +194,7 @@ public class PlayerAudioManager : MonoBehaviour
 
     private void StopLoopingAudioSource()
     {
-        if(loopingAudioSource.enabled) StartCoroutine(SmoothStop(loopingAudioSource));
+        if(loopingAudioSource.enabled) smoothStop = StartCoroutine(SmoothStop(loopingAudioSource));
     }
 
     private void StartLoopingAudioSource(AudioClip clip)
@@ -204,12 +204,19 @@ public class PlayerAudioManager : MonoBehaviour
             StopCoroutine(stopRun);
             stopRun = null;
         }
+        if (smoothStop != null)
+        {
+            StopCoroutine(smoothStop);
+            smoothStop = null;
+        }
+
         if (loopingAudioSource.isPlaying) loopingAudioSource.Stop();
         loopingAudioSource.resource = clip;
         loopingAudioSource.Play();
     }
 
     private Coroutine stopRun;
+    private Coroutine smoothStop;
     private IEnumerator SmoothStop(AudioSource audioSource, float time = 0.15f)
     {
         float t = 0f;
@@ -220,7 +227,6 @@ public class PlayerAudioManager : MonoBehaviour
             audioSource.volume = Mathf.Lerp(initialVolume, 0, t / time);
             yield return null;
         }
-        if (stopRun != null) stopRun = null;
         audioSource.Stop();
         audioSource.volume = 1;
     }
