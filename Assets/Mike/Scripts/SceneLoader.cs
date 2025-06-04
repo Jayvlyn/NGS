@@ -31,6 +31,7 @@ public class SceneLoader : MonoBehaviour
 
     public static void LoadScene(string sceneName, bool GameSceneSwitch = false)
     {
+        if(GlobalAudioManager.Instance.IsLoopingSourcePlaying()) GlobalAudioManager.Instance.StopLoopingAudioSource();
         sceneToLoad = sceneName;
         if (sceneName == "MainMenu" || sceneName == "BossfightScene") GameUI.loadScreens = false;
         else GameUI.loadScreens = true;

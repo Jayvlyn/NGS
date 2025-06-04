@@ -16,9 +16,11 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] private float desiredDistance = 2.5f;
     [SerializeField] private float rotationSpeed = 180f;
     [SerializeField] GameSettings settings;
+    [SerializeField] AudioClip waterLoop;
 
     private void Start()
     {
+        GlobalAudioManager.Instance.StartLoopingAudioSource(waterLoop);
         deathDistance *= playerStats.bossLineLength;
     }
 
