@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8625951185936290918}
   - component: {fileID: 3895386628178932210}
-  - component: {fileID: 3512850322738880539}
   - component: {fileID: 8952307044513932103}
+  - component: {fileID: 273401497599500981}
   m_Layer: 5
   m_Name: Obstacle_Anchor
   m_TagString: Untagged
@@ -47,8 +47,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6200299212229735857}
   m_CullTransparentMesh: 1
---- !u!61 &3512850322738880539
-BoxCollider2D:
+--- !u!114 &8952307044513932103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6200299212229735857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed490b8ab0f1ae419f6022e6bd675bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  rotateSpeed: 1
+  imageObject: {fileID: 7871500671596667619}
+  spawnOnDestroy: {fileID: 0}
+  randomInitialRotation: 1
+  playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
+  posOffset: {x: 0, y: 20}
+  speedPenalty: 5
+  explosionForce: 0
+--- !u!60 &273401497599500981
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -77,11 +98,11 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.25782776, y: 0.16867065}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -91,28 +112,21 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 80.139435, y: 97.256836}
-  m_EdgeRadius: 0
---- !u!114 &8952307044513932103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200299212229735857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed490b8ab0f1ae419f6022e6bd675bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  rotateSpeed: 0
-  imageObject: {fileID: 7871500671596667619}
-  spawnOnDestroy: {fileID: 0}
-  randomInitialRotation: 1
-  speedPenalty: 3
-  explosionForce: 0
-  playerStats: {fileID: 11400000, guid: a2b2b7a2b749de5459de4b258fd829fe, type: 2}
+  m_Points:
+    m_Paths:
+    - - {x: 87.09808, y: -54.816814}
+      - {x: 88.61514, y: -22.849386}
+      - {x: 10.360043, y: -70.26814}
+      - {x: 30.936562, y: 28.023804}
+      - {x: 20.711393, y: 84.26089}
+      - {x: -0.17484474, y: 95.98964}
+      - {x: -20.628931, y: 83.39387}
+      - {x: -31.116993, y: 28.622856}
+      - {x: -9.244976, y: -70.47029}
+      - {x: -86.73524, y: -22.376266}
+      - {x: -86.31623, y: -53.61534}
+      - {x: 0.6341553, y: -101.05603}
+  m_UseDelaunayMesh: 0
 --- !u!1 &7871500671596667619
 GameObject:
   m_ObjectHideFlags: 0

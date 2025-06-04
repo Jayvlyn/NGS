@@ -9,15 +9,16 @@ public class MinigameObstacle : MonoBehaviour
     [SerializeField] GameObject imageObject;
     [SerializeField] GameObject spawnOnDestroy;
     [SerializeField] bool randomInitialRotation = true;
+    [SerializeField] PlayerStats playerStats;
     private float currentSpeed = 0.0f;
     private float currentRotateSpeed = 0.0f;
+    public Vector2 posOffset = Vector2.zero;
 
     [SerializeField] public FishMinigame fishMinigame { set; get; }
 
     [Header("Minigame effects")]
     [SerializeField] float speedPenalty;
     [SerializeField] float explosionForce;
-    [SerializeField] PlayerStats playerStats;
 
     void Start()
     {
@@ -36,6 +37,8 @@ public class MinigameObstacle : MonoBehaviour
         }
 
 		if(randomInitialRotation) transform.Rotate(0f, 0f, Random.Range(-20, 20));
+
+        transform.position += (Vector3)posOffset;
     }
 
 
