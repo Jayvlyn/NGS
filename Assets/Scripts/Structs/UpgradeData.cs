@@ -9,7 +9,6 @@ public class UpgradeData : ScriptableObject
     public double currentCost;
     public double costIncrease;
     public bool isMultiplicativeIncrease;
-    public Sprite sprite;
     public double maxCostBeforeDelete;
 
     

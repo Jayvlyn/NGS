@@ -67,4 +67,34 @@ public class PlayerStats : ScriptableObject
         platformingReelSpeed = stats.platformingReelSpeed;
         obstacleCount = stats.obstacleCount;
     }
+
+    public void CopyStats(StatsData stats)
+    {
+        castMaxSpeed = stats.castMaxSpeed;
+        fishSizeModifier = stats.fishSizeModifier;
+        biteSpeed = stats.biteSpeed;
+        catchSpeed = stats.catchSpeed;
+        hookStrength = stats.hookStrength;
+        bossLineLength = stats.bossLineLength;
+        bossReelSpeed = stats.bossReelSpeed;
+        //grappleMaxCastSpeed = stats.grappleMaxCastSpeed;
+        platformingLineLength = stats.platformingLineLength;
+        platformingReelSpeed = stats.platformingReelSpeed;
+        obstacleCount = stats.obstacleCount;
+    }
+
+    public void CopyTo(ref StatsData stats)
+    {
+        stats.castMaxSpeed = castMaxSpeed;
+        stats.fishSizeModifier = fishSizeModifier;
+        stats.biteSpeed = biteSpeed;
+        stats.catchSpeed = catchSpeed;
+        stats.hookStrength = hookStrength;
+        stats.bossLineLength = bossLineLength;
+        stats.bossReelSpeed = bossReelSpeed;
+        //stats.grappleMaxCastSpeed = grappleMaxCastSpeed;
+        stats.platformingLineLength = platformingLineLength;
+        stats.platformingReelSpeed = platformingReelSpeed;
+        stats.obstacleCount = obstacleCount;
+    }
 }
