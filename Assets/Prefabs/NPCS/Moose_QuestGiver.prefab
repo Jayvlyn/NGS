@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 197042263118172794}
   - component: {fileID: 3989273781178588188}
   m_Layer: 0
-  m_Name: Lizard_QuestGiver
+  m_Name: Moose_QuestGiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1511548392, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
+  m_Sprite: {fileID: 415901022, guid: 5673dce5067b81e45a79e033037078b7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -107,14 +107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6645827179261665076}
   sprites:
-  - {fileID: 1511548392, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: -458656075, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: 2097705578, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: -654978795, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: -780308767, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: -2059339545, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: 1664271618, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
-  - {fileID: -821225738, guid: d6dd34ce6d09dab40a6bfd96f4617721, type: 3}
+  - {fileID: 415901022, guid: 5673dce5067b81e45a79e033037078b7, type: 3}
+  - {fileID: 88555767, guid: 5673dce5067b81e45a79e033037078b7, type: 3}
   frameInterval: 0.3
   randomizeStart: 0
 --- !u!58 &6648219011723558388
@@ -151,8 +145,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.080049515, y: 0.14584899}
-  m_Radius: 0.48655987
+  m_Offset: {x: -0.036729813, y: 0.14584899}
+  m_Radius: 1.5484858
 --- !u!114 &197042263118172794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,12 +201,8 @@ MonoBehaviour:
     dialogues: []
     completionDialogue: 
     loop: 0
-  - quest: {fileID: 0}
-    dialogues: []
-    completionDialogue: 
-    loop: 0
   givesCosmetic: 0
-  questGiverName: Lizard
+  questGiverName: Moose
   listener: {fileID: 197042263118172794}
   dialoguePopupTransform: {fileID: 1979042755753686425}
   appearanceData:

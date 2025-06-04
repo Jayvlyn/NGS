@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5299283173407257296}
   - component: {fileID: 6800923444766373412}
   m_Layer: 0
-  m_Name: Fox_Landmark
+  m_Name: Moose_Landmark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,12 +112,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -3
-  m_Sprite: {fileID: -1280279403, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
+  m_Sprite: {fileID: 415901022, guid: 5673dce5067b81e45a79e033037078b7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 1.28, y: 0.96}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -137,16 +137,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 8147156995934484671}
   sprites:
-  - {fileID: -1280279403, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: -1901249462, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: -1520243356, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: 227182120, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: 1275734827, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: 1628115932, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: 420551702, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: -124893368, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: 331404856, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
-  - {fileID: -1536506854, guid: 853d64494f67b1a4d9a3b3dab73ff31a, type: 3}
+  - {fileID: 415901022, guid: 5673dce5067b81e45a79e033037078b7, type: 3}
+  - {fileID: 88555767, guid: 5673dce5067b81e45a79e033037078b7, type: 3}
   frameInterval: 0.3
   randomizeStart: 0
 --- !u!58 &5299283173407257296
@@ -183,8 +175,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0030403137, y: 0}
-  m_Radius: 0.610096
+  m_Offset: {x: -0.036729813, y: 0.14584899}
+  m_Radius: 1.5484858
 --- !u!114 &6800923444766373412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,12 +196,10 @@ MonoBehaviour:
   popupLocation: {fileID: 6162254240416479447}
   dialoguePopupLocation: {fileID: 8991809366365859052}
   questDescriptions: []
-  questDescriptionsLoop: 0
-  landmarkName: Fox
+  questDescriptionsLoop: 1
+  landmarkName: Moose
   baseData:
-    landmarkDescriptions:
-    - Hey buddy
-    - What do you want.
+    landmarkDescriptions: []
     screenPopup: 0
     lifetime: 3
     standardDescriptionsLoop: 0
