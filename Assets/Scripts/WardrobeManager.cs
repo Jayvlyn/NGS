@@ -11,16 +11,14 @@ public class WardrobeManager : MonoBehaviour
     public TMP_Text WardrobeName;
     public Texture2D[] WardrobeTextures;
 
-    public string[] WardrobeNames;
+    public List<string> WardrobeNames = new();
     public Material WardrobeMaterial;
-    public List<int> unlockedFlannels = new();
-    public List<int> shopFlannels = new();
     public int CurrentIndex = 0;
-
+    public GameSettings gameSettings;
     public void ConfirmbuttonPressed()
     {
-        GameUI.Instance.SaveFlannel(WardrobeTextures[unlockedFlannels[CurrentIndex]].name);
-        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[unlockedFlannels[CurrentIndex]]);
+        GameUI.Instance.SaveFlannel(WardrobeTextures[gameSettings.unlockedFlannels[CurrentIndex]].name);
+        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[gameSettings.unlockedFlannels[CurrentIndex]]);
         CloseWardrobe();
     }
     public void OpenWardrobe()
@@ -34,23 +32,35 @@ public class WardrobeManager : MonoBehaviour
     public void IterateWardrobe(int direction)
     {
         CurrentIndex += direction;
-        if (CurrentIndex >= unlockedFlannels.Count)
+        if (CurrentIndex >= gameSettings.unlockedFlannels.Count)
         {
             CurrentIndex = 0;
         }
         if (CurrentIndex < 0)
         {
-            CurrentIndex = unlockedFlannels.Count - 1;
+            CurrentIndex = gameSettings.unlockedFlannels.Count - 1;
         }
-        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[unlockedFlannels[CurrentIndex]]);
-        WardrobeName.text = WardrobeNames[unlockedFlannels[CurrentIndex]];
+        WardrobeMaterial.SetTexture("_Swap", WardrobeTextures[gameSettings.unlockedFlannels[CurrentIndex]]);
+        WardrobeName.text = WardrobeNames[gameSettings.unlockedFlannels[CurrentIndex]];
     }
 
     public void UnlockFlannel(int index)
     {
-        if(!unlockedFlannels.Contains(index))
+        if(!gameSettings.unlockedFlannels.Contains(index))
         {
-            unlockedFlannels.Add(index);
+            gameSettings.unlockedFlannels.Add(index);
+        }
+    }
+
+    public void UnlockFlannel(string flannel)
+    {
+        for(int i = 0; i < WardrobeNames.Count; i++)
+        {
+            if (WardrobeNames[i] == flannel)
+            {
+                UnlockFlannel(i);
+                break;
+            }
         }
     }
 }

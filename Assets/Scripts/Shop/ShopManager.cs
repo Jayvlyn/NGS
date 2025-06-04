@@ -21,6 +21,11 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private Vector2 buyUpgradeUIPrefabMarginData;
     [SerializeField] private Vector2 buyUpgradeUIPrefabSizeData;
     [SerializeField] private int expectedBuyUpgradeColumns = 3;
+    [SerializeField, Tooltip("Prefab where a button to buy an flannel will be, one will be generated for each flannel that you can buy at the attached shop")]
+    private GameObject buyFlannelUIPrefab;
+    [SerializeField] private Vector2 buyFlannelUIPrefabMarginData;
+    [SerializeField] private Vector2 buyFlannelUIPrefabSizeData;
+    [SerializeField] private int expectedBuyFlannelColumns = 3;
 
     //private ShopData currentShop;
 
@@ -35,11 +40,15 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField, Tooltip("Window containing all of the different upgrades that can be bought at the attached shop")]
     private GameObject buyUpgradeWindow;
     [SerializeField] private RectTransform buyUpgradeDisplayArea;
+    [SerializeField, Tooltip("Window containing all of the different flannels that can be bought at the attached shop")]
+    private GameObject buyFlannelWindow;
+    [SerializeField] private RectTransform buyFlannelDisplayArea;
 
     private ShopState state = ShopState.Closed;
     private List<GameObject> pastFishTiles = new();
     private List<GameObject> pastSelectTiles = new();
     private List<GameObject> pastUpgradeTiles = new();
+    private List<GameObject> pastFlannelTiles = new();
     private string previousFishType = string.Empty;
 
     [SerializeField] private Toggle sellAllExcludeLargest;
@@ -52,12 +61,12 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] public static List<UpgradeData> upgrades;
     [SerializeField] public static UpgradeData[] baseUpgrades;
     [SerializeField] private UpgradeData[] defaultUpgrades;
+    [SerializeField] private ComparableTuple<string, float>[] flannels;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerStats baseStats;
 
+    [SerializeField] private GameSettings gameSettings;
     [SerializeField] private WardrobeManager wardrobeManager;
-    [SerializeField] private GameObject buyFlannelWindow;
-    [SerializeField] private RectTransform buyFlannelDisplayArea;
 
     //Testing only, remove later
     //[SerializeField, Tooltip("This shold be removed before build as it is only for testing purposes")] private ShopData testingShopData;
@@ -327,7 +336,7 @@ public class ShopManager : Singleton<ShopManager>
             go.transform.localPosition =
                 new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f,
                 buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
-            go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
+            //go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
             go.GetComponentInChildren<TMP_Text>().text = $"{data.upgradeName}: {(data.currentCost):F2} Carrots";
             go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
             pastUpgradeTiles.Add(go);
@@ -385,17 +394,23 @@ public class ShopManager : Singleton<ShopManager>
 
     private void Start()
     {
-        if(upgrades == null)
+        
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+        if (baseUpgrades == null)
+        {
+            baseUpgrades = new UpgradeData[defaultUpgrades.Length];
+            for (int i = 0; i < baseUpgrades.Length; i++)
+            {
+                baseUpgrades[i] = Instantiate(defaultUpgrades[i]);
+            }
+        }
+        if (upgrades == null)
         {
             upgrades = new();
-            if (baseUpgrades == null)
-            {
-                baseUpgrades = new UpgradeData[defaultUpgrades.Length];
-                for(int i = 0; i < baseUpgrades.Length; i++)
-                {
-                    baseUpgrades[i] = Instantiate(defaultUpgrades[i]);
-                }
-            }
             ResetUpgrades();
         }
         ResetStats();
@@ -436,7 +451,69 @@ public class ShopManager : Singleton<ShopManager>
 
     public void OpenBuyFlannels()
     {
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyFlannelWindow));
+        state = ShopState.BuyFlannel;
+        if(pastFlannelTiles.Count == 0)
+        {
+            PlaceFlannels();
+        }
+    }
 
+    public void ClearFlannels()
+    {
+        while(pastFlannelTiles.Count > 0)
+        {
+            Destroy(pastFlannelTiles[0]);
+            pastFlannelTiles.RemoveAt(0);
+        }
+    }
+
+    public void PlaceFlannels()
+    {
+        for (int current = 0; current < flannels.Length; current++)
+        {
+            if (wardrobeManager.WardrobeNames.Contains(flannels[current].Item1) && !gameSettings.unlockedFlannels.Contains(wardrobeManager.WardrobeNames.IndexOf(flannels[current].Item1)))
+            {
+                int column = current % expectedBuyFlannelColumns;
+                int row = current / expectedBuyFlannelColumns;
+                GameObject go = Instantiate(buyFlannelUIPrefab, buyFlannelDisplayArea);
+                RectTransform trans = go.GetComponent<RectTransform>();
+                Vector2 size = trans.offsetMax - trans.offsetMin;
+                trans.offsetMax += (buyFlannelUIPrefabSizeData - size) / 2f;
+                trans.offsetMin -= (buyFlannelUIPrefabSizeData - size) / 2f;
+                go.transform.localPosition =
+                    new Vector3(buyFlannelUIPrefabMarginData.x * (column + 1) + buyFlannelUIPrefabSizeData.x * column - 7.5f,
+                    buyFlannelUIPrefabMarginData.y * -(row + 1) + buyFlannelUIPrefabSizeData.y * -row);
+                //go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
+                go.GetComponentInChildren<TMP_Text>().text = $"{flannels[current].Item1}: {(flannels[current].Item2):F2} Carrots";
+                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { });
+                pastFlannelTiles.Add(go);
+            }
+        }
+    }
+
+    public void CloseBuyFlannels()
+    {
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyFlannelWindow, true));
+        state = ShopState.MainMenu;
+    }
+
+    public void BuyFlannel(string name)
+    {
+        foreach(ComparableTuple<string, float> flannel in flannels)
+        {
+            if(flannel.Item1 == name)
+            {
+                if(Inventory.Instance.CanAfford(flannel.Item2))
+                {
+                    Inventory.Instance.AddMoney(-flannel.Item2);
+                    FindFirstObjectByType<WardrobeManager>().UnlockFlannel(flannel.Item1);
+                    ClearFlannels();
+                    PlaceFlannels();
+                }
+                break;
+            }
+        }
     }
 
 }
