@@ -52,6 +52,10 @@ public class QuestManager : Singleton<QuestManager>
         }
         int reward = (int)quest.reward.carrots;
         if (reward > 0) SpawnRewardCarrots(reward);
+        if(!string.IsNullOrEmpty(quest.reward.flannelName))
+        {
+
+        }
         Inventory.Instance.AddMoney(reward);
         RemoveQuest(quest);
     }

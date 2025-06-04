@@ -6,6 +6,7 @@ public class GameSettings : ScriptableObject
 {
     public string id;
     public string flannel;
+    public List<int> unlockedFlannels;
 
     public float masterVolume;
     public float musicVolume;
@@ -25,4 +26,5 @@ public class GameSettings : ScriptableObject
 
     [Header("Bossgame input binds")]
     public List<KeyBindingSaveData> bossGameKeys;//6
+
 }
