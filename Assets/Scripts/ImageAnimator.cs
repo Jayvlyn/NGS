@@ -10,9 +10,11 @@ public class ImageAnimator : MonoBehaviour
 	[SerializeField] bool destroyOnEnd = false;
 	float swapTimer;
 	int index = 0;
+	public bool randomStartFrame = false;
 
 	private void Start()
 	{
+		if(randomStartFrame) index = Random.Range(0, sprites.Length);
 		swapTimer = frameInterval;
 		image.sprite = sprites[index];
 	}

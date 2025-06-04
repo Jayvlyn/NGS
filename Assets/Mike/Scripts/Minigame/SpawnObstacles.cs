@@ -8,9 +8,15 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] PlayerStats playerStats;
     public int min { get; set; }
     public int max { get; set; }
+    public bool randomPosOffset = true;
+    public bool reuseSpawnpoints = true;
 
     private void OnEnable()
     {
+        if (!reuseSpawnpoints)
+        {
+            unusedSpawnPoints = new List<Transform>(spawnPoints);
+        }
         int spawnAmount = (int)(Random.Range(min, max) * playerStats.obstacleCount);
         for (int i = 0; i < spawnAmount;)
         {
@@ -18,11 +24,20 @@ public class SpawnObstacles : MonoBehaviour
         }
     }
 
+    private List<Transform> unusedSpawnPoints = new List<Transform>();
     private int Spawn(int maxWeight)
     {
         if (spawnPoints.Count == 0 || obstaclesToSpawn.Count == 0) return maxWeight;
 
-        int sIndex = Random.Range(0, spawnPoints.Count);
+        int sIndex = -1;
+        if(reuseSpawnpoints)
+        {
+            sIndex = Random.Range(0, spawnPoints.Count);
+        }
+        else
+        {
+            sIndex = Random.Range(0, unusedSpawnPoints.Count);
+        }
         int oIndex = Random.Range(0, obstaclesToSpawn.Count);
         int i = 0;
         for (; obstaclesToSpawn[oIndex].cost > maxWeight && i < obstaclesToSpawn.Count; i++)
@@ -37,12 +52,32 @@ public class SpawnObstacles : MonoBehaviour
         {
             return maxWeight;
         }
-        Vector3 randomOffset = Random.insideUnitCircle * 150;
-        Vector3 spawnPosition = spawnPoints[sIndex].position + randomOffset;
+        Vector3 randomOffset = Vector3.zero;
+        if(randomPosOffset) randomOffset = Random.insideUnitCircle * 150;
 
-        GameObject spawnedObject = Instantiate(obstaclesToSpawn[oIndex].obj, spawnPosition, spawnPoints[sIndex].rotation, transform.Find("BackgroundArtContainer").transform);
+        Vector3 spawnPosition;
+        if(reuseSpawnpoints)
+        {
+            spawnPosition = spawnPoints[sIndex].position + randomOffset;
+        }
+        else
+        {
+            spawnPosition = unusedSpawnPoints[sIndex].position + randomOffset;
+        }
 
-        spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = GetComponentInChildren<FishMinigame>();
+        GameObject spawnedObject;
+        if(reuseSpawnpoints)
+        {
+            spawnedObject = Instantiate(obstaclesToSpawn[oIndex].obj, spawnPosition, spawnPoints[sIndex].rotation, transform.Find("BackgroundArtContainer").transform);
+            spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = GetComponentInChildren<FishMinigame>();
+        }
+        else
+        {
+            spawnedObject = Instantiate(obstaclesToSpawn[oIndex].obj, spawnPosition, unusedSpawnPoints[sIndex].rotation, transform.parent.Find("BackgroundArtContainer").transform);
+            spawnedObject.GetComponent<MinigameObstacle>().fishMinigame = transform.parent.gameObject.GetComponentInChildren<FishMinigame>();
+            unusedSpawnPoints.RemoveAt(sIndex);
+        }
+
         spawnedObject.SetActive(true);
         return obstaclesToSpawn[oIndex].cost;
         

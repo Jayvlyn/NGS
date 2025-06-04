@@ -22,12 +22,18 @@ public class MinigameObstacle : MonoBehaviour
     void Start()
     {
         currentSpeed = speed;
-        currentSpeed += Random.Range(-5, 6);
-        currentSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
+        if(currentRotateSpeed > 0)
+        {
+            currentSpeed += Random.Range(-5, 6);
+            currentSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
+        }    
 
         currentRotateSpeed = rotateSpeed;
-        currentRotateSpeed += Random.Range(-5, 6);
-		currentRotateSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
+        if(rotateSpeed > 0)
+        {
+            currentRotateSpeed += Random.Range(-5, 6);
+		    currentRotateSpeed *= Random.Range(0, 2) == 0 ? 1 : -1;
+        }
 
 		if(randomInitialRotation) transform.Rotate(0f, 0f, Random.Range(-20, 20));
     }
