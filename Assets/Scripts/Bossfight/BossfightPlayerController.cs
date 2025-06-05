@@ -42,7 +42,7 @@ public class BossfightPlayerController : MonoBehaviour
         desiredDistance = currentDistance;
         if (currentDistance >= deathDistance && !immortalForTesting)
         {
-            SceneLoader.LoadScene(settings.position.currentLocation);
+            SceneLoader.LoadScene(settings.location.currentLocation);
         }
         if (GetMovement().magnitude > 0.1f)
         {
@@ -54,7 +54,7 @@ public class BossfightPlayerController : MonoBehaviour
         if(currentDistance < radius * 5)
         {
             BossFishController.caughtBoss = true;
-            SceneLoader.LoadScene(settings.position.currentLocation);
+            SceneLoader.LoadScene(settings.location.currentLocation);
         }
 
         Collider2D[] results = Physics2D.OverlapCircleAll(transform.position, radius);

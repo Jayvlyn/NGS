@@ -61,7 +61,7 @@ public class GameUI : Singleton<GameUI>
 
         gameSettings = modifySettings.settings;
 
-        if (loadScreens) DayNightCycle.Instance.currentTime = gameSettings.position.currentTime;
+        if (loadScreens) DayNightCycle.Instance.currentTime = gameSettings.location.currentTime;
 
         HUD.SetActive(loadScreens);
 
@@ -204,14 +204,14 @@ public class GameUI : Singleton<GameUI>
         oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
         pi.transform.localPosition = oldPosition;
         inventoryMenu.gameObject.SetActive(true);
-        DayNightCycle.Instance.currentTime = gameSettings.position.currentTime;
+        DayNightCycle.Instance.currentTime = gameSettings.location.currentTime;
         if (loadGame.activeSelf) loadGame.SetActive(false);
     }
 
     public void AutoSave()
     {
         loadGame.SetActive(true);
-        gameSettings.position.currentTime = DayNightCycle.Instance.currentTime;
+        gameSettings.location.currentTime = DayNightCycle.Instance.currentTime;
         loadGame.GetComponent<SaveLoadManager>().autoSave();
         loadGame.SetActive(false);
     }

@@ -17,6 +17,8 @@ public class GameSettings : ScriptableObject
 
     public ToggleData toggleData;
 
+    public locationData location;
+
     public positionData position;
 
     [Header("Platformer input binds")]

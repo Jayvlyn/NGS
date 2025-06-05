@@ -35,7 +35,7 @@ public class DayNightCycle : Singleton<DayNightCycle>
 	{
 		currentTime = NoonHour * 60; // start at noon
 		if(settings == null) settings = GameUI.Instance.gameSettings;
-		if(!GameUI.loadScreens) currentTime = settings.position.currentTime;
+		if(!GameUI.loadScreens) currentTime = settings.location.currentTime;
 		sky = GameObject.FindGameObjectWithTag("Sky").GetComponent<SpriteRenderer>();
 	}
 
@@ -75,7 +75,7 @@ public class DayNightCycle : Singleton<DayNightCycle>
 			currentTime = MidnightHour * 60;
 		}
 
-		settings.position.currentTime = currentTime;
+		settings.location.currentTime = currentTime;
 
 		UpdateLightIntensity();
 	}

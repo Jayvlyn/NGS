@@ -39,9 +39,9 @@ public class ModifySettings : MonoBehaviour
             prev = check;
             options.Add(option);
             newRes.Add(res[i]);
-            if (res[i].width == Screen.currentResolution.width && res[i].height == Screen.currentResolution.height)
+            if (res[i].width == 1920 && res[i].height == 1080)
             {
-                currentResIndex = i;
+                currentResIndex = 8;
             }
         }
 

@@ -111,7 +111,7 @@ public class MenuUI : MonoBehaviour
         {
             loadMenu.SetActive(false);
             characterName.text.Remove(0);
-            gameSettings.position.currentTime = 0;
+            gameSettings.location.currentTime = 0;
             SceneLoader.LoadScene("GameScene");
             //GameUI.gameStart = true;
         }
@@ -182,5 +182,10 @@ public class MenuUI : MonoBehaviour
         characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(true);
         yield return new WaitForSeconds(2);
         characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(false);
+    }
+
+    public void CreditsAnimation(GameObject go)
+    {
+        UIAnimations.PlayUIAnim("SlideUp", go, go.activeSelf);
     }
 }

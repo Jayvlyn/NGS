@@ -37,7 +37,7 @@ public class MapManager : Singleton<MapManager>
 
     public List<ComparableTuple<int, int>> GetVisibleTiles()
     {
-        return gameSettings.position.currentLocation switch
+        return gameSettings.location.currentLocation switch
         {
             "Desert" => loadedDesertTiles,
             "Snow" => loadedSnowTiles,

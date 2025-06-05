@@ -10,6 +10,8 @@ public class SaveLoadManager : MonoBehaviour
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject savePrefab;
     [SerializeField] private GameSettings gameSettings;
+    [SerializeField] private PlayerStats baseStats;
+    [SerializeField] private PlayerStats stats;
     [SerializeField] private int columns = 3;
     private readonly List<GameObject> options = new();
     private readonly List<SaveData> saveList = new();
@@ -29,6 +31,8 @@ public class SaveLoadManager : MonoBehaviour
         data.bossGameKeybinds = gameSettings.bossGameKeys;
         data.flannel = gameSettings.flannel;
         id = data.id;
+        data.stats = new StatsData();
+        stats.CopyFrom(baseStats);
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
@@ -53,7 +57,7 @@ public class SaveLoadManager : MonoBehaviour
         //save player data
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
-        data.position = gameSettings.position;
+        data.forestPos = gameSettings.position;
 
         //copy current fish held
         foreach (var key in data.inventory.Keys)
@@ -89,6 +93,10 @@ public class SaveLoadManager : MonoBehaviour
         data.volumeData.sfx = gameSettings.sfxVolume;
 
         data.flannel = gameSettings.flannel;
+        data.unlockedFlannels = gameSettings.unlockedFlannels;
+        stats.CopyTo(ref data.stats);
+        data.upgrades = ShopManager.upgrades;
+        ShopManager.Instance.ResetUpgrades();
 
         string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
@@ -131,7 +139,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadSelected()
     {
-        SceneLoader.LoadScene(saveList[selected].position.currentLocation);
+        SceneLoader.LoadScene(saveList[selected].location.currentLocation);
     }
 
     public void Select(int save)
@@ -183,9 +191,14 @@ public class SaveLoadManager : MonoBehaviour
 
             //load player
             gameSettings.flannel = save.flannel;
-            gameSettings.position = save.position;
+            gameSettings.position = save.forestPos;
+            gameSettings.location = save.location;
             gameSettings.id = save.id;
             id = save.id;
+            gameSettings.unlockedFlannels = save.unlockedFlannels;
+            ShopManager.upgrades = save.upgrades;
+
+            stats.CopyStats(save.stats);
         }
 
         //Apply loaded data & unselect

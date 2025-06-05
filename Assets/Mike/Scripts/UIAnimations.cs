@@ -5,7 +5,7 @@ public static class UIAnimations
 {
     public static IEnumerator PlayUIAnim(string name, GameObject menu, bool Both = false, float delay = 0, bool turnOff = false)
     {
-        yield return new WaitForSecondsRealtime(delay);
+        if(delay > 0) yield return new WaitForSecondsRealtime(delay);
         var anim = menu.GetComponent<Animator>();
 
         if (anim.GetBool(name)) anim.SetBool(name, false);

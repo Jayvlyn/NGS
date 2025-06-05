@@ -10,7 +10,10 @@ public class SaveData
     public List<KeyBindingSaveData> bossGameKeybinds;
     public List<UpgradeData> upgrades;
     public List<int> unlockedFlannels;
-    public positionData position;
+    public locationData location;
+    public positionData forestPos;
+    public positionData desertPos;
+    public positionData snowPos;
     public VolumeData volumeData;
     public ToggleData toggleData;
     public int screenResolution;
@@ -37,10 +40,15 @@ public struct KeyBindingSaveData
 [System.Serializable]
 public struct positionData
 {
-    public string currentLocation;
-    public float currentTime;
     public float x;
     public float y;
+}
+
+[System.Serializable]
+public struct locationData
+{
+    public string currentLocation;
+    public float currentTime;
 }
 
 [System.Serializable]
