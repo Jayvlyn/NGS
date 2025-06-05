@@ -97,7 +97,11 @@ public class ShopManager : Singleton<ShopManager>
 			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyUpgradeWindow, true));
 			        StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
 					break;
-			}
+                case ShopState.BuyFlannel:
+                    StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", buyFlannelWindow, true));
+                    StartCoroutine(UIAnimations.PlayUIAnim("SlideIn", mainMenuWindow, true));
+                    break;
+            }
 
             QuestManager.Instance.UpdateQuests();
             state = ShopState.Closed;
@@ -470,12 +474,13 @@ public class ShopManager : Singleton<ShopManager>
 
     public void PlaceFlannels()
     {
-        for (int current = 0; current < flannels.Length; current++)
+        for (int current = 0, offset = 0; current < flannels.Length; current++)
         {
-            if (wardrobeManager.WardrobeNames.Contains(flannels[current].Item1) && !gameSettings.unlockedFlannels.Contains(wardrobeManager.WardrobeNames.IndexOf(flannels[current].Item1)))
+            ComparableTuple<string, float> flannel = flannels[current];
+            if (wardrobeManager.WardrobeNames.Contains(flannel.Item1) && !gameSettings.unlockedFlannels.Contains(wardrobeManager.WardrobeNames.IndexOf(flannel.Item1)))
             {
-                int column = current % expectedBuyFlannelColumns;
-                int row = current / expectedBuyFlannelColumns;
+                int column = (current - offset) % expectedBuyFlannelColumns;
+                int row = (current - offset) / expectedBuyFlannelColumns;
                 GameObject go = Instantiate(buyFlannelUIPrefab, buyFlannelDisplayArea);
                 RectTransform trans = go.GetComponent<RectTransform>();
                 Vector2 size = trans.offsetMax - trans.offsetMin;
@@ -485,9 +490,13 @@ public class ShopManager : Singleton<ShopManager>
                     new Vector3(buyFlannelUIPrefabMarginData.x * (column + 1) + buyFlannelUIPrefabSizeData.x * column - 7.5f,
                     buyFlannelUIPrefabMarginData.y * -(row + 1) + buyFlannelUIPrefabSizeData.y * -row);
                 //go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
-                go.GetComponentInChildren<TMP_Text>().text = $"{flannels[current].Item1}: {(flannels[current].Item2):F2} Carrots";
-                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { });
+                go.GetComponentInChildren<TMP_Text>().text = $"{flannel.Item1}: {(flannel.Item2):F2} Carrots";
+                go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyFlannel(flannel.Item1); });
                 pastFlannelTiles.Add(go);
+            }
+            else
+            {
+                offset++;
             }
         }
     }
@@ -507,7 +516,7 @@ public class ShopManager : Singleton<ShopManager>
                 if(Inventory.Instance.CanAfford(flannel.Item2))
                 {
                     Inventory.Instance.AddMoney(-flannel.Item2);
-                    FindFirstObjectByType<WardrobeManager>().UnlockFlannel(flannel.Item1);
+                    wardrobeManager.UnlockFlannel(flannel.Item1);
                     ClearFlannels();
                     PlaceFlannels();
                 }

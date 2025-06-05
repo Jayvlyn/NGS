@@ -6,6 +6,7 @@ public class QuestManager : Singleton<QuestManager>
 {
     private List<Quest> activeQuests = new List<Quest>();
     [SerializeField] protected InteractionEvent interactionEvent;
+    [HideInInspector] public List<string> flannelsToUnlock = new();
 
     private UIParticleFX particleSys;
 
@@ -54,7 +55,7 @@ public class QuestManager : Singleton<QuestManager>
         if (reward > 0) SpawnRewardCarrots(reward);
         if(!string.IsNullOrEmpty(quest.reward.flannelName))
         {
-
+            flannelsToUnlock.Add(quest.reward.flannelName);
         }
         Inventory.Instance.AddMoney(reward);
         RemoveQuest(quest);
