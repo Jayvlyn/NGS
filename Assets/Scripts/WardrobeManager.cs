@@ -23,6 +23,11 @@ public class WardrobeManager : MonoBehaviour
     }
     public void OpenWardrobe()
     {
+        while(QuestManager.Instance.flannelsToUnlock.Count > 0)
+        {
+            UnlockFlannel(QuestManager.Instance.flannelsToUnlock[0]);
+            QuestManager.Instance.flannelsToUnlock.RemoveAt(0);
+        }
         this.gameObject.SetActive(true);
     }
     public void CloseWardrobe()

@@ -6,7 +6,7 @@ public class GameSettings : ScriptableObject
 {
     public string id;
     public string flannel;
-    public List<int> unlockedFlannels;
+    public List<int> unlockedFlannels = new List<int>() { 0, 6};
     public List<UpgradeData> upgrades;
 
     public float masterVolume;

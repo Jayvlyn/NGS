@@ -2707,11 +2707,11 @@ MonoBehaviour:
   expectedSelectFishColumns: 3
   buyUpgradeUIPrefab: {fileID: 6845950396475475110, guid: 9a604841a73f13f43b0aaeff07762541, type: 3}
   buyUpgradeUIPrefabMarginData: {x: 25, y: 25}
-  buyUpgradeUIPrefabSizeData: {x: 295, y: 295}
+  buyUpgradeUIPrefabSizeData: {x: 295, y: 175}
   expectedBuyUpgradeColumns: 2
   buyFlannelUIPrefab: {fileID: 6845950396475475110, guid: 9a604841a73f13f43b0aaeff07762541, type: 3}
   buyFlannelUIPrefabMarginData: {x: 25, y: 25}
-  buyFlannelUIPrefabSizeData: {x: 295, y: 295}
+  buyFlannelUIPrefabSizeData: {x: 295, y: 175}
   expectedBuyFlannelColumns: 2
   mainMenuWindow: {fileID: 3348672375514401808}
   selectFishWindow: {fileID: 4629593775484317082}
@@ -3497,7 +3497,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7605497490435062890}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: CloseUpgrade
+        m_MethodName: CloseBuyFlannels
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

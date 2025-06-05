@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class InteractableObject : MonoBehaviour
 {
-    public int Id {  get; private set; }
+    public int Id { get; protected set; } = -1;
     private static int count = 0;
     public InteractionType interactionType;
     public InteractionEvent enterInteractionRangeEvent;
@@ -13,11 +13,21 @@ public class InteractableObject : MonoBehaviour
     //protected Dictionary<int, GameObject> currentPopups = new();
     protected virtual void Start()
     {
-        Id = count;
-        count++;
+        if (Id == -1)
+        {
+            Id = count;
+            count++;
+        }
         if (interactEvent != null)
         {
             interactEvent.Subscribe(Interact);
+        }
+    }
+    public void CreateId(int newId)
+    {
+        if(Id == -1)
+        {
+            Id = newId;
         }
     }
 
@@ -45,7 +55,8 @@ public class InteractableObject : MonoBehaviour
     {
         if(collision.gameObject.TryGetComponent(out Interactor actor))
         {
-            exitInteractionRangeEvent.Trigger(new InteractionPair(this, actor));
+            InteractionPair pair = new(this, actor);
+            exitInteractionRangeEvent.Trigger(pair);
             //if (currentPopups.ContainsKey(actor.Id))
             //{
             //    Destroy(currentPopups[actor.Id]);

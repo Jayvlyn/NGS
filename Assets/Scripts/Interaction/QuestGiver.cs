@@ -56,6 +56,10 @@ public class QuestGiver : InteractableObject
                     if (potentialQuests[currentQuestIndex].quest.fishQuest)
                     {
                         lowestViable = Inventory.Instance.GetLowestViable(potentialQuests[currentQuestIndex].quest.fish.fishName, potentialQuests[currentQuestIndex].quest.minLength);
+                        if(currentPopup  != null)
+                        {
+                            currentPopup.GetComponent<DialogueVoidPopup>().ClosePopup();
+                        }
                         currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
                         nextCanInteract = false;
                     }
@@ -104,11 +108,14 @@ public class QuestGiver : InteractableObject
     {
         if(!canInteract)
         {
-            if(complete)
+            if (complete)
             {
                 CompleteQuest();
             }
-            Destroy(currentPopup);
+            else
+            {
+                Destroy(currentPopup);
+            }
             canInteract = true;
         }
     }
@@ -137,33 +144,34 @@ public class QuestGiver : InteractableObject
         if (potentialQuests[currentQuestIndex].quest.disabled)
         {
             potentialQuests.RemoveAt(currentQuestIndex);
-            if(potentialQuests.Count == 0 )
-            {
-                Landmark landmark = gameObject.AddComponent<Landmark>();
-                landmark.baseData = dataForNoMoreQuests;
-                landmark.landmarkName = questGiverName;
-                landmark.dialoguePopupLocation = dialoguePopupTransform;
-                landmark.popupLocation = popupLocation;
-                landmark.interactEvent = interactEvent;
-                landmark.enterInteractionRangeEvent = enterInteractionRangeEvent;
-                landmark.exitInteractionRangeEvent = exitInteractionRangeEvent;
-                landmark.interactionType = InteractionType.Landmark;
-                landmark.currentPopup = currentPopup;
-                landmark.OnTriggerEnter2D(colliderStorage);
-                OnTriggerExit2D(colliderStorage);
-                Destroy(this);
-            }
-            else if(questLine)
-            {
-                currentOrder--;
-            }
+            
         }
         currentQuestIndex = -1;
         dialogueIndex = 0;
-
-        if (questLine && currentOrder == potentialQuests.Count)
+        if (potentialQuests.Count == 0)
         {
-            currentOrder = loopAfterComplete ? 0 : currentOrder - 1;
+            Landmark landmark = gameObject.AddComponent<Landmark>();
+            landmark.baseData = dataForNoMoreQuests;
+            landmark.landmarkName = questGiverName;
+            landmark.dialoguePopupLocation = dialoguePopupTransform;
+            landmark.popupLocation = popupLocation;
+            landmark.interactEvent = interactEvent;
+            landmark.enterInteractionRangeEvent = enterInteractionRangeEvent;
+            landmark.exitInteractionRangeEvent = exitInteractionRangeEvent;
+            landmark.interactionType = InteractionType.Landmark;
+            landmark.currentPopup = currentPopup;
+            landmark.OnTriggerEnter2D(colliderStorage);
+            landmark.CreateId(Id);
+            //OnTriggerExit2D(colliderStorage);
+            Destroy(this);
+        }
+        else if (questLine)
+        {
+            currentOrder--;
+            if (currentOrder == potentialQuests.Count)
+            {
+                currentOrder = loopAfterComplete ? 0 : currentOrder - 1;
+            }
         }
     }
 
