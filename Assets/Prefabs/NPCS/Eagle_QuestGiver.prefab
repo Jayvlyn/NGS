@@ -34,8 +34,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 4803806919307801988}
-  - {fileID: 1979042755753686425}
+  - {fileID: 665337468825186532}
+  - {fileID: 7333035351472251520}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6645827179261665076
@@ -197,7 +197,7 @@ MonoBehaviour:
   enterInteractionRangeEvent: {fileID: 11400000, guid: b56236e63165de94fa5e6d3fcd3de46d, type: 2}
   exitInteractionRangeEvent: {fileID: 11400000, guid: d786787f9d2ba0a449cac5d827aa18e4, type: 2}
   interactEvent: {fileID: 11400000, guid: 2fb0646b614f8b143a9f475cd8962c95, type: 2}
-  popupLocation: {fileID: 4803806919307801988}
+  popupLocation: {fileID: 665337468825186532}
   completedAQuest: 0
   currentQuestIndex: -1
   questLine: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
   givesCosmetic: 0
   questGiverName: Eagle
   listener: {fileID: 197042263118172794}
-  dialoguePopupTransform: {fileID: 1979042755753686425}
+  dialoguePopupTransform: {fileID: 7333035351472251520}
   appearanceData:
     AppearanceType: 2
     Time: 0.15
@@ -228,7 +228,7 @@ MonoBehaviour:
       AppearanceType: 2
       Time: 0.15
       Offset: 0
---- !u!1 &5545068092425398251
+--- !u!1 &5675606943133073046
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -236,30 +236,30 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4803806919307801988}
+  - component: {fileID: 7333035351472251520}
   m_Layer: 0
-  m_Name: PopupLocation
+  m_Name: DialoguePopupPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4803806919307801988
+--- !u!4 &7333035351472251520
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5545068092425398251}
+  m_GameObject: {fileID: 5675606943133073046}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.45, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 66.40624, y: 42.402996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5453071996284801217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7939691900270616742
+--- !u!1 &5693535983037614470
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -267,24 +267,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1979042755753686425}
+  - component: {fileID: 665337468825186532}
   m_Layer: 0
-  m_Name: worldDialogue
+  m_Name: InteractPopupPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1979042755753686425
+--- !u!4 &665337468825186532
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7939691900270616742}
+  m_GameObject: {fileID: 5693535983037614470}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.536, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 66.22624, y: 42.093, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

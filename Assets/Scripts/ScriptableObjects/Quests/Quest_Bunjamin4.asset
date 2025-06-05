@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
   m_Name: Quest_Bunjamin4
   m_EditorClassIdentifier: 
-  questName: Bigun
+  questName: Big Blordus
   description: Bunjamin wants this huge fish called a Blordus. Needs to be at least
-    50cm
+    100cm
   completeable: 0
   fishQuest: 1
   reward:
     flannelName: 
     carrots: 200
   fish: {fileID: 11400000, guid: d65bee9517927c34ea6c7774ef0f546e, type: 2}
-  minLength: 50
+  minLength: 100
   destinationName: 
   remainingCompletions: -1
   onCompleteEvent: {fileID: 0}
