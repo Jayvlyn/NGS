@@ -12,6 +12,7 @@ public class Optimizer : MonoBehaviour
 
 	private void Start()
 	{
+		DoCheck();
 		StartCoroutine(DistanceCheck());
 	}
 
@@ -19,39 +20,43 @@ public class Optimizer : MonoBehaviour
 	{
 		while (true)
 		{
-			for (int i = list.Count - 1; i >= 0; i--)
+			DoCheck();
+			yield return new WaitForSeconds(tick);
+		}
+	}
+
+	private void DoCheck()
+	{
+		for (int i = list.Count - 1; i >= 0; i--)
+		{
+			GameObject go = list[i];
+
+			if (go == null)
 			{
-				GameObject go = list[i];
-
-				if (go == null)
-				{
-					list.RemoveAt(i);
-					continue;
-				}
-
-				float dist;
-				if (onlyCheckX)
-				{
-					dist = Mathf.Abs(go.transform.position.x - playerT.transform.position.x);
-				}
-				else
-				{
-					dist = Vector2.Distance(go.transform.position, playerT.transform.position);
-				}
-				if (dist >= cullDistance)
-				{
-					if (go.activeSelf)
-					{
-						go.SetActive(false);
-					}
-				}
-				else if (!go.activeSelf)
-				{
-					go.SetActive(true);
-				}
+				list.RemoveAt(i);
+				continue;
 			}
 
-			yield return new WaitForSeconds(tick);
+			float dist;
+			if (onlyCheckX)
+			{
+				dist = Mathf.Abs(go.transform.position.x - playerT.transform.position.x);
+			}
+			else
+			{
+				dist = Vector2.Distance(go.transform.position, playerT.transform.position);
+			}
+			if (dist >= cullDistance)
+			{
+				if (go.activeSelf)
+				{
+					go.SetActive(false);
+				}
+			}
+			else if (!go.activeSelf)
+			{
+				go.SetActive(true);
+			}
 		}
 	}
 }
