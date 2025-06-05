@@ -29,7 +29,7 @@ Across each region, you'll encounter numerous fishing ponds, each with its own s
 
 - Over **100 unique fish** to discover and catch.
 - Fish are **region-specific** and **pond-specific**.
-- Finding rare combinations takes observation and experimentation.
+- Fish will have varying sizes which determines how many carrots they can be sold for.
 
 #### 🎯 Minigame Mechanics
 
@@ -39,9 +39,13 @@ Casting your line triggers a 2D minigame:
 - Avoid various underwater hazards, including:
   - Old boots
   - Trash
+    - Bottles
+    - Plastic bags
   - Nets
   - Anchors
   - Seaweed
+  - Water Mines
+These obstacles have different effects, many slowing the hook down to varying degrees, others like the mine will launch the hook away when hit.
 
 Timing, positioning, and reflexes all play a part.
 
