@@ -8,10 +8,13 @@ public class SaveData
     public List<KeyBindingSaveData> platformerKeybinds;
     public List<KeyBindingSaveData> minigameKeybinds;
     public List<KeyBindingSaveData> bossGameKeybinds;
+    public List<UpgradeData> upgrades;
+    public List<int> unlockedFlannels;
     public positionData position;
     public VolumeData volumeData;
     public ToggleData toggleData;
     public int screenResolution;
+    public StatsData stats;
     public double money;
     public string id;
     public string flannel;
@@ -56,3 +59,20 @@ public struct ToggleData
     public bool isMouseModeMinigame;
     public bool isMouseModeBossgame;
 }
+
+[System.Serializable]
+public struct StatsData
+{
+    public float castMaxSpeed;
+    public float fishSizeModifier;
+    public float biteSpeed;
+    public float catchSpeed;
+    public float hookStrength;
+    public float bossLineLength;
+    public float bossReelSpeed;
+    public float grappleMaxCastSpeed;
+    public float platformingLineLength;
+    public float platformingReelSpeed;
+    public float obstacleCount;
+}
+
