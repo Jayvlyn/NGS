@@ -18,9 +18,10 @@ MonoBehaviour:
   fishQuest: 1
   reward:
     flannelName: 
-    carrots: 10
+    carrots: 100
   fish: {fileID: 11400000, guid: e0796b8da2e0a0b499443e7c0744d79c, type: 2}
-  minLength: 10
+  minLength: 1
   destinationName: 
   remainingCompletions: 1
+  onCompleteEvent: {fileID: 0}
   disabled: 0
