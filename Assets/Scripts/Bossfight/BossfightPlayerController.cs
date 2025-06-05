@@ -52,7 +52,7 @@ public class BossfightPlayerController : MonoBehaviour
             currentDistance = Vector3.Distance(boss.transform.position, transform.position);
             desiredDistance = Mathf.Max(Mathf.Min(deathDistance, currentDistance, desiredDistance), radius * 5);
         }
-        if(currentDistance < radius * 4)
+        if(currentDistance < radius * 5)
         {
             BossFishController.caughtBoss = true;
             SceneLoader.LoadScene(settings.position.currentLocation);
