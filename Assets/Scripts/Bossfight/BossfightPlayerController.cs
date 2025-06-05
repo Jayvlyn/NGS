@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class BossfightPlayerController : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class BossfightPlayerController : MonoBehaviour
     [SerializeField] GameSettings settings;
     [SerializeField] AudioClip waterLoop;
     [SerializeField] PlayerAudioManager playerAudioManager;
-
     private void Start()
     {
         GlobalAudioManager.Instance.StartLoopingAudioSource(waterLoop);
@@ -58,7 +57,13 @@ public class BossfightPlayerController : MonoBehaviour
             SceneLoader.LoadScene(settings.position.currentLocation);
         }
 
-
+        Collider2D[] results = Physics2D.OverlapCircleAll(transform.position, radius);
+        while(results.Length > 0)
+        {
+            Vector3 pos = results[0].ClosestPoint(transform.position);
+            transform.position += (transform.position - pos).normalized * (radius - Vector3.Distance(transform.position, pos) + 0.01f);
+            results = Physics2D.OverlapCircleAll(transform.position, radius);
+        }
 		//transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
 		//transform.rotation *= Quaternion.Euler(0, 0, -90);
 

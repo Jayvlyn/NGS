@@ -63,11 +63,9 @@ public class BossfightLevelGenerator : MonoBehaviour
                 {
                     placementLocations.Add(nextPlacement, (placementDirection, current));
                     sectionsPlaced[(placementDirection, current)] = preventDuplicates;
-                    Debug.Log($"Attempted to place section at {nextPlacement}, ");
                     result = GetValidPlacementFrom(ref placementLocations, ref sectionsPlaced, nextPlacement, sectionsLeft - 1, ref endLocation);
                     if (!result)
                     {
-                        Debug.Log($"Canceled attempt to place section at {nextPlacement}");
                         placementLocations.Remove(nextPlacement);
                         sectionsPlaced[(placementDirection, current)] = false;
                     }
