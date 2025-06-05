@@ -55,4 +55,9 @@ public class BossFishController : MonoBehaviour
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, cameraStartingZ);
         speedMultiplier = Mathf.Lerp(1, maxSpeedMultiplier, 1 - player.DesiredDistance / player.MaxDistance);
     }
+
+    public float GetRemainingDistance()
+    {
+        return pathFollower.GetRemainingLength();
+    }
 }

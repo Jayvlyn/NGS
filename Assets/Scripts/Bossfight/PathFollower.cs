@@ -11,8 +11,23 @@ public class PathFollower : MonoBehaviour
     [SerializeField] Vector3 rotatedBy = Vector3.zero;
     [SerializeField] BossfightLevelSection guide;
     public GameSettings settings;
-
     [SerializeField, Range(0, 1)]float distance = 0; //distance along spline, 0-1]
+    public float GetCurrentDistance()
+    {
+        return distance * Length;
+    }
+
+    public float GetRemainingLength()
+    {
+        float result = Length - GetCurrentDistance();
+        BossfightLevelSection next = guide.Next;
+        while(next != null)
+        {
+            result += next.Spline.CalculateLength();
+            next = next.Next;
+        }
+        return result;
+    }
     public float Length { get { return splineContainer.CalculateLength(); } }
 	public (Vector3, Quaternion) GetNewTransform(float distanceTravelled)
     {
