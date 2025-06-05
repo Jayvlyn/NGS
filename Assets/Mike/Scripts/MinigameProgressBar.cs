@@ -21,12 +21,11 @@ public class MinigameProgressBar : MonoBehaviour
 
     void Update()
     {
-        value = progressBar.value;
-
+        value = progressBar.value - progressBar.minValue;
         if (value > upperThreshold)
         {
             StopFlashing();
-            float t = Mathf.InverseLerp(1f, upperThreshold, value);
+            float t = Mathf.InverseLerp(progressBar.maxValue, upperThreshold, value);
             progressBarFill.color = Color.Lerp(highColor, midColor, t);
         }
         else if (value > lowerThreshold)
@@ -69,5 +68,11 @@ public class MinigameProgressBar : MonoBehaviour
             progressBarFill.color = lowColor;
             yield return new WaitForSeconds(flashTime + 0.1f);
         }
+    }
+
+    public void Start()
+    {
+        upperThreshold *= progressBar.maxValue - progressBar.minValue;
+        lowerThreshold *= progressBar.maxValue - progressBar.minValue;
     }
 }

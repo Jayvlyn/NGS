@@ -34,7 +34,11 @@ public class BossfightPlayerController : MonoBehaviour
             desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.bossReelSpeed;
             desiredDistance = Mathf.Max(desiredDistance, radius * 5);
         }
-        if(currentDistance > desiredDistance && !holdingSlack)
+        if(holdingSlack)
+        {
+
+        }
+        if(currentDistance > desiredDistance)
         {
             AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
         }
