@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   id: vc
-  flannel: Hoppepalette1
+  flannel: Hoppepalette7
+  unlockedFlannels: 000000000600000002000000
+  upgrades: []
   masterVolume: 0
   musicVolume: 0
   sfxVolume: 0
@@ -25,9 +27,9 @@ MonoBehaviour:
     isMouseModeBossgame: 1
   position:
     currentLocation: GameScene
-    currentTime: 683.1169
-    x: 32.89602
-    y: 7.563376
+    currentTime: 502.7202
+    x: 57.830326
+    y: -4.5966144
   platformerKeys:
   - actionMap: 0
     actionName: Jump

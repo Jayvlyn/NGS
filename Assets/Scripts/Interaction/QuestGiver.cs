@@ -56,6 +56,10 @@ public class QuestGiver : InteractableObject
                     if (potentialQuests[currentQuestIndex].quest.fishQuest)
                     {
                         lowestViable = Inventory.Instance.GetLowestViable(potentialQuests[currentQuestIndex].quest.fish.fishName, potentialQuests[currentQuestIndex].quest.minLength);
+                        if(currentPopup  != null)
+                        {
+                            currentPopup.GetComponent<DialogueVoidPopup>().ClosePopup();
+                        }
                         currentPopup = PopupManager.Instance.CreateFishConfirmationPopup(listener, lowestViable.sprite, lowestViable.fishName, lowestViable.length, questGiverName);
                         nextCanInteract = false;
                     }
