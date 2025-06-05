@@ -12,8 +12,12 @@ public class Optimizer : MonoBehaviour
 
 	private void Start()
 	{
-		EnableAll();
 		StartCoroutine(DistanceCheck());
+	}
+
+	private void OnEnable()
+	{
+		DoCheck();
 	}
 
 	private IEnumerator DistanceCheck()
@@ -25,16 +29,7 @@ public class Optimizer : MonoBehaviour
 		}
 	}
 
-	private void EnableAll()
-	{
-		for (int i = list.Count - 1; i >= 0; i--)
-		{
-			GameObject go = list[i];
-			go.SetActive(true);
-		}
-	}
-
-	private void DoCheck()
+	public void DoCheck()
 	{
 		for (int i = list.Count - 1; i >= 0; i--)
 		{
