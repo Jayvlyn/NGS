@@ -15,13 +15,13 @@ MonoBehaviour:
   questName: Bunjamin needs his carrish fix.
   description: Bunjamin hasn't had a carrish in forever. I can find one for him.
   completeable: 0
-  fishQuest: 0
+  fishQuest: 1
   reward:
     flannelName: 
-    carrots: 5
+    carrots: 100
   fish: {fileID: 11400000, guid: abf8523fefd10d34aa2475466c8a6512, type: 2}
   minLength: 0
   destinationName: 
-  remainingCompletions: 1
+  remainingCompletions: -1
   onCompleteEvent: {fileID: 0}
   disabled: 0
