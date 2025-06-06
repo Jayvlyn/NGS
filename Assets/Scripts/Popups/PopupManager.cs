@@ -114,7 +114,13 @@ public class PopupManager : Singleton<PopupManager>
 
     public void EnterInteractionRange(InteractionPair pair)
     {
-        (int, GameObject) result;
+		if (pair.obj.Id < 0)
+		{
+			Debug.LogWarning($"[PopupManager] Tried to enter interaction range with invalid ID on object: {pair.obj.name}");
+			return;
+		}
+
+		(int, GameObject) result;
         result.Item2 = CreateWorldInteractionPopup(pair.obj.popupLocation);
         result.Item1 = current;
         if(current != -1)
@@ -125,32 +131,63 @@ public class PopupManager : Singleton<PopupManager>
         activePopups.Add(current, result);
     }
 
-    public void ExitInteractionRange(InteractionPair pair)
-    {
-        if (current == pair.obj.Id)
-        {
-            Destroy(activePopups[current].Item2);
-            current = activePopups[current].Item1;
-        }
-        else
-        {
-            int next = current;
-            while (activePopups[next].Item1 != pair.obj.Id)
-            {
-                next = activePopups[next].Item1;
-            }
-            Destroy(activePopups[pair.obj.Id].Item2);
-            activePopups[next] = (activePopups[pair.obj.Id].Item1, activePopups[next].Item2);
-        }
-        activePopups.Remove(pair.obj.Id);
-        if(current != -1)
-        {
-            activePopups[current].Item2.GetComponentInChildren<Canvas>().enabled = true;
-        }
-    }
-    #endregion World Interaction Popups
-    #region Fish Popups
-    public GameObject CreateFishCaughtPopup(Sprite sprite, Color fxColor, string topText = "", string bottomText = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearance = new PopupAppearanceData())
+	public void ExitInteractionRange(InteractionPair pair)
+	{
+		if (pair.obj.Id < 0)
+		{
+			Debug.LogWarning($"[PopupManager] Tried to enter interaction range with invalid ID on object: {pair.obj.name}");
+			return;
+		}
+
+
+		if (!activePopups.ContainsKey(pair.obj.Id))
+			return;
+
+		if (current == pair.obj.Id)
+		{
+			Destroy(activePopups[current].Item2);
+			current = activePopups[current].Item1;
+		}
+		else
+		{
+			int next = current;
+			bool found = false;
+
+			while (activePopups.ContainsKey(next))
+			{
+				int prev = activePopups[next].Item1;
+				if (prev == pair.obj.Id)
+				{
+					found = true;
+					Destroy(activePopups[prev].Item2);
+					activePopups[next] = (activePopups[prev].Item1, activePopups[next].Item2);
+					break;
+				}
+
+				// Safety break if there’s a loop that doesn’t resolve
+				if (prev == next)
+					break;
+
+				next = prev;
+			}
+
+			if (!found)
+			{
+				// Failsafe: still destroy it if we didn’t find the reference, just in case
+				Destroy(activePopups[pair.obj.Id].Item2);
+			}
+		}
+
+		activePopups.Remove(pair.obj.Id);
+
+		if (current != -1 && activePopups.ContainsKey(current))
+		{
+			activePopups[current].Item2.GetComponentInChildren<Canvas>().enabled = true;
+		}
+	}
+	#endregion World Interaction Popups
+	#region Fish Popups
+	public GameObject CreateFishCaughtPopup(Sprite sprite, Color fxColor, string topText = "", string bottomText = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearance = new PopupAppearanceData())
     {
         GameObject go = Instantiate(fishCaughtPopup);
         FishPopup popup = go.GetComponentInChildren<FishPopup>();

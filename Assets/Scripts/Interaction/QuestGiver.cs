@@ -162,7 +162,7 @@ public class QuestGiver : InteractableObject
             landmark.currentPopup = currentPopup;
             landmark.OnTriggerEnter2D(colliderStorage);
             landmark.CreateId(Id);
-            //OnTriggerExit2D(colliderStorage);
+            OnTriggerExit2D(colliderStorage);
             Destroy(this);
         }
         else if (questLine)

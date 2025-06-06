@@ -12,7 +12,6 @@ public abstract class EventChannel<T> : ScriptableObject
     {
         actions.Invoke(value);
         int caow = 9;
-        Debug.Log(caow);
     }
 
     public void Subscribe(UnityAction<T> action)
