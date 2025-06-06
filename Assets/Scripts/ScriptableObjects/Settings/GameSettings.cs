@@ -19,7 +19,11 @@ public class GameSettings : ScriptableObject
 
     public locationData location;
 
-    public positionData position;
+    public positionData currentPos;
+    public positionData forestToDesert;
+    public positionData desertToForest;
+    public positionData desertToSnow;
+    public positionData snowToDesert;
 
     [Header("Platformer input binds")]
     public List<KeyBindingSaveData> platformerKeys;//9

@@ -57,7 +57,8 @@ public class SaveLoadManager : MonoBehaviour
         //save player data
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
-        data.forestPos = gameSettings.position;
+        data.position = gameSettings.currentPos;
+        data.location = gameSettings.location;
 
         //copy current fish held
         foreach (var key in data.inventory.Keys)
@@ -191,11 +192,12 @@ public class SaveLoadManager : MonoBehaviour
 
             //load player
             gameSettings.flannel = save.flannel;
-            gameSettings.position = save.forestPos;
+            gameSettings.currentPos = save.position;
             gameSettings.location = save.location;
             gameSettings.id = save.id;
             id = save.id;
             gameSettings.unlockedFlannels = save.unlockedFlannels;
+            ShopManager.upgrades.Clear();
             ShopManager.upgrades = save.upgrades;
 
             stats.CopyStats(save.stats);

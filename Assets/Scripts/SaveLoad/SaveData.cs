@@ -11,9 +11,7 @@ public class SaveData
     public List<UpgradeData> upgrades;
     public List<int> unlockedFlannels;
     public locationData location;
-    public positionData forestPos;
-    public positionData desertPos;
-    public positionData snowPos;
+    public positionData position;
     public VolumeData volumeData;
     public ToggleData toggleData;
     public int screenResolution;

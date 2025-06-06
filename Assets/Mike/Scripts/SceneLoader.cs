@@ -11,8 +11,9 @@ public class SceneLoader : MonoBehaviour
 
     void Start()
     {
+        //if (settings.location.currentLocation == "GameScene" && sceneToLoad == "Desert") settings.currentPos = settings.desertPosIn;
+        //if (settings.location.currentLocation == "Desert" && sceneToLoad == "GameScene") settings.currentPos = settings.forestPosOut;
         if (sceneToLoad != "MainMenu" && sceneToLoad != "BossfightScene") settings.location.currentLocation = sceneToLoad;
-        //print(settings.position.currentLocation);
         //settings.position.currentTime = DayNightCycle.Instance.currentTime;
         StartCoroutine(LoadAsync());
     }

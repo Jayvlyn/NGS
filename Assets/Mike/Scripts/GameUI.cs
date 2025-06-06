@@ -100,8 +100,8 @@ public class GameUI : Singleton<GameUI>
     {
         if (pi != null)
         {
-            gameSettings.position.x = pi.transform.localPosition.x;
-            gameSettings.position.y = pi.transform.localPosition.y;
+            gameSettings.currentPos.x = pi.transform.localPosition.x;
+            gameSettings.currentPos.y = pi.transform.localPosition.y;
         }
     }
 
@@ -201,7 +201,7 @@ public class GameUI : Singleton<GameUI>
 
             i++;
         }
-        oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        oldPosition = new Vector3(gameSettings.currentPos.x, gameSettings.currentPos.y, 0f);
         pi.transform.localPosition = oldPosition;
         inventoryMenu.gameObject.SetActive(true);
         DayNightCycle.Instance.currentTime = gameSettings.location.currentTime;
@@ -230,7 +230,7 @@ public class GameUI : Singleton<GameUI>
     public void SavePosition(bool reset = false)
     {
         if (reset) oldPosition = new Vector3(-5.3f, -4.2f, 0f);
-        else oldPosition = new Vector3(gameSettings.position.x, gameSettings.position.y, 0f);
+        else oldPosition = new Vector3(gameSettings.currentPos.x, gameSettings.currentPos.y, 0f);
     }
 
     public void LoadBindingOnStart(bool active)

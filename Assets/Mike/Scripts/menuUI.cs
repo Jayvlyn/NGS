@@ -186,6 +186,8 @@ public class MenuUI : MonoBehaviour
 
     public void CreditsAnimation(GameObject go)
     {
-        UIAnimations.PlayUIAnim("SlideUp", go, go.activeSelf);
+        go.SetActive(!go.activeSelf);
+        go.GetComponent<Animator>().SetBool("SlideDown", go.activeSelf);
+        //UIAnimations.PlayUIAnim("SlideDown", go, go.activeSelf);
     }
 }
