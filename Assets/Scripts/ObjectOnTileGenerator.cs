@@ -60,6 +60,10 @@ public class ObjectOnTileGenerator : MonoBehaviour
                 Generate();
             }
         }
+        if(onlyAtNight && !DayNightCycle.isNight)
+        {
+            Clear();
+        }
     }
 
     public void Prune()
