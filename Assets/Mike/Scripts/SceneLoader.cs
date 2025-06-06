@@ -26,9 +26,9 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    public static IEnumerator LoadScene(string sceneName, bool GameSceneSwitch = false)
+    public static IEnumerator LoadScene(string sceneName, bool GameSceneSwitch = false, bool hasPlayer = false)
     {
-        yield return Fade.Instance.StartFade(2, half:true);
+        yield return Fade.Instance.StartFade(2, half:true, hasPlayer: hasPlayer);
 
         if(GlobalAudioManager.Instance.IsLoopingSourcePlaying()) GlobalAudioManager.Instance.StopLoopingAudioSource();
         sceneToLoad = sceneName;
