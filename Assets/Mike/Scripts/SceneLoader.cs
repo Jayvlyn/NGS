@@ -11,10 +11,7 @@ public class SceneLoader : MonoBehaviour
 
     void Start()
     {
-        //if (settings.location.currentLocation == "GameScene" && sceneToLoad == "Desert") settings.currentPos = settings.desertPosIn;
-        //if (settings.location.currentLocation == "Desert" && sceneToLoad == "GameScene") settings.currentPos = settings.forestPosOut;
         if (sceneToLoad != "MainMenu" && sceneToLoad != "BossfightScene") settings.location.currentLocation = sceneToLoad;
-        //settings.position.currentTime = DayNightCycle.Instance.currentTime;
         StartCoroutine(LoadAsync());
     }
 
@@ -24,17 +21,19 @@ public class SceneLoader : MonoBehaviour
 
         while (!operation.isDone)
         {
-            if (progressBar != null)
-                progressBar.value = Mathf.Clamp01(operation.progress / 0.9f);
+            if (progressBar != null) progressBar.value = Mathf.Clamp01(operation.progress / 0.9f);
             yield return null;
         }
     }
 
-    public static void LoadScene(string sceneName, bool GameSceneSwitch = false)
+    public static IEnumerator LoadScene(string sceneName, bool GameSceneSwitch = false)
     {
+        yield return Fade.Instance.StartFade(2, half:true);
+
         if(GlobalAudioManager.Instance.IsLoopingSourcePlaying()) GlobalAudioManager.Instance.StopLoopingAudioSource();
         sceneToLoad = sceneName;
-        if (sceneName == "MainMenu" || sceneName == "BossfightScene") GameUI.loadScreens = false;
+
+        if (sceneToLoad == "MainMenu" || sceneToLoad == "BossfightScene") GameUI.loadScreens = false;
         else GameUI.loadScreens = true;
 
         if (GameSceneSwitch) GameUI.gameStart = true;

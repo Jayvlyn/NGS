@@ -6,12 +6,7 @@ public class Fade:Singleton<Fade>
 {
     [SerializeField] private Image fadeImage;
 
-    public void StartFade(float duration, float holdBlackScreen = 0)
-    {
-        StartCoroutine(FadeToBlackAndBack(duration, holdBlackScreen));
-    }
-
-    private IEnumerator FadeToBlackAndBack(float duration, float holdBlackScreen)
+    public IEnumerator StartFade(float duration, float holdBlackScreen = 0, bool half = false)
     {
         float halfDuration = duration / 2f;
         Color color = fadeImage.color;
@@ -27,6 +22,12 @@ public class Fade:Singleton<Fade>
         }
 
         fadeImage.color = new Color(color.r, color.g, color.b, 1);
+
+        if(half)
+        {
+            GameUI.Instance.pi.SwitchCurrentActionMap(currentActionMap);
+            yield break;
+        }
 
         if(holdBlackScreen > 0) yield return new WaitForSeconds(holdBlackScreen);
 

@@ -44,7 +44,7 @@ public class PathFollower : MonoBehaviour
                 if(guide == null)
                 {
                     distance = 1;
-					SceneLoader.LoadScene(settings.location.currentLocation);
+					StartCoroutine(SceneLoader.LoadScene(settings.location.currentLocation));
 				}
                 else
                 {

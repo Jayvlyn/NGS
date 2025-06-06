@@ -7,6 +7,6 @@ public class SceneChangeOnTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("changing");
-        SceneLoader.LoadScene(newSceneName);
+        StartCoroutine(SceneLoader.LoadScene(newSceneName));
     }
 }

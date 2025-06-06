@@ -112,7 +112,7 @@ public class MenuUI : MonoBehaviour
             loadMenu.SetActive(false);
             characterName.text.Remove(0);
             gameSettings.location.currentTime = 0;
-            SceneLoader.LoadScene("GameScene");
+            StartCoroutine(SceneLoader.LoadScene("GameScene"));
             //GameUI.gameStart = true;
         }
         else

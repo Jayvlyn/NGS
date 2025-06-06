@@ -112,7 +112,7 @@ public class GameUI : Singleton<GameUI>
         HUD.SetActive(loadScreens);
         loadGame.SetActive(false);
         Inventory.Instance.RestInventory();
-        SceneLoader.LoadScene("MainMenu");
+        StartCoroutine(SceneLoader.LoadScene("MainMenu"));
     }
 
     void settingsClicked()
