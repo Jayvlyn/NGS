@@ -18,6 +18,7 @@ public class ObjectOnTileGenerator : MonoBehaviour
     [SerializeField] protected bool generateOnStart;
     private float currentClearResetTimer;
     private float currentResetTimer;
+    [SerializeField] private bool onlyAtNight = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -94,6 +95,8 @@ public class ObjectOnTileGenerator : MonoBehaviour
 
     public void Generate()
     {
+        if (onlyAtNight && !DayNightCycle.isNight) return;
+
         foreach (Vector3Int position in potentialPositions)
         {
             if (!currentObjects.ContainsKey(position) && Vector3.Distance(new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y), tilemap.CellToWorld(position) + offset) >= Camera.main.orthographicSize * 4)
