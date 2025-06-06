@@ -60,7 +60,7 @@ public class Water : InteractableObject
                 BossFishController.bossFish = fish;
                 GameUI.Instance.SavePosition();
                 GameUI.Instance.HUD.SetActive(false);
-                SceneLoader.LoadScene("BossfightScene");
+                StartCoroutine(SceneLoader.LoadScene("BossfightScene"));
             }
             else
             {

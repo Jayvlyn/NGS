@@ -140,7 +140,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadSelected()
     {
-        SceneLoader.LoadScene(saveList[selected].location.currentLocation);
+        StartCoroutine(SceneLoader.LoadScene(saveList[selected].location.currentLocation, hasPlayer: false));
     }
 
     public void Select(int save)

@@ -6,18 +6,17 @@ public class Fade:Singleton<Fade>
 {
     [SerializeField] private Image fadeImage;
 
-    public void StartFade(float duration, float holdBlackScreen = 0)
-    {
-        StartCoroutine(FadeToBlackAndBack(duration, holdBlackScreen));
-    }
-
-    private IEnumerator FadeToBlackAndBack(float duration, float holdBlackScreen)
+    public IEnumerator StartFade(float duration, float holdBlackScreen = 0, bool half = false, bool hasPlayer = true)
     {
         float halfDuration = duration / 2f;
         Color color = fadeImage.color;
+        string currentActionMap = "";
 
-        var currentActionMap = GameUI.Instance.pi.currentActionMap.name;
-        GameUI.Instance.pi.SwitchCurrentActionMap("RebindKeys");
+        if(hasPlayer)
+        {
+            currentActionMap = GameUI.Instance.pi.currentActionMap.name;
+            GameUI.Instance.pi.SwitchCurrentActionMap("RebindKeys");
+        }
 
         for (float t = 0; t < halfDuration; t += Time.deltaTime)
         {
@@ -27,6 +26,12 @@ public class Fade:Singleton<Fade>
         }
 
         fadeImage.color = new Color(color.r, color.g, color.b, 1);
+
+        if(half)
+        {
+            if (hasPlayer) GameUI.Instance.pi.SwitchCurrentActionMap(currentActionMap);
+            yield break;
+        }
 
         if(holdBlackScreen > 0) yield return new WaitForSeconds(holdBlackScreen);
 
@@ -38,6 +43,6 @@ public class Fade:Singleton<Fade>
         }
 
         fadeImage.color = new Color(color.r, color.g, color.b, 0);
-        GameUI.Instance.pi.SwitchCurrentActionMap(currentActionMap);
+        if (hasPlayer) GameUI.Instance.pi.SwitchCurrentActionMap(currentActionMap);
     }
 }

@@ -340,7 +340,7 @@ public class ShopManager : Singleton<ShopManager>
             go.transform.localPosition =
                 new Vector3(buyUpgradeUIPrefabMarginData.x * (column + 1) + buyUpgradeUIPrefabSizeData.x * column - 7.5f,
                 buyUpgradeUIPrefabMarginData.y * -(row + 1) + buyUpgradeUIPrefabSizeData.y * -row);
-            //go.GetComponentsInChildren<Image>()[1].sprite = data.sprite;
+            go.GetComponentsInChildren<Image>()[1].color = data.upgradeColor;
             go.GetComponentInChildren<TMP_Text>().text = $"{data.upgradeName}: {(data.currentCost):F2} Carrots";
             go.GetComponentInChildren<Button>().onClick.AddListener(delegate { BuyUpgrade(data.Id); });
             pastUpgradeTiles.Add(go);

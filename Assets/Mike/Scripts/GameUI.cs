@@ -18,6 +18,7 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] public GameObject HUD;
     [SerializeField] GameObject saveReaction;
     [SerializeField] GameObject wardrobe;
+    [SerializeField] GameObject comic;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button keyBindBtn;
@@ -64,6 +65,11 @@ public class GameUI : Singleton<GameUI>
         if (loadScreens) DayNightCycle.Instance.currentTime = gameSettings.location.currentTime;
 
         HUD.SetActive(loadScreens);
+
+        if(gameStart)
+        {
+            comic.SetActive(true);
+        }
 
         if (pi != null)
         {
@@ -112,7 +118,7 @@ public class GameUI : Singleton<GameUI>
         HUD.SetActive(loadScreens);
         loadGame.SetActive(false);
         Inventory.Instance.RestInventory();
-        SceneLoader.LoadScene("MainMenu");
+        StartCoroutine(SceneLoader.LoadScene("MainMenu"));
     }
 
     void settingsClicked()
