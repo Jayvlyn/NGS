@@ -17,6 +17,8 @@ public class SceneLoader : MonoBehaviour
 
     IEnumerator LoadAsync()
     {
+        yield return Fade.Instance.FadeOut(1, hasPlayer:false);
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad);
 
         while (!operation.isDone)
@@ -24,11 +26,13 @@ public class SceneLoader : MonoBehaviour
             if (progressBar != null) progressBar.value = Mathf.Clamp01(operation.progress / 0.9f);
             yield return null;
         }
+
+        yield return Fade.Instance.FadeIn(1, hasPlayer: false);
     }
 
     public static IEnumerator LoadScene(string sceneName, bool GameSceneSwitch = false, bool hasPlayer = false)
     {
-        yield return Fade.Instance.StartFade(2, half:true, hasPlayer: hasPlayer);
+        yield return Fade.Instance.FadeIn(1, hasPlayer: hasPlayer);
 
         if(GlobalAudioManager.Instance.IsLoopingSourcePlaying()) GlobalAudioManager.Instance.StopLoopingAudioSource();
         sceneToLoad = sceneName;

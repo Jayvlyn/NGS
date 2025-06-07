@@ -66,7 +66,7 @@ public class GameUI : Singleton<GameUI>
 
         HUD.SetActive(loadScreens);
 
-        if(gameStart)
+        if(gameStart && SaveLoadManager.selected == -1)
         {
             comic.SetActive(true);
         }
@@ -81,6 +81,7 @@ public class GameUI : Singleton<GameUI>
 
         if (SaveLoadManager.selected != -1)
         {
+            StartCoroutine(Fade.Instance.FadeOut(2f));
             loadGame.SetActive(true);
             loadGame.GetComponent<SaveLoadManager>().Load();
             loadGame.SetActive(false);
@@ -113,7 +114,7 @@ public class GameUI : Singleton<GameUI>
 
     public void MainMenuClicked()
     {
-        pauseClicked();
+        pauseClicked(1);
         gameStart = true;
         HUD.SetActive(loadScreens);
         loadGame.SetActive(false);
@@ -126,10 +127,10 @@ public class GameUI : Singleton<GameUI>
         StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", settings));
     }
 
-    void pauseClicked()
+    void pauseClicked(int delay = 0)
     {
         Time.timeScale = (!pause.activeSelf) ? 0 : 1;
-        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", pause, true));
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", pause, true, delay));
     }
 
     void keyBindsClicked()

@@ -17,6 +17,9 @@ public class Comic : MonoBehaviour
     IEnumerator ComicScroll()
     {
         Debug.Log("start co");
+
+        yield return Fade.Instance.FadeOut(2f);
+
         for (int i = 0; i < panelCount; i++)
         {
             Debug.Log("Before wait");
@@ -36,9 +39,10 @@ public class Comic : MonoBehaviour
                 transform.position = new Vector2(transform.position.x, yPos);
                 yield return null;
             }
+
+            
             yield return null;
         }
-        Fade.Instance.StartFade(1f);
         gameObject.SetActive(false);
     }
 }
