@@ -23,7 +23,12 @@ public static class UIAnimations
         }
         else yield return new WaitForSecondsRealtime(1);
 
-        if (turnOff) anim.enabled = false;
+
+        if (turnOff) 
+        {
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+            anim.enabled = false; 
+        }
     }
 
     public static IEnumerator PlaySigleAnim(string name, GameObject menu, float time = 0)

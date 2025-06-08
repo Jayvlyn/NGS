@@ -12,6 +12,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] GameObject settings;
     [SerializeField] GameObject keyBinds;
     [SerializeField] GameObject saveReaction;
+    [SerializeField] GameObject credits;
 
     [Header("Buttons&Inputs")]
     [SerializeField] Button newGameBtn;
@@ -53,8 +54,7 @@ public class MenuUI : MonoBehaviour
         LoadBindingOnStart(true);
         LoadBindingOnStart(false);
 
-        StartCoroutine(UIAnimations.PlayUIAnim("Bunny", Bunny, turnOff:true));
-        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", Title, delay:1.7f));
+        StartCoroutine(mainMenuAnimation());
     }
 
     void newGameClicked()
@@ -184,10 +184,15 @@ public class MenuUI : MonoBehaviour
         characterCreation.transform.Find("ErrorMsg").gameObject.SetActive(false);
     }
 
-    public void CreditsAnimation(GameObject go)
+    IEnumerator mainMenuAnimation()
     {
-        go.SetActive(!go.activeSelf);
-        go.GetComponent<Animator>().SetBool("SlideDown", go.activeSelf);
-        //UIAnimations.PlayUIAnim("SlideDown", go, go.activeSelf);
+        yield return UIAnimations.PlayUIAnim("Bunny", Bunny, turnOff:true);
+        Bunny.GetComponent<FloatingEffect>().enabled = true;
+        yield return UIAnimations.PlayUIAnim("SlideDown", Title);
+    }
+
+    public void CreditsAnimation()
+    {
+        StartCoroutine(UIAnimations.PlayUIAnim("SlideDown", credits, credits.activeSelf));
     }
 }

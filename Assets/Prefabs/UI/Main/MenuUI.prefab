@@ -126,6 +126,7 @@ MonoBehaviour:
   settings: {fileID: 2072952512989364131}
   keyBinds: {fileID: 6869472987305718873}
   saveReaction: {fileID: 2970671356195823655}
+  credits: {fileID: 7332690368505848454}
   newGameBtn: {fileID: 6548503683531043436}
   loadGameBtn: {fileID: 2018144233970013871}
   settingsBtn: {fileID: 1078509291071643832}
@@ -166,6 +167,22 @@ PrefabInstance:
     - target: {fileID: 910148592098339561, guid: 31a536020a1557748bc8ef50603941e2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 910148592098339561, guid: 31a536020a1557748bc8ef50603941e2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 910148592098339561, guid: 31a536020a1557748bc8ef50603941e2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6455844806586121984}
+    - target: {fileID: 910148592098339561, guid: 31a536020a1557748bc8ef50603941e2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CreditsAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 910148592098339561, guid: 31a536020a1557748bc8ef50603941e2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1508060358450534825, guid: 31a536020a1557748bc8ef50603941e2, type: 3}
       propertyPath: m_Pivot.x
@@ -366,25 +383,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7327384694614367969, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8924149637072349098, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8924149637072349098, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7332690368505848454}
+      objectReference: {fileID: 6455844806586121984}
     - target: {fileID: 8924149637072349098, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: CreditsAnimation
       objectReference: {fileID: 0}
     - target: {fileID: 8924149637072349098, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: MenuUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8924149637072349098, guid: 4a59d9d9ad134f143893d0e4ec3e5c91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
