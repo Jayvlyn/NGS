@@ -19,11 +19,23 @@ public class UIParticleFX : MonoBehaviour
             GameObject go = GetParticleFromPool();
             RectTransform rt = go.GetComponent<RectTransform>();
 
-            screenPosition.x = Random.Range(screenPosition.x-50, screenPosition.x+50);
-            screenPosition.y = Random.Range(screenPosition.y-50, screenPosition.y+50);
+            // Add some screen-space randomness
+            Vector2 randomizedScreenPos = new Vector2(
+                Random.Range(screenPosition.x - 50, screenPosition.x + 50),
+                Random.Range(screenPosition.y - 50, screenPosition.y + 50)
+            );
 
-            rt.position = screenPosition;
-            print(screenPosition);
+            // Convert to local position in the canvas
+            Vector2 localPoint;
+            RectTransform canvasRect = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvasRect,
+                randomizedScreenPos,
+                null, // assumes screen space overlay
+                out localPoint
+            );
+
+            rt.anchoredPosition = localPoint;
 
             go.SetActive(true);
             StartCoroutine(MoveToTarget(rt, quest));
