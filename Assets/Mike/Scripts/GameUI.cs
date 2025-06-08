@@ -100,7 +100,10 @@ public class GameUI : Singleton<GameUI>
     void Update()
     {
         if (pauseAction.action.triggered && !Shop.activeSelf && !wardrobe.activeSelf && !comic.activeSelf) pauseClicked();
-        //if (Input.GetKeyDown(KeyCode.V)) Fade.Instance.StartFade(8,2);
+        if (DayNightCycle.Instance.currentTime == 0)
+        {
+            AutoSave();
+        }
     }
 
     private void FixedUpdate()
