@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24cab558dd4cbf54cb2a48af50effca2, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  id: vv
+  id: cc
   flannel: Hoppepalette1
   unlockedFlannels: 000000000600000002000000
   upgrades: []
@@ -27,13 +27,13 @@ MonoBehaviour:
     isMouseModeBossgame: 1
   location:
     currentLocation: GameScene
-    currentTime: 3.176827
+    currentTime: 320.7875
   currentPos:
-    x: 2.2598865
-    y: -4.5966105
+    x: -15.676756
+    y: -53.336987
   forestToDesert:
-    x: 116
-    y: 25.5
+    x: 114
+    y: 25.8
   desertToForest:
     x: -13
     y: -5.2
@@ -41,8 +41,8 @@ MonoBehaviour:
     x: 680
     y: 14.3
   snowToDesert:
-    x: 0
-    y: 0
+    x: -8.8
+    y: -4.8
   platformerKeys:
   - actionMap: 0
     actionName: Jump
