@@ -47,7 +47,7 @@ public class MenuUI : MonoBehaviour
         modifySettings = GetComponent<ModifySettings>();
 
 		gameSettings = modifySettings.settings;
-        gameSettings.flannel = "Ol' Reliable";
+        gameSettings.flannel = "Hoppepalette1";
 
         modifySettings.SaveMouseMode();
 
