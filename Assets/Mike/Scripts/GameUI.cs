@@ -268,5 +268,5 @@ public class GameUI : Singleton<GameUI>
 
     public void SaveFlannel(string name) => gameSettings.flannel = name;
 
-    private void LoadFlannel() => playerOutfit.SetTexture("_Swap", Resources.Load<Texture>($"flannels/{((gameSettings.flannel != "") ? gameSettings.flannel : "Hoppepalette1")}"));
+    private void LoadFlannel() => playerOutfit.SetTexture("_Swap", Resources.Load<Texture>($"flannels/{((gameSettings.flannel != "") ? gameSettings.flannel : "Ol' Reliable")}"));
 }
