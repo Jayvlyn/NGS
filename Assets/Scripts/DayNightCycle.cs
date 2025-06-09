@@ -82,7 +82,7 @@ public class DayNightCycle : Singleton<DayNightCycle>
 
 	private void UpdateLightIntensity()
 	{
-		if (globalLight == null) return;
+		if (globalLight == null || sky == null) return;
 
 		float t;
 		float sunriseStart = 0; // Start of sunrise
