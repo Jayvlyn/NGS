@@ -33,6 +33,8 @@ public class SaveLoadManager : MonoBehaviour
         id = data.id;
         data.stats = new StatsData();
         stats.CopyFrom(baseStats);
+        data.upgrades = new List<UpgradeData>();
+        data.upgrades.Clear();
         saveList.Add(data);
         string path = Path.Combine(Application.dataPath, "Saves");
         //Ensures that the saves folder actually exists
@@ -96,7 +98,8 @@ public class SaveLoadManager : MonoBehaviour
         data.flannel = gameSettings.flannel;
         data.unlockedFlannels = gameSettings.unlockedFlannels;
         stats.CopyTo(ref data.stats);
-        data.upgrades = ShopManager.upgrades;
+        data.upgrades.Clear();
+        data.upgrades.AddRange(ShopManager.upgrades);
         ShopManager.Instance.ResetUpgrades();
 
         string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
@@ -199,7 +202,7 @@ public class SaveLoadManager : MonoBehaviour
             id = save.id;
             gameSettings.unlockedFlannels = save.unlockedFlannels;
             ShopManager.upgrades.Clear();
-            ShopManager.upgrades = save.upgrades;
+            ShopManager.upgrades.AddRange(save.upgrades);
 
             stats.CopyStats(save.stats);
         }
