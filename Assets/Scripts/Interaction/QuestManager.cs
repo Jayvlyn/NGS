@@ -54,7 +54,7 @@ public class QuestManager : Singleton<QuestManager>
                 quest.disabled = true;
             }
         }
-        else quest.completed = true;
+        quest.completed = true;
         int reward = (int)quest.reward.carrots;
         if (reward > 0) SpawnRewardCarrots(reward);
         if(!string.IsNullOrEmpty(quest.reward.flannelName))
