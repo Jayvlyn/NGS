@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -24,6 +25,8 @@ public class SaveLoadManager : MonoBehaviour
 
         SaveData data = new(name);
         (SerializedDictionary<string, FishData>, double) inventoryData= Inventory.Instance.GetData();
+        
+        //Initialize save data
         data.inventory = inventoryData.Item1;
         data.money = inventoryData.Item2;
         data.platformerKeybinds = gameSettings.platformerKeys;
@@ -35,9 +38,11 @@ public class SaveLoadManager : MonoBehaviour
         stats.CopyFrom(baseStats);
         data.upgrades = new List<UpgradeData>();
         data.upgrades.Clear();
+        data.quests = new List<QuestSaveData>();
         saveList.Add(data);
-        string path = Path.Combine(Application.dataPath, "Saves");
+
         //Ensures that the saves folder actually exists
+        string path = Path.Combine(Application.dataPath, "Saves");
         Directory.CreateDirectory(path);
         path = Path.Combine(path, $"{data.id}.json");
         string dataString = JsonUtility.ToJson(data);
@@ -101,6 +106,7 @@ public class SaveLoadManager : MonoBehaviour
         data.upgrades.Clear();
         data.upgrades.AddRange(ShopManager.upgrades);
         ShopManager.Instance.ResetUpgrades();
+        data.quests = QuestManager.Instance.ExtractSaveData();
 
         string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
@@ -203,6 +209,7 @@ public class SaveLoadManager : MonoBehaviour
             gameSettings.unlockedFlannels = save.unlockedFlannels;
             ShopManager.upgrades.Clear();
             ShopManager.upgrades.AddRange(save.upgrades);
+            QuestManager.Instance.ApplyQuestSaveData(save.quests);
 
             stats.CopyStats(save.stats);
         }

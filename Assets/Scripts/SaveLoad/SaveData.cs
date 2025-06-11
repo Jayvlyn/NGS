@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -10,6 +11,7 @@ public class SaveData
     public List<KeyBindingSaveData> bossGameKeybinds;
     public List<UpgradeData> upgrades;
     public List<int> unlockedFlannels;
+    public List<QuestSaveData> quests;
     public locationData location;
     public positionData position;
     public VolumeData volumeData;
@@ -82,3 +84,13 @@ public struct StatsData
     public float obstacleCount;
 }
 
+[Serializable]
+public struct QuestSaveData
+{
+    public string questName;
+    public bool completeable;
+    public bool disabled;
+    public int remainingCompletions;
+    public bool active;
+    public bool completed;
+}

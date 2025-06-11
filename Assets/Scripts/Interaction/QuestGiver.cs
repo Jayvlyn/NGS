@@ -36,6 +36,19 @@ public class QuestGiver : InteractableObject
         {
             listener = GetComponent<BoolListener>();
         }
+
+        if(potentialQuests.Count > 0)
+        {
+            for(int i = 0; i < potentialQuests.Count; i++)
+            {
+                if (potentialQuests[i].quest.completed)
+                {
+                    if(potentialQuests[i].quest.onCompleteEvent != null) potentialQuests[i].quest.onCompleteEvent.Raise();
+                    potentialQuests.RemoveAt(i);
+                    finishQuest();
+                }
+            }
+        }
     }
 
     public override void OnTriggerEnter2D(Collider2D collision)
@@ -148,6 +161,11 @@ public class QuestGiver : InteractableObject
         }
         currentQuestIndex = -1;
         dialogueIndex = 0;
+        finishQuest();
+    }
+
+    public void finishQuest()
+    {
         if (potentialQuests.Count == 0)
         {
             Landmark landmark = gameObject.AddComponent<Landmark>();

@@ -17,4 +17,6 @@ public class Quest : ScriptableObject
     public int remainingCompletions;
     public VoidEvent onCompleteEvent;
     [HideInInspector] public bool disabled;
+    [HideInInspector] public bool active = false;
+    [HideInInspector] public bool completed = false;
 }
