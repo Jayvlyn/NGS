@@ -106,11 +106,7 @@ public class GameUI : Singleton<GameUI>
         {
             AutoSave();
         }
-        if (loadMap)
-        {
-            MapManager.Instance.LoadMaps();
-            loadMap = false;
-        }
+        
     }
 
     private void FixedUpdate()
@@ -119,6 +115,11 @@ public class GameUI : Singleton<GameUI>
         {
             gameSettings.currentPos.x = pi.transform.localPosition.x;
             gameSettings.currentPos.y = pi.transform.localPosition.y;
+        }
+        if (loadMap)
+        {
+            MapManager.Instance.LoadMaps();
+            loadMap = false;
         }
     }
 
