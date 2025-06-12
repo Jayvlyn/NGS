@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Unity;
 
 public class Comic : MonoBehaviour
 {
@@ -10,21 +11,24 @@ public class Comic : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log("On enable");
         StartCoroutine(ComicScroll());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     IEnumerator ComicScroll()
     {
-        Debug.Log("start co");
-
         yield return Fade.Instance.FadeOut(2f);
 
         for (int i = 0; i < panelCount; i++)
         {
-            Debug.Log("Before wait");
             yield return new WaitForSeconds(timePerPanel);
-            Debug.Log("After wait");
 
             float initalYPos = transform.position.y;
             float targetYPos = transform.position.y + heightPerPanel;
