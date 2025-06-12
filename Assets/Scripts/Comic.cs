@@ -4,7 +4,7 @@ using Unity;
 
 public class Comic : MonoBehaviour
 {
-    [SerializeField] float heightPerPanel = 500;
+    [SerializeField] float heightMod = 500;
     [SerializeField] float transitionTime = 0.5f;
     [SerializeField] float timePerPanel = 3;
     [SerializeField] int panelCount = 5;
@@ -32,7 +32,7 @@ public class Comic : MonoBehaviour
             yield return new WaitForSeconds(timePerPanel);
 
             float initalYPos = transform.position.y;
-            float targetYPos = transform.position.y + heightPerPanel;
+            float targetYPos = transform.position.y + (heightMod * Screen.height);
 
             float t = 0;
             while(t < transitionTime)
