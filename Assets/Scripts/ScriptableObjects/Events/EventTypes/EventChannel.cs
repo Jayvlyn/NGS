@@ -11,7 +11,6 @@ public abstract class EventChannel<T> : ScriptableObject
     public virtual void Trigger(T value)
     {
         actions.Invoke(value);
-        int caow = 9;
     }
 
     public void Subscribe(UnityAction<T> action)

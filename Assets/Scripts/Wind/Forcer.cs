@@ -53,7 +53,6 @@ public class Forcer : MonoBehaviour
     private void Move()
     {
         Vector3 change = (new Vector3(force.x, force.y) * movementModifier * Time.fixedDeltaTime);
-        Debug.Log(change);
         body.MovePosition(body.transform.position + change);
     }
 

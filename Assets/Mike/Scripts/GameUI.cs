@@ -7,7 +7,6 @@ public class GameUI : Singleton<GameUI>
 {
     [HideInInspector] public static bool gameStart = true;
     [HideInInspector] public static bool loadScreens = true;
-    [HideInInspector] private bool loadMap = false;
 
     [Header("Panels")]
     [SerializeField] GameObject loadGame;
@@ -96,7 +95,6 @@ public class GameUI : Singleton<GameUI>
         LoadBindingOnStart(false);
 
         LoadFlannel();
-        loadMap = true;
     }
 
     void Update()
@@ -115,11 +113,6 @@ public class GameUI : Singleton<GameUI>
         {
             gameSettings.currentPos.x = pi.transform.localPosition.x;
             gameSettings.currentPos.y = pi.transform.localPosition.y;
-        }
-        if (loadMap)
-        {
-            MapManager.Instance.LoadMaps();
-            loadMap = false;
         }
     }
 

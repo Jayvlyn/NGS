@@ -196,10 +196,10 @@ public class MapDisplay : Singleton<MapDisplay>
         {
             for (int y = bounds.yMin; y < bounds.yMax; y++)
             {
-                if (!MapManager.Instance.GetVisibleTiles().Contains(new ComparableTuple<int, int>(x, y)))
+                if (MapManager.Instance.GetVisibleTiles().BinarySearch(new ComparableTuple<int, int>(x, y)) < 0)
                 {
                     blockerMap.SetTile(new Vector3Int(x, y), blockerTile);
-                }
+                }   
             }
         }
     }
