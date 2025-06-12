@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -108,6 +107,16 @@ public class SaveLoadManager : MonoBehaviour
         ShopManager.Instance.ResetUpgrades();
         data.quests = QuestManager.Instance.ExtractSaveData();
 
+        //save map data
+        data.loadedForestTiles = new List<ComparableTuple<int, int>>(MapManager.Instance.loadedForestTiles);
+        data.loadedDesertTiles = new List<ComparableTuple<int, int>>(MapManager.Instance.loadedDesertTiles);
+        data.loadedSnowTiles = new List<ComparableTuple<int, int>>(MapManager.Instance.loadedSnowTiles);
+
+        //clear old map data
+        MapManager.Instance.loadedForestTiles.Clear();
+        MapManager.Instance.loadedDesertTiles.Clear();
+        MapManager.Instance.loadedSnowTiles.Clear();
+
         string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
         {
@@ -210,6 +219,11 @@ public class SaveLoadManager : MonoBehaviour
             ShopManager.upgrades.Clear();
             ShopManager.upgrades.AddRange(save.upgrades);
             QuestManager.Instance.ApplyQuestSaveData(save.quests);
+
+            //load saved map data
+            MapManager.Instance.loadedForestTiles = save.loadedForestTiles;
+            MapManager.Instance.loadedDesertTiles = save.loadedDesertTiles;
+            MapManager.Instance.loadedSnowTiles = save.loadedSnowTiles;
 
             stats.CopyStats(save.stats);
         }

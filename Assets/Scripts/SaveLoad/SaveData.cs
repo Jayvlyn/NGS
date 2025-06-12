@@ -9,6 +9,9 @@ public class SaveData
     public List<KeyBindingSaveData> platformerKeybinds;
     public List<KeyBindingSaveData> minigameKeybinds;
     public List<KeyBindingSaveData> bossGameKeybinds;
+    public List<ComparableTuple<int, int>> loadedForestTiles;
+    public List<ComparableTuple<int, int>> loadedDesertTiles;
+    public List<ComparableTuple<int, int>> loadedSnowTiles;
     public List<UpgradeData> upgrades;
     public List<int> unlockedFlannels;
     public List<QuestSaveData> quests;

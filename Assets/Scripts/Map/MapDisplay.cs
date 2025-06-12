@@ -161,8 +161,11 @@ public class MapDisplay : Singleton<MapDisplay>
 
     public void RevealTile(ComparableTuple<int, int> location)
     {
-        blockerMap.SetTile(new Vector3Int(location.Item1, location.Item2), null);
+        Vector3Int pos = new Vector3Int(location.Item1, location.Item2);
+        blockerMap.SetTile(pos, null);
+        blockerMap.RefreshTile(pos);
     }
+
     public void Start()
     {
         BoundsInt bounds = new BoundsInt();

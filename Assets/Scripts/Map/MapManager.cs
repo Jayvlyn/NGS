@@ -35,6 +35,14 @@ public class MapManager : Singleton<MapManager>
         //Debug.Log($"Total Discovered Tiles: {currentList.Count}");
     }
 
+    public void LoadMaps()
+    {
+        foreach (var tile in GetVisibleTiles())
+        {
+            MapDisplay.Instance.RevealTile(tile);
+        }
+    }
+
     public List<ComparableTuple<int, int>> GetVisibleTiles()
     {
         return gameSettings.location.currentLocation switch
