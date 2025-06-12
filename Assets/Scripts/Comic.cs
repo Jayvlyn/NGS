@@ -19,6 +19,7 @@ public class Comic : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             gameObject.SetActive(false);
+            GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
         }
     }
 
