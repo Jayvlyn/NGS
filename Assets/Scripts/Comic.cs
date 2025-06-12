@@ -8,6 +8,8 @@ public class Comic : MonoBehaviour
     [SerializeField] float transitionTime = 0.5f;
     [SerializeField] float timePerPanel = 3;
     [SerializeField] int panelCount = 5;
+    [SerializeField] GameObject openingText;
+    [SerializeField] GameObject closingText;
 
     void OnEnable()
     {
@@ -25,10 +27,15 @@ public class Comic : MonoBehaviour
 
     IEnumerator ComicScroll()
     {
-        yield return Fade.Instance.FadeOut(2f);
+        yield return Fade.Instance.FadeOut(1f);
+        if(openingText != null) openingText.SetActive(true);
 
         for (int i = 0; i < panelCount; i++)
         {
+            if(closingText != null && i == panelCount - 1)
+            {
+                closingText.SetActive(true);
+            }
             yield return new WaitForSeconds(timePerPanel);
 
             float initalYPos = transform.position.y;
