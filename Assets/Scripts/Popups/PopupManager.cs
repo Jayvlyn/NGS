@@ -25,7 +25,7 @@ public class PopupManager : Singleton<PopupManager>
     #region World Statement
     public GameObject CreateWorldStatementPopup(Transform location, string statement = "", float lifetime = 10, string stater = "", PopupAppearanceData appearance = new PopupAppearanceData(), PopupAppearanceData disappearence = new PopupAppearanceData())
     {
-        GameObject go = Instantiate(worldSpeechPrefab, location);
+        GameObject go = Instantiate(worldSpeechPrefab, location.position, Quaternion.identity);
         DialogueVoidPopup popup = go.GetComponentInChildren<DialogueVoidPopup>();
         popup.Lifetime = lifetime;
         if (statement != string.Empty)
@@ -105,7 +105,7 @@ public class PopupManager : Singleton<PopupManager>
     #region World Interaction Popups
     public GameObject CreateWorldInteractionPopup(Transform location)
     {
-        GameObject go = Instantiate(worldInteractPrefab, location);
+        GameObject go = Instantiate(worldInteractPrefab, location.position, Quaternion.identity);
         go.GetComponentInChildren<InteractVoidPopup>().text.text =
             InputControlPath.ToHumanReadableString(interactAction.action.bindings[0].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice);
