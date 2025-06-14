@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
-  m_Name: Quest 1
+  m_Name: Quest_Cliff
   m_EditorClassIdentifier: 
-  questName: 
-  description: 
-  completeable: 0
-  fishQuest: 1
+  questName: Mountain Bunny
+  description: "Cliff the goat has a letter for a rabbit named Sunny at the top of
+    the mountain \u2014 but he\u2019s not climbing. You\u2019ll have to deliver it
+    for him."
+  completeable: 1
+  fishQuest: 0
   reward:
-    flannelName: 
-    carrots: 0
+    flannelName: Peppermint
+    carrots: 5
   fish: {fileID: 0}
   minLength: 0
-  destinationName: 
-  remainingCompletions: 0
+  destinationName: Sunny
+  remainingCompletions: 1
   onCompleteEvent: {fileID: 0}
   disabled: 0
+  active: 1
+  completed: 0
