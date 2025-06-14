@@ -118,7 +118,7 @@ public class PlatformingPlayerController : Interactor
 	[SerializeField] private AnimationCurve fishCastCurve;
 	public AnimationCurve grappleCastCurveBase;
 	private AnimationCurve grappleCastCurve;
-	private Vector2 waterMidpoint;
+	private Transform castPoint;
 
 	// Inputs
 	private float moveInput; // left-right 1D axis
@@ -319,15 +319,36 @@ public class PlatformingPlayerController : Interactor
 		interactedWater = water;
 
 		Collider2D waterCol = interactedWater.transform.parent.GetComponent<Collider2D>();
-		waterMidpoint = waterCol.bounds.center;
 
-		Vector3 waterDir = (waterMidpoint - (Vector2)rodEnd.position).normalized;
+		castPoint = GetCastPoint(water);
+
+		Vector2 waterDir = ((Vector2)castPoint.position - (Vector2)rodEnd.position).normalized;
 		if(spriteT.localScale.x * waterDir.x < 0) // facing away from water
 		{
 			FlipX();
 		}
 		ChangeRodState(RodState.FISHCASTING);
 	}
+
+	public Transform GetCastPoint(Water water)
+	{
+		Transform castPoint;
+		castPoint = water.castPoints[0];
+        if (water.castPoints.Length > 1)
+        {
+			float closestDistance = Mathf.Abs(transform.position.x - castPoint.position.x);
+			for (int i = 1; i < water.castPoints.Length; i++)
+			{
+				float dist = Mathf.Abs(transform.position.x - water.castPoints[i].position.x);
+				if (dist < closestDistance)
+				{
+					closestDistance = dist;
+					castPoint = water.castPoints[i];
+				}
+            }
+        }
+		return castPoint;
+    }
 
 	/// <summary>
 	/// Call in fixed update
@@ -1136,13 +1157,14 @@ public class PlatformingPlayerController : Interactor
 		rodT.localRotation = cachedRot;
 
 
-		float dist = Mathf.Abs(waterMidpoint.x - rodEnd.position.x);
+		float dist = Mathf.Abs(castPoint.position.x - transform.position.x);
 		hook.rb.bodyType = RigidbodyType2D.Kinematic;
 		float t = 0;
 		while (t < dist)
 		{
+			Debug.Log(t);
 			Vector2 pos;
-			pos.x = (t / dist) * Mathf.Sign(spriteT.localScale.x);
+			pos.x = (t) * Mathf.Sign(spriteT.localScale.x);
 			pos.y = fishCastCurve.Evaluate(t / dist);
 			hook.transform.position = (Vector2)this.transform.position + pos;
 

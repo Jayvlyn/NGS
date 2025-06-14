@@ -12,6 +12,8 @@ public class Water : InteractableObject
     [SerializeField] VoidEvent onQuitFishing;
     [SerializeField] private PlayerStats playerStats;
 
+    public Transform[] castPoints;
+
     //list of fish the pond has 
     [SerializeField] List<Fish> AnyTimeFish = new List<Fish>();
     [SerializeField] List<Fish> NightFish = new List<Fish>();
