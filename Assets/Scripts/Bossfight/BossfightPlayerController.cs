@@ -34,11 +34,15 @@ public class BossfightPlayerController : MonoBehaviour
             desiredDistance -= reelSpeed * desiredDistance * Time.deltaTime * playerStats.bossReelSpeed;
             desiredDistance = Mathf.Max(desiredDistance, radius * 5);
         }
+        Debug.Log(currentDistance - desiredDistance);
         if (currentDistance > desiredDistance && !holdingSlack)
         {
-            AttemptMovement((transform.position - boss.transform.position).normalized * (desiredDistance - currentDistance));
+            AttemptMovement((boss.transform.position - transform.position).normalized * (currentDistance - desiredDistance));
+            currentDistance = Vector2.Distance(transform.position, boss.transform.position);
         }
-        currentDistance = Vector2.Distance(boss.transform.position, transform.position);
+        else
+        {
+        }
         desiredDistance = currentDistance;
         if (currentDistance >= deathDistance && !immortalForTesting)
         {
@@ -51,23 +55,23 @@ public class BossfightPlayerController : MonoBehaviour
             currentDistance = Vector3.Distance(boss.transform.position, transform.position);
             desiredDistance = Mathf.Max(Mathf.Min(deathDistance, currentDistance, desiredDistance), radius * 5);
         }
-        if(currentDistance < radius * 5)
+        if (currentDistance < radius * 5)
         {
             BossFishController.caughtBoss = true;
             StartCoroutine(SceneLoader.LoadScene(settings.location.currentLocation));
         }
 
         Collider2D[] results = Physics2D.OverlapCircleAll(transform.position, radius);
-        while(results.Length > 0)
+        while (results.Length > 0)
         {
             Vector3 pos = results[0].ClosestPoint(transform.position);
             transform.position += (transform.position - pos).normalized * (radius - Vector3.Distance(transform.position, pos) + 0.01f);
             results = Physics2D.OverlapCircleAll(transform.position, radius);
         }
-		//transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
-		//transform.rotation *= Quaternion.Euler(0, 0, -90);
+        //transform.rotation = Quaternion.FromToRotation(new Vector3(1, 0, 0), boss.transform.position - transform.position);
+        //transform.rotation *= Quaternion.Euler(0, 0, -90);
 
-		Vector3 direction = (boss.transform.position - transform.position).normalized;
+        Vector3 direction = (boss.transform.position - transform.position).normalized;
         Quaternion targetRotation = Quaternion.FromToRotation(Vector3.right, direction);// * Quaternion.Euler(0, 0, -90);
 		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 

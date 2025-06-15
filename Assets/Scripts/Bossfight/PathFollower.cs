@@ -31,6 +31,7 @@ public class PathFollower : MonoBehaviour
     public float Length { get { return splineContainer.CalculateLength(); } }
 	public (Vector3, Quaternion) GetNewTransform(float distanceTravelled)
     {
+        float oldDistance = distance;
         (Vector3, Quaternion) result = (transform.position, Quaternion.identity);
         if (guide != null)
         {
