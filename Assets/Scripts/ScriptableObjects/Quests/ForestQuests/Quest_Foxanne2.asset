@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
   m_Name: Quest_Foxanne2
   m_EditorClassIdentifier: 
-  questName: No Aposeable Thumbs
+  questName: No Opposable Thumbs
   description: Foxanne wants a Trifish but can't catch it herself.
   completeable: 0
   fishQuest: 1
@@ -22,6 +22,7 @@ MonoBehaviour:
   fish: {fileID: 11400000, guid: 1f62f66bb44f0fb48a8eba01b6f8352a, type: 2}
   minLength: 0
   destinationName: 
-  remainingCompletions: 0
+  remainingCompletions: 1
   onCompleteEvent: {fileID: 0}
   disabled: 0
+  active: 0
