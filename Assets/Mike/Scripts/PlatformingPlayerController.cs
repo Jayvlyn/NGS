@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlatformingPlayerController : Interactor
@@ -257,7 +258,7 @@ public class PlatformingPlayerController : Interactor
 	private bool castHeld;
 	public void OnCastHook(InputValue value)
 	{
-		if (value.isPressed)
+		if (value.isPressed && !EventSystem.current.IsPointerOverGameObject())
 		{
 			castHeld = true;
 			if (currentRodState == RodState.INACTIVE && !inWater)
