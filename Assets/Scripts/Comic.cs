@@ -11,14 +11,17 @@ public class Comic : MonoBehaviour
     [SerializeField] GameObject openingText;
     [SerializeField] GameObject closingText;
 
+    private bool fadingIn;
+
     void OnEnable()
     {
+        GameUI.Instance.pi.SwitchCurrentActionMap("RebindKeys");
         StartCoroutine(ComicScroll());
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && !fadingIn)
         {
             gameObject.SetActive(false);
             GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
@@ -27,8 +30,10 @@ public class Comic : MonoBehaviour
 
     IEnumerator ComicScroll()
     {
+        fadingIn = true;
         yield return Fade.Instance.FadeOut(1f);
         if(openingText != null) openingText.SetActive(true);
+        fadingIn = false;
 
         for (int i = 0; i < panelCount; i++)
         {
@@ -55,6 +60,7 @@ public class Comic : MonoBehaviour
             
             yield return null;
         }
+        GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
         gameObject.SetActive(false);
     }
 }

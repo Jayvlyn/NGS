@@ -22,7 +22,23 @@ public class SmallFishVisualizer : MonoBehaviour
 		fishSpawnrate = Random.Range(minSpawnrate, maxSpawnrate);
 	}
 
-	private void Update()
+    private void OnDisable()
+    {
+        for (int i = leftFish.Count - 1; i >= 0; i--)
+        {
+            GameObject obj = leftFish[i];
+            leftFish.Remove(obj);
+            Destroy(obj);
+        }
+        for (int i = rightFish.Count - 1; i >= 0; i--)
+        {
+            GameObject obj = rightFish[i];
+            rightFish.Remove(obj);
+            Destroy(obj);
+        }
+    }
+
+    private void Update()
 	{
 		if(spawnTimer > 0)
         {
