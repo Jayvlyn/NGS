@@ -4,7 +4,7 @@ using UnityEngine;
 public class Landmark : InteractableObject
 {
     public Transform dialoguePopupLocation;
-    [SerializeField] protected string[] questDescriptions;
+    [SerializeField,TextArea] protected string[] questDescriptions;
     [SerializeField] protected bool questDescriptionsLoop = false;
     public string landmarkName;
     protected int currentStandard = 0;
