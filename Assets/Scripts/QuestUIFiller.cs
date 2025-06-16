@@ -54,6 +54,7 @@ public class QuestUIFiller : MonoBehaviour
         GameObject newPrefab = Instantiate<GameObject>(questPrefab, this.transform);
         float randomRotation = Random.Range(-randomRotationRange, randomRotationRange);
         Image stickyNote = newPrefab.GetComponentsInChildren<Image>()[0];
+        currentQuestUIElements.Add(newPrefab);
         stickyNote.gameObject.transform.rotation = Quaternion.Euler(0, 0, randomRotation);
         stickyNote.color = stickyNoteColors[Random.Range(0, stickyNoteColors.Count)];
         stickyNote.GetComponentsInChildren<TMP_Text>()[2].text = quest.questName;
@@ -61,7 +62,15 @@ public class QuestUIFiller : MonoBehaviour
         stickyNote.GetComponentsInChildren<TMP_Text>()[0].text = quest.reward.GetReward();
     }
     private void removeQuestFromUI(Quest quest)
-    { 
-    
+    {
+        foreach (GameObject prefab in currentQuestUIElements)
+        {
+            if (quest.questName == prefab.GetComponentsInChildren<Image>()[0].GetComponentsInChildren<TMP_Text>()[2].text)
+            { 
+                currentQuestUIElements.Remove(prefab);
+                Destroy(prefab);
+                return;
+            }
+        }
     }
 }
