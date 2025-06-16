@@ -6,7 +6,6 @@ public class MinigameObstacle : MonoBehaviour
     [Header("Obstacle references")]
     [SerializeField] float speed;
     [SerializeField] float rotateSpeed = 45;
-    [SerializeField] GameObject imageObject;
     [SerializeField] GameObject spawnOnDestroy;
     [SerializeField] bool randomInitialRotation = true;
     [SerializeField] PlayerStats playerStats;
