@@ -123,6 +123,8 @@ public class GameUI : Singleton<GameUI>
         HUD.SetActive(loadScreens);
         loadGame.SetActive(false);
         Inventory.Instance.RestInventory();
+        gameSettings.ResetFlannels();
+        QuestManager.Instance.ResetQuests();
         StartCoroutine(SceneLoader.LoadScene("MainMenu"));
     }
 

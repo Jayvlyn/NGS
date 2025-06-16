@@ -95,5 +95,4 @@ public struct QuestSaveData
     public bool disabled;
     public int remainingCompletions;
     public bool active;
-    public bool completed;
 }

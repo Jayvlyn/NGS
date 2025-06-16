@@ -34,4 +34,8 @@ public class GameSettings : ScriptableObject
     [Header("Bossgame input binds")]
     public List<KeyBindingSaveData> bossGameKeys;//6
 
+    public void ResetFlannels()
+    {
+        unlockedFlannels = new List<int>() { 0, 6 };
+    }
 }

@@ -41,10 +41,23 @@ public class QuestGiver : InteractableObject
         {
             for(int i = 0; i < potentialQuests.Count; i++)
             {
-                if (potentialQuests[i].quest.completed)
+                Quest q = QuestManager.Instance.GetQuest(potentialQuests[i].quest.questName);
+                if (q != null)
+                {
+                    potentialQuests[i] = new QuestData()
+                    {
+                        quest = q,
+                        dialogues = potentialQuests[i].dialogues,
+                        completionDialogue = potentialQuests[i].completionDialogue,
+                        loop = potentialQuests[i].loop,
+                    };
+                    currentQuestIndex = i;
+                }
+                if (potentialQuests[i].quest.remainingCompletions == 0)
                 {
                     if(potentialQuests[i].quest.onCompleteEvent != null) potentialQuests[i].quest.onCompleteEvent.Raise();
                     potentialQuests.RemoveAt(i);
+                    i--;
                     finishQuest();
                 }
             }
@@ -95,8 +108,20 @@ public class QuestGiver : InteractableObject
                 {
                     currentQuestIndex = Random.Range(0, potentialQuests.Count);
                 }
-                potentialQuests[currentQuestIndex].quest.completeable = false;
-                QuestManager.Instance.AddQuest(potentialQuests[currentQuestIndex].quest);
+                Quest q = QuestManager.Instance.GetQuest(potentialQuests[currentQuestIndex].quest.questName);
+                if(q == null)
+                {
+                    q = Instantiate(potentialQuests[currentQuestIndex].quest);
+                    potentialQuests[currentQuestIndex] = new QuestData()
+                    {
+                        quest = q,
+                        dialogues = potentialQuests[currentQuestIndex].dialogues,
+                        completionDialogue = potentialQuests[currentQuestIndex].completionDialogue,
+                        loop = potentialQuests[currentQuestIndex].loop,
+                    };
+                }
+                q.completeable = false;
+                QuestManager.Instance.AddQuest(q);
             }
             if(canInteract)
             {
