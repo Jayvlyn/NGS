@@ -28,26 +28,32 @@ public class ModifySettings : MonoBehaviour
         List<Resolution> newRes = new List<Resolution>();
         int currentResIndex = -1;
         int newResInd = 0;
+        int closestDif = int.MaxValue;
         string prev = "";
 
         for (int i = 0; i < res.Count; i++)
         {
             string check = res[i].width + "x" + res[i].height;
             float aspect = (float)res[i].width / res[i].height;
-            if (check == prev || Mathf.Abs(aspect - (16f / 9f)) > 0.2f) continue;
+            if (check == prev || Mathf.Abs(aspect - (16f / 9f)) > 0.01f) continue;
 
             string option = check;
             prev = check;
             options.Add(option);
             newRes.Add(res[i]);
-            if (newRes[newResInd].width == Screen.currentResolution.width && newRes[newResInd].height == Screen.currentResolution.height)
+
+            int dif = Mathf.Abs(Screen.currentResolution.width - newRes[newResInd].width) + 
+                Mathf.Abs(Screen.currentResolution.height - newRes[newResInd].height);
+
+            if (dif < closestDif)
             {
+                closestDif = dif;
                 currentResIndex = newResInd;
             }
             newResInd++;
         }
 
-        if (currentResIndex == -1) currentResIndex = 8;
+        if (currentResIndex == -1) currentResIndex = 4;
 
         res = newRes;
         resolutionDropdown.AddOptions(options);
