@@ -26,7 +26,8 @@ public class ModifySettings : MonoBehaviour
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
         List<Resolution> newRes = new List<Resolution>();
-        int currentResIndex = 0;
+        int currentResIndex = -1;
+        int newResInd = 0;
         string prev = "";
 
         for (int i = 0; i < res.Count; i++)
@@ -39,16 +40,20 @@ public class ModifySettings : MonoBehaviour
             prev = check;
             options.Add(option);
             newRes.Add(res[i]);
-            if (res[i].width == 1920 && res[i].height == 1080)
+            if (newRes[newResInd].width == Screen.currentResolution.width && newRes[newResInd].height == Screen.currentResolution.height)
             {
-                currentResIndex = 8;
+                currentResIndex = newResInd;
             }
+            newResInd++;
         }
+
+        if (currentResIndex == -1) currentResIndex = 8;
 
         res = newRes;
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
+        SetResolution(currentResIndex);
     }
 
     public void SetMasterVolume(float volume)
