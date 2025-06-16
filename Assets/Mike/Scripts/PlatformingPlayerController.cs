@@ -120,8 +120,11 @@ public class PlatformingPlayerController : Interactor
 	private AnimationCurve grappleCastCurve;
 	private Transform castPoint;
 
-	// Inputs
-	private float moveInput; // left-right 1D axis
+	[Header("Events")]
+    [SerializeField] FishEvent caughtFishEvent;
+
+    // Inputs
+    private float moveInput; // left-right 1D axis
 
 	// Handle Held Inputs
 	private bool moveHeld = false;
@@ -136,7 +139,11 @@ public class PlatformingPlayerController : Interactor
 	{
 		base.Start();
 
-		if(BossFishController.caughtBoss) Inventory.Instance.AddFish(BossFishController.bossFish);
+		if (BossFishController.caughtBoss)
+		{
+			Inventory.Instance.AddFish(BossFishController.bossFish);
+            caughtFishEvent.Raise(BossFishController.bossFish);
+        }
 		BossFishController.caughtBoss = false;
 
 		cam = Camera.main;
