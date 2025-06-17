@@ -59,6 +59,7 @@ public class GameUI : Singleton<GameUI>
         }
 
         modifySettings = GetComponent<ModifySettings>();
+        modifySettings.ApplyData();
 
         gameSettings = modifySettings.settings;
 

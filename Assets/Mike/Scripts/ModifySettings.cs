@@ -18,13 +18,22 @@ public class ModifySettings : MonoBehaviour
     public Toggle mouseModeMiniGame;
     public Toggle mouseModeBossGame;
 
-    List<Resolution> res;
+    static List<Resolution> res;
+    static List<string> options = new List<string>();
 
     void Start()
     {
+        if(options.Count > 0)
+        {
+            resolutionDropdown.ClearOptions();
+            resolutionDropdown.AddOptions(options);
+            resolutionDropdown.value = settings.screenResolution;
+            resolutionDropdown.RefreshShownValue();
+
+            return;
+        }
         res = Screen.resolutions.ToList();
         resolutionDropdown.ClearOptions();
-        List<string> options = new List<string>();
         List<Resolution> newRes = new List<Resolution>();
         int currentResIndex = -1;
         int newResInd = 0;
@@ -60,6 +69,7 @@ public class ModifySettings : MonoBehaviour
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
         SetResolution(currentResIndex);
+        settings.screenResolution = currentResIndex;
     }
 
     public void SetMasterVolume(float volume)
