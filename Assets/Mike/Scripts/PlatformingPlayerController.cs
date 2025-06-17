@@ -1170,7 +1170,7 @@ public class PlatformingPlayerController : Interactor
 		float t = 0;
 		while (t < dist)
 		{
-			Debug.Log(t);
+			//Debug.Log(t);
 			Vector2 pos;
 			pos.x = (t) * Mathf.Sign(spriteT.localScale.x);
 			pos.y = fishCastCurve.Evaluate(t / dist);

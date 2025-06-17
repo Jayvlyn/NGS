@@ -12,7 +12,7 @@ public class Optimizer : MonoBehaviour
 
 	private void Start()
 	{
-		EnableAll();
+		//EnableAll();
 		StartCoroutine(DistanceCheck());
 	}
 
