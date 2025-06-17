@@ -24,10 +24,12 @@ public class WardrobeManager : MonoBehaviour
     public void OpenWardrobe()
     {
         this.gameObject.SetActive(true);
+        GameUI.Instance.pi.SwitchCurrentActionMap("RebindKeys");
     }
     public void CloseWardrobe()
     {
         this.gameObject.SetActive(false);
+        GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
     }
     public void IterateWardrobe(int direction)
     {
