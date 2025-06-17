@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9efaf1e5ae44a4dad936b13f7507df, type: 3}
+  m_Name: Quest_Curtis
+  m_EditorClassIdentifier: 
+  questName: Fast Fish, Still Mind
+  description: Get a Jetty for Curtis
+  completeable: 0
+  fishQuest: 1
+  reward:
+    flannelName: Cloud Nine
+    carrots: 0
+  fish: {fileID: 11400000, guid: 8adc6176606383249a61380ea2c8c1e0, type: 2}
+  minLength: 0
+  destinationName: 
+  remainingCompletions: 0
+  onCompleteEvent: {fileID: 0}
+  disabled: 0
+  active: 0
