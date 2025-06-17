@@ -16,7 +16,7 @@ MonoBehaviour:
   description: "Cliff the goat has a letter for a rabbit named Sunny at the top of
     the mountain \u2014 but he\u2019s not climbing. You\u2019ll have to deliver it
     for him."
-  completeable: 1
+  completeable: 0
   fishQuest: 0
   reward:
     flannelName: Peppermint
@@ -24,8 +24,8 @@ MonoBehaviour:
   fish: {fileID: 0}
   minLength: 0
   destinationName: Sunny
-  remainingCompletions: 1
+  remainingCompletions: 0
   onCompleteEvent: {fileID: 0}
-  disabled: 0
+  disabled: 1
   active: 1
-  completed: 0
+  completed: 1
