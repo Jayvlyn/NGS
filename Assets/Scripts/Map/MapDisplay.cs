@@ -46,6 +46,7 @@ public class MapDisplay : Singleton<MapDisplay>
         {
             createdObjects[i] = Instantiate(ponds[i]);
             createdObjects[i].transform.position = ponds[i].transform.position + transform.position;
+            createdObjects[i].SetActive(true);
             //go.GetComponent<SpriteShapeRenderer>().sortingOrder = -1;
         }
         size = cam.Lens.OrthographicSize;
