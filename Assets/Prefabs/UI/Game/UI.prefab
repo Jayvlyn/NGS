@@ -64,6 +64,7 @@ GameObject:
   - component: {fileID: 5041693359459944431}
   - component: {fileID: 2271294216086206238}
   - component: {fileID: 7284972002691508958}
+  - component: {fileID: 3331602866765579437}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -405,6 +406,69 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3331602866765579437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4978729502493784343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a765a134470eea5408e812bb1758fbc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Leftbutton: {fileID: 4294881882208464444}
+  Rightbutton: {fileID: 952450665880765209}
+  Closebutton: {fileID: 5516316556796649500}
+  Confirmbutton: {fileID: 6135300840011735371}
+  WardrobeName: {fileID: 7395427283373512136}
+  WardrobeTextures:
+  - {fileID: 2800000, guid: 35f948c48ba84b348863aa679399e7b6, type: 3}
+  - {fileID: 2800000, guid: 4044ef9fd66ab62478e03547f1383b9f, type: 3}
+  - {fileID: 2800000, guid: d41421693e894354ba84a0f64cc57031, type: 3}
+  - {fileID: 2800000, guid: c466c044705099e4d99b96bef408ec46, type: 3}
+  - {fileID: 2800000, guid: 4d041ecc54929c141a7240095d732906, type: 3}
+  - {fileID: 2800000, guid: 6a0fb4190168cba46bc624fcd9a7819a, type: 3}
+  - {fileID: 2800000, guid: beaf1711e0ef5dc4e8113309f1472308, type: 3}
+  - {fileID: 2800000, guid: 2f80885c42fd8484aad4ea775d161610, type: 3}
+  - {fileID: 2800000, guid: 301c4b913090d8243aeca8572536ee2f, type: 3}
+  - {fileID: 2800000, guid: 46c29714b2d153f49a05b6ebd2ca6f2b, type: 3}
+  - {fileID: 2800000, guid: 5bc560f7c37515948a6d255460184f53, type: 3}
+  - {fileID: 2800000, guid: 37981a56c13e5b6449ddbda6549e03f9, type: 3}
+  - {fileID: 2800000, guid: 59ca63e0dd3030c418c002c13698f547, type: 3}
+  - {fileID: 2800000, guid: 121cd4a581de0b641b0364b2583fc903, type: 3}
+  - {fileID: 2800000, guid: 0ebb45417046cac48adc15dcf6d7d134, type: 3}
+  - {fileID: 2800000, guid: 4138dcf9170a54648890db90199a7f33, type: 3}
+  - {fileID: 2800000, guid: 956e3e05869989c47941c8916040015c, type: 3}
+  - {fileID: 2800000, guid: 31b34e5aa371e0844b9b0837829d5609, type: 3}
+  - {fileID: 2800000, guid: 5b43c77bf53a04146b73a3629d323f02, type: 3}
+  - {fileID: 2800000, guid: 29e46fdaf5979094f96cb494652e0f80, type: 3}
+  canvas: {fileID: 5731246213073072042}
+  WardrobeNames:
+  - Ol' Reliable
+  - Ghillie
+  - BlueTang
+  - Burnt Sienna
+  - High Tide
+  - Plum
+  - Neu Flannel
+  - Mixed Berry
+  - Cotton Candy
+  - Cherry Blossom
+  - Lemon Lime
+  - Frosty
+  - Charcoal
+  - Citrus
+  - Pished off
+  - Peppermint
+  - Vice
+  - Midnight
+  - Cloud Nine
+  - Irish Cream
+  WardrobeMaterial: {fileID: 2100000, guid: 890908e392ede0c409c910cd8a5209de, type: 2}
+  CurrentIndex: 0
+  gameSettings: {fileID: 11400000, guid: b1d3ba6f757a1ea4fa31f9481141aeed, type: 2}
 --- !u!1 &5379025354849141963
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,10 +557,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b587cda78e6b7d4aa4379635c94722c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightPerPanel: 1050
+  heightMod: 500
   transitionTime: 0.3
   timePerPanel: 3
   panelCount: 5
+  openingText: {fileID: 0}
+  closingText: {fileID: 0}
 --- !u!1001 &1536643110086690574
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -616,6 +682,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 631786084649413801}
     m_Modifications:
+    - target: {fileID: 1184050747441949050, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3331602866765579437}
+    - target: {fileID: 1184050747441949050, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IterateWardrobe
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793115111637877855, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3331602866765579437}
+    - target: {fileID: 2793115111637877855, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IterateWardrobe
+      objectReference: {fileID: 0}
     - target: {fileID: 3408312359055864414, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -708,9 +790,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wardrobe
       objectReference: {fileID: 0}
-    - target: {fileID: 7241103892574775532, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 7456007280356730714, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3331602866765579437}
+    - target: {fileID: 7456007280356730714, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ConfirmbuttonPressed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -722,15 +808,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3408312359055864414, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
   m_PrefabInstance: {fileID: 3167415581915465542}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1717470003862646811 stripped
+--- !u!114 &952450665880765209 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4332821758467176285, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2793115111637877855, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
   m_PrefabInstance: {fileID: 3167415581915465542}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731246213073072042}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a765a134470eea5408e812bb1758fbc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4294881882208464444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1184050747441949050, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+  m_PrefabInstance: {fileID: 3167415581915465542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5516316556796649500 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7456007280356730714, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+  m_PrefabInstance: {fileID: 3167415581915465542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5731246213073072042 stripped
@@ -738,6 +846,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7241103892574775532, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
   m_PrefabInstance: {fileID: 3167415581915465542}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6135300840011735371 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9137834616002307597, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+  m_PrefabInstance: {fileID: 3167415581915465542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7395427283373512136 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5572428690940105358, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+  m_PrefabInstance: {fileID: 3167415581915465542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3832335153638389487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1332,10 +1462,6 @@ PrefabInstance:
       propertyPath: testingShopData
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7605497490435062890, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
-      propertyPath: wardrobeManager
-      value: 
-      objectReference: {fileID: 1717470003862646811}
     - target: {fileID: 8034440824602453163, guid: d717fe83e4cbc57468d341b8d999c65e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

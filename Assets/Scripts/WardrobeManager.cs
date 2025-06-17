@@ -10,6 +10,7 @@ public class WardrobeManager : MonoBehaviour
     public Button Confirmbutton;
     public TMP_Text WardrobeName;
     public Texture2D[] WardrobeTextures;
+    public GameObject canvas;
 
     public List<string> WardrobeNames = new();
     public Material WardrobeMaterial;
@@ -23,12 +24,12 @@ public class WardrobeManager : MonoBehaviour
     }
     public void OpenWardrobe()
     {
-        this.gameObject.SetActive(true);
+        canvas.SetActive(true);
         GameUI.Instance.pi.SwitchCurrentActionMap("RebindKeys");
     }
     public void CloseWardrobe()
     {
-        this.gameObject.SetActive(false);
+        canvas.SetActive(false);
         GameUI.Instance.pi.SwitchCurrentActionMap("Platformer");
     }
     public void IterateWardrobe(int direction)
