@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 8636100334860710110}
   - component: {fileID: 4434279611383878208}
   - component: {fileID: 3752095222108806949}
-  - component: {fileID: 7857429413150188696}
   - component: {fileID: 2217673890677420845}
   m_Layer: 0
   m_Name: SirWhiskers
@@ -345,18 +344,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.4085083, y: 0.9357724}
   m_EdgeRadius: 0
---- !u!114 &7857429413150188696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7794087651360786927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1db6ca7941a3bc48a8dc423d30c0aed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2217673890677420845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,7 +360,7 @@ MonoBehaviour:
   unityEventResponse:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7857429413150188696}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ObjectDestroyer, Assembly-CSharp
         m_MethodName: DestroyObj
         m_Mode: 2

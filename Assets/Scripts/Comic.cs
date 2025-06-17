@@ -49,7 +49,7 @@ public class Comic : MonoBehaviour
             float t = 0;
             while(t < transitionTime)
             {
-                Debug.Log(t);
+                //Debug.Log(t);
                 t += Time.deltaTime;
                 float yPos = transform.position.y;
                 yPos = Mathf.Lerp(initalYPos, targetYPos, t / transitionTime);
