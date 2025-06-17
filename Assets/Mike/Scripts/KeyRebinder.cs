@@ -20,7 +20,14 @@ public class KeyRebinder : MonoBehaviour
 
     private void OnEnable()
     {
-        if (initialized) return;
+        if (initialized)
+        {
+            if (data.bindingPath != "")
+            {
+                keyText.text = InputControlPath.ToHumanReadableString(data.bindingPath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            }
+            return;
+        }
 
         int ind = keyAction.action.GetBindingIndexForControl(keyAction.action.controls[0]);
         if(keyAction.action.type == InputActionType.Value && keyAction.action.expectedControlType == "Axis")
