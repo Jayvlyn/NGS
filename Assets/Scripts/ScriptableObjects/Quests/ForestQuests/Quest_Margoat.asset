@@ -17,7 +17,7 @@ MonoBehaviour:
   completeable: 0
   fishQuest: 1
   reward:
-    flannelName: 
+    flannelName: Ghillie
     carrots: 250
   fish: {fileID: 11400000, guid: 5986c08ce1067224ebcd4f20580d9916, type: 2}
   minLength: 0
@@ -25,3 +25,4 @@ MonoBehaviour:
   remainingCompletions: 1
   onCompleteEvent: {fileID: 0}
   disabled: 1
+  active: 0
