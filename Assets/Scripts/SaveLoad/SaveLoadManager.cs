@@ -41,7 +41,7 @@ public class SaveLoadManager : MonoBehaviour
         saveList.Add(data);
 
         //Ensures that the saves folder actually exists
-        string path = Path.Combine(Application.dataPath, "Saves");
+        string path = Path.Combine(Application.persistentDataPath, "Saves");
         Directory.CreateDirectory(path);
         path = Path.Combine(path, $"{data.id}.json");
         string dataString = JsonUtility.ToJson(data);
