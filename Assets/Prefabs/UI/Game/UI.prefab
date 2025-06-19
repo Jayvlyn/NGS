@@ -460,7 +460,7 @@ MonoBehaviour:
   - Frosty
   - Charcoal
   - Citrus
-  - Pished off
+  - Pished Off
   - Peppermint
   - Vice
   - Midnight
@@ -802,6 +802,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ConfirmbuttonPressed
       objectReference: {fileID: 0}
+    - target: {fileID: 9137834616002307597, guid: cddb0039b5c08de4e86808bcc31a8ceb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3331602866765579437}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
