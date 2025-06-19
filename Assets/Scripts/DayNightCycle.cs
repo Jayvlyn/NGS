@@ -43,8 +43,8 @@ public class DayNightCycle : Singleton<DayNightCycle>
 
 	private void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Period)) // toggle pause
+#if UNITY_EDITOR
+		if (Input.GetKeyDown(KeyCode.Period)) // toggle pause
 		{
 			clockPaused = !clockPaused;
 		}
@@ -74,6 +74,11 @@ public class DayNightCycle : Singleton<DayNightCycle>
 		{
 			currentTime = MidnightHour * 60;
 		}
+#else
+		currentTime += Time.deltaTime;
+#endif
+
+
 
 		settings.location.currentTime = currentTime;
 
