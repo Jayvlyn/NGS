@@ -417,7 +417,6 @@ public class ShopManager : Singleton<ShopManager>
             upgrades = new();
             ResetUpgrades();
         }
-        ResetStats();
     }
 
     public void ResetUpgrades()
