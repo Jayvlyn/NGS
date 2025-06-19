@@ -142,7 +142,7 @@ public class PlatformingPlayerController : Interactor
 
 		if (BossFishController.caughtBoss)
 		{
-			Inventory.Instance.AddFish(BossFishController.bossFish);
+			Inventory.Instance.AddFish(BossFishController.bossFish, false);
             caughtFishEvent.Raise(BossFishController.bossFish);
         }
 		BossFishController.caughtBoss = false;
