@@ -117,7 +117,7 @@ public class SaveLoadManager : MonoBehaviour
         MapManager.Instance.loadedDesertTiles.Clear();
         MapManager.Instance.loadedSnowTiles.Clear();
 
-        string path = Path.Combine(Application.dataPath, "Saves", $"{data.id}.json");
+        string path = Path.Combine(Application.persistentDataPath, "Saves", $"{data.id}.json");
         if (File.Exists(path))
         {
             string dataString = JsonUtility.ToJson(data);
@@ -170,7 +170,7 @@ public class SaveLoadManager : MonoBehaviour
     public void Load()
     {
         var save = saveList[selected];
-        string path = Path.Combine(Application.dataPath, "Saves");
+        string path = Path.Combine(Application.persistentDataPath, "Saves");
         path = Path.Combine(path, $"{save.id}.json");
 
         //load data
@@ -236,7 +236,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Delete()
     {
-        string path = Path.Combine(Application.dataPath, "Saves");
+        string path = Path.Combine(Application.persistentDataPath, "Saves");
         path = Path.Combine(path, $"{saveList[selected].id}.json");
 
         if(File.Exists(path))
@@ -255,7 +255,7 @@ public class SaveLoadManager : MonoBehaviour
         if(layout == null) layout = content.GetComponent<GridLayoutGroup>();
         if (saveList.Count == 0)
         {
-            string path = Path.Combine(Application.dataPath, "Saves");
+            string path = Path.Combine(Application.persistentDataPath, "Saves");
             foreach (string file in Directory.GetFiles(path))
             {
                 if (file.EndsWith(".json"))
