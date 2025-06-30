@@ -127,6 +127,7 @@ public class GameUI : Singleton<GameUI>
         gameSettings.ResetFlannels();
         QuestManager.Instance.ResetQuests();
         StartCoroutine(SceneLoader.LoadScene("MainMenu"));
+        ShopManager.Instance.ResetStats();
     }
 
     void settingsClicked()

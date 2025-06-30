@@ -19,9 +19,12 @@ public class Inventory : Singleton<Inventory>
         //Debug.Log(JsonUtility.ToJson(GetData()));
     }
 
-    public void AddFish(Fish fish)
+    public void AddFish(Fish fish, bool addToUI = true)
     {
-        GameUI.Instance.inventoryUIFiller.AddFishToInventoryUI(fish);
+        if (addToUI)
+        {
+            GameUI.Instance.inventoryUIFiller.AddFishToInventoryUI(fish);
+        }
         if (!currentFish.ContainsKey(fish.fishName))
         {
             FishData fishData = new()
@@ -29,6 +32,7 @@ public class Inventory : Singleton<Inventory>
                 currentFish = new(),
                 fishHeld = new()
             };
+            currentFish.Add(fish.fishName, fishData);
         }
         FishData data = currentFish[fish.fishName];
         data.amountCaught++;
